@@ -1,3 +1,5 @@
+import { has } from 'rambdax';
+
 export function isValidEmail(email: string) {
   if (!email) return false;
   const trimmed = email.trim();
@@ -49,3 +51,15 @@ export function isValidDateOfBirth(dateOfBirth: string) {
   const re = /(19|20)\d\d$[- /.]^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])/;
   return re.test(dateOfBirth);
 }
+
+// Module dùng để verify xem file quiz có đúng định dạng hay không.
+
+export const verifyQuiz = (inputJson: Record<string, unknown>): boolean => {
+  if (!has('id', inputJson)) return false;
+  if (!has('name', inputJson)) return false;
+  if (!inputJson.syllabus) return false;
+  if (!inputJson.instruction) return false;
+  if (!has('passing_score', inputJson)) return false;
+
+  return true;
+};

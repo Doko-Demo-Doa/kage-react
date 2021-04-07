@@ -31,12 +31,15 @@ export function replaceString(str: string, strSub: string, strReplace: string) {
   return result;
 }
 
-export function splitParagraphKanji(str: string) {
-  let arr: string[] = [];
-  if (!str) return arr;
-  str = str.replace(/<\/rt><\/ruby>/g, '(A1)');
-  arr = str.split('/');
+export function furiganaTemplateToHTML(inputStr: string) {
+  if (inputStr.includes('{') && inputStr.includes('}')) {
+    const ruby = inputStr
+      .replace('{', '<ruby>')
+      .replace('}', '</ruby>')
+      .replace('(', '<rt>')
+      .replace(')', '</rt>');
+    return ruby;
+  }
 
-  const newArr = arr.map((n) => n.replace(/\(A1\)/g, '</rt></ruby>'));
-  return newArr;
+  return inputStr;
 }

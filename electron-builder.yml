@@ -1,0 +1,42 @@
+productName: "Dora Kage"
+artifactName: "kage-${os}.${ext}"
+appId: "appId"
+copyright: "Copyright @ 2021"
+extends: null
+
+files:
+  - "build/"
+
+extraResources:
+  - from: "resources/vendor"
+    to: "vendor"
+    filter:
+      - "**/*"
+
+# Mac OS configuration
+mac:
+  icon: "resources/icons/icon.icns"
+  target:
+    - "dmg"
+  identity: null
+  category: "public.app-category.education"
+
+# Windows configuration
+win:
+  icon: "resources/icons/icon.png"
+  target:
+    - "nsis"
+
+# Package electron code into a asar archive. Set to false to debug issues.
+asar: true
+
+# NSIS Config
+nsis:
+  oneClick: true
+  perMachine: false
+  allowElevation: true
+  createStartMenuShortcut: true
+
+directories:
+  buildResources: "resources"
+  output: "release"
