@@ -34,17 +34,6 @@ function createWindow() {
     win = null;
   });
 
-  // Hot Reloading
-  if (isDev) {
-    // 'node_modules/.bin/electronPath'
-    // eslint-disable-next-line global-require
-    require('electron-reload')(__dirname, {
-      electron: path.join(__dirname, '..', '..', 'node_modules', '.bin', 'electron'),
-      forceHardReset: true,
-      hardResetMethod: 'exit',
-    });
-  }
-
   app.whenReady().then(() => {
     installExtension(REACT_DEVELOPER_TOOLS)
         .then((name) => console.log(`Added Extension:  ${name}`))
@@ -53,7 +42,7 @@ function createWindow() {
 
   win.webContents.on('did-frame-finish-load', () => {
     if (isDev) {
-      win.webContents.openDevTools();
+      win.webContents.openDevTools({ mode: 'detach' });
     }
   });
 }
