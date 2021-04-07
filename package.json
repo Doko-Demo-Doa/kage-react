@@ -18,7 +18,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "postinstall": "electron-builder install-app-deps",
     "electron:dev": "concurrently -k \"cross-env BROWSER=none npm run start\" \"wait-on http://localhost:3000 && tsc -p electron && electronmon .\"",
-    "electron:build-win": "npm run build && tsc -p electron && electron-builder -w",
+    "electron:build-win": "cross-env WEBPACK_TARGET=electron npm run build && tsc -p electron && electron-builder -w",
     "electron:build-mac": "npm run build && tsc -p electron && electron-builder -m",
     "electron:build-linux": "npm run build && tsc -p electron && electron-builder -l"
   },
@@ -41,26 +41,9 @@
     ]
   },
   "main": "build/electron/main.js",
-  "build": {
-    "appId": "vn.edu.dora.app.desktop",
-    "artifactName": "dora-desktop-${version}.${ext}",
-    "productName": "dora-desktop",
-    "copyright": "Copyright @ 2020",
-    "extends": null,
-    "files": [
-      "build/**/*"
-    ],
-    "mac": {
-      "target": "zip",
-      "identity": null,
-      "category": "public.app-category.developer-tools"
-    },
-    "directories": {
-      "buildResources": "assets"
-    }
-  },
   "dependencies": {
     "electron-devtools-installer": "3.1.1",
+    "electron-is-dev": "2.0.0",
     "electron-updater": "4.3.8"
   },
   "devDependencies": {
@@ -81,12 +64,15 @@
     "@typescript-eslint/eslint-plugin": "4.21.0",
     "@typescript-eslint/parser": "4.21.0",
     "antd": "4.15.0",
+    "babel-plugin-import": "1.13.3",
+    "clsx": "1.1.1",
     "concurrently": "6.0.1",
+    "craco-antd": "1.19.0",
+    "craco-sass-resources-loader": "1.1.0",
     "cross-env": "7.0.3",
     "dayjs": "1.10.4",
     "electron": "12.0.2",
     "electron-builder": "22.10.5",
-    "electron-is-dev": "2.0.0",
     "electronmon": "2.0.0",
     "eslint-config-airbnb-typescript": "12.3.1",
     "eslint-config-react-app": "6.0.0",

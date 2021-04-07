@@ -26,5 +26,6 @@ yarn.lock
 package-lock.json
 .eslintcache
 dist/
+release/
 
 .npmrc
