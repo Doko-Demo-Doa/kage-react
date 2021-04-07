@@ -1,0 +1,125 @@
+{
+  "name": "dora-vrm-web-desktop",
+  "version": "3.0.0",
+  "author": "WabiSabi",
+  "license": "Commercial",
+  "homepage": "./",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git@git.dora.edu.vn:dora-dev/dora-vrm-web-desktop.git"
+  },
+  "scripts": {
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "react-scripts eject",
+    "clean": "rimraf build dist",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "postinstall": "electron-builder install-app-deps",
+    "electron:dev": "cross-env BROWSER=none concurrently \"npm run start\" \"wait-on http://localhost:3000 && tsc -p electron -w\" \"wait-on http://localhost:3000 && tsc -p electron && electron .\"",
+    "electron:build": "npm run build && tsc -p electron && electron-builder",
+    "electron:build-win": "npm run build && tsc -p electron && electron-builder -w",
+    "electron:package": "cross-env NODE_ENV=production tsc -p electron && electron-builder"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "main": "build/electron/main.js",
+  "build": {
+    "appId": "vn.edu.dora.app.desktop",
+    "artifactName": "dora-desktop-${version}.${ext}",
+    "productName": "dora-desktop",
+    "copyright": "Copyright @ 2020",
+    "extends": null,
+    "files": [
+      "build/**/*"
+    ],
+    "mac": {
+      "target": "zip",
+      "identity": null,
+      "category": "public.app-category.developer-tools"
+    },
+    "directories": {
+      "buildResources": "assets"
+    }
+  },
+  "dependencies": {
+    "@craco/craco": "6.1.1",
+    "@reduxjs/toolkit": "1.5.1",
+    "@testing-library/jest-dom": "5.11.10",
+    "@testing-library/react": "11.2.6",
+    "@testing-library/user-event": "13.1.1",
+    "@types/jest": "26.0.22",
+    "@types/node": "14.14.37",
+    "@types/react": "17.0.3",
+    "@types/react-dom": "17.0.3",
+    "antd": "4.15.0",
+    "dayjs": "1.10.4",
+    "electron-devtools-installer": "3.1.1",
+    "electron-is-dev": "2.0.0",
+    "fetch-retry": "4.1.1",
+    "formik": "2.2.6",
+    "history": "5.0.0",
+    "moment": "2.29.1",
+    "react": "17.0.2",
+    "react-device-detect": "1.17.0",
+    "react-dom": "17.0.2",
+    "react-router-dom": "5.2.0",
+    "react-scripts": "4.0.3",
+    "redux-persist": "6.0.0",
+    "typescript": "4.2.3",
+    "web-vitals": "1.1.1",
+    "yup": "0.32.9"
+  },
+  "devDependencies": {
+    "@types/dom-mediacapture-record": "1.0.7",
+    "@types/electron-devtools-installer": "2.2.0",
+    "@types/node": "14.14.37",
+    "@types/react": "17.0.3",
+    "@types/react-dom": "17.0.3",
+    "@types/react-redux": "7.1.16",
+    "@types/react-router-dom": "5.1.7",
+    "@types/react-test-renderer": "17.0.1",
+    "@typescript-eslint/eslint-plugin": "4.21.0",
+    "@typescript-eslint/parser": "4.21.0",
+    "concurrently": "6.0.1",
+    "cross-env": "7.0.3",
+    "electron": "12.0.2",
+    "electron-builder": "22.10.5",
+    "electron-reload": "1.5.0",
+    "eslint-config-airbnb-typescript": "12.3.1",
+    "eslint-config-react-app": "6.0.0",
+    "eslint-import-resolver-typescript": "2.4.0",
+    "eslint-loader": "4.0.2",
+    "eslint-plugin-detox": "1.0.0",
+    "eslint-plugin-flowtype": "5.6.0",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-jest": "24.3.4",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-prettier": "3.3.1",
+    "eslint-plugin-promise": "4.3.1",
+    "eslint-plugin-react": "7.23.1",
+    "eslint-plugin-react-hooks": "4.2.0",
+    "node-sass-chokidar": "1.5.0",
+    "react-test-renderer": "17.0.2",
+    "rimraf": "3.0.2",
+    "ts-jest": "26.5.4",
+    "wait-on": "5.3.0"
+  }
+}
