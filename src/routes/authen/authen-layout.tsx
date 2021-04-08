@@ -1,3 +1,5 @@
-import { isValidEmail } from '~/utils/utils-validation';
+export const AuthenLayout: React.FC = () => {
+  console.log("aaa");
 
-isValidEmail('a');
+  return <div className="authen-layout">Test</div>;
+};

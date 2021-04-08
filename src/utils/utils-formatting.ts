@@ -8,8 +8,8 @@ export function formatLine(str: string) {
   const removeLineBreakRegex = new RegExp(/[\r\n]+/g);
   const removeWhiteSpaceRegex = new RegExp(/\s/g);
   let result = null;
-  result = str.replace(removeLineBreakRegex, '');
-  result = result.replace(removeWhiteSpaceRegex, ' ');
+  result = str.replace(removeLineBreakRegex, "");
+  result = result.replace(removeWhiteSpaceRegex, " ");
 
   return result;
 }
@@ -19,8 +19,8 @@ export function getTextBetweenUtag(str: string, regex: RegExp | string) {
   const results = str.match(regexStr);
   if (results !== null && results.length > 0) {
     results.forEach((_, index) => {
-      results[index] = results[index].replace('<u>', '');
-      results[index] = results[index].replace('</u>', ' ');
+      results[index] = results[index].replace("<u>", "");
+      results[index] = results[index].replace("</u>", " ");
     });
   }
   return results;
@@ -32,12 +32,12 @@ export function replaceString(str: string, strSub: string, strReplace: string) {
 }
 
 export function furiganaTemplateToHTML(inputStr: string) {
-  if (inputStr.includes('{') && inputStr.includes('}')) {
+  if (inputStr.includes("{") && inputStr.includes("}")) {
     const ruby = inputStr
-      .replace('{', '<ruby>')
-      .replace('}', '</ruby>')
-      .replace('(', '<rt>')
-      .replace(')', '</rt>');
+      .replace("{", "<ruby>")
+      .replace("}", "</ruby>")
+      .replace("(", "<rt>")
+      .replace(")", "</rt>");
     return ruby;
   }
 

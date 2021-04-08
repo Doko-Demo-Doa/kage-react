@@ -1,9 +1,9 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import {
   combineReducers,
   configureStore,
   getDefaultMiddleware,
-} from '@reduxjs/toolkit';
+} from "@reduxjs/toolkit";
 import {
   persistStore,
   persistReducer,
@@ -13,9 +13,9 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
-} from 'redux-persist';
+} from "redux-persist";
 
-import { auth } from '~/redux/features/auth/auth-slice';
+import { auth } from "~/redux/features/auth/auth-slice";
 
 const authReducer = auth.reducer;
 
@@ -27,8 +27,8 @@ export const rootReducer = combineReducers({
 const persistedReducer = persistReducer(
   {
     storage: localStorage,
-    key: 'root',
-    whitelist: ['auth', 'authCometChat', 'userTrace'],
+    key: "root",
+    whitelist: ["auth", "authCometChat", "userTrace"],
   },
   rootReducer,
 );

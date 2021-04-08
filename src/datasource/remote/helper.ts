@@ -1,4 +1,4 @@
-import fetchR from 'fetch-retry';
+import fetchR from "fetch-retry";
 
 export const fetchRetry = fetchR(fetch, {
   retries: 30,

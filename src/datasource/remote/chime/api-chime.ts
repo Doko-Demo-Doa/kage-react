@@ -1,5 +1,5 @@
-import { ChimeJoinInfo } from '~/typings/types';
-import { fetchRetry } from '../helper';
+import { ChimeJoinInfo } from "~/typings/types";
+import { fetchRetry } from "../helper";
 
 export const apiChime = {
   getMeetingPayload: async (
@@ -14,10 +14,10 @@ export const apiChime = {
         region || process.env.CHIME_DEFAULT_REGION
       }`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
       },
     );
@@ -26,11 +26,11 @@ export const apiChime = {
 
   getNearestMediaRegion: async (): Promise<string> => {
     try {
-      const r = fetchRetry('https://nearest-media-region.l.chime.aws/');
+      const r = fetchRetry("https://nearest-media-region.l.chime.aws/");
       return (await (await r).json()).region;
     } catch (_) {
       console.log(_);
-      return process.env.CHIME_DEFAULT_REGION || 'us';
+      return process.env.CHIME_DEFAULT_REGION || "us";
     }
   },
 };

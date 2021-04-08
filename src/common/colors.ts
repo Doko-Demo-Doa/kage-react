@@ -1,3 +1,3 @@
 export const Colors = {
-  BUTTERSCOTCH: '#ffb81c',
+  BUTTERSCOTCH: "#ffb81c",
 };

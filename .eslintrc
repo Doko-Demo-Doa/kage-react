@@ -57,6 +57,9 @@
       }
     ],
     "linebreak-style": 0,
+    "quotes": [
+      "error", "double"
+    ],
     "semi": [
       "error",
       "always"
@@ -75,6 +78,7 @@
       }
     ],
     "@typescript-eslint/ban-ts-ignore": "off",
+    "@typescript-eslint/quotes": "off",
     "@typescript-eslint/ban-types": "off",
     "@typescript-eslint/brace-style": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",

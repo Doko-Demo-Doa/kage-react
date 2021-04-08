@@ -1,9 +1,9 @@
-import { BrowserRouter, HashRouter, Switch, Route } from 'react-router-dom';
-import { LoginRoute } from '~/routes/guest/login/login-route';
-import { SlideBuilder } from '~/routes/authen/slide-builder/slide-builder';
+import { BrowserRouter, HashRouter, Switch, Route } from "react-router-dom";
+import { LoginRoute } from "~/routes/guest/login/login-route";
+import { SlideBuilder } from "~/routes/authen/slide-builder/slide-builder";
 
-import './app.scss';
-import { isElectron } from '~/utils/utils-platform';
+import "./app.scss";
+import { isElectron } from "~/utils/utils-platform";
 
 const AppRouter = ({
   children,

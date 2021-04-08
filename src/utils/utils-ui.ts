@@ -1,7 +1,7 @@
-import { notification, message } from 'antd';
+import { notification, message } from "antd";
 
-export type NotificationType = 'success' | 'error' | 'info' | 'warning' | 'warn' | 'open';
-export type MessageType = 'success' | 'error' | 'info' | 'warning' | 'warn' | 'loading';
+export type NotificationType = "success" | "error" | "info" | "warning" | "warn" | "open";
+export type MessageType = "success" | "error" | "info" | "warning" | "warn" | "loading";
 
 /**
  * Type must be one of:
@@ -28,7 +28,7 @@ export const openNotification = (type: NotificationType, title: string, msg: str
  * warn
  * loading
  */
-export const showMessage = (msg: string, type: MessageType = 'info', maxCount = 1) => {
+export const showMessage = (msg: string, type: MessageType = "info", maxCount = 1) => {
   message.config({
     maxCount,
   });

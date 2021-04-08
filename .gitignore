@@ -29,3 +29,4 @@ dist/
 release/
 
 .npmrc
+.vscode/

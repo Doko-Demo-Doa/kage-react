@@ -1,11 +1,11 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { LoginResponseType } from '~/typings/types';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { LoginResponseType } from "~/typings/types";
 
 const initialState: LoginResponseType = { user_id: 0 };
 
 // Save user authentication data.
 export const auth = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     setAuth: (state, action: PayloadAction<LoginResponseType>) => {
