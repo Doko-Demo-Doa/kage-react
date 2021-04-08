@@ -1,0 +1,11 @@
+.editor-wrapper {
+  width: 100%;
+  .editor-ribbon {
+    width: 100%;
+    user-select: none;
+    .ant-tabs-nav-scroll {
+      display: flex;
+      justify-content: flex-start;
+    }
+  }
+}

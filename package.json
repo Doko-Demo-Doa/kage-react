@@ -48,6 +48,7 @@
     "electron-updater": "4.3.8"
   },
   "devDependencies": {
+    "@ant-design/icons": "4.6.2",
     "@craco/craco": "6.1.1",
     "@reduxjs/toolkit": "1.5.1",
     "@testing-library/jest-dom": "5.11.10",
