@@ -1,8 +1,8 @@
-import {atom} from 'recoil';
+import { atom } from "recoil";
 
 const slideBuilderState = atom({
-  key: 'slideBuilderState',
+  key: "slideBuilderState",
   default: {
-    data: ['test']
+    data: ["test"]
   },
 });

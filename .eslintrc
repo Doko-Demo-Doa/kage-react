@@ -38,15 +38,8 @@
     },
     "import/resolver": {
       "node": {
-        "paths": [
-          "src"
-        ],
-        "extensions": [
-          ".js",
-          ".jsx",
-          ".ts",
-          ".tsx"
-        ]
+        "paths": ["src"],
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }
     }
   },
@@ -65,10 +58,7 @@
       }
     ],
     "linebreak-style": 0,
-    "semi": [
-      "error",
-      "always"
-    ],
+    "semi": ["error", "always"],
     "no-alert": "off",
     "react/jsx-props-no-spreading": [
       "error",
@@ -76,6 +66,7 @@
         "custom": "ignore"
       }
     ],
+    "quotes": ["error", "double", { "avoidEscape": true }],
     "max-len": [
       "error",
       {
