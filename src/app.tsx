@@ -5,15 +5,8 @@ import { SlideBuilder } from "~/routes/authen/slide-builder/slide-builder";
 import "./app.scss";
 import { isElectron } from "~/utils/utils-platform";
 
-const AppRouter = ({
-  children,
-}: {
-  children: React.ReactElement
-}): React.ReactElement => (isElectron() ? (
-  <HashRouter>{children}</HashRouter>
-  ) : (
-    <BrowserRouter>{children}</BrowserRouter>
-  ));
+const AppRouter = ({ children }: { children: React.ReactElement }): React.ReactElement =>
+  isElectron() ? <HashRouter>{children}</HashRouter> : <BrowserRouter>{children}</BrowserRouter>;
 
 const App = (): React.ReactElement => (
   <AppRouter>
@@ -21,7 +14,6 @@ const App = (): React.ReactElement => (
       <Route exact path="/" component={SlideBuilder} />
       <Route exact path="/login" component={LoginRoute} />
     </Switch>
-
   </AppRouter>
 );
 
