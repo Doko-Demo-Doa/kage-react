@@ -1,3 +1,9 @@
+// Size của tờ canvas konva, tính bằng px
+export const MinimumCanvasSize = {
+  WIDTH: 900,
+  HEIGHT: 560
+};
+
 export enum QuizType {
   MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
   MULTIPLE_RESPONSE = "MULTIPLE_RESPONSE",
@@ -7,7 +13,7 @@ export enum QuizType {
   SELECT_FROM_LISTS = "SELECT_FROM_LISTS",
 }
 
-export enum SlideStepType {
+export enum AnimationType {
   APPEAR,
   DISAPPEAR,
   MOVE,
@@ -15,8 +21,9 @@ export enum SlideStepType {
   VIDEO_PLAY
 }
 
-// Size của tờ canvas konva, tính bằng px
-export const MinimumCanvasSize = {
-  WIDTH: 900,
-  HEIGHT: 560
-};
+export enum MediaType {
+  VIDEO,
+  AUDIO,
+  IMAGE,
+  TEXT_BLOCK,
+}

@@ -13,40 +13,60 @@ import { useRecoilState } from "recoil";
 
 import { fileUtils } from "~/utils/utils-files";
 import { slideListState } from "~/atoms/slide-list-atom";
+import { ffmpegUtils, imageUtils } from "~/utils/utils-conversions";
+import { MediaType } from "~/common/static-data";
+
 import "./slide-builder-toolbar.scss";
-import { ffmpegUtils } from "~/utils/utils-conversions";
 
 export const SlideBuilderToolbar: React.FC = () => {
   const [slideList, setSlideList] = useRecoilState(slideListState);
 
   const onNewSlide = () => {
-    setSlideList([...slideList, { title: "test" }]);
+    if (slideList.length <= 0) {
+      const newSlide = {
+        title: "Title here",
+        steps: []
+      };
+      setSlideList([newSlide]);
+      return;
+    }
+    setSlideList([...slideList, { steps: [] }]);
   };
+
+  console.log("now", slideList);
 
   const onInsertImageVideo = async () => {
     const resp = await fileUtils.selectSingleFile();
     const path = resp?.filePaths[0];
     if (path) {
-      const resp = await ffmpegUtils.checkVideoMetadata(path);
-      // To quá thì phải resize xuống
-      if (ffmpegUtils.isTooBig(resp.width, resp.height)) {
-        console.log("Too big, converting to smaller size");
-        ffmpegUtils.convertToMp4(path, resp.width, (progress) => {
-          console.log(progress);
-          if (progress === "end") {
-            // Hiển thị message báo convert
-            notification.open({
-              message: "Hoàn tất",
-              description:
-                "Video đã được chuyển về định dạng chuẩn để có thể hiển thị trên slide.",
-              onClick: () => {
-                console.log("Notification Clicked");
-              },
-            });
-          }
-        });
+      if (fileUtils.detectMediaType(path) === MediaType.VIDEO) {
+        // Video
+        const resp = await ffmpegUtils.checkVideoMetadata(path);
+        // To quá thì phải resize xuống
+        if (ffmpegUtils.isTooBig(resp.width, resp.height)) {
+          console.log("Too big, converting to smaller size");
+          ffmpegUtils.convertToMp4(path, resp.width, (progress) => {
+            console.log(progress);
+            if (progress === "end") {
+              // Hiển thị message báo convert
+              notification.open({
+                message: "Hoàn tất",
+                description:
+                  "Video đã được chuyển về định dạng chuẩn để có thể hiển thị trên slide.",
+                onClick: () => {
+                  console.log("Notification Clicked");
+                },
+              });
+            }
+          });
+        }
+      } else {
+        // Image
+        const resp = await imageUtils.checkImageMetadata(path);
+        console.log(resp);
+        // Đưa ra cảnh báo nếu ảnh to quá.
+        const imgUrl = `local-resource://${path}`;
       }
-      // ffmpegUtils.convertToMp4(path, (percent) => console.log(percent));
     }
   };
 

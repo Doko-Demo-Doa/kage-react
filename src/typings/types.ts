@@ -1,13 +1,23 @@
+import { MediaType } from "~/common/static-data";
+
 export type SlideBuilderState = {
   selectedIndex: number;
 }
 
 export type SlideType = {
   title?: string;
+  theme?: string;
+  steps: SlideStepType[];
+}
+
+export interface SlideBlockType {
+  id: number;
+  type: MediaType;
+  assetName?: string;
 }
 
 export type SlideStepType = {
-
+  blockId: number;
 }
 
 export type FFProbeMetaType = {

@@ -12,7 +12,7 @@ export const SlideList: React.FC = () => {
 
   return (
     <ScrollBar id="slide-list" options={{ suppressScrollX: true }}>
-      {slideList.map((n, idx) => <SlideThumbnail index={idx} key={idx} />)}
+      {slideList.map((n, idx) => <SlideThumbnail title={n.title} index={idx} key={idx} />)}
     </ScrollBar>
   );
 };

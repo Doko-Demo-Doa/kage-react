@@ -1,4 +1,14 @@
+import { Metadata } from "sharp";
 import { FFProbeMetaType, VideoStreamType } from "~/typings/types";
+
+export const imageUtils = {
+  checkImageMetadata: async (filePath: string): Promise<Metadata> => {
+    const remote = require("electron").remote;
+    const sharp = remote.require("sharp");
+    const resp = await sharp(filePath).metadata();
+    return resp;
+  },
+};
 
 export const ffmpegUtils = {
   isTooBig: (width: number, height: number) => {

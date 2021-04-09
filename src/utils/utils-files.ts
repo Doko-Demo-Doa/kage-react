@@ -1,11 +1,22 @@
 import { isEmpty } from "rambdax";
-import { isElectron } from "~/utils/utils-platform";
+import { MediaType } from "~/common/static-data";
 
 function fsNotAvailable() {
   return isEmpty(require("fs"));
 }
 
 export const fileUtils = {
+  detectMediaType: (filePath: string) => {
+    if ((/\.(mkv|mp4|wmv|avi|webp)$/i).test(filePath)) {
+      return MediaType.VIDEO;
+    }
+    if ((/\.(jpe?g|jpg|png|gif|heif)$/i).test(filePath)) {
+      return MediaType.IMAGE;
+    }
+    if ((/\.(mp3|ogg|aac|flac)$/i).test(filePath)) {
+      return MediaType.AUDIO;
+    }
+  },
   selectMultipleFiles: () => {
     if (fsNotAvailable()) return;
     return require("electron").remote.dialog.showOpenDialog({
