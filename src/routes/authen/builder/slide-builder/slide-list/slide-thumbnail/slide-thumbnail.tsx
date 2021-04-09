@@ -1,4 +1,6 @@
-export function SlideThumbnail() {
+import "./slide-thumbnail.scss";
+
+export const SlideThumbnail: React.FC = () => {
   return (
     <div className="slide-thumbnail">
       <div className="counter">1</div>
@@ -8,4 +10,4 @@ export function SlideThumbnail() {
       </div>
     </div>
   );
-}
+};
