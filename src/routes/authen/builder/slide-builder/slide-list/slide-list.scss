@@ -1,5 +1,6 @@
 #slide-list {
   width: $slide-list-width;
+  min-width: $slide-list-width;
   height: calc(100vh - 120px);
   overflow-x: hidden;
   overflow-y: scroll;

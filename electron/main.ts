@@ -36,8 +36,8 @@ function createWindow() {
 
   app.whenReady().then(() => {
     installExtension(REACT_DEVELOPER_TOOLS)
-        .then((name) => console.log(`Added Extension:  ${name}`))
-        .catch((err) => console.log("An error occurred: ", err));
+      .then((name) => console.log(`Added Extension:  ${name}`))
+      .catch((err) => console.log("An error occurred: ", err));
   });
 
   win.webContents.on("did-frame-finish-load", () => {
@@ -47,6 +47,9 @@ function createWindow() {
   });
 }
 
+if (process.env.NODE_ENV === "production") {
+  require("./menu.ts");
+}
 app.on("ready", createWindow);
 
 app.on("window-all-closed", () => {
