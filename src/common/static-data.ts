@@ -14,3 +14,9 @@ export enum SlideStepType {
   AUDIO_PLAY,
   VIDEO_PLAY
 }
+
+// Size của tờ canvas konva, tính bằng px
+export const MinimumCanvasSize = {
+  WIDTH: 900,
+  HEIGHT: 560
+};

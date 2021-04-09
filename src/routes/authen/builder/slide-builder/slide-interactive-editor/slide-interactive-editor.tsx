@@ -1,21 +1,12 @@
-import { Stage, Layer, Star, Rect } from "react-konva";
+import { Stage, Layer, Rect } from "react-konva";
+import { MinimumCanvasSize } from "~/common/static-data";
 
 import "./slide-interactive-editor.scss";
 
 export const SlideInteractiveEditor: React.FC = () => {
-  const getParentSize = () => {
-    const parent = document.getElementById("slide-interactive-editor");
-    const PADDED_SIZE = 20;
-
-    return {
-      width: (parent?.clientWidth || 0) - PADDED_SIZE,
-      height: (parent?.clientHeight || 0) - PADDED_SIZE
-    };
-  };
-
   return (
     <div id="slide-interactive-editor">
-      <Stage width={getParentSize().width} height={getParentSize().height}>
+      <Stage width={MinimumCanvasSize.WIDTH} height={MinimumCanvasSize.HEIGHT}>
         <Layer>
           <Rect
             x={20}
@@ -23,6 +14,7 @@ export const SlideInteractiveEditor: React.FC = () => {
             width={100}
             height={100}
             fill="red"
+            draggable
             shadowBlur={10}
           />
         </Layer>
