@@ -2,7 +2,7 @@ const path = require('path');
 const CracoAntDesignPlugin = require('craco-antd');
 const sassResourcesLoader = require('craco-sass-resources-loader');
 
-const target = process.env.WEBPACK_TARGET === 'electron' ? 'electron-renderer' : 'web';
+const target = process.env.WEBPACK_TARGET === 'electron' ? 'web' : 'web';
 console.log('[Info] Loaded with target: ', target);
 
 module.exports = {
