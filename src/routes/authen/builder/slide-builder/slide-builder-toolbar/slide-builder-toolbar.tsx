@@ -1,5 +1,5 @@
 import React from "react";
-import { Space, Button, Divider, Tooltip } from "antd";
+import { Space, Button, Divider, Tooltip, notification } from "antd";
 import {
   FontSizeOutlined,
   PlusOutlined,
@@ -14,6 +14,7 @@ import { useRecoilState } from "recoil";
 import { fileUtils } from "~/utils/utils-files";
 import { slideListState } from "~/atoms/slide-list-atom";
 import "./slide-builder-toolbar.scss";
+import { ffmpegUtils } from "~/utils/utils-conversions";
 
 export const SlideBuilderToolbar: React.FC = () => {
   const [slideList, setSlideList] = useRecoilState(slideListState);
@@ -24,8 +25,28 @@ export const SlideBuilderToolbar: React.FC = () => {
 
   const onInsertImageVideo = async () => {
     const resp = await fileUtils.selectSingleFile();
-    if (resp?.filePaths[0]) {
-      console.log(resp?.filePaths[0]);
+    const path = resp?.filePaths[0];
+    if (path) {
+      const resp = await ffmpegUtils.checkVideoMetadata(path);
+      // To quá thì phải resize xuống
+      if (ffmpegUtils.isTooBig(resp.width, resp.height)) {
+        console.log("Too big, converting to smaller size");
+        ffmpegUtils.convertToMp4(path, resp.width, (progress) => {
+          console.log(progress);
+          if (progress === "end") {
+            // Hiển thị message báo convert
+            notification.open({
+              message: "Hoàn tất",
+              description:
+                "Video đã được chuyển về định dạng chuẩn để có thể hiển thị trên slide.",
+              onClick: () => {
+                console.log("Notification Clicked");
+              },
+            });
+          }
+        });
+      }
+      // ffmpegUtils.convertToMp4(path, (percent) => console.log(percent));
     }
   };
 
