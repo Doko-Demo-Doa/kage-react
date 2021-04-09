@@ -18,7 +18,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "postinstall": "electron-builder install-app-deps",
-    "electron:dev": "concurrently -k \"cross-env BROWSER=none npm run start\" \"wait-on http://localhost:3000 && tsc -p electron && electronmon .\"",
+    "electron:dev": "concurrently -k \"cross-env BROWSER=none WEBPACK_TARGET=electron npm run start\" \"wait-on http://localhost:3000 && tsc -p electron && electronmon .\"",
     "electron:build-win": "cross-env WEBPACK_TARGET=electron npm run build && tsc -p electron && electron-builder -w",
     "electron:build-mac": "npm run build && tsc -p electron && electron-builder -m",
     "electron:build-linux": "npm run build && tsc -p electron && electron-builder -l"

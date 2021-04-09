@@ -8,13 +8,13 @@ console.log('[Info] Loaded with target: ', target);
 module.exports = {
   webpack: {
     configure: {
-      target: process.versions['electron'] ? 'electron-renderer' : 'web'
+      target: target
     },
     alias: {
       '~': path.resolve(__dirname, 'src/')
     },
   },
-  jest: {
+jest: {
     configure: {
       moduleNameMapper: {
         '^~(.*)$': '<rootDir>/src$1'

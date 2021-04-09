@@ -7,7 +7,7 @@ import "./slide-list.scss";
 
 export const SlideList: React.FC = () => {
   return (
-    <ScrollBar id="slide-list">
+    <ScrollBar id="slide-list" options={{ suppressScrollX: true }}>
       <SlideThumbnail />
       <SlideThumbnail />
       <SlideThumbnail />

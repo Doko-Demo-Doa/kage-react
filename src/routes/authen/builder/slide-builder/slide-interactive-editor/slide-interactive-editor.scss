@@ -1,0 +1,8 @@
+.slide-interactive-editor {
+  padding: 10px;
+  box-sizing: border-box;
+  resize: horizontal;
+  overflow: auto;
+  width: calc(100vw - #{$slide-list-width});
+  height: calc(100vh - #{$header-height});
+}
