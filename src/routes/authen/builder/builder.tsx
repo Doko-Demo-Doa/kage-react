@@ -1,5 +1,6 @@
 import { Tabs } from "antd";
-import { HomeOutlined, FileOutlined, AntDesignOutlined } from "@ant-design/icons";
+import { HomeOutlined, FileOutlined, SettingOutlined } from "@ant-design/icons";
+import { SlideBuilder } from "~/routes/authen/builder/slide-builder/slide-builder";
 
 const { TabPane } = Tabs;
 
@@ -8,33 +9,42 @@ import "./builder.scss";
 export function Builder() {
   return (
     <div className="main-layout editor-wrapper">
-      <div className="editor-ribbon">
-        <Tabs type="card">
-          <TabPane
-            tab={
-              <span>
-                <HomeOutlined />
-                Tab 1
+      <Tabs type="card" className="tabs-wrapper">
+        <TabPane
+          tab={
+            <span>
+              <HomeOutlined />
+                Slides
               </span>
-            }
-            key="1"
-          >
-            <p>Content of Tab Pane 1</p>
-            <p>Content of Tab Pane 1</p>
-            <p>Content of Tab Pane 1</p>
-          </TabPane>
-          <TabPane tab="Tab Title 2" key="2">
-            <p>Content of Tab Pane 2</p>
-            <p>Content of Tab Pane 2</p>
-            <p>Content of Tab Pane 2</p>
-          </TabPane>
-          <TabPane tab="Tab Title 3" key="3">
-            <p>Content of Tab Pane 3</p>
-            <p>Content of Tab Pane 3</p>
-            <p>Content of Tab Pane 3</p>
-          </TabPane>
-        </Tabs>
-      </div>
+          }
+          key="1">
+          <SlideBuilder />
+        </TabPane>
+        <TabPane
+          tab={
+            <span>
+              <FileOutlined />
+                Quiz
+              </span>
+          }
+          key="2">
+          <p>Content of Tab Pane 2</p>
+          <p>Content of Tab Pane 2</p>
+          <p>Content of Tab Pane 2</p>
+        </TabPane>
+        <TabPane
+          tab={
+            <span>
+              <SettingOutlined />
+              Settings
+              </span>
+          }
+          key="3">
+          <p>Content of Tab Pane 3</p>
+          <p>Content of Tab Pane 3</p>
+          <p>Content of Tab Pane 3</p>
+        </TabPane>
+      </Tabs>
     </div>
   );
 }
