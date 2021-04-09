@@ -1,4 +1,5 @@
 import { BrowserRouter, HashRouter, Switch, Route } from "react-router-dom";
+import { RecoilRoot } from "recoil";
 import { LoginRoute } from "~/routes/guest/login/login-route";
 import { Builder } from "~/routes/authen/builder/builder";
 
@@ -11,12 +12,14 @@ const AppRouter = ({ children }: { children: React.ReactElement }): React.ReactE
   isElectron() ? <HashRouter>{children}</HashRouter> : <BrowserRouter>{children}</BrowserRouter>;
 
 const App = (): React.ReactElement => (
-  <AppRouter>
-    <Switch>
-      <Route exact path="/" component={Builder} />
-      <Route exact path="/login" component={LoginRoute} />
-    </Switch>
-  </AppRouter>
+  <RecoilRoot>
+    <AppRouter>
+      <Switch>
+        <Route exact path="/" component={Builder} />
+        <Route exact path="/login" component={LoginRoute} />
+      </Switch>
+    </AppRouter>
+  </RecoilRoot>
 );
 
 export default App;

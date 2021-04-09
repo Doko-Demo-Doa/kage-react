@@ -102,6 +102,7 @@
     "react/no-access-state-in-setstate": "off",
     "react/no-array-index-key": "off",
     "react/prefer-stateless-function": "off",
+    "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
     "react/static-property-placement": "off"
   }

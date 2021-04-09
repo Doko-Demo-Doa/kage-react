@@ -6,3 +6,11 @@ export enum QuizType {
   FILL_IN_THE_BLANKS = "FILL_IN_THE_BLANKS",
   SELECT_FROM_LISTS = "SELECT_FROM_LISTS",
 }
+
+export enum SlideStepType {
+  APPEAR,
+  DISAPPEAR,
+  MOVE,
+  AUDIO_PLAY,
+  VIDEO_PLAY
+}

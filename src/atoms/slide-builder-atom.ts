@@ -1,8 +1,9 @@
 import { atom } from "recoil";
+import { SlideBuilderState } from "~/typings/types";
 
-const slideBuilderState = atom({
+export const slideBuilderState = atom<SlideBuilderState>({
   key: "slideBuilderState",
   default: {
-    data: ["test"]
+    selectedIndex: 0
   },
 });

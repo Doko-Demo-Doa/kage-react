@@ -1,38 +1,11 @@
-export type LoginResponseType = {
-  user_id: number;
-};
-
-export interface AttendeeType {
-  AttendeeId: string;
-  ExternalUserId: string;
-  JoinToken: string;
+export type SlideBuilderState = {
+  selectedIndex: number;
 }
 
-export interface MeetingType {
-  ExternalMeetingId: string;
-  MediaRegion: string;
-  MeetingId: string;
-  MediaPlacement: MediaPlacementType;
+export type SlideType = {
+  title?: string;
 }
 
-export interface MediaPlacementType {
-  AudioFallbackUrl: string;
-  AudioHostUrl: string;
-  ScreenDataUrl: string;
-  ScreenSharingUrl: string;
-  ScreenViewingUrl: string;
-  SignalingUrl: string;
-  TurnControlUrl: string;
-}
+export type SlideStepType = {
 
-export interface ChimeJoinInfo {
-  JoinInfo: {
-    Attendee: {
-      Attendee: AttendeeType;
-    };
-    Meeting: {
-      Meeting: MeetingType;
-    };
-  };
-  error?: string;
 }
