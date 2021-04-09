@@ -1,5 +1,5 @@
 import React from "react";
-import { Space, Button, Divider } from "antd";
+import { Space, Button, Divider, Tooltip } from "antd";
 import {
   FontSizeOutlined,
   PlusOutlined,
@@ -22,8 +22,15 @@ export const SlideBuilderToolbar: React.FC = () => {
     setSlideList([...slideList, { title: "test" }]);
   };
 
+  const onInsertImageVideo = async () => {
+    const resp = await fileUtils.selectSingleFile();
+    if (resp?.filePaths[0]) {
+      console.log(resp?.filePaths[0]);
+    }
+  };
+
   const onPublish = () => {
-    console.log(fileUtils.getWorkingDirectory());
+    console.log(fileUtils.createCacheDir());
   };
 
   return (
@@ -32,7 +39,14 @@ export const SlideBuilderToolbar: React.FC = () => {
         <Button icon={<PlusOutlined />} type="primary" ghost onClick={() => onNewSlide()}>New Slide</Button>
         <Button type="link" icon={<FontSizeOutlined />} size="middle" />
         <Button type="link" icon={<SoundOutlined />} size="middle" />
-        <Button type="link" icon={<PictureFilled />} size="middle" />
+        <Tooltip placement="bottom" title="Chèn ảnh / video">
+          <Button
+            type="link"
+            icon={<PictureFilled />}
+            size="middle"
+            onClick={() => onInsertImageVideo()}
+          />
+        </Tooltip>
         <Button type="link" icon={<MessageOutlined />} size="middle" />
         <Divider type="vertical" />
         <Button icon={<PullRequestOutlined />} type="primary" danger>Toggle Preview</Button>

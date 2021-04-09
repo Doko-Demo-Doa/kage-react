@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { app, BrowserWindow } from "electron";
+import { app, protocol, BrowserWindow } from "electron";
 import path from "path";
 import isDev from "electron-is-dev";
 import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
@@ -38,6 +38,18 @@ function createWindow() {
     installExtension(REACT_DEVELOPER_TOOLS)
       .then((name) => console.log(`Added Extension:  ${name}`))
       .catch((err) => console.log("An error occurred: ", err));
+
+    // Register protocols:
+    protocol.registerFileProtocol("local-resource", (request, callback) => {
+      const url = request.url.replace(/^local-resource:\/\//, "");
+      // Decode URL to prevent errors when loading filenames with UTF-8 chars or chars like "#"
+      const decodedUrl = decodeURI(url); // Needed in case URL contains spaces
+      try {
+        return callback(decodedUrl);
+      } catch (error) {
+        console.error("ERROR: registerLocalResourceProtocol: Could not get file path:", error);
+      }
+    });
   });
 
   win.webContents.on("did-frame-finish-load", () => {
