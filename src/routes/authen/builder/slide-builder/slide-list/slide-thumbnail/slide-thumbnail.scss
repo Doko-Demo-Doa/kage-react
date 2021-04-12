@@ -11,7 +11,7 @@
 
   .block-inside {
     width: 80%;
-    border: 1px solid orange;
+    border: 3px solid orange;
     border-radius: 6px;
     .title {
       padding: 12px;
@@ -27,5 +27,5 @@
 }
 
 .slide-thumbnail-inactive {
-  opacity: 0.5;
+  opacity: 0.3;
 }

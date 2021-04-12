@@ -19,7 +19,10 @@ export const SlideList: React.FC = () => {
   };
 
   return (
-    <ScrollBar id="slide-list" options={{ suppressScrollX: true }}>
+    <ScrollBar id="slide-list" options={{ suppressScrollX: true }}
+      tabIndex={1}
+      onClick={() => console.log("Focus")}
+      onBlur={() => console.log("Blur")}>
       {slides.map((n, idx) => <SlideThumbnail
         onClick={(index) =>
           onClickSlide(index)}
