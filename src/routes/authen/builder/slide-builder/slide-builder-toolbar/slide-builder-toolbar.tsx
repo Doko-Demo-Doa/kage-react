@@ -19,6 +19,7 @@ import { MediaType } from "~/common/static-data";
 
 import "./slide-builder-toolbar.scss";
 import { emitter } from "~/services/events-helper";
+import { dataUtils } from "~/utils/utils-data";
 
 export const SlideBuilderToolbar: React.FC = () => {
   const [slideList, setSlideList] = useRecoilState(slideListState);
@@ -32,10 +33,12 @@ export const SlideBuilderToolbar: React.FC = () => {
       setSlideList([newSlide]);
       return;
     }
-    setSlideList([...slideList, { steps: [] }]);
-  };
 
-  console.log("now", slideList);
+    const newSlideArray = [...slideList, { steps: [] }];
+    setSlideList(newSlideArray);
+    // Ghi vào file json.
+    dataUtils.saveSlideJsonToCache(JSON.stringify(newSlideArray, null, 2));
+  };
 
   const onInsertImageVideo = async () => {
     const resp = await fileUtils.selectSingleFile();

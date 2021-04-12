@@ -2,12 +2,11 @@ import { useEffect, useRef } from "react";
 import Konva from "konva";
 import { Stage, Layer } from "react-konva";
 import { MediaType, MinimumCanvasSize } from "~/common/static-data";
-
 import { emitter } from "~/services/events-helper";
 import { canvasHelper } from "~/routes/authen/builder/slide-builder/slide-interactive-editor/canvas-helper";
+import { fileUtils } from "~/utils/utils-files";
 
 import "~/routes/authen/builder/slide-builder/slide-interactive-editor/slide-interactive-editor.scss";
-import { fileUtils } from "~/utils/utils-files";
 
 export const SlideInteractiveEditor: React.FC = () => {
   const layerRef = useRef<Konva.Layer>(null);
@@ -20,7 +19,6 @@ export const SlideInteractiveEditor: React.FC = () => {
         if (mediaType === MediaType.IMAGE) {
           canvasHelper.insertImageCanvas(layer, imgUrl);
         } else if (mediaType === MediaType.VIDEO) {
-          console.log("Go here");
           canvasHelper.insertVideoCanvas(layer, imgUrl);
         }
       }

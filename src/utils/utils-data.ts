@@ -1,14 +1,9 @@
-export function getCdnLink(strUrl: string) {
-  if (process.env.USE_CDN === "true") {
-    return `${process.env.CDN_URL}${strUrl}`;
-  }
+import fs from "fs";
+import { fileUtils } from "~/utils/utils-files";
 
-  return strUrl;
-}
-
-export function cdnLinkUrlMaterialMpack(url: string) {
-  if (process.env.USE_CDN === "true" && url !== null) {
-    return `${process.env.LMS_DOMAIN_CDN}${url}`;
+export const dataUtils = {
+  saveSlideJsonToCache: (jsonData: string) => {
+    const path = fileUtils.createFilePathAtCacheDir("manifest.json");
+    fs.writeFileSync(path, jsonData);
   }
-  return `${process.env.LMS_DOMAIN}${url}`;
-}
+};

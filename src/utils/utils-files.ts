@@ -45,9 +45,6 @@ export const fileUtils = {
       ],
     });
   },
-  saveJsonFile: (jsonContent: string) => {
-    console.log("fs");
-  },
   getWorkingDirectory: () => {
     if (fsNotAvailable()) return;
     const remote = require("electron").remote;
