@@ -17,6 +17,7 @@ import { ffmpegUtils, imageUtils } from "~/utils/utils-conversions";
 import { MediaType } from "~/common/static-data";
 
 import "./slide-builder-toolbar.scss";
+import { emitter } from "~/services/events-helper";
 
 export const SlideBuilderToolbar: React.FC = () => {
   const [slideList, setSlideList] = useRecoilState(slideListState);
@@ -63,14 +64,14 @@ export const SlideBuilderToolbar: React.FC = () => {
       } else {
         // Image
         const resp = await imageUtils.checkImageMetadata(path);
-        console.log(resp);
         if (!imageUtils.isImageOptimized(resp.width, resp.height)) {
-          const imageBuf = await imageUtils.optimizeImage(path);
+          const newImage = await imageUtils.optimizeImage(path);
+          const imgUrl = `local-resource://${newImage}`;
+
+          emitter.emit("insert-image", imgUrl);
 
           return;
         }
-        // Đưa ra cảnh báo nếu ảnh to quá.
-        const imgUrl = `local-resource://${path}`;
       }
     }
   };

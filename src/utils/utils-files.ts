@@ -40,8 +40,8 @@ export const fileUtils = {
     return require("electron").remote.dialog.showOpenDialog({
       properties: ["openFile", "dontAddToRecent"],
       filters: [
-        { name: "Movies", extensions: ["webm", "avi", "mp4"] },
         { name: "Images", extensions: ["jpg", "png", "gif"] },
+        { name: "Movies", extensions: ["webm", "avi", "mp4"] },
       ],
     });
   },

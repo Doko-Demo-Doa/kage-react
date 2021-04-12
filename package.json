@@ -93,6 +93,7 @@
     "formik": "2.2.6",
     "history": "5.0.0",
     "konva": "7.2.5",
+    "mitt": "2.1.0",
     "moment": "2.29.1",
     "node-sass-chokidar": "1.5.0",
     "rambdax": "7.2.0",

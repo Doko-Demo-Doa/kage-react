@@ -25,9 +25,9 @@ export const imageUtils = {
   /**
    * Optimize the image, it will convert input image into JPEG format at the app's cache directory.
    * @param filePath Input file path, use "path.join" to concentrate directories.
-   * @returns Nothing.
+   * @returns Optimized file path.
    */
-  optimizeImage: async (filePath: string) => {
+  optimizeImage: async (filePath: string): Promise<string> => {
     const remote = require("electron").remote;
 
     const path = remote.require("path");
@@ -41,7 +41,11 @@ export const imageUtils = {
     const crc32 = remote.require("crc").crc32;
     const name = crc32(dataBuf).toString(16);
 
-    fs.writeFileSync(path.join(fileUtils.getCacheDirectory(), `${name}.jpg}`), dataBuf);
+    const dest = path.join(fileUtils.getCacheDirectory(), `${name}.jpg`);
+
+    fs.writeFileSync(dest, dataBuf);
+
+    return dest;
   }
 };
 
