@@ -1,5 +1,12 @@
 import { Metadata } from "sharp";
+import fs from "fs";
 import { FFProbeMetaType, VideoStreamType } from "~/typings/types";
+import { fileUtils } from "./utils-files";
+
+const OptimalImageSize = {
+  width: 1200,
+  height: 675
+};
 
 export const imageUtils = {
   checkImageMetadata: async (filePath: string): Promise<Metadata> => {
@@ -8,6 +15,34 @@ export const imageUtils = {
     const resp = await sharp(filePath).metadata();
     return resp;
   },
+
+  isImageOptimized: (width?: number, height?: number) => {
+    if (!width || !height) return false;
+    if (width > 1920 || height > 1080) return false;
+    return true;
+  },
+
+  /**
+   * Optimize the image, it will convert input image into JPEG format at the app's cache directory.
+   * @param filePath Input file path, use "path.join" to concentrate directories.
+   * @returns Nothing.
+   */
+  optimizeImage: async (filePath: string) => {
+    const remote = require("electron").remote;
+
+    const path = remote.require("path");
+    const sharp = remote.require("sharp");
+    const data = sharp(filePath)
+      .rotate()
+      .resize(OptimalImageSize.width, OptimalImageSize.height)
+      .jpeg({ mozjpeg: true });
+
+    const dataBuf = await data.toBuffer();
+    const crc32 = remote.require("crc").crc32;
+    const name = crc32(dataBuf).toString(16);
+
+    fs.writeFileSync(path.join(fileUtils.getCacheDirectory(), `${name}.jpg}`), dataBuf);
+  }
 };
 
 export const ffmpegUtils = {

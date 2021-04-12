@@ -64,6 +64,11 @@ export const SlideBuilderToolbar: React.FC = () => {
         // Image
         const resp = await imageUtils.checkImageMetadata(path);
         console.log(resp);
+        if (!imageUtils.isImageOptimized(resp.width, resp.height)) {
+          const imageBuf = await imageUtils.optimizeImage(path);
+
+          return;
+        }
         // Đưa ra cảnh báo nếu ảnh to quá.
         const imgUrl = `local-resource://${path}`;
       }
