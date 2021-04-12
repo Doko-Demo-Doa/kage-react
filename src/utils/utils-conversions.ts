@@ -1,7 +1,8 @@
 import { Metadata } from "sharp";
+import dayjs from "dayjs";
 import fs from "fs";
 import { FFProbeMetaType, VideoStreamType } from "~/typings/types";
-import { fileUtils } from "./utils-files";
+import { fileUtils } from "~/utils/utils-files";
 
 const OptimalImageSize = {
   width: 1200,
@@ -29,7 +30,6 @@ export const imageUtils = {
    */
   optimizeImage: async (filePath: string): Promise<string> => {
     const remote = require("electron").remote;
-
     const path = remote.require("path");
     const sharp = remote.require("sharp");
     const data = sharp(filePath)
@@ -74,14 +74,17 @@ export const ffmpegUtils = {
     });
   },
 
-  convertToMp4: (filePath: string, inputWidth: number, progressCallback?: (percent: number | string) => void) => {
+  convertToMp4: (filePath: string, inputWidth: number, progressCallback?: (percent: number | string, filePath?: string) => void) => {
     const remote = require("electron").remote;
     const ffmpeg = remote.require("fluent-ffmpeg");
+    const path = remote.require("path");
     const isVideo = (/\.(gif|mkv|mp4|wmv|avi|webp)$/i).test(filePath);
 
     const ratio = (848 / inputWidth) * 100;
 
     if (isVideo) {
+      const tempName = `${dayjs().unix()}.mp4`;
+      const dest = path.join(fileUtils.getCacheDirectory(), tempName);
       const cmd = ffmpeg()
         .on("start", function (ffmpegCommand: string) {
           console.log("[ffmpeg command]:", ffmpegCommand);
@@ -92,14 +95,18 @@ export const ffmpegUtils = {
         })
         .on("end", function () {
           console.log("[ffmpeg end]");
-          progressCallback?.("end");
+
+          const newName = `${fileUtils.getCRC32(dest)}.mp4`;
+          const newDest = path.join(fileUtils.getCacheDirectory(), newName);
+          fs.renameSync(dest, newDest);
+          progressCallback?.("end", newDest);
         })
         .on("error", function (error: any) {
           console.log("[ffmpeg error]:", error);
         })
         .input(filePath)
         .size(`${ratio.toFixed(0)}%`)
-        .output("D:\\test.mp4");
+        .output(dest);
       cmd.run();
     } else {
       console.log("[ffmpeg]", "Input file is not a valid video");

@@ -1,5 +1,5 @@
 import React from "react";
-import { Space, Button, Divider, Tooltip, notification } from "antd";
+import { Space, Button, Divider, Tooltip, notification, Spin } from "antd";
 import {
   FontSizeOutlined,
   PlusOutlined,
@@ -7,7 +7,8 @@ import {
   PullRequestOutlined,
   UploadOutlined,
   PictureFilled,
-  MessageOutlined
+  MessageOutlined,
+  LoadingOutlined,
 } from "@ant-design/icons";
 import { useRecoilState } from "recoil";
 
@@ -46,10 +47,12 @@ export const SlideBuilderToolbar: React.FC = () => {
         // To quá thì phải resize xuống
         if (ffmpegUtils.isTooBig(resp.width, resp.height)) {
           console.log("Too big, converting to smaller size");
-          ffmpegUtils.convertToMp4(path, resp.width, (progress) => {
+          ffmpegUtils.convertToMp4(path, resp.width, (progress, filePath) => {
             console.log(progress);
             if (progress === "end") {
               // Hiển thị message báo convert
+              const videoUrl = `local-resource://${filePath}`;
+              emitter.emit("insert-image", videoUrl);
               notification.open({
                 message: "Hoàn tất",
                 description:
@@ -98,6 +101,8 @@ export const SlideBuilderToolbar: React.FC = () => {
         <Divider type="vertical" />
         <Button icon={<PullRequestOutlined />} type="primary" danger>Toggle Preview</Button>
         <Button onClick={() => onPublish()} icon={<UploadOutlined />} type="primary">Publish</Button>
+
+        <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
       </Space>
     </div>
   );

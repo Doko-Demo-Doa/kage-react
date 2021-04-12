@@ -32,7 +32,7 @@ export const fileUtils = {
     if (fsNotAvailable()) return;
     return require("electron").remote.dialog.showOpenDialog({
       properties: ["openFile", "multiSelections", "dontAddToRecent"],
-      filters: [{ name: "Ảnh ọt", extensions: ["jpg", "png", "gif"] }],
+      filters: [{ name: "Ảnh", extensions: ["jpg", "png", "gif"] }],
     });
   },
   selectSingleFile: () => {
