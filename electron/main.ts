@@ -77,8 +77,6 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
   }
-
-  clearCache();
 });
 
 app.on("activate", () => {
@@ -98,6 +96,7 @@ if (isDev) {
   } else {
     process.on("SIGTERM", () => {
       app.quit();
+      clearCache();
     });
   }
 }

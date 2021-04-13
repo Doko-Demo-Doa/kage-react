@@ -28,7 +28,7 @@ export const SlideBuilderToolbar: React.FC = () => {
     if (slideList.length <= 0) {
       const newSlide = {
         title: "Title here",
-        steps: []
+        steps: [],
       };
       setSlideList([newSlide]);
       return;
@@ -82,6 +82,10 @@ export const SlideBuilderToolbar: React.FC = () => {
     }
   };
 
+  const onNewRichText = () => {
+    emitter.emit("insert-rich-text");
+  };
+
   const onPublish = () => {
     console.log(fileUtils.createCacheDir());
   };
@@ -89,8 +93,15 @@ export const SlideBuilderToolbar: React.FC = () => {
   return (
     <div className="slide-builder-toolbar">
       <Space>
-        <Button icon={<PlusOutlined />} type="primary" ghost onClick={() => onNewSlide()}>New Slide</Button>
-        <Button type="link" icon={<FontSizeOutlined />} size="middle" />
+        <Button icon={<PlusOutlined />} type="primary" ghost onClick={() => onNewSlide()}>
+          New Slide
+        </Button>
+        <Button
+          type="link"
+          icon={<FontSizeOutlined />}
+          size="middle"
+          onClick={() => onNewRichText()}
+        />
         <Button type="link" icon={<SoundOutlined />} size="middle" />
         <Tooltip placement="bottom" title="Chèn ảnh / video">
           <Button
@@ -102,8 +113,12 @@ export const SlideBuilderToolbar: React.FC = () => {
         </Tooltip>
         <Button type="link" icon={<MessageOutlined />} size="middle" />
         <Divider type="vertical" />
-        <Button icon={<PullRequestOutlined />} type="primary" danger>Toggle Preview</Button>
-        <Button onClick={() => onPublish()} icon={<UploadOutlined />} type="primary">Publish</Button>
+        <Button icon={<PullRequestOutlined />} type="primary" danger>
+          Toggle Preview
+        </Button>
+        <Button onClick={() => onPublish()} icon={<UploadOutlined />} type="primary">
+          Publish
+        </Button>
 
         <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
       </Space>
