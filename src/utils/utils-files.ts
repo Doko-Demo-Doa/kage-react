@@ -66,7 +66,9 @@ export const fileUtils = {
     if (fsNotAvailable()) return;
     const remote = require("electron").remote;
     const path = remote.require("path");
-    return path.join(remote.app.getPath("cache"), CACHE_DIR_NAME);
+    const cPath = path.join(remote.app.getPath("cache"), CACHE_DIR_NAME);
+    console.log("[Cache path]", cPath);
+    return cPath;
   },
   createFilePathAtCacheDir: (filename: string) => {
     if (fsNotAvailable()) return;

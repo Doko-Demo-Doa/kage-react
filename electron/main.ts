@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { app, protocol, BrowserWindow } from "electron";
 import path from "path";
+import fs from "fs";
 import isDev from "electron-is-dev";
 import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
 
@@ -8,6 +9,12 @@ let win: BrowserWindow | null = null;
 
 const preDefinedWidth = 920;
 const predefinedHeight = 620;
+
+function clearCache() {
+  const CACHE_DIR_NAME = "kage-cache";
+  const cPath = path.join(app.getPath("cache"), CACHE_DIR_NAME);
+  fs.unlinkSync(cPath);
+}
 
 function createWindow() {
   win = new BrowserWindow({
@@ -70,6 +77,8 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
   }
+
+  clearCache();
 });
 
 app.on("activate", () => {
