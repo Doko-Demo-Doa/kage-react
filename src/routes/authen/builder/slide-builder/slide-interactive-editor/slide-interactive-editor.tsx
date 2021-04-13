@@ -71,7 +71,9 @@ export const SlideInteractiveEditor: React.FC = () => {
                 x: 10,
                 y: 10,
                 draggable: true,
-                stroke: "red",
+                dash: [2],
+                dashEnabled: true,
+                stroke: "#ffb81c",
                 scaleX: 1 / window.devicePixelRatio,
                 scaleY: 1 / window.devicePixelRatio,
               });

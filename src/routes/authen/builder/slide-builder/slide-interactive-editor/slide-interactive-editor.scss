@@ -3,9 +3,9 @@
   background: beige;
   resize: horizontal;
   overflow: auto;
-  min-width: 900px;
+  min-width: 700px;
   min-height: 560px;
   overflow: hidden;
-  width: calc(100vw - #{$slide-list-width});
+  width: calc(100vw - #{$slide-list-width} - #{$entities-width});
   height: calc(100vh - #{$header-height});
 }
