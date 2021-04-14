@@ -12,6 +12,15 @@ For Vue prototype, see [kage-vue](https://github.com/Doko-Demo-Doa/kage-vue)
 git clone git@gitlab.com:dora-dev/kage-vue.git
 ```
 
+On Windows, if you are going to use PowerShell 7. Create `.npmrc` at the root folder of the project then put this in:
+
+```bat
+script-shell = "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+
+# Using the CLI
+npm config set script-shell = "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+```
+
 ## Terminology
 
 - Block: Một khối vật thể của slide, có thể là khối chữ, hình ảnh, video hoặc audio.

@@ -43,9 +43,11 @@
   },
   "main": "build/electron/main.js",
   "dependencies": {
+    "crc": "3.8.0",
     "electron-devtools-installer": "3.1.1",
     "electron-is-dev": "2.0.0",
-    "electron-updater": "4.3.8"
+    "electron-updater": "4.3.8",
+    "sharp": "0.28.1"
   },
   "devDependencies": {
     "@ant-design/icons": "4.6.2",
@@ -72,7 +74,6 @@
     "concurrently": "6.0.1",
     "craco-antd": "1.19.0",
     "craco-sass-resources-loader": "1.1.0",
-    "crc": "3.8.0",
     "cross-env": "7.0.3",
     "dayjs": "1.10.4",
     "electron": "12.0.2",
@@ -111,7 +112,6 @@
     "react-test-renderer": "17.0.2",
     "recoil": "0.2.0",
     "rimraf": "3.0.2",
-    "sharp": "0.28.1",
     "spectron": "14.0.0",
     "ts-jest": "26.5.4",
     "typescript": "4.2.4",
