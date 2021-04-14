@@ -30,19 +30,11 @@ export const SlideInteractiveEditor: React.FC = () => {
     });
 
     emitter.on("insert-rich-text", () => {
-      Modal.info({
-        title: "Test",
-        width: 800,
+      Modal.success({
+        title: "Chỉnh sửa chữ",
+        width: 700,
         content: (
           <>
-            <div
-              onClick={() => {
-                const txt = quillRef.current?.getEditor().getContents();
-                console.log(txt);
-              }}
-            >
-              Test xx
-            </div>
             <ReactQuill
               modules={{
                 toolbar: [
