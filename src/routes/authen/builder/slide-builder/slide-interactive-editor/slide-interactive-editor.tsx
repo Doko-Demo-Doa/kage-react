@@ -84,16 +84,14 @@ export const SlideInteractiveEditor: React.FC = () => {
   }, []);
 
   return (
-    <div id="slide-interactive-editor">
-      <div id="editor-container" />
+    <>
+      <div id="slide-interactive-editor">
+        <div id="editor-container" />
 
-      <Stage
-        style={{ background: "azure" }}
-        width={MinimumCanvasSize.WIDTH}
-        height={MinimumCanvasSize.HEIGHT}
-      >
-        <Layer ref={layerRef} />
-      </Stage>
-    </div>
+        <Stage width={MinimumCanvasSize.WIDTH} height={MinimumCanvasSize.HEIGHT}>
+          <Layer ref={layerRef} />
+        </Stage>
+      </div>
+    </>
   );
 };
