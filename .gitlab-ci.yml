@@ -1,0 +1,30 @@
+image: node:14.16.1-alpine
+
+.shared_windows_runners:
+  tags:
+  - shared-windows
+  - windows
+  - windows-1809
+
+stages:
+  - build
+  - test
+
+before_script:
+  - Set-Variable -Name "time" -Value (date -Format "%H:%m")
+  - echo ${time}
+  - echo "started by ${GITLAB_USER_NAME}"
+
+build:
+  extends:
+  - .shared_windows_runners
+  stage: build
+  script:
+    - yarn install
+    - yarn electron:build-win
+
+  # artifacts:
+  #   paths:
+  #     - public
+  only:
+    - main
