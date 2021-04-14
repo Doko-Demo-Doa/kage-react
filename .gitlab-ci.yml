@@ -8,7 +8,6 @@ image: node:14.16.1-alpine
 
 stages:
   - build
-  - test
 
 before_script:
   - Set-Variable -Name "time" -Value (date -Format "%H:%m")
@@ -20,8 +19,8 @@ build:
   - .shared_windows_runners
   stage: build
   script:
-    - yarn install
-    - yarn electron:build-win
+    - npm install
+    - npm run electron:build-win
 
   # artifacts:
   #   paths:
