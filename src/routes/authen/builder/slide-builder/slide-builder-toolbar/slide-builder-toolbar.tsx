@@ -3,7 +3,6 @@ import { Space, Button, Divider, Tooltip, notification, Spin, Popover } from "an
 import {
   FontSizeOutlined,
   PlusOutlined,
-  SoundOutlined,
   PullRequestOutlined,
   UploadOutlined,
   FolderOpenFilled,
@@ -126,7 +125,6 @@ export const SlideBuilderToolbar: React.FC = () => {
           size="middle"
           onClick={() => onNewRichText()}
         />
-        <Button type="link" icon={<SoundOutlined />} size="middle" />
         <Tooltip placement="bottom" title="Chèn ảnh / video">
           <Button
             type="link"
