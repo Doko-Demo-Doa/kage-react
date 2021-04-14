@@ -22,27 +22,29 @@ export type SlideStepType = {
 
 export type FFProbeMetaType = {
   chapters: string[];
-  streams: [VideoStreamType];
+  streams: [MediaStreamType];
 }
 
-export type VideoStreamType = {
-  index: number;
-  codec_name: string;
-  codec_long_name: string;
-  profile: string;
-  codec_type: "video" | "audio";
-  codec_time_base: string;
-  codec_tag_string: "avc1" | "xvid" | string;
-  codec_tag: string;
-  width: number;
-  height: number;
-  has_b_frames: number;
-  sample_aspect_ratio: string;
-  display_aspect_ratio: string;
-  pix_fmt: string;
-  level: 13;
-  r_frame_rate: string;
+export type MediaStreamType = {
   avg_frame_rate: string;
-  time_base: string;
+  codec_long_name: string;
+  codec_name: string;
+  codec_tag: string;
+  codec_tag_string: "avc1" | "xvid" | string;
+  codec_time_base: string;
+  codec_type: "video" | "audio";
+  display_aspect_ratio: string;
+  duration: number; // Second
+  duration_ts: number; // Timestamp
+  has_b_frames: number;
+  height: number;
+  index: number;
+  level: 13;
+  pix_fmt: string;
+  profile: string;
+  r_frame_rate: string;
+  sample_aspect_ratio: string;
   start_pts: number;
+  time_base: string;
+  width: number;
 }

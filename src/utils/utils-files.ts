@@ -28,6 +28,11 @@ export const fileUtils = {
       return MediaType.AUDIO;
     }
   },
+  openFolderBrowser: (folderPath: string) => {
+    if (fsNotAvailable()) return "";
+    const shell = require("electron").shell;
+    shell.openPath(folderPath);
+  },
   selectMultipleFiles: () => {
     if (fsNotAvailable()) return;
     return require("electron").remote.dialog.showOpenDialog({
@@ -37,11 +42,13 @@ export const fileUtils = {
   },
   selectSingleFile: () => {
     if (fsNotAvailable()) return;
+    const imageTypes = ["jpg", "png", "gif"];
+    const videoTypes = ["webm", "avi", "mp4", "mkv"];
+    const audioTypes = ["mp3", "aac", "ogg", "ts", "flac"];
     return require("electron").remote.dialog.showOpenDialog({
       properties: ["openFile", "dontAddToRecent"],
       filters: [
-        { name: "Images", extensions: ["jpg", "png", "gif"] },
-        { name: "Movies", extensions: ["webm", "avi", "mp4"] },
+        { name: "Media", extensions: [...imageTypes, ...videoTypes, ...audioTypes] },
       ],
     });
   },

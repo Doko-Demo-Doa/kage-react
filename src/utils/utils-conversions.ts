@@ -1,12 +1,70 @@
 import { Metadata } from "sharp";
 import dayjs from "dayjs";
 import fs from "fs";
-import { FFProbeMetaType, VideoStreamType } from "~/typings/types";
+import { FFProbeMetaType, MediaStreamType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
+import { MediaType } from "~/common/static-data";
 
 const OptimalImageSize = {
   width: 1200,
   height: 675
+};
+
+export const audioUtils = {
+  checkAudioMetadata: (filePath: string): Promise<MediaStreamType> => {
+    const remote = require("electron").remote;
+    const ffmpeg = remote.require("fluent-ffmpeg");
+
+    return new Promise((resolve, reject) => {
+      ffmpeg(filePath)
+        .ffprobe(0, function (err: any, data: FFProbeMetaType) {
+          console.dir(data);
+          if (data) {
+            const audioStream = data.streams.find((n) => n.codec_type === "audio");
+            if (audioStream) {
+              return resolve(audioStream);
+            }
+          }
+          reject(err);
+        });
+    });
+  },
+  // Convert to MP3
+  optimizeAudio: (filePath: string, progressCallback?: (percent: number | string, filePath?: string) => void) => {
+    const remote = require("electron").remote;
+    const ffmpeg = remote.require("fluent-ffmpeg");
+    const path = remote.require("path");
+    const isAudio = fileUtils.detectMediaType(filePath) === MediaType.AUDIO;
+
+    if (isAudio) {
+      const tempName = `${dayjs().unix()}.mp3`;
+      const dest = path.join(fileUtils.getCacheDirectory(), tempName);
+      const cmd = ffmpeg()
+        .on("start", function (ffmpegCommand: string) {
+          console.log("[ffmpeg command]:", ffmpegCommand);
+        })
+        .on("progress", function (data: any) {
+          // console.log("[ffmpeg]:", data);
+          progressCallback?.(data.percent);
+        })
+        .on("end", function () {
+          console.log("[ffmpeg end]");
+
+          const newName = `${fileUtils.getCRC32(dest)}.mp3`;
+          const newDest = path.join(fileUtils.getCacheDirectory(), newName);
+          fs.renameSync(dest, newDest);
+          progressCallback?.("end", newDest);
+        })
+        .on("error", function (error: any) {
+          console.log("[ffmpeg error]:", error);
+        })
+        .input(filePath)
+        .output(dest);
+      cmd.run();
+    } else {
+      console.log("[ffmpeg]", "Input file is not a valid audio");
+    }
+  }
 };
 
 export const imageUtils = {
@@ -55,7 +113,7 @@ export const ffmpegUtils = {
     return false;
   },
 
-  checkVideoMetadata: (filePath: string): Promise<VideoStreamType> => {
+  checkVideoMetadata: (filePath: string): Promise<MediaStreamType> => {
     const remote = require("electron").remote;
     const ffmpeg = remote.require("fluent-ffmpeg");
 

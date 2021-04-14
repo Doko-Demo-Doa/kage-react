@@ -6,6 +6,7 @@ import {
   SoundOutlined,
   PullRequestOutlined,
   UploadOutlined,
+  FolderOpenFilled,
   PictureFilled,
   MessageOutlined,
   LoadingOutlined,
@@ -14,12 +15,13 @@ import { useRecoilState } from "recoil";
 
 import { fileUtils } from "~/utils/utils-files";
 import { slideListState } from "~/atoms/slide-list-atom";
-import { ffmpegUtils, imageUtils } from "~/utils/utils-conversions";
+import { audioUtils, ffmpegUtils, imageUtils } from "~/utils/utils-conversions";
 import { MediaType } from "~/common/static-data";
 
 import "./slide-builder-toolbar.scss";
 import { emitter } from "~/services/events-helper";
 import { dataUtils } from "~/utils/utils-data";
+import { isElectron } from "~/utils/utils-platform";
 
 export const SlideBuilderToolbar: React.FC = () => {
   const [slideList, setSlideList] = useRecoilState(slideListState);
@@ -40,7 +42,7 @@ export const SlideBuilderToolbar: React.FC = () => {
     dataUtils.saveSlideJsonToCache(JSON.stringify(newSlideArray, null, 2));
   };
 
-  const onInsertImageVideo = async () => {
+  const onInsertMedia = async () => {
     const resp = await fileUtils.selectSingleFile();
     const path = resp?.filePaths[0];
     if (path) {
@@ -67,7 +69,7 @@ export const SlideBuilderToolbar: React.FC = () => {
             }
           });
         }
-      } else {
+      } else if (fileUtils.detectMediaType(path) === MediaType.IMAGE) {
         // Image
         const resp = await imageUtils.checkImageMetadata(path);
         if (!imageUtils.isImageOptimized(resp.width, resp.height)) {
@@ -78,6 +80,23 @@ export const SlideBuilderToolbar: React.FC = () => {
 
           return;
         }
+      } else if (fileUtils.detectMediaType(path) === MediaType.AUDIO) {
+        audioUtils.optimizeAudio(path, (progress, filePath) => {
+          console.log(progress);
+          if (progress === "end") {
+            // Hiển thị message báo convert
+            const videoUrl = `local-resource://${filePath}`;
+            emitter.emit("insert-audio", videoUrl);
+            notification.open({
+              message: "Hoàn tất",
+              description:
+                "Audio đã được chuyển về định dạng chuẩn để có thể đưa vào slide.",
+              onClick: () => {
+                console.log("Notification Clicked");
+              },
+            });
+          }
+        });
       }
     }
   };
@@ -88,6 +107,10 @@ export const SlideBuilderToolbar: React.FC = () => {
 
   const onPublish = () => {
     console.log(fileUtils.createCacheDir());
+  };
+
+  const onOpenCache = () => {
+    fileUtils.openFolderBrowser(fileUtils.getCacheDirectory());
   };
 
   return (
@@ -108,7 +131,7 @@ export const SlideBuilderToolbar: React.FC = () => {
             type="link"
             icon={<PictureFilled />}
             size="middle"
-            onClick={() => onInsertImageVideo()}
+            onClick={() => onInsertMedia()}
           />
         </Tooltip>
         <Button type="link" icon={<MessageOutlined />} size="middle" />
@@ -119,6 +142,9 @@ export const SlideBuilderToolbar: React.FC = () => {
         <Button onClick={() => onPublish()} icon={<UploadOutlined />} type="primary">
           Publish
         </Button>
+        {isElectron() && <Button onClick={() => onOpenCache()} icon={<FolderOpenFilled />}>
+          Open Cache Folder
+        </Button>}
 
         <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
       </Space>

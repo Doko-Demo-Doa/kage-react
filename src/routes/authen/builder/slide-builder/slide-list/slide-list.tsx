@@ -35,7 +35,10 @@ export const SlideList: React.FC = () => {
         });
 
         const elmnt = document.getElementById(`slide-thumb-${newIndex}`);
-        elmnt?.scrollIntoView();
+        elmnt?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
       }}>
       <ScrollBar id="slide-list" options={{ suppressScrollX: true }} tabIndex={1}>
         {slides.map((n, idx) => (
