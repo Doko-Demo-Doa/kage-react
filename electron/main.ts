@@ -42,6 +42,8 @@ function createWindow() {
   });
 
   app.whenReady().then(() => {
+    clearCache();
+
     installExtension(REACT_DEVELOPER_TOOLS)
       .then((name) => console.log(`Added Extension:  ${name}`))
       .catch((err) => console.log("An error occurred: ", err));
@@ -96,7 +98,6 @@ if (isDev) {
   } else {
     process.on("SIGTERM", () => {
       app.quit();
-      clearCache();
     });
   }
 }

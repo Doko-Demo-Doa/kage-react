@@ -35,9 +35,10 @@
     left: 18px;
     top: 0;
     z-index: 1;
-    height: 100%;
+    min-height: 100%;
     background-color: white;
     width: 100%;
+    overflow-y: auto;
     box-shadow: $light-left-shadow;
 
     .entity-cell {
@@ -55,5 +56,6 @@
 
 .slide-entities-expanded {
   width: 220px;
+  overflow-y: scroll;
   transition: 0.2s ease-in-out all;
 }

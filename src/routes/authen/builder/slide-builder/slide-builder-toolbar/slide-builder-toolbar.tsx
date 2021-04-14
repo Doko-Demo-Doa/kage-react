@@ -27,16 +27,17 @@ export const SlideBuilderToolbar: React.FC = () => {
   const [slideList, setSlideList] = useRecoilState(slideListState);
 
   const onNewSlide = () => {
+    const newSlide = {
+      title: "Title here",
+      slideBlocks: [],
+      steps: [],
+    };
     if (slideList.length <= 0) {
-      const newSlide = {
-        title: "Title here",
-        steps: [],
-      };
       setSlideList([newSlide]);
       return;
     }
 
-    const newSlideArray = [...slideList, { steps: [] }];
+    const newSlideArray = [...slideList, newSlide];
     setSlideList(newSlideArray);
     // Ghi vào file json.
     dataUtils.saveSlideJsonToCache(JSON.stringify(newSlideArray, null, 2));
@@ -89,8 +90,7 @@ export const SlideBuilderToolbar: React.FC = () => {
             emitter.emit("insert-audio", videoUrl);
             notification.open({
               message: "Hoàn tất",
-              description:
-                "Audio đã được chuyển về định dạng chuẩn để có thể đưa vào slide.",
+              description: "Audio đã được chuyển về định dạng chuẩn để có thể đưa vào slide.",
               onClick: () => {
                 console.log("Notification Clicked");
               },
@@ -145,9 +145,11 @@ export const SlideBuilderToolbar: React.FC = () => {
         <Button onClick={() => onPublish()} icon={<UploadOutlined />} type="primary">
           Publish
         </Button>
-        {isElectron() && <Button onClick={() => onOpenCache()} icon={<FolderOpenFilled />}>
-          Open Cache Folder
-        </Button>}
+        {isElectron() && (
+          <Button onClick={() => onOpenCache()} icon={<FolderOpenFilled />}>
+            Open Cache Folder
+          </Button>
+        )}
 
         <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
       </Space>

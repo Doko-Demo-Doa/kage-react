@@ -43,7 +43,7 @@ export const SlideEntities: React.FC = () => {
         </div>
         <div className="slide-entities-expandable">
           <h2>Animation</h2>
-          {Array.from(Array(10).keys()).map((n, idx) => (
+          {Array.from(Array(30).keys()).map((n, idx) => (
             <SingleAnimationEntity type={MediaType.AUDIO} key={idx} />
           ))}
         </div>
