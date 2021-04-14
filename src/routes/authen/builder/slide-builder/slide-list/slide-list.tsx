@@ -1,6 +1,7 @@
 import React from "react";
 import { useRecoilState } from "recoil";
 import ScrollBar from "react-perfect-scrollbar";
+import KeyboardEventHandler from "react-keyboard-event-handler";
 import { SlideThumbnail } from "~/routes/authen/builder/slide-builder/slide-list/slide-thumbnail/slide-thumbnail";
 import { slideListState } from "~/atoms/slide-list-atom";
 import { slideBuilderState } from "~/atoms/slide-builder-atom";
@@ -19,17 +20,35 @@ export const SlideList: React.FC = () => {
   };
 
   return (
-    <ScrollBar id="slide-list" options={{ suppressScrollX: true }}
-      tabIndex={1}
-      onClick={() => console.log("Focus")}
-      onBlur={() => console.log("Blur")}>
-      {slides.map((n, idx) => <SlideThumbnail
-        onClick={(index) =>
-          onClickSlide(index)}
-        title={n.title} index={idx}
-        inactive={slideBuilderMeta.selectedIndex !== idx}
-        key={idx} />)
-      }
-    </ScrollBar>
+    <KeyboardEventHandler
+      handleKeys={["up", "down"]} // Up and down
+      onKeyEvent={(key) => {
+        let newIndex = slideBuilderMeta.selectedIndex;
+        if (key === "up" && (slideBuilderMeta.selectedIndex > 0)) {
+          newIndex = slideBuilderMeta.selectedIndex - 1;
+        } else if (key === "down" && (slideBuilderMeta.selectedIndex < slides.length - 1)) {
+          newIndex = slideBuilderMeta.selectedIndex + 1;
+        }
+
+        setSlideBuilderMeta({
+          selectedIndex: newIndex
+        });
+
+        const elmnt = document.getElementById(`slide-thumb-${newIndex}`);
+        elmnt?.scrollIntoView();
+      }}>
+      <ScrollBar id="slide-list" options={{ suppressScrollX: true }} tabIndex={1}>
+        {slides.map((n, idx) => (
+          <SlideThumbnail
+            id={`slide-thumb-${idx}`}
+            onClick={(index) =>
+              onClickSlide(index)}
+            title={n.title} index={idx}
+            inactive={slideBuilderMeta.selectedIndex !== idx}
+            key={idx} />
+        ))
+        }
+      </ScrollBar>
+    </KeyboardEventHandler>
   );
 };

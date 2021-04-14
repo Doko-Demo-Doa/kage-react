@@ -7,8 +7,8 @@ import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-insta
 
 let win: BrowserWindow | null = null;
 
-const preDefinedWidth = 920;
-const predefinedHeight = 620;
+const preDefinedWidth = 980;
+const predefinedHeight = 720;
 
 function clearCache() {
   const CACHE_DIR_NAME = "kage-cache";
