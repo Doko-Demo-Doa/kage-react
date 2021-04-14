@@ -6,11 +6,14 @@ import {
   HeartTwoTone,
   AudioTwoTone,
 } from "@ant-design/icons";
+import { useRecoilState } from "recoil";
 
 import { MediaType } from "~/common/static-data";
+import { Colors } from "~/common/colors";
+import { slideBuilderState } from "~/atoms/slide-builder-atom";
+import { slideListState } from "~/atoms/slide-list-atom";
 
 import "~/routes/authen/builder/slide-builder/slide-entities/slide-entities.scss";
-import { Colors } from "~/common/colors";
 
 type AnimationEntityType = {
   type: MediaType;
@@ -32,6 +35,8 @@ const SingleAnimationEntity: React.FC<AnimationEntityType> = ({ type }) => {
 
 export const SlideEntities: React.FC = () => {
   const [expanded, setExpanded] = useState(false);
+  const [slideList] = useRecoilState(slideListState);
+  const [slideBuilderMeta] = useRecoilState(slideBuilderState);
 
   return (
     <>
@@ -43,7 +48,7 @@ export const SlideEntities: React.FC = () => {
         </div>
         <div className="slide-entities-expandable">
           <h2>Animation</h2>
-          {Array.from(Array(30).keys()).map((n, idx) => (
+          {slideList[slideBuilderMeta.selectedIndex]?.slideBlocks.map((n, idx) => (
             <SingleAnimationEntity type={MediaType.AUDIO} key={idx} />
           ))}
         </div>
