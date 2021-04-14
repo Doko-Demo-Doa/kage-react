@@ -1,5 +1,5 @@
 import React from "react";
-import { Space, Button, Divider, Tooltip, notification, Spin } from "antd";
+import { Space, Button, Divider, Tooltip, notification, Spin, Popover } from "antd";
 import {
   FontSizeOutlined,
   PlusOutlined,
@@ -12,16 +12,17 @@ import {
   LoadingOutlined,
 } from "@ant-design/icons";
 import { useRecoilState } from "recoil";
-
-import { fileUtils } from "~/utils/utils-files";
 import { slideListState } from "~/atoms/slide-list-atom";
+
+import { CalloutMatrix } from "~/components/callout-matrix/callout-matrix";
+import { fileUtils } from "~/utils/utils-files";
 import { audioUtils, ffmpegUtils, imageUtils } from "~/utils/utils-conversions";
 import { MediaType } from "~/common/static-data";
-
-import "./slide-builder-toolbar.scss";
 import { emitter } from "~/services/events-helper";
 import { dataUtils } from "~/utils/utils-data";
 import { isElectron } from "~/utils/utils-platform";
+
+import "./slide-builder-toolbar.scss";
 
 export const SlideBuilderToolbar: React.FC = () => {
   const [slideList, setSlideList] = useRecoilState(slideListState);
@@ -134,7 +135,11 @@ export const SlideBuilderToolbar: React.FC = () => {
             onClick={() => onInsertMedia()}
           />
         </Tooltip>
-        <Button type="link" icon={<MessageOutlined />} size="middle" />
+
+        <Popover content={<CalloutMatrix />}>
+          <Button type="link" icon={<MessageOutlined />} size="middle" />
+        </Popover>
+
         <Divider type="vertical" />
         <Button icon={<PullRequestOutlined />} type="primary" danger>
           Toggle Preview

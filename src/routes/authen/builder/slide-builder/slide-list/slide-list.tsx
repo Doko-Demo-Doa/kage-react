@@ -6,7 +6,6 @@ import { SlideThumbnail } from "~/routes/authen/builder/slide-builder/slide-list
 import { slideListState } from "~/atoms/slide-list-atom";
 import { slideBuilderState } from "~/atoms/slide-builder-atom";
 
-import "react-perfect-scrollbar/dist/css/styles.css";
 import "./slide-list.scss";
 
 export const SlideList: React.FC = () => {

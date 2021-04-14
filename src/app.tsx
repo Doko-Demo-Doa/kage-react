@@ -5,6 +5,7 @@ import { Builder } from "~/routes/authen/builder/builder";
 import { isElectron } from "~/utils/utils-platform";
 import { initializeApp } from "~/services/initializer";
 
+import "react-perfect-scrollbar/dist/css/styles.css";
 import "antd/dist/antd.css";
 import "./app.scss";
 

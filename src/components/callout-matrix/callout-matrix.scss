@@ -1,0 +1,29 @@
+$cell-size: 40px;
+
+.callout-matrix {
+  width: 220px;
+  outline: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: baseline;
+
+  .callout-pick-cell {
+    width: $cell-size;
+    height: $cell-size;
+    margin: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      background: $color-gold-light;
+      transition: 0.2s linear all;
+    }
+
+    img {
+      object-fit: contain;
+      width: 80%;
+    }
+  }
+}
