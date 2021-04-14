@@ -1,9 +1,36 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
-import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
-import "~/routes/authen/builder/slide-builder/slide-entities/slide-entities.scss";
+import {
+  ArrowLeftOutlined,
+  ArrowRightOutlined,
+  HeartTwoTone,
+  AudioTwoTone,
+} from "@ant-design/icons";
 
-export function SlideEntities() {
+import { MediaType } from "~/common/static-data";
+
+import "~/routes/authen/builder/slide-builder/slide-entities/slide-entities.scss";
+import { Colors } from "~/common/colors";
+
+type AnimationEntityType = {
+  type: MediaType;
+};
+
+const SingleAnimationEntity: React.FC<AnimationEntityType> = ({ type }) => {
+  function getIcon() {
+    if (type === MediaType.AUDIO) return <AudioTwoTone twoToneColor={Colors.DODGER_BLUE} />;
+    return <HeartTwoTone twoToneColor={Colors.BARBIE_PINK} />;
+  }
+
+  return (
+    <div className="entity-cell">
+      {getIcon()}
+      <div className="entity-label">Text Test</div>
+    </div>
+  );
+};
+
+export const SlideEntities: React.FC = () => {
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -15,14 +42,12 @@ export function SlideEntities() {
           {expanded ? <ArrowRightOutlined /> : <ArrowLeftOutlined />}
         </div>
         <div className="slide-entities-expandable">
-          Animations
+          <h2>Animation</h2>
           {Array.from(Array(10).keys()).map((n, idx) => (
-            <div className="callout-pick-cell" key={idx}>
-              Test
-            </div>
+            <SingleAnimationEntity type={MediaType.AUDIO} key={idx} />
           ))}
         </div>
       </div>
     </>
   );
-}
+};
