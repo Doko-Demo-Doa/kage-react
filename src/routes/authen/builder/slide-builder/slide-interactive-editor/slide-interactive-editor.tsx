@@ -18,9 +18,8 @@ import "~/routes/authen/builder/slide-builder/slide-interactive-editor/slide-int
 export const SlideInteractiveEditor: React.FC = () => {
   const layerRef = useRef<Konva.Layer>(null);
   const quillRef = useRef<ReactQuill>(null);
-  const tRef = useRef<Transformer>(null);
 
-  const [slideList, setSlideList] = useRecoilState(slideListState);
+  const [slideList] = useRecoilState(slideListState);
   const [slideBuilderMeta] = useRecoilState(slideBuilderState);
 
   useEffect(() => {
