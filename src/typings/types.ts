@@ -7,6 +7,7 @@ export type SlideBuilderState = {
 export type SlideType = {
   title?: string;
   theme?: string;
+  selectedBlock?: string;
   slideBlocks: SlideBlockType[];
   steps: SlideStepType[];
 }
