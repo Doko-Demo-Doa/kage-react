@@ -18,13 +18,13 @@ export const fileUtils = {
     return result;
   },
   detectMediaType: (filePath: string) => {
-    if ((/\.(mkv|mp4|wmv|avi|webp)$/i).test(filePath)) {
+    if (/\.(mkv|mp4|wmv|avi|webp)$/i.test(filePath)) {
       return MediaType.VIDEO;
     }
-    if ((/\.(jpe?g|jpg|png|gif|heif)$/i).test(filePath)) {
+    if (/\.(jpe?g|jpg|png|gif|heif)$/i.test(filePath)) {
       return MediaType.IMAGE;
     }
-    if ((/\.(mp3|ogg|aac|flac)$/i).test(filePath)) {
+    if (/\.(mp3|ogg|aac|flac)$/i.test(filePath)) {
       return MediaType.AUDIO;
     }
   },
@@ -47,9 +47,7 @@ export const fileUtils = {
     const audioTypes = ["mp3", "aac", "ogg", "ts", "flac"];
     return require("electron").remote.dialog.showOpenDialog({
       properties: ["openFile", "dontAddToRecent"],
-      filters: [
-        { name: "Media", extensions: [...imageTypes, ...videoTypes, ...audioTypes] },
-      ],
+      filters: [{ name: "Media", extensions: [...imageTypes, ...videoTypes, ...audioTypes] }],
     });
   },
   getWorkingDirectory: () => {
@@ -74,7 +72,6 @@ export const fileUtils = {
     const remote = require("electron").remote;
     const path = remote.require("path");
     const cPath = path.join(remote.app.getPath("cache"), CACHE_DIR_NAME);
-    console.log("[Cache path]", cPath);
     return cPath;
   },
   createFilePathAtCacheDir: (filename: string) => {

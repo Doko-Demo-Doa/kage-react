@@ -10,6 +10,7 @@ let win: BrowserWindow | null = null;
 const preDefinedWidth = 980;
 const predefinedHeight = 720;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function clearCache() {
   const CACHE_DIR_NAME = "kage-cache";
   const cPath = path.join(app.getPath("cache"), CACHE_DIR_NAME);
@@ -42,7 +43,7 @@ function createWindow() {
   });
 
   app.whenReady().then(() => {
-    clearCache();
+    // clearCache();
 
     installExtension(REACT_DEVELOPER_TOOLS)
       .then((name) => console.log(`Added Extension:  ${name}`))
@@ -54,6 +55,7 @@ function createWindow() {
       // Decode URL to prevent errors when loading filenames with UTF-8 chars or chars like "#"
       const decodedUrl = decodeURI(url); // Needed in case URL contains spaces
       try {
+        console.log("Protocol registered");
         return callback(decodedUrl);
       } catch (error) {
         console.error("ERROR: registerLocalResourceProtocol: Could not get file path:", error);

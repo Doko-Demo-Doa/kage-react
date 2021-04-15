@@ -3,3 +3,4 @@ build
 dist
 craco.config.js
 jest.config.js
+vendor

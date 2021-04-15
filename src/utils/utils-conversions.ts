@@ -1,13 +1,13 @@
 import { Metadata } from "sharp";
 import dayjs from "dayjs";
 import fs from "fs";
-import { FFProbeMetaType, MediaStreamType } from "~/typings/types";
+import { FFProbeMetaType, MediaReturnType, MediaStreamType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
 import { MediaType } from "~/common/static-data";
 
 const OptimalImageSize = {
-  width: 1200,
-  height: 675
+  width: 1000,
+  height: 675,
 };
 
 export const audioUtils = {
@@ -16,21 +16,23 @@ export const audioUtils = {
     const ffmpeg = remote.require("fluent-ffmpeg");
 
     return new Promise((resolve, reject) => {
-      ffmpeg(filePath)
-        .ffprobe(0, function (err: any, data: FFProbeMetaType) {
-          console.dir(data);
-          if (data) {
-            const audioStream = data.streams.find((n) => n.codec_type === "audio");
-            if (audioStream) {
-              return resolve(audioStream);
-            }
+      ffmpeg(filePath).ffprobe(0, function (err: any, data: FFProbeMetaType) {
+        console.dir(data);
+        if (data) {
+          const audioStream = data.streams.find((n) => n.codec_type === "audio");
+          if (audioStream) {
+            return resolve(audioStream);
           }
-          reject(err);
-        });
+        }
+        reject(err);
+      });
     });
   },
   // Convert to MP3
-  optimizeAudio: (filePath: string, progressCallback?: (percent: number | string, filePath?: string) => void) => {
+  optimizeAudio: (
+    filePath: string,
+    progressCallback?: (percent: number | string, filePath?: string) => void
+  ) => {
     const remote = require("electron").remote;
     const ffmpeg = remote.require("fluent-ffmpeg");
     const path = remote.require("path");
@@ -64,7 +66,7 @@ export const audioUtils = {
     } else {
       console.log("[ffmpeg]", "Input file is not a valid audio");
     }
-  }
+  },
 };
 
 export const imageUtils = {
@@ -77,7 +79,7 @@ export const imageUtils = {
 
   isImageOptimized: (width?: number, height?: number) => {
     if (!width || !height) return false;
-    if (width > 1920 || height > 1080) return false;
+    if (width > 1280 || height > 720) return false;
     return true;
   },
 
@@ -86,13 +88,17 @@ export const imageUtils = {
    * @param filePath Input file path, use "path.join" to concentrate directories.
    * @returns Optimized file path.
    */
-  optimizeImage: async (filePath: string): Promise<string> => {
+  optimizeImage: async (filePath: string): Promise<MediaReturnType> => {
     const remote = require("electron").remote;
     const path = remote.require("path");
     const sharp = remote.require("sharp");
+
+    const imageMetadata = await sharp(filePath).metadata();
+    const { width, height } = imageMetadata;
+
     const data = sharp(filePath)
       .rotate()
-      .resize(OptimalImageSize.width, OptimalImageSize.height)
+      .resize(Math.min(OptimalImageSize.width, width), Math.min(OptimalImageSize.height, height))
       .jpeg({ mozjpeg: true });
 
     const dataBuf = await data.toBuffer();
@@ -103,8 +109,14 @@ export const imageUtils = {
 
     fs.writeFileSync(dest, dataBuf);
 
-    return dest;
-  }
+    const result = {
+      filePath: dest,
+      fileName: name,
+      extension: "jpg",
+    };
+
+    return result;
+  },
 };
 
 export const ffmpegUtils = {
@@ -118,25 +130,28 @@ export const ffmpegUtils = {
     const ffmpeg = remote.require("fluent-ffmpeg");
 
     return new Promise((resolve, reject) => {
-      ffmpeg(filePath)
-        .ffprobe(0, function (err: any, data: FFProbeMetaType) {
-          console.dir(data);
-          if (data) {
-            const videoStream = data.streams.find((n) => n.codec_type === "video");
-            if (videoStream) {
-              return resolve(videoStream);
-            }
+      ffmpeg(filePath).ffprobe(0, function (err: any, data: FFProbeMetaType) {
+        console.dir(data);
+        if (data) {
+          const videoStream = data.streams.find((n) => n.codec_type === "video");
+          if (videoStream) {
+            return resolve(videoStream);
           }
-          reject(err);
-        });
+        }
+        reject(err);
+      });
     });
   },
 
-  convertToMp4: (filePath: string, inputWidth: number, progressCallback?: (percent: number | string, filePath?: string) => void) => {
+  convertToMp4: (
+    filePath: string,
+    inputWidth: number,
+    progressCallback?: (percent: number | string, filePath?: string) => void
+  ) => {
     const remote = require("electron").remote;
     const ffmpeg = remote.require("fluent-ffmpeg");
     const path = remote.require("path");
-    const isVideo = (/\.(gif|mkv|mp4|wmv|avi|webp)$/i).test(filePath);
+    const isVideo = /\.(gif|mkv|mp4|wmv|avi|webp)$/i.test(filePath);
 
     const ratio = (848 / inputWidth) * 100;
 
@@ -169,5 +184,5 @@ export const ffmpegUtils = {
     } else {
       console.log("[ffmpeg]", "Input file is not a valid video");
     }
-  }
+  },
 };

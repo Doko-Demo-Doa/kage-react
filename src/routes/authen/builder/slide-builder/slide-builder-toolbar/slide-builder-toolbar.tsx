@@ -12,6 +12,7 @@ import {
 } from "@ant-design/icons";
 import { useRecoilState } from "recoil";
 import { slideListState } from "~/atoms/slide-list-atom";
+import { slideBuilderState } from "~/atoms/slide-builder-atom";
 
 import { CalloutMatrix } from "~/components/callout-matrix/callout-matrix";
 import { fileUtils } from "~/utils/utils-files";
@@ -22,9 +23,13 @@ import { dataUtils } from "~/utils/utils-data";
 import { isElectron } from "~/utils/utils-platform";
 
 import "~/routes/authen/builder/slide-builder/slide-builder-toolbar/slide-builder-toolbar.scss";
+import { SlideBlockType } from "~/typings/types";
 
 export const SlideBuilderToolbar: React.FC = () => {
   const [slideList, setSlideList] = useRecoilState(slideListState);
+  const [slideBuilderMeta] = useRecoilState(slideBuilderState);
+
+  const shouldDisable = slideList.length <= 0;
 
   const onNewSlide = () => {
     const newSlide = {
@@ -47,7 +52,8 @@ export const SlideBuilderToolbar: React.FC = () => {
     const resp = await fileUtils.selectSingleFile();
     const path = resp?.filePaths[0];
     if (path) {
-      if (fileUtils.detectMediaType(path) === MediaType.VIDEO) {
+      const mType = fileUtils.detectMediaType(path);
+      if (mType === MediaType.VIDEO) {
         // Video
         const resp = await ffmpegUtils.checkVideoMetadata(path);
         // To quá thì phải resize xuống
@@ -70,18 +76,12 @@ export const SlideBuilderToolbar: React.FC = () => {
             }
           });
         }
-      } else if (fileUtils.detectMediaType(path) === MediaType.IMAGE) {
+      } else if (mType === MediaType.IMAGE) {
         // Image
-        const resp = await imageUtils.checkImageMetadata(path);
-        if (!imageUtils.isImageOptimized(resp.width, resp.height)) {
-          const newImage = await imageUtils.optimizeImage(path);
-          const imgUrl = `local-resource://${newImage}`;
-
-          emitter.emit("insert-image", imgUrl);
-
-          return;
-        }
-      } else if (fileUtils.detectMediaType(path) === MediaType.AUDIO) {
+        const { fileName, extension } = await imageUtils.optimizeImage(path);
+        insertBlock(mType, fileName, extension);
+        return;
+      } else if (mType === MediaType.AUDIO) {
         audioUtils.optimizeAudio(path, (progress, filePath) => {
           console.log(progress);
           if (progress === "end") {
@@ -101,12 +101,38 @@ export const SlideBuilderToolbar: React.FC = () => {
     }
   };
 
+  const insertBlock = (type: MediaType, assetName: string, extension: string) => {
+    const blockData: SlideBlockType = {
+      id: assetName,
+      type,
+      assetName: `${assetName}.${extension}`,
+      autoPlay: false,
+      content: "",
+    };
+
+    console.log(assetName);
+
+    // Try not to mutate original object / array.
+    const idx = slideBuilderMeta.selectedIndex;
+    const newSlideArray = [...slideList];
+
+    const activeSlide = { ...newSlideArray[idx] };
+
+    const newBlocks = [...activeSlide.slideBlocks, blockData];
+    activeSlide.slideBlocks = [...newBlocks];
+    newSlideArray[idx] = activeSlide;
+
+    const newArr = [...newSlideArray.slice(0, idx), activeSlide, ...newSlideArray.slice(idx + 1)];
+
+    setSlideList([...newArr]);
+  };
+
   const onNewRichText = () => {
     emitter.emit("insert-rich-text");
   };
 
   const onPublish = () => {
-    console.log(fileUtils.createCacheDir());
+    dataUtils.saveSlideJsonToCache(JSON.stringify(slideList, null, 2));
   };
 
   const onOpenCache = () => {
@@ -123,6 +149,7 @@ export const SlideBuilderToolbar: React.FC = () => {
           type="link"
           icon={<FontSizeOutlined />}
           size="middle"
+          disabled={shouldDisable}
           onClick={() => onNewRichText()}
         />
         <Tooltip placement="bottom" title="Chèn ảnh / video">
@@ -130,19 +157,25 @@ export const SlideBuilderToolbar: React.FC = () => {
             type="link"
             icon={<PictureFilled />}
             size="middle"
+            disabled={shouldDisable}
             onClick={() => onInsertMedia()}
           />
         </Tooltip>
 
         <Popover content={<CalloutMatrix />}>
-          <Button type="link" icon={<MessageOutlined />} size="middle" />
+          <Button disabled={shouldDisable} type="link" icon={<MessageOutlined />} size="middle" />
         </Popover>
 
         <Divider type="vertical" />
         <Button icon={<PullRequestOutlined />} type="primary" danger>
           Toggle Preview
         </Button>
-        <Button onClick={() => onPublish()} icon={<UploadOutlined />} type="primary">
+        <Button
+          disabled={shouldDisable}
+          onClick={() => onPublish()}
+          icon={<UploadOutlined />}
+          type="primary"
+        >
           Publish
         </Button>
         {isElectron() && (

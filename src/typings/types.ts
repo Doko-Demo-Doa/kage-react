@@ -13,7 +13,7 @@ export type SlideType = {
 };
 
 export interface SlideBlockType {
-  id: number;
+  id: string;
   type: MediaType;
   content?: string; // Chỉ có nếu type là text
   assetName?: string;
@@ -59,4 +59,10 @@ export type MediaStreamType = {
   start_pts: number;
   time_base: string;
   width: number;
+};
+
+export type MediaReturnType = {
+  filePath: string; // Also includes fileName
+  fileName: string;
+  extension: string;
 };
