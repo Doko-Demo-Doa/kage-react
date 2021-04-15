@@ -15,7 +15,7 @@ extraResources:
 
 # Mac OS configuration
 mac:
-  icon: "resources/icons/icon.icns"
+  icon: "resources/icons/icon.png"
   target:
     - "dmg"
   identity: null
