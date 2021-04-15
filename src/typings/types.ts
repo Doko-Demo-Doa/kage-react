@@ -2,7 +2,7 @@ import { MediaType } from "~/common/static-data";
 
 export type SlideBuilderState = {
   selectedIndex: number;
-}
+};
 
 export type SlideType = {
   title?: string;
@@ -10,22 +10,32 @@ export type SlideType = {
   selectedBlock?: string;
   slideBlocks: SlideBlockType[];
   steps: SlideStepType[];
-}
+};
 
 export interface SlideBlockType {
   id: number;
   type: MediaType;
+  content?: string; // Chỉ có nếu type là text
   assetName?: string;
+  autoPlay?: boolean;
+  position?: {
+    x: number;
+    y: number;
+  };
+  size?: {
+    w: number;
+    h: number;
+  };
 }
 
 export type SlideStepType = {
   blockId: number;
-}
+};
 
 export type FFProbeMetaType = {
   chapters: string[];
   streams: [MediaStreamType];
-}
+};
 
 export type MediaStreamType = {
   avg_frame_rate: string;
@@ -49,4 +59,4 @@ export type MediaStreamType = {
   start_pts: number;
   time_base: string;
   width: number;
-}
+};
