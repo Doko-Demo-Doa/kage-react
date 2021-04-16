@@ -4,3 +4,4 @@ dist
 craco.config.js
 jest.config.js
 vendor
+storybook-static

@@ -33,3 +33,4 @@ release/
 
 # Temp
 vendor/
+storybook-static/

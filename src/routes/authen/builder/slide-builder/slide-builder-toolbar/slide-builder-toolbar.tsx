@@ -20,9 +20,9 @@ import { MediaType } from "~/common/static-data";
 import { emitter } from "~/services/events-helper";
 import { dataUtils } from "~/utils/utils-data";
 import { isElectron } from "~/utils/utils-platform";
+import { SlideBlockType } from "~/typings/types";
 
 import "~/routes/authen/builder/slide-builder/slide-builder-toolbar/slide-builder-toolbar.scss";
-import { SlideBlockType } from "~/typings/types";
 
 export const SlideBuilderToolbar: React.FC = () => {
   const [slideList, setSlideList] = useRecoilState(slideListState);
