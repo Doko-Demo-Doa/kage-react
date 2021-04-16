@@ -5,50 +5,50 @@ import { SlideType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
 
 function singleSlideConstructor(slide: SlideType) {
+  const subfolderPath = "."; // "data/";
+
   return `
     <section>
       <h2>${slide.title}</h2>
       ${slide.slideBlocks.map((block) => {
-        if (block.type === MediaType.VIDEO) {
-          const sizeAppend = `${
-            block.size ? `width="${block.size.w}" height="${block.size.h}"` : ""
-          }`;
-          const positionAppend = `${
-            block.position ? `style="left: ${block.position.x}; top: ${block.position.y}"` : ""
-          }`;
-          return `
-            <video src="data/${block.assetName}"
-              ${sizeAppend}
-              ${positionAppend}
-              ${block.autoPlay ? "data-autoplay" : ""}
-            />`;
-        }
+    if (block.type === MediaType.VIDEO) {
+      const sizeAppend = `${block.size ? `width="${block.size.w}" height="${block.size.h}"` : ""
+        }`;
+      const positionAppend = `${block.position ? `style="left: ${block.position.x}; top: ${block.position.y}"` : ""
+        }`;
+      return `
+          <video class="r-stack" src="${subfolderPath}/${block.assetName}"
+            ${sizeAppend}
+            ${positionAppend}
+            ${block.autoPlay ? "data-autoplay" : ""}
+          />
+        `;
+    }
 
-        if (block.type === MediaType.IMAGE) {
-          const sizeAppend = `${
-            block.size ? `width="${block.size.w}" height="${block.size.h}"` : ""
-          }`;
-          const positionAppend = `${
-            block.position ? `style="left: ${block.position.x}; top: ${block.position.y}"` : ""
-          }`;
-          return `
-            <img src="data/${block.assetName}"
-              ${sizeAppend}
-              ${positionAppend}
-              ${block.autoPlay ? "data-autoplay" : ""}
-            />`;
-        }
+    if (block.type === MediaType.IMAGE) {
+      const sizeAppend = `${block.size ? `width="${block.size.w}" height="${block.size.h}"` : ""
+        }`;
+      const positionAppend = `${block.position ? `style="left: ${block.position.x}; top: ${block.position.y}"` : ""
+        }`;
+      return `
+          <img class="r-stack" src="${subfolderPath}/${block.assetName}"
+            ${sizeAppend}
+            ${positionAppend}
+            ${block.autoPlay ? "data-autoplay" : ""}
+          />
+        `;
+    }
 
-        if (block.type === MediaType.AUDIO) {
-          return `
-            <audio src="data/${block.assetName}"
+    if (block.type === MediaType.AUDIO) {
+      return `
+            <audio src="${subfolderPath}/${block.assetName}"
               ${block.autoPlay ? "data-autoplay" : ""}
             />`;
-        }
-        return `
+    }
+    return `
           <div>${block.content}</div>
         `;
-      })}
+  })}
     </section>`;
 }
 

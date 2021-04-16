@@ -54,6 +54,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
       {getMainComponent()}
       <Transformer
         ref={trRef}
+        enabledAnchors={["top-left", "top-right", "bottom-left", "bottom-right"]}
         rotateEnabled={false}
         boundBoxFunc={(oldBox, newBox) => {
           if (newBox.width < 5 || newBox.height < 5) {
