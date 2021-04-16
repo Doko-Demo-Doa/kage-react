@@ -1,5 +1,5 @@
 import React from "react";
-import { Space, Button, Divider, Tooltip, notification, Spin, Popover } from "antd";
+import { Space, Button, Divider, Tooltip, notification, Popover } from "antd";
 import {
   FontSizeOutlined,
   PlusOutlined,
@@ -8,7 +8,6 @@ import {
   FolderOpenFilled,
   PictureFilled,
   MessageOutlined,
-  LoadingOutlined,
 } from "@ant-design/icons";
 import { useRecoilState } from "recoil";
 import { slideListState } from "~/atoms/slide-list-atom";
@@ -183,8 +182,6 @@ export const SlideBuilderToolbar: React.FC = () => {
             Open Cache Folder
           </Button>
         )}
-
-        <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
       </Space>
     </div>
   );
