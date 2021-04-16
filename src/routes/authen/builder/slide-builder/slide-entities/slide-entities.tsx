@@ -36,8 +36,22 @@ const SingleAnimationEntity: React.FC<AnimationEntityType> = ({ type }) => {
 
 export const SlideEntities: React.FC = () => {
   const [expanded, setExpanded] = useState(false);
-  const [slideList] = useRecoilState(slideListState);
+  const [slideList, setSlideList] = useRecoilState(slideListState);
   const [slideBuilderMeta] = useRecoilState(slideBuilderState);
+
+  const slideTitle = slideList[slideBuilderMeta.selectedIndex]?.title;
+
+  function setSlideTitle(newTitle: string) {
+    const idx = slideBuilderMeta.selectedIndex;
+
+    const newSlides = [...slideList];
+    const targetSlide = { ...newSlides[slideBuilderMeta.selectedIndex] };
+    if (!targetSlide) return;
+    targetSlide.title = newTitle;
+
+    const newArr = [...newSlides.slice(0, idx), targetSlide, ...newSlides.slice(idx + 1)];
+    setSlideList(newArr);
+  }
 
   return (
     <>
@@ -46,7 +60,13 @@ export const SlideEntities: React.FC = () => {
           {expanded ? <ArrowRightOutlined /> : <ArrowLeftOutlined />}
         </div>
         <div className="slide-entities-expandable">
-          <Input placeholder="Tieu de slide" defaultValue="" />
+          <Input
+            placeholder="Slide title"
+            onChange={(e) => setSlideTitle(e.target.value)}
+            disabled={slideList.length <= 0}
+            value={slideTitle}
+            defaultValue=""
+          />
           <Divider type="horizontal" />
           <h2>Animation</h2>
           {slideList[slideBuilderMeta.selectedIndex]?.slideBlocks.map((n, idx) => (

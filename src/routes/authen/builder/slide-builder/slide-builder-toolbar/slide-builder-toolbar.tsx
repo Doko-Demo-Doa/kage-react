@@ -109,8 +109,6 @@ export const SlideBuilderToolbar: React.FC = () => {
       content: "",
     };
 
-    console.log(assetName);
-
     // Try not to mutate original object / array.
     const idx = slideBuilderMeta.selectedIndex;
     const newSlideArray = [...slideList];
@@ -162,7 +160,11 @@ export const SlideBuilderToolbar: React.FC = () => {
           />
         </Tooltip>
 
-        <Popover arrowContent visible={!shouldDisable ? undefined : false} content={<CalloutMatrix />}>
+        <Popover
+          arrowContent
+          visible={!shouldDisable ? undefined : false}
+          content={<CalloutMatrix />}
+        >
           <Button disabled={shouldDisable} type="link" icon={<MessageOutlined />} size="middle" />
         </Popover>
 
