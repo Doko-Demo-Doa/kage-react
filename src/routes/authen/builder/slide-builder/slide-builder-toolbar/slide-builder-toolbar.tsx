@@ -162,7 +162,7 @@ export const SlideBuilderToolbar: React.FC = () => {
           />
         </Tooltip>
 
-        <Popover content={<CalloutMatrix />}>
+        <Popover arrowContent visible={!shouldDisable ? undefined : false} content={<CalloutMatrix />}>
           <Button disabled={shouldDisable} type="link" icon={<MessageOutlined />} size="middle" />
         </Popover>
 

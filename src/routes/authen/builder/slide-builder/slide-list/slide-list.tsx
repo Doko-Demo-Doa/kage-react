@@ -9,7 +9,7 @@ import { slideBuilderState } from "~/atoms/slide-builder-atom";
 import "./slide-list.scss";
 
 export const SlideList: React.FC = () => {
-  const [slides] = useRecoilState(slideListState);
+  const [slides, setSlides] = useRecoilState(slideListState);
   const [slideBuilderMeta, setSlideBuilderMeta] = useRecoilState(slideBuilderState);
 
   const onClickSlide = (index: number) => {
@@ -18,15 +18,28 @@ export const SlideList: React.FC = () => {
     });
   };
 
+  const onDeleteCurrentSlide = () => {
+    const currentIndex = slideBuilderMeta.selectedIndex;
+
+    const newSlides = [...slides.slice(0, currentIndex), ...slides.slice(currentIndex + 1)];
+
+    setSlides(newSlides);
+    setSlideBuilderMeta({
+      selectedIndex: currentIndex - 1
+    });
+  };
+
   return (
     <KeyboardEventHandler
-      handleKeys={["up", "down"]} // Up and down
+      handleKeys={["up", "down", "del"]} // Up and down
       onKeyEvent={(key) => {
         let newIndex = slideBuilderMeta.selectedIndex;
         if (key === "up" && (slideBuilderMeta.selectedIndex > 0)) {
           newIndex = slideBuilderMeta.selectedIndex - 1;
         } else if (key === "down" && (slideBuilderMeta.selectedIndex < slides.length - 1)) {
           newIndex = slideBuilderMeta.selectedIndex + 1;
+        } else if (key === "del") {
+          onDeleteCurrentSlide();
         }
 
         setSlideBuilderMeta({

@@ -7,6 +7,7 @@ $cell-size: 40px;
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: baseline;
+  user-select: none;
 
   .callout-pick-cell {
     width: $cell-size;
