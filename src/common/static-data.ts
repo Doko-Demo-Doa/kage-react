@@ -6,6 +6,10 @@ export const MinimumCanvasSize = {
   HEIGHT: 560
 };
 
+export const AppDefaults = {
+  DEFAULT_IMAGE_SCALE: 0.3
+};
+
 export enum QuizType {
   MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
   MULTIPLE_RESPONSE = "MULTIPLE_RESPONSE",
