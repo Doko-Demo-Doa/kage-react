@@ -6,9 +6,9 @@
 
 .slide-entities {
   height: calc(100vh - 120px);
-  width: 80px;
+  width: 280px;
+  transform: translateX(140px);
   right: 0;
-  overflow-x: hidden;
   outline: none;
   position: absolute;
   transition: 0.2s ease-in-out all;
@@ -31,6 +31,7 @@
   .slide-entities-expandable {
     padding-top: 32px;
     padding-left: 28px;
+    padding-right: 20px;
     position: absolute;
     left: 18px;
     top: 0;
@@ -39,7 +40,6 @@
     background-color: white;
     width: 100%;
     overflow-y: auto;
-    overflow-x: hidden;
     box-shadow: $light-left-shadow;
 
     .entity-cell {
@@ -57,7 +57,7 @@
 }
 
 .slide-entities-expanded {
-  width: 220px;
   overflow-y: scroll;
+  transform: translateX(-60px);
   transition: 0.2s ease-in-out all;
 }

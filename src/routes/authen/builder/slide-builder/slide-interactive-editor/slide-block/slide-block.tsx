@@ -31,23 +31,21 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
   const getMainComponent = () => {
     if (type === MediaType.IMAGE) {
       return (
-        <>
-          <Image
-            ref={mainBlockRef}
-            onClick={() => onSelect(id)}
-            image={image}
-            draggable
-            onDragEnd={e => console.log(e)}
-            x={12}
-            y={50}
-            scaleX={AppDefaults.DEFAULT_IMAGE_SCALE}
-            scaleY={AppDefaults.DEFAULT_IMAGE_SCALE}
-          />
-        </>
+        <Image
+          ref={mainBlockRef}
+          onClick={() => onSelect(id)}
+          image={image}
+          draggable
+          onDragEnd={(e) => console.log(e)}
+          x={12}
+          y={50}
+          scaleX={AppDefaults.DEFAULT_IMAGE_SCALE}
+          scaleY={AppDefaults.DEFAULT_IMAGE_SCALE}
+        />
       );
     }
 
-    return <Text text="Test" />;
+    return <Text text="Alt Text" />;
   };
 
   return (
@@ -57,7 +55,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
         ref={trRef}
         enabledAnchors={["top-left", "top-right", "bottom-left", "bottom-right"]}
         rotateEnabled={false}
-        onTransformEnd={e => console.log(e)}
+        onTransformEnd={(e) => console.log(e)}
         boundBoxFunc={(oldBox, newBox) => {
           if (newBox.width < 5 || newBox.height < 5) {
             return oldBox;
