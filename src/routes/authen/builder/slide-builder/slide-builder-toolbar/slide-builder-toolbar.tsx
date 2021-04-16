@@ -132,7 +132,8 @@ export const SlideBuilderToolbar: React.FC = () => {
   };
 
   const onPublish = () => {
-    dataUtils.saveSlideJsonToCache(JSON.stringify(slideList, null, 2));
+    const convertedStr = dataUtils.convertToHtmlSlideData(slideList);
+    dataUtils.writeToHtml(convertedStr);
   };
 
   const onOpenCache = () => {

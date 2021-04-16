@@ -1,4 +1,5 @@
 import fs from "fs";
+import pretty from "pretty";
 import { MediaType } from "~/common/static-data";
 import { SlideType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
@@ -39,16 +40,8 @@ function singleSlideConstructor(slide: SlideType) {
         }
 
         if (block.type === MediaType.AUDIO) {
-          const sizeAppend = `${
-            block.size ? `width="${block.size.w}" height="${block.size.h}"` : ""
-          }`;
-          const positionAppend = `${
-            block.position ? `style="left: ${block.position.x}; top: ${block.position.y}"` : ""
-          }`;
           return `
             <audio src="data/${block.assetName}"
-              ${sizeAppend}
-              ${positionAppend}
               ${block.autoPlay ? "data-autoplay" : ""}
             />`;
         }
@@ -65,13 +58,16 @@ export const dataUtils = {
     fs.writeFileSync(path, jsonData);
   },
 
+  writeToHtml: (content: string) => {
+    const path = fileUtils.createFilePathAtCacheDir("slide.html");
+    fs.writeFileSync(path, content);
+  },
   convertToHtmlSlideData: (slides: SlideType[]) => {
     // Convert từng slide vào template HTML
     // Xem file template.ts để biết khuôn dạng.
-    return `
+    const templateStr = `
       <!DOCTYPE html>
       <html lang="en">
-
       <head>
         <meta charset="utf-8" />
 
@@ -98,5 +94,7 @@ export const dataUtils = {
 
       </html>
       `;
+
+    return pretty(templateStr);
   },
 };
