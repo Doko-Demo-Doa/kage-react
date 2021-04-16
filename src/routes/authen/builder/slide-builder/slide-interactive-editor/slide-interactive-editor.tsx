@@ -16,6 +16,8 @@ export const SlideInteractiveEditor: React.FC = () => {
   const [slideList, setSlideList] = useRecoilState(slideListState);
   const [slideBuilderMeta] = useRecoilState(slideBuilderState);
 
+  const slideTitle = slideList[slideBuilderMeta.selectedIndex]?.title;
+
   const selectBlock = (slideIndex: number, blockId: string) => {
     const newSlideArray = [...slideList];
     const activeSlide = { ...newSlideArray[slideIndex] };
@@ -30,6 +32,7 @@ export const SlideInteractiveEditor: React.FC = () => {
     <>
       <div id="slide-interactive-editor">
         <div id="editor-container" />
+        <h2>{slideTitle}</h2>
 
         <Stage width={MinimumCanvasSize.WIDTH} height={MinimumCanvasSize.HEIGHT}>
           <Layer ref={layerRef}>

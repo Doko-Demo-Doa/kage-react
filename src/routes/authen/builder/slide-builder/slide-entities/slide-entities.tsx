@@ -55,6 +55,7 @@ export const SlideEntities: React.FC = () => {
 
   return (
     <>
+      <div className="side-holder" />
       <div className={clsx("slide-entities", expanded ? "slide-entities-expanded" : "")}>
         <div className="expand-btn" onClick={() => setExpanded(!expanded)}>
           {expanded ? <ArrowRightOutlined /> : <ArrowLeftOutlined />}
