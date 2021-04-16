@@ -34,7 +34,11 @@ export const SlideInteractiveEditor: React.FC = () => {
         <div id="editor-container" />
         <h2>{slideTitle}</h2>
 
-        <Stage width={MinimumCanvasSize.WIDTH} height={MinimumCanvasSize.HEIGHT}>
+        <Stage
+          className="konva-stg"
+          width={MinimumCanvasSize.WIDTH}
+          height={MinimumCanvasSize.HEIGHT}
+        >
           <Layer ref={layerRef}>
             {slideList[slideBuilderMeta.selectedIndex]?.slideBlocks.map((n, i) => {
               return (

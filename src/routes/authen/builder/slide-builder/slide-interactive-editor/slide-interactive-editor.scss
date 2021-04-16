@@ -8,6 +8,10 @@
   width: calc(100vw - #{$slide-list-width} - #{$entities-width});
   height: calc(100vh - #{$header-height});
 
+  .konva-stg {
+    background-color: wheat;
+  }
+
   h2 {
     position: relative;
     top: 10%;

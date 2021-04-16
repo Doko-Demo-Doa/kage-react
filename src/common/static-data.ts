@@ -3,11 +3,11 @@ export const RESOURCE_PROTOCOL = "local-resource://";
 // Size của tờ canvas konva, tính bằng px
 export const MinimumCanvasSize = {
   WIDTH: 900,
-  HEIGHT: 560
+  HEIGHT: 460,
 };
 
 export const AppDefaults = {
-  DEFAULT_IMAGE_SCALE: 0.3
+  DEFAULT_IMAGE_SCALE: 0.3,
 };
 
 export enum QuizType {
@@ -24,7 +24,7 @@ export enum AnimationType {
   DISAPPEAR,
   MOVE,
   AUDIO_PLAY,
-  VIDEO_PLAY
+  VIDEO_PLAY,
 }
 
 export enum MediaType {
