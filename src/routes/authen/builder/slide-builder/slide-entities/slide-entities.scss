@@ -6,9 +6,10 @@
 
 .slide-entities {
   height: calc(100vh - 120px);
-  width: 280px;
+  width: 270px;
   transform: translateX(140px);
   right: 0;
+  overflow-x: hidden;
   outline: none;
   position: absolute;
   transition: 0.2s ease-in-out all;
