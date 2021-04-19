@@ -65,4 +65,5 @@ export type MediaReturnType = {
   filePath: string; // Also includes fileName
   fileName: string;
   extension: string;
+  extra?: any; // Size, position, etc
 };

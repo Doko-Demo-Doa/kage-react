@@ -77,8 +77,8 @@ export const SlideBuilderToolbar: React.FC = () => {
         }
       } else if (mType === MediaType.IMAGE) {
         // Image
-        const { fileName, extension } = await imageUtils.optimizeImage(path);
-        insertBlock(mType, fileName, extension);
+        const { fileName, extension, extra } = await imageUtils.optimizeImage(path);
+        insertBlock(mType, fileName, extension, extra);
         return;
       } else if (mType === MediaType.AUDIO) {
         audioUtils.optimizeAudio(path, (progress, filePath) => {
@@ -100,13 +100,26 @@ export const SlideBuilderToolbar: React.FC = () => {
     }
   };
 
-  const insertBlock = (type: MediaType, assetName: string, extension: string) => {
+  const insertBlock = (
+    type: MediaType,
+    assetName: string,
+    extension: string,
+    { width, height }: { width: number; height: number }
+  ) => {
     const blockData: SlideBlockType = {
       id: assetName,
       type,
       assetName: `${assetName}.${extension}`,
       autoPlay: false,
       content: "",
+      position: {
+        x: 12,
+        y: 50,
+      },
+      size: {
+        w: width,
+        h: height,
+      },
     };
 
     // Try not to mutate original object / array.

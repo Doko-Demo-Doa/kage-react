@@ -37,8 +37,8 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
           image={image}
           draggable
           onDragEnd={(e) => console.log(e)}
-          x={12}
-          y={50}
+          x={122}
+          y={250}
           scaleX={AppDefaults.DEFAULT_IMAGE_SCALE}
           scaleY={AppDefaults.DEFAULT_IMAGE_SCALE}
         />

@@ -6,6 +6,12 @@ export const MinimumCanvasSize = {
   HEIGHT: 560,
 };
 
+// Gốc toạ độ là góc trên bên trái
+export const InitialBlockCoordinate = {
+  x: 20,
+  y: 50,
+};
+
 export const AppDefaults = {
   DEFAULT_IMAGE_SCALE: 0.3,
 };

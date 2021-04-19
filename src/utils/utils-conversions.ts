@@ -96,10 +96,10 @@ export const imageUtils = {
     const imageMetadata = await sharp(filePath).metadata();
     const { width, height } = imageMetadata;
 
-    const data = sharp(filePath)
-      .rotate()
-      .resize(Math.min(OptimalImageSize.width, width), Math.min(OptimalImageSize.height, height))
-      .jpeg({ mozjpeg: true });
+    const newWidth = Math.min(OptimalImageSize.width, width);
+    const newHeight = Math.min(OptimalImageSize.height, height);
+
+    const data = sharp(filePath).rotate().resize(newWidth, newHeight).jpeg({ mozjpeg: true });
 
     const dataBuf = await data.toBuffer();
     const crc32 = remote.require("crc").crc32;
@@ -113,6 +113,10 @@ export const imageUtils = {
       filePath: dest,
       fileName: name,
       extension: "jpg",
+      extra: {
+        width: newWidth,
+        height: newHeight,
+      },
     };
 
     return result;
