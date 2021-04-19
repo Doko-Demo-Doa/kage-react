@@ -1,7 +1,7 @@
 import React from "react";
 import { SlideBuilderToolbar } from "~/routes/authen/builder/slide-builder/slide-builder-toolbar/slide-builder-toolbar";
 import { SlideList } from "~/routes/authen/builder/slide-builder/slide-list/slide-list";
-import { SlideInteractiveEditor } from "~/routes/authen/builder/slide-builder/slide-interactive-editor/slide-interactive-editor";
+import { SlideInteractiveEditor } from "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-interactive-editor-v2";
 import { SlideEntities } from "~/routes/authen/builder/slide-builder/slide-entities/slide-entities";
 
 import "~/routes/authen/builder/slide-builder/slide-builder.scss";
