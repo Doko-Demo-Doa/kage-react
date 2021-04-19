@@ -8,6 +8,7 @@ import {
   FolderOpenFilled,
   PictureFilled,
   MessageOutlined,
+  TableOutlined,
 } from "@ant-design/icons";
 import { useRecoilState } from "recoil";
 import { slideListState } from "~/atoms/slide-list-atom";
@@ -100,6 +101,10 @@ export const SlideBuilderToolbar: React.FC = () => {
     }
   };
 
+  const onInsertTable = () => {
+    insertBlock(MediaType.TABLE, "", "", { width: 0, height: 0 });
+  };
+
   const insertBlock = (
     type: MediaType,
     assetName: string,
@@ -180,6 +185,14 @@ export const SlideBuilderToolbar: React.FC = () => {
         >
           <Button disabled={shouldDisable} type="link" icon={<MessageOutlined />} size="middle" />
         </Popover>
+
+        <Button
+          disabled={shouldDisable}
+          type="link"
+          icon={<TableOutlined />}
+          size="middle"
+          onClick={() => onInsertTable()}
+        />
 
         <Divider type="vertical" />
         <Button icon={<PullRequestOutlined />} type="primary" danger>

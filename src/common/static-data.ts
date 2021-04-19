@@ -13,7 +13,7 @@ export const InitialBlockCoordinate = {
 };
 
 export const AppDefaults = {
-  DEFAULT_IMAGE_SCALE: 0.3,
+  DEFAULT_IMAGE_SCALE: 0.4,
 };
 
 export enum QuizType {
@@ -38,4 +38,5 @@ export enum MediaType {
   AUDIO,
   IMAGE,
   TEXT_BLOCK,
+  TABLE,
 }

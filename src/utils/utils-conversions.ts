@@ -6,8 +6,8 @@ import { fileUtils } from "~/utils/utils-files";
 import { MediaType } from "~/common/static-data";
 
 const OptimalImageSize = {
-  width: 1000,
-  height: 675,
+  width: 800,
+  height: 525,
 };
 
 export const audioUtils = {
