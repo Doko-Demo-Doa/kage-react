@@ -101,7 +101,16 @@ export const imageUtils = {
     const newWidth = Math.min(OptimalImageSize.width, width);
     const newHeight = Math.min(OptimalImageSize.height, height);
 
-    const data = sharp(filePath).rotate().resize(newWidth, newHeight).jpeg({ mozjpeg: true });
+    const data = sharp(filePath)
+      .resize(newWidth, newHeight)
+      .jpeg({ mozjpeg: true, quality: 60 })
+      .withMetadata({
+        exif: {
+          IFD0: {
+            Copyright: dayjs().unix().toString(),
+          },
+        },
+      });
 
     const dataBuf = await data.toBuffer();
     const crc32 = remote.require("crc").crc32;

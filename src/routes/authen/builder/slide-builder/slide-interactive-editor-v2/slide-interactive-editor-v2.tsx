@@ -89,7 +89,7 @@ export const SlideInteractiveEditor: React.FC = () => {
           );
         })}
 
-        <table>
+        {/* <table>
           <tbody>
             <tr>
               <th>Firstname</th>
@@ -111,7 +111,7 @@ export const SlideInteractiveEditor: React.FC = () => {
               <td>94</td>
             </tr>
           </tbody>
-        </table>
+        </table> */}
       </div>
     </>
   );

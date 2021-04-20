@@ -152,6 +152,7 @@ export const SlideBuilderToolbar: React.FC = () => {
 
   const onPublish = () => {
     const convertedStr = dataUtils.convertToHtmlSlideData(slideList);
+    console.log(slideList);
     dataUtils.writeToHtml(convertedStr);
   };
 
@@ -199,6 +200,7 @@ export const SlideBuilderToolbar: React.FC = () => {
           content={
             <TableConstructor
               onSelect={(numRows, numCols) => {
+                console.log(numRows, numCols);
                 setTableConstructorVisible(false);
               }}
             />
