@@ -31,31 +31,33 @@ export const audioUtils = {
   // Convert to MP3
   optimizeAudio: (
     filePath: string,
-    progressCallback?: (percent: number | string, filePath?: string) => void
+    progressCallback?: (
+      percent: number | string,
+      filePath: string,
+      fileName: string,
+      extension: string
+    ) => void
   ) => {
     const remote = require("electron").remote;
     const ffmpeg = remote.require("fluent-ffmpeg");
     const path = remote.require("path");
     const isAudio = fileUtils.detectMediaType(filePath) === MediaType.AUDIO;
 
+    const NORMALIZED_EXT = "mp3";
+
     if (isAudio) {
-      const tempName = `${dayjs().unix()}.mp3`;
+      const tempName = `${dayjs().unix()}.${NORMALIZED_EXT}`;
       const dest = path.join(fileUtils.getCacheDirectory(), tempName);
       const cmd = ffmpeg()
-        .on("start", function (ffmpegCommand: string) {
-          console.log("[ffmpeg command]:", ffmpegCommand);
-        })
         .on("progress", function (data: any) {
           // console.log("[ffmpeg]:", data);
-          progressCallback?.(data.percent);
+          progressCallback?.(data.percent, "", "", "");
         })
         .on("end", function () {
-          console.log("[ffmpeg end]");
-
-          const newName = `${fileUtils.getCRC32(dest)}.mp3`;
+          const newName = `${fileUtils.getCRC32(dest)}.${NORMALIZED_EXT}`;
           const newDest = path.join(fileUtils.getCacheDirectory(), newName);
           fs.renameSync(dest, newDest);
-          progressCallback?.("end", newDest);
+          progressCallback?.("end", newDest, newName, NORMALIZED_EXT);
         })
         .on("error", function (error: any) {
           console.log("[ffmpeg error]:", error);

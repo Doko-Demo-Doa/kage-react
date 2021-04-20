@@ -33,7 +33,7 @@ export const SlideBuilderToolbar: React.FC = () => {
 
   const onNewSlide = () => {
     const newSlide = {
-      title: "Title here",
+      title: "",
       slideBlocks: [],
       steps: [],
     };
@@ -82,12 +82,11 @@ export const SlideBuilderToolbar: React.FC = () => {
         insertBlock(mType, fileName, extension, extra);
         return;
       } else if (mType === MediaType.AUDIO) {
-        audioUtils.optimizeAudio(path, (progress, filePath) => {
-          console.log(progress);
+        audioUtils.optimizeAudio(path, (progress, filePath, fileName, extension) => {
           if (progress === "end") {
             // Hiển thị message báo convert
-            const videoUrl = `local-resource://${filePath}`;
-            emitter.emit("insert-audio", videoUrl);
+            insertBlock(mType, fileName, extension, { width: 0, height: 0 });
+
             notification.open({
               message: "Hoàn tất",
               description: "Audio đã được chuyển về định dạng chuẩn để có thể đưa vào slide.",

@@ -80,7 +80,6 @@ export const SlideInteractiveEditor: React.FC = () => {
                 selectBlock(slideBuilderMeta.selectedIndex, blockId);
               }}
               onDrag={(blockId, center) => {
-                console.log(center);
                 dispatchDragBlock(blockId, center);
               }}
               onResized={(blockId, center, size) => {
