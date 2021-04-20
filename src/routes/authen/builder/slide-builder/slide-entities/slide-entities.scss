@@ -49,6 +49,10 @@
       align-items: center;
       height: 42px;
 
+      .audio {
+        cursor: pointer;
+      }
+
       .entity-label {
         margin-left: 0.8rem;
         white-space: nowrap;

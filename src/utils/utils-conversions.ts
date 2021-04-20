@@ -54,8 +54,8 @@ export const audioUtils = {
           progressCallback?.(data.percent, "", "", "");
         })
         .on("end", function () {
-          const newName = `${fileUtils.getCRC32(dest)}.${NORMALIZED_EXT}`;
-          const newDest = path.join(fileUtils.getCacheDirectory(), newName);
+          const newName = fileUtils.getCRC32(dest);
+          const newDest = path.join(fileUtils.getCacheDirectory(), `${newName}.${NORMALIZED_EXT}`);
           fs.renameSync(dest, newDest);
           progressCallback?.("end", newDest, newName, NORMALIZED_EXT);
         })

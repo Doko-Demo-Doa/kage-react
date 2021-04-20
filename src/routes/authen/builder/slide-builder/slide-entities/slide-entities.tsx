@@ -1,37 +1,76 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import clsx from "clsx";
 import { Input, Divider } from "antd";
 import {
   ArrowLeftOutlined,
   ArrowRightOutlined,
   HeartTwoTone,
-  AudioTwoTone,
+  SoundTwoTone,
   PictureTwoTone,
+  StopTwoTone,
 } from "@ant-design/icons";
 import { useRecoilState } from "recoil";
 
-import { MediaType } from "~/common/static-data";
+import { MediaType, RESOURCE_PROTOCOL } from "~/common/static-data";
 import { Colors } from "~/common/colors";
 import { slideBuilderState } from "~/atoms/slide-builder-atom";
 import { slideListState } from "~/atoms/slide-list-atom";
 
 import "~/routes/authen/builder/slide-builder/slide-entities/slide-entities.scss";
+import { fileUtils } from "~/utils/utils-files";
 
 type AnimationEntityType = {
   type: MediaType;
+  assetName: string;
 };
 
-const SingleAnimationEntity: React.FC<AnimationEntityType> = ({ type }) => {
+const SingleAnimationEntity: React.FC<AnimationEntityType> = ({ type, assetName }) => {
+  const assetUrl = useMemo(
+    () => `${RESOURCE_PROTOCOL}${fileUtils.getCacheDirectory()}/${assetName}`,
+    [assetName]
+  );
+
+  const aRef = useRef<HTMLAudioElement>(null);
+  const [playing, setPlaying] = useState(false);
+
   function getIcon() {
-    if (type === MediaType.AUDIO) return <AudioTwoTone twoToneColor={Colors.DODGER_BLUE} />;
-    if (type === MediaType.IMAGE) return <PictureTwoTone twoToneColor={Colors.BUTTERSCOTCH} />;
+    if (type === MediaType.AUDIO) {
+      const Comp = playing ? StopTwoTone : SoundTwoTone;
+      return (
+        <Comp
+          size={35}
+          className="audio"
+          twoToneColor={Colors.DODGER_BLUE}
+          onClick={() => toggleAudio()}
+        />
+      );
+    }
+
+    if (type === MediaType.IMAGE) {
+      return <PictureTwoTone twoToneColor={Colors.BUTTERSCOTCH} />;
+    }
     return <HeartTwoTone twoToneColor={Colors.BARBIE_PINK} />;
+  }
+
+  function toggleAudio() {
+    if (!playing) {
+      aRef.current?.play();
+      setPlaying(true);
+    } else {
+      aRef.current?.pause();
+      setPlaying(false);
+    }
   }
 
   return (
     <div className="entity-cell">
       {getIcon()}
-      <div className="entity-label">Data image</div>
+      <div className="entity-label">Data</div>
+
+      <audio ref={aRef}>
+        <source src={assetUrl} type="audio/mpeg" />
+        Not supported.
+      </audio>
     </div>
   );
 };
@@ -75,7 +114,7 @@ export const SlideEntities: React.FC = () => {
           <Divider type="horizontal" />
           <h2>Objects</h2>
           {blocks.map((n, idx) => (
-            <SingleAnimationEntity type={n.type} key={idx} />
+            <SingleAnimationEntity type={n.type} assetName={n.assetName ?? ""} key={idx} />
           ))}
         </div>
       </div>

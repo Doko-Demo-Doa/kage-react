@@ -122,7 +122,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
       );
     }
 
-    return <div>Alt Text</div>;
+    return null;
   };
 
   return <>{getMainComponent()}</>;
