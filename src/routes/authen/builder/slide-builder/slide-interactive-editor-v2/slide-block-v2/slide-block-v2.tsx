@@ -93,6 +93,10 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
             width: size?.w ?? 0,
             height: size?.h ?? 0,
           }}
+          position={{
+            x: initX,
+            y: initY,
+          }}
           className="single-block"
           style={{
             backgroundImage: `url(${assetUrl})`,

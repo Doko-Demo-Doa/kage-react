@@ -2,11 +2,11 @@ import { useRecoilState } from "recoil";
 import { slideListState } from "~/atoms/slide-list-atom";
 import { slideBuilderState } from "~/atoms/slide-builder-atom";
 import { BlockSizeType, PositionType, SlideType } from "~/typings/types";
+import { dataUtils } from "~/utils/utils-data";
 import { SlideBlock } from "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-block-v2/slide-block-v2";
 
 import "react-quill/dist/quill.snow.css";
 import "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-interactive-editor-v2.scss";
-import { dataUtils } from "~/utils/utils-data";
 
 export const SlideInteractiveEditor: React.FC = () => {
   const [slideList, setSlideList] = useRecoilState(slideListState);
@@ -57,7 +57,7 @@ export const SlideInteractiveEditor: React.FC = () => {
       const blk = { ...activeSlide.slideBlocks[targetBlock] };
       blk.position = newPosition;
 
-      activeSlide.slideBlocks[targetBlock] = { ...blk };
+      activeSlide.slideBlocks[targetBlock] = blk;
       newSlideArray[slideIndex] = activeSlide;
 
       setSlideList(newSlideArray);

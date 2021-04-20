@@ -6,6 +6,7 @@ import {
   ArrowRightOutlined,
   HeartTwoTone,
   AudioTwoTone,
+  PictureTwoTone,
 } from "@ant-design/icons";
 import { useRecoilState } from "recoil";
 
@@ -23,13 +24,14 @@ type AnimationEntityType = {
 const SingleAnimationEntity: React.FC<AnimationEntityType> = ({ type }) => {
   function getIcon() {
     if (type === MediaType.AUDIO) return <AudioTwoTone twoToneColor={Colors.DODGER_BLUE} />;
+    if (type === MediaType.IMAGE) return <PictureTwoTone twoToneColor={Colors.BUTTERSCOTCH} />;
     return <HeartTwoTone twoToneColor={Colors.BARBIE_PINK} />;
   }
 
   return (
     <div className="entity-cell">
       {getIcon()}
-      <div className="entity-label">Text Test</div>
+      <div className="entity-label">Data image</div>
     </div>
   );
 };
@@ -53,6 +55,8 @@ export const SlideEntities: React.FC = () => {
     setSlideList(newArr);
   }
 
+  const blocks = slideList[slideBuilderMeta.selectedIndex]?.slideBlocks || [];
+
   return (
     <>
       <div className="side-holder" />
@@ -69,9 +73,9 @@ export const SlideEntities: React.FC = () => {
             defaultValue=""
           />
           <Divider type="horizontal" />
-          <h2>Animation</h2>
-          {slideList[slideBuilderMeta.selectedIndex]?.slideBlocks.map((n, idx) => (
-            <SingleAnimationEntity type={MediaType.AUDIO} key={idx} />
+          <h2>Objects</h2>
+          {blocks.map((n, idx) => (
+            <SingleAnimationEntity type={n.type} key={idx} />
           ))}
         </div>
       </div>
