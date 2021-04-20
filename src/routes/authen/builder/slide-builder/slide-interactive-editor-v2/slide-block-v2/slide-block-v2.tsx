@@ -1,63 +1,51 @@
 import React, { useState } from "react";
 import { Rnd } from "react-rnd";
-import { Table } from "antd";
 import { AppDefaults, MediaType, RESOURCE_PROTOCOL } from "~/common/static-data";
 import { SlideBlockType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
 
-const columns = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    render: (text: string) => <a>{text}</a>,
-  },
-  {
-    title: "Age",
-    dataIndex: "age",
-    key: "age",
-  },
-  {
-    title: "Address",
-    dataIndex: "address",
-    key: "address",
-  },
-];
-
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"],
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-    tags: ["loser"],
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sidney No. 1 Lake Park",
-    tags: ["cool", "teacher"],
-  },
-];
-
 type SlideBlockComponentType = SlideBlockType & {
   selected?: boolean;
   onSelect: (id: string) => void | undefined;
+  onDrag?: (
+    blockId: string,
+    center: { x: number; y: number },
+    size: { w: number; h: number }
+  ) => void | undefined;
+  onResized?: (
+    blockId: string,
+    topLeft: { x: number; y: number },
+    size: { w: number; h: number }
+  ) => void | undefined;
 };
 
-export const SlideBlock: React.FC<SlideBlockComponentType> = ({ type, assetName, size }) => {
+export const SlideBlock: React.FC<SlideBlockComponentType> = ({
+  id,
+  type,
+  assetName,
+  size,
+  position,
+  onDrag,
+  onResized,
+}) => {
   const assetUrl = `${RESOURCE_PROTOCOL}${fileUtils.getCacheDirectory()}/${assetName}`;
 
-  const initW = AppDefaults.DEFAULT_IMAGE_SCALE * (size?.w ?? 0);
-  const initH = AppDefaults.DEFAULT_IMAGE_SCALE * (size?.h ?? 0);
+  let initW = AppDefaults.DEFAULT_IMAGE_SCALE * (size?.w ?? 0);
+  let initH = AppDefaults.DEFAULT_IMAGE_SCALE * (size?.h ?? 0);
+
+  let initX = 0;
+  let initY = 0;
+
+  if (size) {
+    initW = size.w;
+    initH = size.h;
+  }
+
+  if (position) {
+    // Translate to top-left
+    initX = position.x - initW / 2;
+    initY = position.y - initH / 2;
+  }
 
   const [blockW, setBlockW] = useState(initW);
   const [blockH, setBlockH] = useState(initH);
@@ -67,17 +55,27 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({ type, assetName,
       return (
         <Rnd
           bounds="parent"
+          lockAspectRatio
           onDragStop={(e, d) => {
             const topLeftX = d.x;
             const topLeftY = d.y;
             if (!size) return;
             const centerOriginW = topLeftX + blockW / 2;
             const centerOriginH = topLeftY + blockH / 2;
-            console.log("Origin: ", centerOriginW, centerOriginH);
+
+            onDrag?.(id, { x: centerOriginW, y: centerOriginH }, { w: blockW, h: blockH });
           }}
-          onResizeStop={(mouseEvent, direction, element, delta) => {
-            setBlockW(blockW + delta.width);
-            setBlockH(blockH + delta.height);
+          onResizeStop={(mouseEvent, direction, element, delta, position) => {
+            const newW = blockW + delta.width;
+            const newH = blockH + delta.height;
+
+            setBlockW(newW);
+            setBlockH(newH);
+
+            const newX = position.x + newW / 2;
+            const newY = position.y + newH / 2;
+
+            onResized?.(id, { x: newX, y: newY }, { w: newW, h: newH });
           }}
           enableResizing={{
             top: false,
@@ -90,16 +88,14 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({ type, assetName,
             topLeft: true,
           }}
           default={{
-            x: 0,
-            y: 0,
-            width: AppDefaults.DEFAULT_IMAGE_SCALE * (size?.w ?? 0),
-            height: AppDefaults.DEFAULT_IMAGE_SCALE * (size?.h ?? 0),
+            x: initX,
+            y: initY,
+            width: size?.w ?? 0,
+            height: size?.h ?? 0,
           }}
+          className="single-block"
           style={{
-            zIndex: 0,
-            background: `url(${assetUrl})`,
-            backgroundSize: "contain",
-            backgroundRepeat: "no-repeat",
+            backgroundImage: `url(${assetUrl})`,
           }}
         />
       );
@@ -118,9 +114,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({ type, assetName,
             width: 320,
             height: 200,
           }}
-        >
-          <Table columns={columns} dataSource={data} />
-        </Rnd>
+        ></Rnd>
       );
     }
 

@@ -8,8 +8,8 @@ export const MinimumCanvasSize = {
 
 // Gốc toạ độ là góc trên bên trái
 export const InitialBlockCoordinate = {
-  x: 20,
-  y: 50,
+  x: 420,
+  y: 270,
 };
 
 export const AppDefaults = {

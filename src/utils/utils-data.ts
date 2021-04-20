@@ -13,10 +13,12 @@ function singleSlideConstructor(slide: SlideType) {
       <h2>${slide.title}</h2>
       ${slide.slideBlocks.map((block) => {
         if (block.type === MediaType.VIDEO) {
-          const sizeAppend = `${block.size ? `width="${block.size.w}" height="${block.size.h}"` : ""
-            }`;
-          const positionAppend = `${block.position ? `style="left: ${block.position.x}; top: ${block.position.y}"` : ""
-            }`;
+          const sizeAppend = `${
+            block.size ? `width="${block.size.w}" height="${block.size.h}"` : ""
+          }`;
+          const positionAppend = `${
+            block.position ? `style="left: ${block.position.x}; top: ${block.position.y}"` : ""
+          }`;
           return stripIndent(`
             <video class="r-stack" src="${subfolderPath}/${block.assetName}"
               ${sizeAppend}
@@ -27,10 +29,12 @@ function singleSlideConstructor(slide: SlideType) {
         }
 
         if (block.type === MediaType.IMAGE) {
-          const sizeAppend = `${block.size ? `width="${block.size.w}" height="${block.size.h}"` : ""
-            }`;
-          const positionAppend = `${block.position ? `style="left: ${block.position.x}; top: ${block.position.y}"` : ""
-            }`;
+          const sizeAppend = `${
+            block.size ? `width="${block.size.w}" height="${block.size.h}"` : ""
+          }`;
+          const positionAppend = `${
+            block.position ? `style="left: ${block.position.x}; top: ${block.position.y}"` : ""
+          }`;
           return stripIndent(`
             <img class="r-stack" src="${subfolderPath}/${block.assetName}"
               ${sizeAppend}
@@ -51,6 +55,9 @@ function singleSlideConstructor(slide: SlideType) {
 }
 
 export const dataUtils = {
+  convertToMutableData: (inputData: Record<string, any> | Array<any>) => {
+    return JSON.parse(JSON.stringify(inputData));
+  },
   saveSlideJsonToCache: (jsonData: string) => {
     const path = fileUtils.createFilePathAtCacheDir("manifest.json");
     fs.writeFileSync(path, jsonData);

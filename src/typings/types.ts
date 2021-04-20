@@ -18,18 +18,23 @@ export interface SlideBlockType {
   content?: string; // Chỉ có nếu type là text
   assetName?: string;
   autoPlay?: boolean;
-  position?: {
-    x: number;
-    y: number;
-  };
-  size?: {
-    w: number;
-    h: number;
-  };
+  position?: PositionType;
+  size?: BlockSizeType;
 }
 
 export type SlideStepType = {
   blockId: number;
+};
+
+export type PositionType = {
+  x: number;
+  y: number;
+};
+
+export type BlockSizeType = {
+  w: number;
+  h: number;
+  scale?: number;
 };
 
 export type FFProbeMetaType = {

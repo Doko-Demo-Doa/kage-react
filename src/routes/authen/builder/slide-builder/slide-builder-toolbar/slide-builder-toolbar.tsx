@@ -17,7 +17,7 @@ import { slideBuilderState } from "~/atoms/slide-builder-atom";
 import { CalloutMatrix } from "~/components/callout-matrix/callout-matrix";
 import { fileUtils } from "~/utils/utils-files";
 import { audioUtils, ffmpegUtils, imageUtils } from "~/utils/utils-conversions";
-import { MediaType } from "~/common/static-data";
+import { AppDefaults, InitialBlockCoordinate, MediaType } from "~/common/static-data";
 import { emitter } from "~/services/events-helper";
 import { dataUtils } from "~/utils/utils-data";
 import { isElectron } from "~/utils/utils-platform";
@@ -118,12 +118,12 @@ export const SlideBuilderToolbar: React.FC = () => {
       autoPlay: false,
       content: "",
       position: {
-        x: 12,
-        y: 50,
+        x: InitialBlockCoordinate.x,
+        y: InitialBlockCoordinate.y,
       },
       size: {
-        w: width,
-        h: height,
+        w: width * AppDefaults.DEFAULT_IMAGE_SCALE,
+        h: height * AppDefaults.DEFAULT_IMAGE_SCALE,
       },
     };
 
