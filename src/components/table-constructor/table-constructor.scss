@@ -1,0 +1,27 @@
+$cell-size: 20px;
+
+.table-constructor {
+  width: 130px;
+  outline: none;
+  justify-content: flex-start;
+  align-items: baseline;
+  user-select: none;
+
+  .table-con-row {
+    display: flex;
+    flex-direction: row;
+
+    .table-con-cell {
+      width: $cell-size;
+      height: $cell-size;
+      margin: 3px;
+      border: 1px solid $color-gray-medium;
+      background-color: $color-gray-light;
+      cursor: pointer;
+    }
+
+    .table-con-cell-active {
+      background-color: $color-orange;
+    }
+  }
+}

@@ -1,5 +1,5 @@
-import React from "react";
-import { Space, Button, Divider, Tooltip, notification, Popover } from "antd";
+import React, { useState, useRef } from "react";
+import { Space, Button, Divider, Tooltip, notification, Popover, PopoverProps } from "antd";
 import {
   FontSizeOutlined,
   PlusOutlined,
@@ -24,10 +24,14 @@ import { isElectron } from "~/utils/utils-platform";
 import { SlideBlockType } from "~/typings/types";
 
 import "~/routes/authen/builder/slide-builder/slide-builder-toolbar/slide-builder-toolbar.scss";
+import { TableConstructor } from "~/components/table-constructor/table-constructor";
 
 export const SlideBuilderToolbar: React.FC = () => {
+  const [tableConstructorVisible, setTableConstructorVisible] = useState(false);
   const [slideList, setSlideList] = useRecoilState(slideListState);
   const [slideBuilderMeta] = useRecoilState(slideBuilderState);
+
+  const tableRef = useRef<PopoverProps>(null);
 
   const shouldDisable = slideList.length <= 0;
 
@@ -102,7 +106,7 @@ export const SlideBuilderToolbar: React.FC = () => {
   };
 
   const onInsertTable = () => {
-    insertBlock(MediaType.TABLE, "", "", { width: 0, height: 0 });
+    // insertBlock(MediaType.TABLE, "", "", { width: 0, height: 0 });
   };
 
   const insertBlock = (
@@ -186,13 +190,28 @@ export const SlideBuilderToolbar: React.FC = () => {
           <Button disabled={shouldDisable} type="link" icon={<MessageOutlined />} size="middle" />
         </Popover>
 
-        <Button
-          disabled={shouldDisable}
-          type="link"
-          icon={<TableOutlined />}
-          size="middle"
-          onClick={() => onInsertTable()}
-        />
+        <Popover
+          arrowContent
+          trigger="click"
+          destroyTooltipOnHide
+          visible={tableConstructorVisible && !shouldDisable}
+          onVisibleChange={(visible) => setTableConstructorVisible(visible)}
+          content={
+            <TableConstructor
+              onSelect={(numRows, numCols) => {
+                setTableConstructorVisible(false);
+              }}
+            />
+          }
+        >
+          <Button
+            disabled={shouldDisable}
+            type="link"
+            icon={<TableOutlined />}
+            size="middle"
+            onClick={() => onInsertTable()}
+          />
+        </Popover>
 
         <Divider type="vertical" />
         <Button icon={<PullRequestOutlined />} type="primary" danger>

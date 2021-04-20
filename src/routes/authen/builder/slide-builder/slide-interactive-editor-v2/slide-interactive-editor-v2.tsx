@@ -88,6 +88,30 @@ export const SlideInteractiveEditor: React.FC = () => {
             />
           );
         })}
+
+        <table>
+          <tbody>
+            <tr>
+              <th>Firstname</th>
+              <th>Lastname</th>
+              <th>
+                <input type="text" name="yourname" />
+              </th>
+            </tr>
+            <tr>
+              <td>Jill</td>
+              <td>Smith</td>
+              <td>
+                <input name="thisrowuniqueid" />
+              </td>
+            </tr>
+            <tr>
+              <td>Eve</td>
+              <td>Jackson</td>
+              <td>94</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </>
   );
