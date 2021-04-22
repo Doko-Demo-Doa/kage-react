@@ -3,6 +3,7 @@ import { Rnd } from "react-rnd";
 import { AppDefaults, MediaType, RESOURCE_PROTOCOL } from "~/common/static-data";
 import { SlideBlockType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
+import { breakStringByLineBreaks } from "~/utils/utils-formatting";
 
 type SlideBlockComponentType = SlideBlockType & {
   selected?: boolean;
@@ -25,6 +26,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
   assetName,
   size,
   position,
+  deltaContent,
   onDrag,
   onResized,
 }) => {
@@ -106,13 +108,24 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
     }
 
     if (type === MediaType.TEXT_BLOCK) {
+      console.log("delta", deltaContent);
       return (
-        <Rnd
-          onDragStop={(e, d) => {
-            console.log(d);
-            console.log(size);
-          }}
-        ></Rnd>
+        <Rnd enableResizing={false}>
+          <div className="interactive-text-block">
+            {deltaContent?.map((contentBlock, idx) => {
+              const insertStrs = breakStringByLineBreaks(contentBlock.insert);
+              return insertStrs.map((subStr, idx2) =>
+                !subStr ? (
+                  <br />
+                ) : (
+                  <div className="separated-block" key={idx2}>
+                    {subStr}
+                  </div>
+                )
+              );
+            })}
+          </div>
+        </Rnd>
       );
     }
 

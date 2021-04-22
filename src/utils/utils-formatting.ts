@@ -43,3 +43,8 @@ export function furiganaTemplateToHTML(inputStr: string) {
 
   return inputStr;
 }
+
+export function breakStringByLineBreaks(inputStr: string): string[] {
+  const array = inputStr.split(/\r?\n/);
+  return array;
+}

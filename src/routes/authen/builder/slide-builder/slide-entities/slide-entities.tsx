@@ -67,10 +67,12 @@ const SingleAnimationEntity: React.FC<AnimationEntityType> = ({ type, assetName 
       {getIcon()}
       <div className="entity-label">Data</div>
 
-      <audio ref={aRef}>
-        <source src={assetUrl} type="audio/mpeg" />
-        Not supported.
-      </audio>
+      {type === MediaType.AUDIO && (
+        <audio ref={aRef}>
+          <source src={assetUrl} type="audio/mpeg" />
+          Not supported.
+        </audio>
+      )}
     </div>
   );
 };

@@ -128,6 +128,7 @@ export const SlideBuilderToolbar: React.FC = () => {
               toolbar: [
                 [{ header: [1, 2, false] }],
                 ["bold", "italic", "underline", "strike"],
+                [{ color: [] }, { background: [] }],
                 [{ list: "ordered" }, { list: "bullet" }],
                 ["clean"],
               ],
@@ -140,8 +141,6 @@ export const SlideBuilderToolbar: React.FC = () => {
       onOk: () => {
         const data = quillRef.current?.getEditor().getContents().ops;
         insertBlock(MediaType.TEXT_BLOCK, "", "", { width: 0, height: 0 }, data);
-        console.log(quillRef.current?.getEditor().getContents());
-        console.log(quillRef.current?.getEditor().getLeaf(0));
       },
     });
   };

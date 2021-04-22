@@ -1,6 +1,6 @@
 import React from "react";
 import Konva from "konva";
-import { Image, Text, Transformer } from "react-konva";
+import { Image, Text } from "react-konva";
 import useImage from "use-image";
 import { AppDefaults, MediaType, RESOURCE_PROTOCOL } from "~/common/static-data";
 import { SlideBlockType } from "~/typings/types";
@@ -45,24 +45,12 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
       );
     }
 
+    if (type === MediaType.TEXT_BLOCK) {
+      return <div>Test</div>;
+    }
+
     return <Text text="Alt Text" />;
   };
 
-  return (
-    <>
-      {getMainComponent()}
-      <Transformer
-        ref={trRef}
-        enabledAnchors={["top-left", "top-right", "bottom-left", "bottom-right"]}
-        rotateEnabled={false}
-        onTransformEnd={(e) => console.log(e)}
-        boundBoxFunc={(oldBox, newBox) => {
-          if (newBox.width < 5 || newBox.height < 5) {
-            return oldBox;
-          }
-          return newBox;
-        }}
-      />
-    </>
-  );
+  return <>{getMainComponent()}</>;
 };
