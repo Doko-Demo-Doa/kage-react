@@ -7,7 +7,6 @@ import { SlideBlock } from "~/routes/authen/builder/slide-builder/slide-interact
 import { slideListState } from "~/atoms/slide-list-atom";
 import { slideBuilderState } from "~/atoms/slide-builder-atom";
 
-import "react-quill/dist/quill.snow.css";
 import "~/routes/authen/builder/slide-builder/slide-interactive-editor/slide-interactive-editor.scss";
 
 export const SlideInteractiveEditor: React.FC = () => {

@@ -105,18 +105,12 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
       );
     }
 
-    if (type === MediaType.TABLE) {
+    if (type === MediaType.TEXT_BLOCK) {
       return (
         <Rnd
           onDragStop={(e, d) => {
             console.log(d);
             console.log(size);
-          }}
-          default={{
-            x: 0,
-            y: 0,
-            width: 320,
-            height: 200,
           }}
         ></Rnd>
       );

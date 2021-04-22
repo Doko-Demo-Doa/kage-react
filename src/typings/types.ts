@@ -1,3 +1,4 @@
+import { DeltaOperation } from "quill";
 import { MediaType } from "~/common/static-data";
 
 export type SlideBuilderState = {
@@ -16,6 +17,7 @@ export interface SlideBlockType {
   id: string;
   type: MediaType;
   content?: string; // Chỉ có nếu type là text
+  deltaContent?: DeltaOperation[];
   assetName?: string;
   autoPlay?: boolean;
   position?: PositionType;

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Space, Button, Divider, Tooltip, notification, Popover, PopoverProps } from "antd";
+import { Space, Button, Divider, Tooltip, notification, Popover, Modal } from "antd";
 import {
   FontSizeOutlined,
   PlusOutlined,
@@ -10,28 +10,30 @@ import {
   MessageOutlined,
   TableOutlined,
 } from "@ant-design/icons";
+import { Delta, DeltaOperation } from "quill";
+import ReactQuill from "react-quill";
 import { useRecoilState } from "recoil";
 import { slideListState } from "~/atoms/slide-list-atom";
 import { slideBuilderState } from "~/atoms/slide-builder-atom";
 
 import { CalloutMatrix } from "~/components/callout-matrix/callout-matrix";
+import { TableConstructor } from "~/components/table-constructor/table-constructor";
 import { fileUtils } from "~/utils/utils-files";
 import { audioUtils, ffmpegUtils, imageUtils } from "~/utils/utils-conversions";
 import { AppDefaults, InitialBlockCoordinate, MediaType } from "~/common/static-data";
-import { emitter } from "~/services/events-helper";
 import { dataUtils } from "~/utils/utils-data";
 import { isElectron } from "~/utils/utils-platform";
 import { SlideBlockType } from "~/typings/types";
 
+import "react-quill/dist/quill.snow.css";
 import "~/routes/authen/builder/slide-builder/slide-builder-toolbar/slide-builder-toolbar.scss";
-import { TableConstructor } from "~/components/table-constructor/table-constructor";
 
 export const SlideBuilderToolbar: React.FC = () => {
   const [tableConstructorVisible, setTableConstructorVisible] = useState(false);
   const [slideList, setSlideList] = useRecoilState(slideListState);
   const [slideBuilderMeta] = useRecoilState(slideBuilderState);
 
-  const tableRef = useRef<PopoverProps>(null);
+  const quillRef = useRef<ReactQuill>(null);
 
   const shouldDisable = slideList.length <= 0;
 
@@ -48,8 +50,6 @@ export const SlideBuilderToolbar: React.FC = () => {
 
     const newSlideArray = [...slideList, newSlide];
     setSlideList(newSlideArray);
-    // Ghi vào file json.
-    dataUtils.saveSlideJsonToCache(JSON.stringify(newSlideArray, null, 2));
   };
 
   const onInsertMedia = async () => {
@@ -68,7 +68,6 @@ export const SlideBuilderToolbar: React.FC = () => {
             if (progress === "end") {
               // Hiển thị message báo convert
               const videoUrl = `local-resource://${filePath}`;
-              emitter.emit("insert-image", videoUrl);
               notification.open({
                 message: "Hoàn tất",
                 description:
@@ -106,14 +105,63 @@ export const SlideBuilderToolbar: React.FC = () => {
   };
 
   const onInsertTable = () => {
-    // insertBlock(MediaType.TABLE, "", "", { width: 0, height: 0 });
+    insertBlock(MediaType.TABLE, "", "", { width: 0, height: 0 });
+  };
+
+  const onNewRichText = (deltaQuill: Delta | string) => {
+    Modal.info({
+      title: "Chèn chữ",
+      width: 600,
+      content: (
+        <>
+          <div
+            onClick={() => {
+              console.log(quillRef.current?.getEditor().getContents());
+              console.log(quillRef.current?.getEditor().getLeaf(0));
+            }}
+          >
+            teest
+          </div>
+          <ReactQuill
+            defaultValue={deltaQuill}
+            modules={{
+              toolbar: [
+                [{ header: [1, 2, false] }],
+                ["bold", "italic", "underline", "strike"],
+                [{ list: "ordered" }, { list: "bullet" }],
+                ["clean"],
+              ],
+            }}
+            ref={quillRef}
+            theme="snow"
+          />
+        </>
+      ),
+      onOk: () => {
+        const data = quillRef.current?.getEditor().getContents().ops;
+        insertBlock(MediaType.TEXT_BLOCK, "", "", { width: 0, height: 0 }, data);
+        console.log(quillRef.current?.getEditor().getContents());
+        console.log(quillRef.current?.getEditor().getLeaf(0));
+      },
+    });
+  };
+
+  const onPublish = () => {
+    const convertedStr = dataUtils.convertToHtmlSlideData(slideList);
+    console.log(slideList);
+    dataUtils.writeToHtml(convertedStr);
+  };
+
+  const onOpenCache = () => {
+    fileUtils.openFolderBrowser(fileUtils.getCacheDirectory());
   };
 
   const insertBlock = (
     type: MediaType,
     assetName: string,
     extension: string,
-    { width, height }: { width: number; height: number }
+    { width, height }: { width: number; height: number },
+    quillData?: DeltaOperation[]
   ) => {
     const blockData: SlideBlockType = {
       id: assetName,
@@ -129,6 +177,7 @@ export const SlideBuilderToolbar: React.FC = () => {
         w: width * AppDefaults.DEFAULT_IMAGE_SCALE,
         h: height * AppDefaults.DEFAULT_IMAGE_SCALE,
       },
+      deltaContent: quillData ?? undefined,
     };
 
     // Try not to mutate original object / array.
@@ -146,20 +195,6 @@ export const SlideBuilderToolbar: React.FC = () => {
     setSlideList([...newArr]);
   };
 
-  const onNewRichText = () => {
-    emitter.emit("insert-rich-text");
-  };
-
-  const onPublish = () => {
-    const convertedStr = dataUtils.convertToHtmlSlideData(slideList);
-    console.log(slideList);
-    dataUtils.writeToHtml(convertedStr);
-  };
-
-  const onOpenCache = () => {
-    fileUtils.openFolderBrowser(fileUtils.getCacheDirectory());
-  };
-
   return (
     <div className="slide-builder-toolbar">
       <Space>
@@ -171,7 +206,7 @@ export const SlideBuilderToolbar: React.FC = () => {
           icon={<FontSizeOutlined />}
           size="middle"
           disabled={shouldDisable}
-          onClick={() => onNewRichText()}
+          onClick={() => onNewRichText("")}
         />
         <Tooltip placement="bottom" title="Chèn ảnh / video">
           <Button
