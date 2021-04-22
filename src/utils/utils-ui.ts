@@ -34,3 +34,11 @@ export const showMessage = (msg: string, type: MessageType = "info", maxCount = 
   });
   return message[type](msg);
 };
+
+export const defaultQuillToolbar = [
+  [{ header: [1, 2, false] }],
+  ["bold", "italic", "underline", "strike"],
+  [{ color: [] }, { background: [] }],
+  [{ list: "ordered" }, { list: "bullet" }],
+  ["clean"],
+];

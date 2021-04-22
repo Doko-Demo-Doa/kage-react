@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Rnd } from "react-rnd";
+import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
+import parse from "html-react-parser";
 import { AppDefaults, MediaType, RESOURCE_PROTOCOL } from "~/common/static-data";
 import { SlideBlockType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
@@ -108,23 +110,11 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
     }
 
     if (type === MediaType.TEXT_BLOCK) {
-      console.log("delta", deltaContent);
+      const converter = new QuillDeltaToHtmlConverter(deltaContent!, {});
+      const html = converter.convert();
       return (
         <Rnd enableResizing={false}>
-          <div className="interactive-text-block">
-            {deltaContent?.map((contentBlock, idx) => {
-              const insertStrs = breakStringByLineBreaks(contentBlock.insert);
-              return insertStrs.map((subStr, idx2) =>
-                !subStr ? (
-                  <br />
-                ) : (
-                  <div className="separated-block" key={idx2}>
-                    {subStr}
-                  </div>
-                )
-              );
-            })}
-          </div>
+          <div className="interactive-text-block">{parse(html)}</div>
         </Rnd>
       );
     }

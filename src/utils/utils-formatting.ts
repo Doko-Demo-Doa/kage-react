@@ -1,3 +1,5 @@
+import { split, splitWhen } from "rambdax";
+
 export function getTextWithCondition(str: string, condition: RegExp | string) {
   const regexStr = new RegExp(condition);
   const result = str.match(regexStr);
@@ -44,7 +46,10 @@ export function furiganaTemplateToHTML(inputStr: string) {
   return inputStr;
 }
 
-export function breakStringByLineBreaks(inputStr: string): string[] {
-  const array = inputStr.split(/\r?\n/);
-  return array;
+export function breakStringByLineBreaks(inputStr: string) {
+  let resp = split(/\r?\n/, inputStr);
+  if (resp.every((n) => !n)) {
+    resp = resp.slice(0, -1);
+  }
+  return resp;
 }

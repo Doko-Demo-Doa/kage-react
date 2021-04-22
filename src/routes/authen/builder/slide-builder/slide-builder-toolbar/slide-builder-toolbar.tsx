@@ -27,6 +27,7 @@ import { SlideBlockType } from "~/typings/types";
 
 import "react-quill/dist/quill.snow.css";
 import "~/routes/authen/builder/slide-builder/slide-builder-toolbar/slide-builder-toolbar.scss";
+import { defaultQuillToolbar } from "~/utils/utils-ui";
 
 export const SlideBuilderToolbar: React.FC = () => {
   const [tableConstructorVisible, setTableConstructorVisible] = useState(false);
@@ -68,6 +69,7 @@ export const SlideBuilderToolbar: React.FC = () => {
             if (progress === "end") {
               // Hiển thị message báo convert
               const videoUrl = `local-resource://${filePath}`;
+              console.log(videoUrl);
               notification.open({
                 message: "Hoàn tất",
                 description:
@@ -109,29 +111,16 @@ export const SlideBuilderToolbar: React.FC = () => {
   };
 
   const onNewRichText = (deltaQuill: Delta | string) => {
-    Modal.info({
+    Modal.success({
       title: "Chèn chữ",
+      centered: true,
       width: 600,
       content: (
         <>
-          <div
-            onClick={() => {
-              console.log(quillRef.current?.getEditor().getContents());
-              console.log(quillRef.current?.getEditor().getLeaf(0));
-            }}
-          >
-            teest
-          </div>
           <ReactQuill
             defaultValue={deltaQuill}
             modules={{
-              toolbar: [
-                [{ header: [1, 2, false] }],
-                ["bold", "italic", "underline", "strike"],
-                [{ color: [] }, { background: [] }],
-                [{ list: "ordered" }, { list: "bullet" }],
-                ["clean"],
-              ],
+              toolbar: defaultQuillToolbar,
             }}
             ref={quillRef}
             theme="snow"
