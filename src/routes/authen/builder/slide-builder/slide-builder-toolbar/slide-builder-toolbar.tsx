@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { Space, Button, Divider, Tooltip, notification, Popover, Modal } from "antd";
+import React, { useState } from "react";
+import { Space, Button, Divider, Tooltip, notification, Popover } from "antd";
 import {
   FontSizeOutlined,
   PlusOutlined,
@@ -10,8 +10,8 @@ import {
   MessageOutlined,
   TableOutlined,
 } from "@ant-design/icons";
-import { Delta, DeltaOperation } from "quill";
-import ReactQuill from "react-quill";
+import dayjs from "dayjs";
+import { Delta } from "quill";
 import { useRecoilState } from "recoil";
 import { slideListState } from "~/atoms/slide-list-atom";
 import { slideBuilderState } from "~/atoms/slide-builder-atom";
@@ -23,18 +23,16 @@ import { audioUtils, ffmpegUtils, imageUtils } from "~/utils/utils-conversions";
 import { AppDefaults, InitialBlockCoordinate, MediaType } from "~/common/static-data";
 import { dataUtils } from "~/utils/utils-data";
 import { isElectron } from "~/utils/utils-platform";
+import { uiUtils } from "~/utils/utils-ui";
 import { SlideBlockType } from "~/typings/types";
 
 import "react-quill/dist/quill.snow.css";
 import "~/routes/authen/builder/slide-builder/slide-builder-toolbar/slide-builder-toolbar.scss";
-import { defaultQuillToolbar } from "~/utils/utils-ui";
 
 export const SlideBuilderToolbar: React.FC = () => {
   const [tableConstructorVisible, setTableConstructorVisible] = useState(false);
   const [slideList, setSlideList] = useRecoilState(slideListState);
   const [slideBuilderMeta] = useRecoilState(slideBuilderState);
-
-  const quillRef = useRef<ReactQuill>(null);
 
   const shouldDisable = slideList.length <= 0;
 
@@ -111,26 +109,8 @@ export const SlideBuilderToolbar: React.FC = () => {
   };
 
   const onNewRichText = (deltaQuill: Delta | string) => {
-    Modal.success({
-      title: "Chèn chữ",
-      centered: true,
-      width: 600,
-      content: (
-        <>
-          <ReactQuill
-            defaultValue={deltaQuill}
-            modules={{
-              toolbar: defaultQuillToolbar,
-            }}
-            ref={quillRef}
-            theme="snow"
-          />
-        </>
-      ),
-      onOk: () => {
-        const data = quillRef.current?.getEditor().getContents().ops;
-        insertBlock(MediaType.TEXT_BLOCK, "", "", { width: 0, height: 0 }, data);
-      },
+    uiUtils.showQuillEditor(deltaQuill, (data) => {
+      insertBlock(MediaType.TEXT_BLOCK, "", "", { width: 0, height: 0 }, data);
     });
   };
 
@@ -149,10 +129,10 @@ export const SlideBuilderToolbar: React.FC = () => {
     assetName: string,
     extension: string,
     { width, height }: { width: number; height: number },
-    quillData?: DeltaOperation[]
+    quillData?: Delta
   ) => {
     const blockData: SlideBlockType = {
-      id: assetName,
+      id: dayjs().unix().toString(),
       type,
       assetName: `${assetName}.${extension}`,
       autoPlay: false,

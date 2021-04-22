@@ -7,6 +7,7 @@ import { SlideBlock } from "~/routes/authen/builder/slide-builder/slide-interact
 
 import "react-quill/dist/quill.snow.css";
 import "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-interactive-editor-v2.scss";
+import { Delta } from "quill";
 
 export const SlideInteractiveEditor: React.FC = () => {
   const [slideList, setSlideList] = useRecoilState(slideListState);
@@ -21,6 +22,24 @@ export const SlideInteractiveEditor: React.FC = () => {
     newSlideArray[slideIndex] = activeSlide;
 
     setSlideList([...newSlideArray]);
+  };
+
+  const modifyTextBlock = (blockId: string, newText: Delta | undefined) => {
+    const newSlideArray: SlideType[] = dataUtils.convertToMutableData(slideList);
+    const slideIndex = slideBuilderMeta.selectedIndex;
+    const activeSlide = newSlideArray[slideIndex];
+
+    const targetBlock = activeSlide.slideBlocks.findIndex((n) => n.id === blockId);
+
+    if (targetBlock !== -1) {
+      const blk = activeSlide.slideBlocks[targetBlock];
+      blk.deltaContent = newText;
+
+      activeSlide.slideBlocks[targetBlock] = { ...blk };
+      newSlideArray[slideIndex] = activeSlide;
+
+      setSlideList(newSlideArray);
+    }
   };
 
   const dispatchResizeBlock = (
@@ -84,6 +103,9 @@ export const SlideInteractiveEditor: React.FC = () => {
               }}
               onResized={(blockId, center, size) => {
                 dispatchResizeBlock(blockId, center, size);
+              }}
+              onTextChanged={(blockId, newText) => {
+                modifyTextBlock(blockId, newText);
               }}
             />
           );

@@ -5,7 +5,8 @@ import parse from "html-react-parser";
 import { AppDefaults, MediaType, RESOURCE_PROTOCOL } from "~/common/static-data";
 import { SlideBlockType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
-import { breakStringByLineBreaks } from "~/utils/utils-formatting";
+import { uiUtils } from "~/utils/utils-ui";
+import { Delta } from "quill";
 
 type SlideBlockComponentType = SlideBlockType & {
   selected?: boolean;
@@ -20,6 +21,7 @@ type SlideBlockComponentType = SlideBlockType & {
     topLeft: { x: number; y: number },
     size: { w: number; h: number }
   ) => void | undefined;
+  onTextChanged?: (blockId: string, newText: Delta | undefined) => void | undefined;
 };
 
 export const SlideBlock: React.FC<SlideBlockComponentType> = ({
@@ -31,6 +33,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
   deltaContent,
   onDrag,
   onResized,
+  onTextChanged,
 }) => {
   const assetUrl = `${RESOURCE_PROTOCOL}${fileUtils.getCacheDirectory()}/${assetName}`;
 
@@ -110,11 +113,22 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
     }
 
     if (type === MediaType.TEXT_BLOCK) {
-      const converter = new QuillDeltaToHtmlConverter(deltaContent!, {});
+      const ops = deltaContent?.ops;
+      const converter = new QuillDeltaToHtmlConverter(ops!, {});
       const html = converter.convert();
       return (
         <Rnd enableResizing={false}>
-          <div className="interactive-text-block">{parse(html)}</div>
+          <div
+            onDoubleClick={() => {
+              uiUtils.showQuillEditor(deltaContent || "", (data) => {
+                console.log(data);
+                onTextChanged?.(id, data);
+              });
+            }}
+            className="interactive-text-block"
+          >
+            {parse(html)}
+          </div>
         </Rnd>
       );
     }
