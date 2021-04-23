@@ -49,6 +49,8 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
   let initX = 0;
   let initY = 0;
 
+  // Nếu có size thì tức là đã được
+  // define size từ trước (ảnh hoặc video)
   if (size) {
     initW = size.w;
     initH = size.h;
@@ -58,11 +60,6 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
     // Translate to top-left
     initX = position.x - initW / 2;
     initY = position.y - initH / 2;
-  }
-
-  if (type === MediaType.VIDEO || type === MediaType.IMAGE) {
-    initW = AppDefaults.DEFAULT_IMAGE_SCALE * (size?.w ?? 0);
-    initH = AppDefaults.DEFAULT_IMAGE_SCALE * (size?.h ?? 0);
   }
 
   const [blockW, setBlockW] = useState(initW);

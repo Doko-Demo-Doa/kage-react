@@ -32,5 +32,4 @@ release/
 .vscode/
 
 # Temp
-vendor/
 storybook-static/

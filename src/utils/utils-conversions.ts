@@ -101,7 +101,7 @@ export const imageUtils = {
     const newWidth = Math.min(OptimalImageSize.width, width);
     const newHeight = Math.min(OptimalImageSize.height, height);
 
-    const data = sharp(filePath).resize(newWidth, newHeight).jpeg({ mozjpeg: true, quality: 60 });
+    const data = sharp(filePath).resize(newWidth, newHeight).jpeg({ mozjpeg: true, quality: 85 });
 
     const dataBuf = await data.toBuffer();
     const crc32 = remote.require("crc").crc32;

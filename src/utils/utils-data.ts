@@ -33,7 +33,7 @@ function singleSlideConstructor(slide: SlideType) {
             block.size ? `width="${block.size.w}" height="${block.size.h}"` : ""
           }`;
           const positionAppend = `${
-            block.position ? `style="left: ${block.position.x}; top: ${block.position.y}"` : ""
+            block.position ? `style="left: ${block.position.x}px; top: ${block.position.y}px"` : ""
           }`;
           return stripIndent(`
             <img class="r-stack" src="${subfolderPath}/${block.assetName}"

@@ -113,10 +113,15 @@ export const SlideBuilderToolbar: React.FC = () => {
     });
   };
 
-  const onPublish = () => {
+  const onPublish = async () => {
     const convertedStr = dataUtils.convertToHtmlSlideData(slideList);
-    console.log(slideList);
     dataUtils.writeToHtml(convertedStr);
+
+    const folderPath = await fileUtils.openFolderSaveDialog();
+    if (folderPath) {
+      console.log(process.resourcesPath);
+      fileUtils.copyFromCacheToDest(folderPath);
+    }
   };
 
   const onOpenCache = () => {

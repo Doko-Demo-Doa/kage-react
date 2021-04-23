@@ -33,6 +33,25 @@ export const fileUtils = {
     const shell = require("electron").shell;
     shell.openPath(folderPath);
   },
+  // Dùng để chọn folder xuất data ra
+  openFolderSaveDialog: async () => {
+    if (fsNotAvailable()) return;
+    const data = await require("electron").remote.dialog.showOpenDialog({
+      properties: ["openDirectory", "dontAddToRecent"],
+    });
+    return data.filePaths[0];
+  },
+  // Chuyển file từ vendor + cache vào thư mục đích
+  copyFromCacheToDest: async (dest: string) => {
+    if (fsNotAvailable()) return;
+    const remote = require("electron").remote;
+    const fs = remote.require("fs-extra");
+    const path = remote.require("path");
+
+    const cacheDir: string = path.join(remote.app.getPath("cache"), CACHE_DIR_NAME);
+    const destF = path.join(dest, "slide_export");
+    fs.copySync(cacheDir, destF);
+  },
   selectMultipleFiles: () => {
     if (fsNotAvailable()) return;
     return require("electron").remote.dialog.showOpenDialog({
