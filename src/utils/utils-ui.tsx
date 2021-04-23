@@ -83,4 +83,5 @@ export const defaultQuillToolbar = [
   [{ color: [] }, { background: [] }],
   [{ list: "ordered" }, { list: "bullet" }],
   ["clean"],
+  [{ "align": [] }],
 ];

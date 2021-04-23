@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Rnd } from "react-rnd";
 import { Delta } from "quill";
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
@@ -39,10 +39,12 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
   onResized,
   onTextChanged,
 }) => {
+  const textBlockRef = useRef<HTMLDivElement>(null);
+
   const assetUrl = `${RESOURCE_PROTOCOL}${fileUtils.getCacheDirectory()}/${assetName}`;
 
-  let initW = AppDefaults.DEFAULT_IMAGE_SCALE * (size?.w ?? 0);
-  let initH = AppDefaults.DEFAULT_IMAGE_SCALE * (size?.h ?? 0);
+  let initW = 0;
+  let initH = 0;
 
   let initX = 0;
   let initY = 0;
@@ -58,8 +60,31 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
     initY = position.y - initH / 2;
   }
 
+  if (type === MediaType.VIDEO || type === MediaType.IMAGE) {
+    initW = AppDefaults.DEFAULT_IMAGE_SCALE * (size?.w ?? 0);
+    initH = AppDefaults.DEFAULT_IMAGE_SCALE * (size?.h ?? 0);
+  }
+
   const [blockW, setBlockW] = useState(initW);
   const [blockH, setBlockH] = useState(initH);
+
+  useEffect(() => {
+    if (type === MediaType.TEXT_BLOCK) {
+      // Do text block không resize mà phụ thuộc vào nội dung của text
+      // Nên ta cần tính toán luôn.
+      initW = textBlockRef.current?.clientWidth ?? 0;
+      initH = textBlockRef.current?.clientHeight ?? 0;
+    }
+  }, []);
+
+  const updateTextBlockSize = () => {
+    if (type === MediaType.TEXT_BLOCK) {
+      const newW = textBlockRef.current?.clientWidth ?? 0;
+      const newH = textBlockRef.current?.clientHeight ?? 0;
+      setBlockW(newW);
+      setBlockH(newH);
+    }
+  };
 
   const getMainComponent = () => {
     if (type === MediaType.IMAGE) {
@@ -130,11 +155,27 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
       const converter = new QuillDeltaToHtmlConverter(ops!, {});
       const html = converter.convert();
       return (
-        <Rnd enableResizing={false}>
+        <Rnd
+          onDragStop={(e, d) => {
+            const topLeftX = d.x;
+            const topLeftY = d.y;
+            if (!size) return;
+            const centerOriginW = topLeftX + blockW / 2;
+            const centerOriginH = topLeftY + blockH / 2;
+
+            onDrag?.(id, { x: centerOriginW, y: centerOriginH }, { w: blockW, h: blockH });
+          }}
+          position={{
+            x: initX,
+            y: initY,
+          }}
+          enableResizing={false}
+        >
           <div
+            ref={textBlockRef}
             onDoubleClick={() => {
               uiUtils.showQuillEditor(deltaContent || "", (data) => {
-                console.log(data);
+                updateTextBlockSize();
                 onTextChanged?.(id, data);
               });
             }}
