@@ -58,7 +58,7 @@ export type MediaStreamType = {
   has_b_frames: number;
   height: number;
   index: number;
-  level: 13;
+  level: number;
   pix_fmt: string;
   profile: string;
   r_frame_rate: string;

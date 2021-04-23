@@ -1,4 +1,5 @@
 import { useRecoilState } from "recoil";
+import { Delta } from "quill";
 import { slideListState } from "~/atoms/slide-list-atom";
 import { slideBuilderState } from "~/atoms/slide-builder-atom";
 import { BlockSizeType, PositionType, SlideType } from "~/typings/types";
@@ -7,7 +8,6 @@ import { SlideBlock } from "~/routes/authen/builder/slide-builder/slide-interact
 
 import "react-quill/dist/quill.snow.css";
 import "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-interactive-editor-v2.scss";
-import { Delta } from "quill";
 
 export const SlideInteractiveEditor: React.FC = () => {
   const [slideList, setSlideList] = useRecoilState(slideListState);
@@ -110,30 +110,6 @@ export const SlideInteractiveEditor: React.FC = () => {
             />
           );
         })}
-
-        {/* <table>
-          <tbody>
-            <tr>
-              <th>Firstname</th>
-              <th>Lastname</th>
-              <th>
-                <input type="text" name="yourname" />
-              </th>
-            </tr>
-            <tr>
-              <td>Jill</td>
-              <td>Smith</td>
-              <td>
-                <input name="thisrowuniqueid" />
-              </td>
-            </tr>
-            <tr>
-              <td>Eve</td>
-              <td>Jackson</td>
-              <td>94</td>
-            </tr>
-          </tbody>
-        </table> */}
       </div>
     </>
   );
