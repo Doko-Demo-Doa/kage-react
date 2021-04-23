@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Rnd } from "react-rnd";
+import { Delta } from "quill";
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
 import parse from "html-react-parser";
 import { AppDefaults, MediaType, RESOURCE_PROTOCOL } from "~/common/static-data";
 import { SlideBlockType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
 import { uiUtils } from "~/utils/utils-ui";
-import { Delta } from "quill";
+
+import "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-block-v2/slide-block-v2.scss";
 
 type SlideBlockComponentType = SlideBlockType & {
   selected?: boolean;
@@ -31,6 +33,8 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
   size,
   position,
   deltaContent,
+  selected,
+  onSelect,
   onDrag,
   onResized,
   onTextChanged,
@@ -63,6 +67,13 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
         <Rnd
           bounds="parent"
           lockAspectRatio
+          resizeHandleClasses={selected ? {
+            bottomLeft: "c-handle",
+            topLeft: "c-handle",
+            topRight: "c-handle",
+            bottomRight: "c-handle",
+          } : undefined}
+          onDragStart={() => onSelect(id)}
           onDragStop={(e, d) => {
             const topLeftX = d.x;
             const topLeftY = d.y;
@@ -108,7 +119,9 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
           style={{
             backgroundImage: `url(${assetUrl})`,
           }}
-        />
+        >
+          <div className="imageblock-holder" onClick={() => onSelect(id)} />
+        </Rnd>
       );
     }
 

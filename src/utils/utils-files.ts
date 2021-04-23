@@ -72,7 +72,7 @@ export const fileUtils = {
     const remote = require("electron").remote;
     const path = remote.require("path");
     const cPath = path.join(remote.app.getPath("cache"), CACHE_DIR_NAME);
-    return cPath;
+    return cPath.replace(/\\/g, "/");
   },
   createFilePathAtCacheDir: (filename: string) => {
     if (fsNotAvailable()) return;

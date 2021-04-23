@@ -95,6 +95,7 @@ export const SlideInteractiveEditor: React.FC = () => {
             <SlideBlock
               key={i}
               {...n}
+              selected={n.id === slideList[slideBuilderMeta.selectedIndex]?.selectedBlock}
               onSelect={(blockId) => {
                 selectBlock(slideBuilderMeta.selectedIndex, blockId);
               }}
