@@ -6,7 +6,6 @@ import { BlockSizeType, PositionType, SlideType } from "~/typings/types";
 import { dataUtils } from "~/utils/utils-data";
 import { SlideBlock } from "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-block-v2/slide-block-v2";
 
-import "react-quill/dist/quill.snow.css";
 import "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-interactive-editor-v2.scss";
 
 export const SlideInteractiveEditor: React.FC = () => {

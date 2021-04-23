@@ -1,8 +1,8 @@
-import { useRef } from "react";
 import { notification, message, Modal } from "antd";
-import { Delta, DeltaOperation } from "quill";
+import { Delta } from "quill";
 import ReactQuill from "react-quill";
 
+// Alternative: react-quill/dist/quill.bubble.css
 import "react-quill/dist/quill.snow.css";
 import "~/routes/authen/builder/slide-builder/slide-builder-toolbar/slide-builder-toolbar.scss";
 
@@ -76,6 +76,7 @@ export const uiUtils = {
   },
 };
 
+// Ref: https://quilljs.com/docs/modules/toolbar/
 export const defaultQuillToolbar = [
   [{ header: [1, 2, false] }],
   ["bold", "italic", "underline", "strike"],

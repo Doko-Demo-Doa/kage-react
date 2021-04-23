@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Rnd } from "react-rnd";
 import { Delta } from "quill";
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
-import parse from "html-react-parser";
 import { AppDefaults, MediaType, RESOURCE_PROTOCOL } from "~/common/static-data";
 import { SlideBlockType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
+import { htmlToJSX } from "~/utils/utils-formatting";
 import { uiUtils } from "~/utils/utils-ui";
 
 import "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-block-v2/slide-block-v2.scss";
@@ -140,7 +140,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
             }}
             className="interactive-text-block"
           >
-            {parse(html)}
+            {htmlToJSX(html)}
           </div>
         </Rnd>
       );

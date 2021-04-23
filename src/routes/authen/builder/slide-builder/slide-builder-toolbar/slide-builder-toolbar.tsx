@@ -26,7 +26,6 @@ import { isElectron } from "~/utils/utils-platform";
 import { uiUtils } from "~/utils/utils-ui";
 import { SlideBlockType } from "~/typings/types";
 
-import "react-quill/dist/quill.snow.css";
 import "~/routes/authen/builder/slide-builder/slide-builder-toolbar/slide-builder-toolbar.scss";
 
 export const SlideBuilderToolbar: React.FC = () => {

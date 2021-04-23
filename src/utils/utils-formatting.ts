@@ -1,4 +1,5 @@
-import { split, splitWhen } from "rambdax";
+import { split } from "rambdax";
+import parse from "html-react-parser";
 
 export function getTextWithCondition(str: string, condition: RegExp | string) {
   const regexStr = new RegExp(condition);
@@ -52,4 +53,8 @@ export function breakStringByLineBreaks(inputStr: string) {
     resp = resp.slice(0, -1);
   }
   return resp;
+}
+
+export function htmlToJSX(inputHtml: string) {
+  return parse(inputHtml);
 }
