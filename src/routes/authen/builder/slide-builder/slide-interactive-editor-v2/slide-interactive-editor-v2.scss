@@ -3,12 +3,12 @@
   resize: horizontal;
   overflow: auto;
   min-width: 700px;
-  min-height: 560px;
+  min-height: 520px;
   overflow: hidden;
   // width: calc(100vw - #{$slide-list-width} - #{$entities-width});
   // height: calc(100vh - #{$header-height});
 
-  h2 {
+  .slide-title {
     position: relative;
     top: 10%;
     font-size: 3.6rem;

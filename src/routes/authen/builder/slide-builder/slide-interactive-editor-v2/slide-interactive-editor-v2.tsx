@@ -88,7 +88,7 @@ export const SlideInteractiveEditor: React.FC = () => {
     <>
       <div id="slide-interactive-editor">
         <div id="editor-container" />
-        <h2>{slideTitle}</h2>
+        <h2 className="slide-title">{slideTitle}</h2>
 
         {slideList[slideBuilderMeta.selectedIndex]?.slideBlocks.map((n, i) => {
           return (
