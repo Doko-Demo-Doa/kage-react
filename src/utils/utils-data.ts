@@ -86,6 +86,7 @@ export const dataUtils = {
 
         <link rel="stylesheet" href="./reveal.css" />
         <link rel="stylesheet" href="./theme/white.css" id="theme" />
+        <link rel="stylesheet" href="./custom.css" id="theme" />
       </head>
 
       <body>
