@@ -137,7 +137,10 @@ export const SlideEntities: React.FC = () => {
                 }
                 destroyTooltipOnHide
               >
-                <Checkbox key={idx}>{n.assetName ?? ""}</Checkbox>{" "}
+                <Checkbox key={idx}>
+                  <ArrowRightOutlined />
+                  {n.assetName ?? ""}
+                </Checkbox>{" "}
               </Popover>
             ))}
           </Space>
