@@ -11,7 +11,7 @@
   right: 0;
   overflow-x: hidden;
   outline: none;
-  position: absolute;
+  position: fixed;
   transition: 0.2s ease-in-out all;
 
   .expand-btn {
@@ -39,11 +39,11 @@
     z-index: 1;
     min-height: 100%;
     background-color: white;
-    width: 100%;
     overflow-y: auto;
     box-shadow: $light-left-shadow;
 
     .slide-title-input {
+      width: 184px;
       max-width: 184px;
     }
 
@@ -67,6 +67,6 @@
 
 .slide-entities-expanded {
   overflow-y: scroll;
-  transform: translateX(-60px);
+  transform: translateX(0px);
   transition: 0.2s ease-in-out all;
 }

@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef } from "react";
 import clsx from "clsx";
-import { Input, Divider } from "antd";
+import { Input, Divider, Radio, Space } from "antd";
 import {
   ArrowLeftOutlined,
   ArrowRightOutlined,
@@ -13,11 +13,11 @@ import { useRecoilState } from "recoil";
 
 import { MediaType, RESOURCE_PROTOCOL } from "~/common/static-data";
 import { Colors } from "~/common/colors";
+import { fileUtils } from "~/utils/utils-files";
 import { slideBuilderState } from "~/atoms/slide-builder-atom";
 import { slideListState } from "~/atoms/slide-list-atom";
 
 import "~/routes/authen/builder/slide-builder/slide-entities/slide-entities.scss";
-import { fileUtils } from "~/utils/utils-files";
 
 type AnimationEntityType = {
   type: MediaType;
@@ -106,6 +106,7 @@ export const SlideEntities: React.FC = () => {
           {expanded ? <ArrowRightOutlined /> : <ArrowLeftOutlined />}
         </div>
         <div className="slide-entities-expandable">
+          <p>Tiêu đề slide:</p>
           <Input
             placeholder="Slide title"
             onChange={(e) => setSlideTitle(e.target.value)}
@@ -117,7 +118,7 @@ export const SlideEntities: React.FC = () => {
             className="slide-title-input"
           />
           <Divider type="horizontal" />
-          <h2>Objects</h2>
+          <h2>Hình ảnh, âm thanh, video:</h2>
           {blocks.map((n, idx) => (
             <SingleAnimationEntity type={n.type} assetName={n.assetName ?? ""} key={idx} />
           ))}
