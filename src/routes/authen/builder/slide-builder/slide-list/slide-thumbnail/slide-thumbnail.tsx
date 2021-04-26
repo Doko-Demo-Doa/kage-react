@@ -24,7 +24,7 @@ export const SlideThumbnail: React.FC<SlideThumbnailProps> = ({
     >
       <div className="counter">{index + 1}</div>
       <div className="block-inside">
-        <div className="title">{title}</div>
+        <div className="title">{title?.length ?? 0 > 16 ? title?.substring(0, 15) : title}</div>
         <div className="bord" />
       </div>
     </div>

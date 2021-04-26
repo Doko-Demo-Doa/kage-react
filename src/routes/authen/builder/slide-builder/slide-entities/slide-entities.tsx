@@ -112,6 +112,9 @@ export const SlideEntities: React.FC = () => {
             disabled={slideList.length <= 0}
             value={slideTitle}
             defaultValue=""
+            multiple
+            maxLength={46}
+            className="slide-title-input"
           />
           <Divider type="horizontal" />
           <h2>Objects</h2>

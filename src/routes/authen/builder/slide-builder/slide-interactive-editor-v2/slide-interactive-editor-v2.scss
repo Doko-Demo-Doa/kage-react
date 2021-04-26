@@ -2,6 +2,7 @@
   box-sizing: border-box;
   resize: horizontal;
   overflow: auto;
+  padding: 0;
   width: 740px;
   height: 540px;
   overflow: hidden;
@@ -9,10 +10,19 @@
   // height: calc(100vh - #{$header-height});
 
   .slide-title {
+    color: #222;
+    font-family: "Source Sans Pro", Helvetica, sans-serif;
+    font-size: 67px;
+    font-weight: 600;
+    letter-spacing: normal;
+    line-height: 1.2;
     position: relative;
-    top: 10%;
-    font-size: 3.6rem;
     text-align: center;
+    text-shadow: none;
+    top: 8px;
+    max-width: 600px;
+    word-wrap: break-word;
+    margin: 0 auto;
   }
 
   .single-block {

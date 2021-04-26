@@ -43,6 +43,10 @@
     overflow-y: auto;
     box-shadow: $light-left-shadow;
 
+    .slide-title-input {
+      max-width: 184px;
+    }
+
     .entity-cell {
       display: flex;
       align-items: center;

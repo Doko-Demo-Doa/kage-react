@@ -128,6 +128,10 @@ export const SlideBuilderToolbar: React.FC = () => {
     fileUtils.openFolderBrowser(fileUtils.getCacheDirectory());
   };
 
+  const onTogglePreview = () => {
+    console.log(slideList);
+  };
+
   const insertBlock = (
     type: MediaType,
     assetName: string,
@@ -223,7 +227,12 @@ export const SlideBuilderToolbar: React.FC = () => {
         </Popover>
 
         <Divider type="vertical" />
-        <Button icon={<PullRequestOutlined />} type="primary" danger>
+        <Button
+          onClick={() => onTogglePreview()}
+          icon={<PullRequestOutlined />}
+          type="primary"
+          danger
+        >
           Toggle Preview
         </Button>
         <Button
