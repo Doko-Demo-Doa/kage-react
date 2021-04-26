@@ -34,7 +34,9 @@ function singleSlideConstructor(slide: SlideType) {
               block.size ? `width: ${block.size.w}px; height: ${block.size.h}px; ` : ""
             }`;
             const positionAppend = `${
-              block.position ? `left: ${-12}px; top: ${block.position.y}px;` : ""
+              block.position
+                ? `position: absolute; left: ${block.position.x}px; top: ${block.position.y}px;`
+                : ""
             }`;
             const styleAppend = (dataIn: string) => `style="${dataIn}"`;
             return stripIndent(`
