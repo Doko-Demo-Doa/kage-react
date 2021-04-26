@@ -8,7 +8,7 @@ import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-insta
 let win: BrowserWindow | null = null;
 
 const preDefinedWidth = 1100;
-const predefinedHeight = 720;
+const predefinedHeight = 690;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function clearCache() {
