@@ -11,46 +11,48 @@ function singleSlideConstructor(slide: SlideType) {
   return stripIndent(`
     <section>
       <h2>${slide.title}</h2>
-      ${slide.slideBlocks.map((block) => {
-        if (block.type === MediaType.VIDEO) {
-          const sizeAppend = `${
-            block.size ? `width="${block.size.w}" height="${block.size.h}"` : ""
-          }`;
-          const positionAppend = `${
-            block.position ? `style="left: ${block.position.x}; top: ${block.position.y}"` : ""
-          }`;
-          return stripIndent(`
+      ${slide.slideBlocks
+        .map((block) => {
+          if (block.type === MediaType.VIDEO) {
+            const sizeAppend = `${
+              block.size ? `width="${block.size.w}" height="${block.size.h}"` : ""
+            }`;
+            const positionAppend = `${
+              block.position ? `style="left: ${block.position.x}; top: ${block.position.y}"` : ""
+            }`;
+            return stripIndent(`
             <video class="r-stack" src="${subfolderPath}/${block.assetName}"
               ${sizeAppend}
               ${positionAppend}
               ${block.autoPlay ? "data-autoplay" : ""}
             />
             `);
-        }
+          }
 
-        if (block.type === MediaType.IMAGE) {
-          const sizeAppend = `${
-            block.size ? `width="${block.size.w}" height="${block.size.h}"` : ""
-          }`;
-          const positionAppend = `${
-            block.position ? `style="left: ${block.position.x}px; top: ${block.position.y}px"` : ""
-          }`;
-          return stripIndent(`
-            <img class="r-stack" src="${subfolderPath}/${block.assetName}"
-              ${sizeAppend}
-              ${positionAppend}
+          if (block.type === MediaType.IMAGE) {
+            const sizeAppend = `${
+              block.size ? `width: ${block.size.w}px; height: ${block.size.h}px; ` : ""
+            }`;
+            const positionAppend = `${
+              block.position ? `left: ${-12}px; top: ${block.position.y}px;` : ""
+            }`;
+            const styleAppend = (dataIn: string) => `style="${dataIn}"`;
+            return stripIndent(`
+            <img src="${subfolderPath}/${block.assetName}"
+              ${styleAppend(sizeAppend + positionAppend)}
               ${block.autoPlay ? "data-autoplay" : ""}
             />`);
-        }
+          }
 
-        if (block.type === MediaType.AUDIO) {
-          return `
+          if (block.type === MediaType.AUDIO) {
+            return `
             <audio src="${subfolderPath}/${block.assetName}"
               ${block.autoPlay ? "data-autoplay" : ""}
             />`;
-        }
-        return `<div>${block.content}</div>`;
-      })}
+          }
+          return `<div>${block.content}</div>`;
+        })
+        .join("\n")}
     </section>`);
 }
 
@@ -93,7 +95,14 @@ export const dataUtils = {
 
         <script src="./reveal.js"></script>
         <script>
-          Reveal.initialize({ hash: true });
+          Reveal.initialize({
+            hash: true,
+            controls: true,
+            disableLayout: false,
+            width: 740,
+            height: 540,
+            center: false,
+          });
         </script>
       </body>
 

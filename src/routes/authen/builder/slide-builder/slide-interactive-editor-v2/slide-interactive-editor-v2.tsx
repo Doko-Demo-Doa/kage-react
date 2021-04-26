@@ -98,11 +98,11 @@ export const SlideInteractiveEditor: React.FC = () => {
               onSelect={(blockId) => {
                 selectBlock(slideBuilderMeta.selectedIndex, blockId);
               }}
-              onDrag={(blockId, center) => {
-                dispatchDragBlock(blockId, center);
+              onDrag={(blockId, pos) => {
+                dispatchDragBlock(blockId, pos);
               }}
-              onResized={(blockId, center, size) => {
-                dispatchResizeBlock(blockId, center, size);
+              onResized={(blockId, pos, size) => {
+                dispatchResizeBlock(blockId, pos, size);
               }}
               onTextChanged={(blockId, newText) => {
                 modifyTextBlock(blockId, newText);

@@ -2,8 +2,8 @@ export const RESOURCE_PROTOCOL = "local-resource://";
 
 // Size của tờ canvas konva, tính bằng px
 export const MinimumCanvasSize = {
-  WIDTH: 900,
-  HEIGHT: 560,
+  WIDTH: 740,
+  HEIGHT: 540,
 };
 
 // Gốc toạ độ là góc trên bên trái

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Rnd } from "react-rnd";
 import { Delta } from "quill";
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
-import { AppDefaults, MediaType, RESOURCE_PROTOCOL } from "~/common/static-data";
+import { MediaType, RESOURCE_PROTOCOL } from "~/common/static-data";
 import { SlideBlockType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
 import { htmlToJSX } from "~/utils/utils-formatting";
@@ -13,11 +13,7 @@ import "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-
 type SlideBlockComponentType = SlideBlockType & {
   selected?: boolean;
   onSelect: (id: string) => void | undefined;
-  onDrag?: (
-    blockId: string,
-    center: { x: number; y: number },
-    size: { w: number; h: number }
-  ) => void | undefined;
+  onDrag?: (blockId: string, pos: { x: number; y: number }) => void | undefined;
   onResized?: (
     blockId: string,
     topLeft: { x: number; y: number },
@@ -89,21 +85,21 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
         <Rnd
           bounds="parent"
           lockAspectRatio
-          resizeHandleClasses={selected ? {
-            bottomLeft: "c-handle",
-            topLeft: "c-handle",
-            topRight: "c-handle",
-            bottomRight: "c-handle",
-          } : undefined}
+          resizeHandleClasses={
+            selected
+              ? {
+                  bottomLeft: "c-handle",
+                  topLeft: "c-handle",
+                  topRight: "c-handle",
+                  bottomRight: "c-handle",
+                }
+              : undefined
+          }
           onDragStart={() => onSelect(id)}
           onDragStop={(e, d) => {
             const topLeftX = d.x;
             const topLeftY = d.y;
-            if (!size) return;
-            const centerOriginW = topLeftX + blockW / 2;
-            const centerOriginH = topLeftY + blockH / 2;
-
-            onDrag?.(id, { x: centerOriginW, y: centerOriginH }, { w: blockW, h: blockH });
+            onDrag?.(id, { x: topLeftX, y: topLeftY });
           }}
           onResizeStop={(mouseEvent, direction, element, delta, position) => {
             const newW = blockW + delta.width;
@@ -156,11 +152,8 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
           onDragStop={(e, d) => {
             const topLeftX = d.x;
             const topLeftY = d.y;
-            if (!size) return;
-            const centerOriginW = topLeftX + blockW / 2;
-            const centerOriginH = topLeftY + blockH / 2;
 
-            onDrag?.(id, { x: centerOriginW, y: centerOriginH }, { w: blockW, h: blockH });
+            onDrag?.(id, { x: topLeftX, y: topLeftY });
           }}
           position={{
             x: initX,
