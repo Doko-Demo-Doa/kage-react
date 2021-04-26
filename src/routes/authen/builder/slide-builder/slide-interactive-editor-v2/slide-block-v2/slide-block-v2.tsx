@@ -54,8 +54,8 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
 
   if (position) {
     // Translate to top-left
-    initX = position.x - initW / 2;
-    initY = position.y - initH / 2;
+    initX = position.x;
+    initY = position.y;
   }
 
   const [blockW, setBlockW] = useState(initW);
@@ -108,8 +108,8 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
             setBlockW(newW);
             setBlockH(newH);
 
-            const newX = position.x + newW / 2;
-            const newY = position.y + newH / 2;
+            const newX = position.x;
+            const newY = position.y;
 
             onResized?.(id, { x: newX, y: newY }, { w: newW, h: newH });
           }}
