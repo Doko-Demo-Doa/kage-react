@@ -4,6 +4,7 @@ import { Input, Divider, Popover, Space, Checkbox } from "antd";
 import {
   ArrowLeftOutlined,
   ArrowRightOutlined,
+  VideoCameraTwoTone,
   HeartTwoTone,
   SoundTwoTone,
   PictureTwoTone,
@@ -30,9 +31,11 @@ const SingleAnimationEntity: React.FC<AnimationEntityType> = ({ type, assetName 
     if (type === MediaType.AUDIO) {
       return <SoundTwoTone size={35} className="audio" twoToneColor={Colors.DODGER_BLUE} />;
     }
-
     if (type === MediaType.IMAGE) {
       return <PictureTwoTone twoToneColor={Colors.BUTTERSCOTCH} />;
+    }
+    if (type === MediaType.VIDEO) {
+      return <VideoCameraTwoTone twoToneColor={Colors.PALE_RED} />;
     }
     return <HeartTwoTone twoToneColor={Colors.BARBIE_PINK} />;
   }

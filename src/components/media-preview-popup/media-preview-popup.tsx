@@ -26,6 +26,10 @@ export const MediaPreviewPopup: React.FC<MediaPreviewPopupProps> = ({ assetName,
     if (type === MediaType.IMAGE) {
       return <img className="preview-img" src={fileUtils.getUsableAssetUrl(assetName)} />;
     }
+
+    if (type === MediaType.VIDEO) {
+      return <video className="preview-img" src={fileUtils.getUsableAssetUrl(assetName)} />;
+    }
   };
 
   return <div className="media-preview-popup">{getMainComponent()}</div>;
