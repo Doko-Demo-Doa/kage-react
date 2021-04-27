@@ -52,8 +52,11 @@
       align-items: center;
       height: 42px;
 
-      .audio {
-        cursor: pointer;
+      .cell-selectable {
+        display: flex;
+        align-items: center;
+        margin-left: 18px;
+        margin-top: 4px;
       }
 
       .entity-label {

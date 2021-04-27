@@ -1,11 +1,19 @@
 import { isEmpty } from "rambdax";
-import { MediaType } from "~/common/static-data";
+import { MediaType, RESOURCE_PROTOCOL } from "~/common/static-data";
 
 function fsNotAvailable() {
   return isEmpty(require("fs"));
 }
 
 const CACHE_DIR_NAME = "kage-cache";
+
+function getCacheDirectory() {
+  if (fsNotAvailable()) return;
+  const remote = require("electron").remote;
+  const path = remote.require("path");
+  const cPath = path.join(remote.app.getPath("cache"), CACHE_DIR_NAME);
+  return cPath.replace(/\\/g, "/");
+}
 
 export const fileUtils = {
   getCRC32: (filePath: string): string => {
@@ -86,13 +94,7 @@ export const fileUtils = {
     }
     return remote.app.getPath("cache");
   },
-  getCacheDirectory: () => {
-    if (fsNotAvailable()) return;
-    const remote = require("electron").remote;
-    const path = remote.require("path");
-    const cPath = path.join(remote.app.getPath("cache"), CACHE_DIR_NAME);
-    return cPath.replace(/\\/g, "/");
-  },
+  getCacheDirectory,
   createFilePathAtCacheDir: (filename: string) => {
     if (fsNotAvailable()) return;
     const remote = require("electron").remote;
@@ -100,5 +102,8 @@ export const fileUtils = {
     const cacheDir = remote.app.getPath("cache");
     const cachePath = path.join(cacheDir, CACHE_DIR_NAME);
     return path.join(cachePath, filename);
+  },
+  getUsableAssetUrl: (assetName: string) => {
+    return `${RESOURCE_PROTOCOL}${getCacheDirectory()}/${assetName}`;
   },
 };

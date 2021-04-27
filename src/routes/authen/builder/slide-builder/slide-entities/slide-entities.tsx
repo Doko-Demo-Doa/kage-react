@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import { Input, Divider, Popover, Space, Checkbox } from "antd";
 import {
@@ -7,20 +7,18 @@ import {
   HeartTwoTone,
   SoundTwoTone,
   PictureTwoTone,
-  StopTwoTone,
 } from "@ant-design/icons";
-import AudioPlayer from "react-h5-audio-player";
 
 import { useRecoilState } from "recoil";
 
-import { MediaType, RESOURCE_PROTOCOL } from "~/common/static-data";
+import { MediaType } from "~/common/static-data";
 import { Colors } from "~/common/colors";
-import { fileUtils } from "~/utils/utils-files";
 import { slideBuilderState } from "~/atoms/slide-builder-atom";
 import { slideListState } from "~/atoms/slide-list-atom";
 
 import "react-h5-audio-player/lib/styles.css";
 import "~/routes/authen/builder/slide-builder/slide-entities/slide-entities.scss";
+import { MediaPreviewPopup } from "~/components/media-preview-popup/media-preview-popup";
 
 type AnimationEntityType = {
   type: MediaType;
@@ -28,25 +26,9 @@ type AnimationEntityType = {
 };
 
 const SingleAnimationEntity: React.FC<AnimationEntityType> = ({ type, assetName }) => {
-  const assetUrl = useMemo(
-    () => `${RESOURCE_PROTOCOL}${fileUtils.getCacheDirectory()}/${assetName}`,
-    [assetName]
-  );
-
-  const aRef = useRef<HTMLAudioElement>(null);
-  const [playing, setPlaying] = useState(false);
-
   function getIcon() {
     if (type === MediaType.AUDIO) {
-      const Comp = playing ? StopTwoTone : SoundTwoTone;
-      return (
-        <Comp
-          size={35}
-          className="audio"
-          twoToneColor={Colors.DODGER_BLUE}
-          onClick={() => toggleAudio()}
-        />
-      );
+      return <SoundTwoTone size={35} className="audio" twoToneColor={Colors.DODGER_BLUE} />;
     }
 
     if (type === MediaType.IMAGE) {
@@ -55,27 +37,20 @@ const SingleAnimationEntity: React.FC<AnimationEntityType> = ({ type, assetName 
     return <HeartTwoTone twoToneColor={Colors.BARBIE_PINK} />;
   }
 
-  function toggleAudio() {
-    if (!playing) {
-      aRef.current?.play();
-      setPlaying(true);
-    } else {
-      aRef.current?.pause();
-      setPlaying(false);
-    }
-  }
-
   return (
     <div className="entity-cell">
-      {getIcon()}
-      <div className="entity-label">Data</div>
+      <Checkbox />
 
-      {type === MediaType.AUDIO && (
-        <audio ref={aRef}>
-          <source src={assetUrl} type="audio/mpeg" />
-          Not supported.
-        </audio>
-      )}
+      <Popover
+        arrowContent
+        content={<MediaPreviewPopup assetName={assetName} type={type} />}
+        destroyTooltipOnHide
+      >
+        <div className="cell-selectable">
+          {getIcon()}
+          <div className="entity-label">{assetName}</div>
+        </div>
+      </Popover>
     </div>
   );
 };
@@ -124,24 +99,7 @@ export const SlideEntities: React.FC = () => {
           <h2>Thành phần</h2>
           <Space direction="vertical">
             {blocks.map((n, idx) => (
-              <Popover
-                key={idx}
-                arrowContent
-                content={
-                  <AudioPlayer
-                    src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
-                    style={{ width: "300px" }}
-                    showJumpControls={false}
-                    customAdditionalControls={[]}
-                  />
-                }
-                destroyTooltipOnHide
-              >
-                <Checkbox key={idx}>
-                  <ArrowRightOutlined />
-                  {n.assetName ?? ""}
-                </Checkbox>{" "}
-              </Popover>
+              <SingleAnimationEntity key={idx} assetName={n.assetName ?? ""} type={n.type} />
             ))}
           </Space>
         </div>
