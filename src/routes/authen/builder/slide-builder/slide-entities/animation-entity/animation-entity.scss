@@ -1,0 +1,16 @@
+.animation-entity {
+  margin: 8px 0;
+  width: 180px;
+  display: flex;
+  align-items: center;
+  padding: 5px 12px;
+
+  .separator {
+    width: 12px;
+  }
+}
+
+.animation-entity-selected {
+  background-color: $color-cyan-light;
+  border: 1px solid $color-cyan-high;
+}

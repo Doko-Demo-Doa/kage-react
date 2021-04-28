@@ -1,7 +1,7 @@
 import fs from "fs";
 import pretty from "pretty";
 import { stripIndent } from "common-tags";
-import { MediaType } from "~/common/static-data";
+import { AnimationType, MediaType } from "~/common/static-data";
 import { SlideType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
 
@@ -114,5 +114,10 @@ export const dataUtils = {
       `;
 
     return pretty(templateStr);
+  },
+  mapAnimationLabel: (type: AnimationType) => {
+    if (type === AnimationType.APPEAR) return "Mờ dần";
+    if (type === AnimationType.MOVE) return "Di chuyển";
+    return "";
   },
 };

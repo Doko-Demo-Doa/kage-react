@@ -66,7 +66,7 @@ export const SlideEntities: React.FC = () => {
           <Divider type="horizontal" />
           <h2>Hiệu ứng</h2>
 
-          <Container>
+          <Container lockAxis="y">
             {animations.map((item) => {
               return (
                 <Draggable key={item.id}>
