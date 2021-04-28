@@ -19,6 +19,8 @@ type AnimationEntityProps = {
   animationType: AnimationType;
   blockId: string;
   blocks: Partial<SlideBlockType>[];
+  selected?: boolean;
+  onClick?: (animId: string, blockId: string) => void | undefined;
 };
 
 export const AnimationEntity: React.FC<AnimationEntityProps> = ({
@@ -26,6 +28,8 @@ export const AnimationEntity: React.FC<AnimationEntityProps> = ({
   animationType,
   blocks,
   blockId,
+  selected,
+  onClick,
 }) => {
   const name = dataUtils.mapAnimationLabel(animationType);
 
@@ -44,7 +48,10 @@ export const AnimationEntity: React.FC<AnimationEntityProps> = ({
   }
 
   return (
-    <div className={clsx("animation-entity", "animation-entity-selected")}>
+    <div
+      className={clsx("animation-entity", selected ? "animation-entity-selected" : "")}
+      onClick={() => onClick?.(id, blockId)}
+    >
       <FunctionOutlined style={{ color: Colors.BARBIE_PINK }} />
       <div className="separator" />
       {getIcon()}

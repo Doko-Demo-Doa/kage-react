@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import clsx from "clsx";
 import { Input, Divider } from "antd";
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
-import { Container, Draggable } from "react-smooth-dnd";
 import { AnimationEntity } from "~/routes/authen/builder/slide-builder/slide-entities/animation-entity/animation-entity";
 
 import { useRecoilState } from "recoil";
@@ -16,6 +15,7 @@ import "~/routes/authen/builder/slide-builder/slide-entities/slide-entities.scss
 
 export const SlideEntities: React.FC = () => {
   const [expanded, setExpanded] = useState(false);
+  const [selectedAnim, selectAnim] = useState("");
   const [slideList, setSlideList] = useRecoilState(slideListState);
   const [slideBuilderMeta] = useRecoilState(slideBuilderState);
 
@@ -33,9 +33,21 @@ export const SlideEntities: React.FC = () => {
     setSlideList(newArr);
   }
 
+  const selectBlock = (blockId: string) => {
+    const idx = slideBuilderMeta.selectedIndex;
+
+    const newSlideArray = [...slideList];
+    const activeSlide = { ...newSlideArray[idx] };
+    activeSlide.selectedBlock = blockId;
+    newSlideArray[idx] = activeSlide;
+
+    setSlideList([...newSlideArray]);
+  };
+
   const blocks = slideList[slideBuilderMeta.selectedIndex]?.slideBlocks || [];
   const animations = slideList[slideBuilderMeta.selectedIndex]?.animations || [];
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const reorder = (list: SlideBlockType[], startIndex: number, endIndex: number) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -66,20 +78,22 @@ export const SlideEntities: React.FC = () => {
           <Divider type="horizontal" />
           <h2>Hiệu ứng</h2>
 
-          <Container lockAxis="y">
-            {animations.map((item) => {
-              return (
-                <Draggable key={item.id}>
-                  <AnimationEntity
-                    id={item.id}
-                    animationType={item.animationType}
-                    blockId={item.blockId}
-                    blocks={blocks}
-                  />
-                </Draggable>
-              );
-            })}
-          </Container>
+          {animations.map((item) => {
+            return (
+              <AnimationEntity
+                id={item.id}
+                key={item.id}
+                onClick={(id, blockId) => {
+                  selectAnim(id);
+                  selectBlock(blockId);
+                }}
+                selected={selectedAnim === item.id}
+                animationType={item.animationType}
+                blockId={item.blockId}
+                blocks={blocks}
+              />
+            );
+          })}
         </div>
       </div>
     </>
