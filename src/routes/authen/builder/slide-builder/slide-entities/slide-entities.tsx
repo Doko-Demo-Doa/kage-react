@@ -1,65 +1,18 @@
 import React, { useState } from "react";
 import clsx from "clsx";
-import { Input, Divider, Popover, Checkbox } from "antd";
-import {
-  ArrowLeftOutlined,
-  ArrowRightOutlined,
-  VideoCameraTwoTone,
-  HeartTwoTone,
-  SoundTwoTone,
-  PictureTwoTone,
-} from "@ant-design/icons";
-import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
+import { Input, Divider } from "antd";
+import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
+import { Container, Draggable } from "react-smooth-dnd";
+import { AnimationEntity } from "~/routes/authen/builder/slide-builder/slide-entities/animation-entity/animation-entity";
 
 import { useRecoilState } from "recoil";
 
-import { MediaType } from "~/common/static-data";
-import { Colors } from "~/common/colors";
 import { slideBuilderState } from "~/atoms/slide-builder-atom";
 import { slideListState } from "~/atoms/slide-list-atom";
+import { SlideBlockType } from "~/typings/types";
 
 import "react-h5-audio-player/lib/styles.css";
 import "~/routes/authen/builder/slide-builder/slide-entities/slide-entities.scss";
-import { MediaPreviewPopup } from "~/components/media-preview-popup/media-preview-popup";
-import { SlideBlockType } from "~/typings/types";
-
-type AnimationEntityType = {
-  type: MediaType;
-  assetName: string;
-};
-
-const SingleAnimationEntity: React.FC<AnimationEntityType> = ({ type, assetName }) => {
-  function getIcon() {
-    if (type === MediaType.AUDIO) {
-      return <SoundTwoTone size={35} className="audio" twoToneColor={Colors.DODGER_BLUE} />;
-    }
-    if (type === MediaType.IMAGE) {
-      return <PictureTwoTone twoToneColor={Colors.BUTTERSCOTCH} />;
-    }
-    if (type === MediaType.VIDEO) {
-      return <VideoCameraTwoTone twoToneColor={Colors.PALE_RED} />;
-    }
-    return <HeartTwoTone twoToneColor={Colors.BARBIE_PINK} />;
-  }
-
-  return (
-    <div className="entity-cell">
-      <Checkbox />
-
-      <Popover
-        arrowContent
-        content={<MediaPreviewPopup assetName={assetName} type={type} />}
-        trigger="click"
-        destroyTooltipOnHide
-      >
-        <div className="cell-selectable">
-          {getIcon()}
-          <div className="entity-label">{assetName}</div>
-        </div>
-      </Popover>
-    </div>
-  );
-};
 
 export const SlideEntities: React.FC = () => {
   const [expanded, setExpanded] = useState(false);
@@ -81,6 +34,7 @@ export const SlideEntities: React.FC = () => {
   }
 
   const blocks = slideList[slideBuilderMeta.selectedIndex]?.slideBlocks || [];
+  const animations = slideList[slideBuilderMeta.selectedIndex]?.animations || [];
 
   const reorder = (list: SlideBlockType[], startIndex: number, endIndex: number) => {
     const result = Array.from(list);
@@ -88,14 +42,6 @@ export const SlideEntities: React.FC = () => {
     result.splice(endIndex, 0, removed);
 
     return result;
-  };
-
-  const onDragEnd = (re: DropResult) => {
-    if (!re.destination) {
-      return;
-    }
-
-    const items = reorder(blocks, re.source.index, re.destination.index);
   };
 
   return (
@@ -120,11 +66,20 @@ export const SlideEntities: React.FC = () => {
           <Divider type="horizontal" />
           <h2>Hiệu ứng</h2>
 
-          <DragDropContext onDragEnd={(re) => console.log(re)}>
-            {blocks.map((n, idx) => (
-              <SingleAnimationEntity key={idx} assetName={n.assetName ?? ""} type={n.type} />
-            ))}
-          </DragDropContext>
+          <Container>
+            {animations.map((item) => {
+              return (
+                <Draggable key={item.id}>
+                  <AnimationEntity
+                    id={item.id}
+                    animationType={item.animationType}
+                    blockId={item.blockId}
+                    blocks={blocks}
+                  />
+                </Draggable>
+              );
+            })}
+          </Container>
         </div>
       </div>
     </>

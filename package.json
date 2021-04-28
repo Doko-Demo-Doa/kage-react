@@ -155,6 +155,7 @@
     "react-rnd": "10.2.4",
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.3",
+    "react-smooth-dnd": "0.11.1",
     "react-test-renderer": "17.0.2",
     "recoil": "0.2.0",
     "rimraf": "3.0.2",

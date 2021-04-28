@@ -1,5 +1,6 @@
 import { useRecoilState } from "recoil";
 import { Delta } from "quill";
+import dayjs from "dayjs";
 import { slideListState } from "~/atoms/slide-list-atom";
 import { slideBuilderState } from "~/atoms/slide-builder-atom";
 import { BlockSizeType, PositionType, SlideType } from "~/typings/types";
@@ -92,6 +93,7 @@ export const SlideInteractiveEditor: React.FC = () => {
 
     if (targetAnim === -1) {
       activeSlide.animations.push({
+        id: dayjs().unix().toString(),
         animationType: AnimationType.APPEAR,
         blockId,
       });

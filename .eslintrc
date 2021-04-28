@@ -61,7 +61,7 @@
     "semi": ["error", "always"],
     "no-alert": "off",
     "react/jsx-props-no-spreading": [
-      "error",
+      "off",
       {
         "custom": "ignore"
       }
@@ -91,7 +91,6 @@
     "jsx-a11y/click-events-have-key-events": "off",
     "jsx-a11y/no-noninteractive-element-interactions": "off",
     "jsx-a11y/no-static-element-interactions": "off",
-    "jsx-props-no-spreading": "off",
     "no-nested-ternary": "off",
     "no-param-reassign": "off",
     "no-restricted-syntax": "off",

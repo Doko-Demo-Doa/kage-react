@@ -29,6 +29,7 @@ export type SlideStepType = {
 };
 
 export type SlideAnimationType = {
+  id: string;
   blockId: string;
   animationType: AnimationType;
 };
