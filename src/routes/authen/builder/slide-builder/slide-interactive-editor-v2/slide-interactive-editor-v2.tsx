@@ -105,17 +105,21 @@ export const SlideInteractiveEditor: React.FC = () => {
     }
   };
 
+  const blocks = slideList[slideBuilderMeta.selectedIndex]?.slideBlocks ?? [];
+  const anims = slideList[slideBuilderMeta.selectedIndex]?.animations ?? [];
+
   // Nếu lỗi thì bỏ hết những children trong Layer.
   return (
     <>
       <div id="slide-interactive-editor">
         <h2 className="slide-title">{slideTitle}</h2>
 
-        {slideList[slideBuilderMeta.selectedIndex]?.slideBlocks.map((n, i) => {
+        {blocks.map((n, i) => {
           return (
             <SlideBlock
               key={i}
               {...n}
+              animations={anims}
               selected={n.id === slideList[slideBuilderMeta.selectedIndex]?.selectedBlock}
               onSelect={(blockId) => {
                 selectBlock(slideBuilderMeta.selectedIndex, blockId);

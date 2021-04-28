@@ -13,6 +13,13 @@ function singleSlideConstructor(slide: SlideType) {
       <h2>${slide.title}</h2>
       ${slide.slideBlocks
         .map((block) => {
+          const anim = slide.animations.findIndex((n) => n.blockId === block.id);
+          let animAppend = "";
+          if (anim !== -1) {
+            // Thống nhất dặt fragment-index bắt đầu từ 1
+            animAppend = `class="fragment" data-fragment-index="${anim + 1}" `;
+          }
+
           if (block.type === MediaType.VIDEO) {
             const sizeAppend = `${
               block.size ? `width="${block.size.w}" height="${block.size.h}"` : ""
@@ -22,6 +29,7 @@ function singleSlideConstructor(slide: SlideType) {
             }`;
             return stripIndent(`
             <video class="r-stack" src="${subfolderPath}/${block.assetName}"
+              ${animAppend}
               ${sizeAppend}
               ${positionAppend}
               ${block.autoPlay ? "data-autoplay" : ""}
@@ -41,6 +49,7 @@ function singleSlideConstructor(slide: SlideType) {
             const styleAppend = (dataIn: string) => `style="${dataIn}"`;
             return stripIndent(`
             <img src="${subfolderPath}/${block.assetName}"
+              ${animAppend}
               ${styleAppend(sizeAppend + positionAppend)}
               ${block.autoPlay ? "data-autoplay" : ""}
             />`);
@@ -49,6 +58,7 @@ function singleSlideConstructor(slide: SlideType) {
           if (block.type === MediaType.AUDIO) {
             return `
             <audio src="${subfolderPath}/${block.assetName}"
+              ${animAppend}
               ${block.autoPlay ? "data-autoplay" : ""}
             />`;
           }

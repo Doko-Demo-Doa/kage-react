@@ -4,7 +4,7 @@ import { Delta } from "quill";
 import { PlusOutlined } from "@ant-design/icons";
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
 import { MediaType, RESOURCE_PROTOCOL } from "~/common/static-data";
-import { SlideBlockType } from "~/typings/types";
+import { SlideAnimationType, SlideBlockType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
 import { htmlToJSX } from "~/utils/utils-formatting";
 import { uiUtils } from "~/utils/utils-ui";
@@ -13,6 +13,7 @@ import "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-
 
 type SlideBlockComponentType = SlideBlockType & {
   selected?: boolean;
+  animations?: SlideAnimationType[];
   onSelect: (id: string) => void | undefined;
   onDrag?: (blockId: string, pos: { x: number; y: number }) => void | undefined;
   onResized?: (
@@ -32,6 +33,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
   position,
   deltaContent,
   selected,
+  animations,
   onSelect,
   onDrag,
   onResized,
@@ -41,6 +43,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
   const textBlockRef = useRef<HTMLDivElement>(null);
 
   const assetUrl = `${RESOURCE_PROTOCOL}${fileUtils.getCacheDirectory()}/${assetName}`;
+  const animIndex = animations?.findIndex((n) => n.blockId === id);
 
   let initW = 0;
   let initH = 0;
@@ -148,7 +151,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
                 title="Click đôi để thêm animation"
                 onDoubleClick={() => onToggleAnimation?.(id)}
               >
-                <PlusOutlined />
+                {animIndex !== undefined && animIndex > -1 ? `${animIndex + 1}` : <PlusOutlined />}
               </div>
             )}
           </div>
