@@ -1,11 +1,13 @@
+$slide-height: 120px;
+
 .side-holder {
-  height: calc(100vh - 120px);
+  height: calc(100vh - #{$slide-height});
   width: 100px;
   position: relative;
 }
 
 .slide-entities {
-  height: calc(100vh - 120px);
+  height: calc(100vh - #{$slide-height});
   width: 270px;
   transform: translateX(140px);
   right: 0;
@@ -52,6 +54,7 @@
       display: flex;
       align-items: center;
       height: 42px;
+      cursor: grab;
 
       .cell-selectable {
         display: flex;

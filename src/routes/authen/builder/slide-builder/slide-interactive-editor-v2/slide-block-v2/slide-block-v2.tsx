@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Rnd } from "react-rnd";
 import { Delta } from "quill";
+import { PlusOutlined } from "@ant-design/icons";
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
 import { MediaType, RESOURCE_PROTOCOL } from "~/common/static-data";
 import { SlideBlockType } from "~/typings/types";
@@ -20,6 +21,7 @@ type SlideBlockComponentType = SlideBlockType & {
     size: { w: number; h: number }
   ) => void | undefined;
   onTextChanged?: (blockId: string, newText: Delta | undefined) => void | undefined;
+  onToggleAnimation?: (blockId: string) => void | undefined;
 };
 
 export const SlideBlock: React.FC<SlideBlockComponentType> = ({
@@ -34,6 +36,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
   onDrag,
   onResized,
   onTextChanged,
+  onToggleAnimation,
 }) => {
   const textBlockRef = useRef<HTMLDivElement>(null);
 
@@ -138,7 +141,17 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
             backgroundImage: `url(${assetUrl})`,
           }}
         >
-          <div className="imageblock-holder" onClick={() => onSelect(id)} />
+          <div className="imageblock-holder" onClick={() => onSelect(id)}>
+            {selected && (
+              <div
+                className="animation-anchor"
+                title="Click đôi để thêm animation"
+                onDoubleClick={() => onToggleAnimation?.(id)}
+              >
+                <PlusOutlined />
+              </div>
+            )}
+          </div>
         </Rnd>
       );
     }

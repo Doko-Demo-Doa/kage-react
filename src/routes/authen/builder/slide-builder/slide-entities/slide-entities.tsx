@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import clsx from "clsx";
-import { Input, Divider, Popover, Space, Checkbox } from "antd";
+import { Input, Divider, Popover, Checkbox } from "antd";
 import {
   ArrowLeftOutlined,
   ArrowRightOutlined,
@@ -9,6 +9,7 @@ import {
   SoundTwoTone,
   PictureTwoTone,
 } from "@ant-design/icons";
+import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 
 import { useRecoilState } from "recoil";
 
@@ -20,6 +21,7 @@ import { slideListState } from "~/atoms/slide-list-atom";
 import "react-h5-audio-player/lib/styles.css";
 import "~/routes/authen/builder/slide-builder/slide-entities/slide-entities.scss";
 import { MediaPreviewPopup } from "~/components/media-preview-popup/media-preview-popup";
+import { SlideBlockType } from "~/typings/types";
 
 type AnimationEntityType = {
   type: MediaType;
@@ -47,6 +49,7 @@ const SingleAnimationEntity: React.FC<AnimationEntityType> = ({ type, assetName 
       <Popover
         arrowContent
         content={<MediaPreviewPopup assetName={assetName} type={type} />}
+        trigger="click"
         destroyTooltipOnHide
       >
         <div className="cell-selectable">
@@ -79,6 +82,22 @@ export const SlideEntities: React.FC = () => {
 
   const blocks = slideList[slideBuilderMeta.selectedIndex]?.slideBlocks || [];
 
+  const reorder = (list: SlideBlockType[], startIndex: number, endIndex: number) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+  };
+
+  const onDragEnd = (re: DropResult) => {
+    if (!re.destination) {
+      return;
+    }
+
+    const items = reorder(blocks, re.source.index, re.destination.index);
+  };
+
   return (
     <>
       <div className="side-holder" />
@@ -99,12 +118,13 @@ export const SlideEntities: React.FC = () => {
             className="slide-title-input"
           />
           <Divider type="horizontal" />
-          <h2>Thành phần</h2>
-          <Space direction="vertical">
+          <h2>Hiệu ứng</h2>
+
+          <DragDropContext onDragEnd={(re) => console.log(re)}>
             {blocks.map((n, idx) => (
               <SingleAnimationEntity key={idx} assetName={n.assetName ?? ""} type={n.type} />
             ))}
-          </Space>
+          </DragDropContext>
         </div>
       </div>
     </>

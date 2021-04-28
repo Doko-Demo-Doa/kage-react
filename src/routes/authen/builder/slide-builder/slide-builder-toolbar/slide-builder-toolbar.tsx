@@ -39,7 +39,7 @@ export const SlideBuilderToolbar: React.FC = () => {
     const newSlide = {
       title: "",
       slideBlocks: [],
-      steps: [],
+      animations: [],
     };
     if (slideList.length <= 0) {
       setSlideList([newSlide]);
@@ -114,6 +114,7 @@ export const SlideBuilderToolbar: React.FC = () => {
   };
 
   const onPublish = async () => {
+    dataUtils.saveSlideJsonToCache(JSON.stringify(slideList, null, 2));
     const convertedStr = dataUtils.convertToHtmlSlideData(slideList);
     dataUtils.writeToHtml(convertedStr);
 

@@ -1,5 +1,5 @@
 import { Delta } from "quill";
-import { MediaType } from "~/common/static-data";
+import { AnimationType, MediaType } from "~/common/static-data";
 
 export type SlideBuilderState = {
   selectedIndex: number;
@@ -10,7 +10,7 @@ export type SlideType = {
   theme?: string;
   selectedBlock?: string;
   slideBlocks: SlideBlockType[];
-  steps: SlideStepType[];
+  animations: SlideAnimationType[];
 };
 
 export interface SlideBlockType {
@@ -26,6 +26,11 @@ export interface SlideBlockType {
 
 export type SlideStepType = {
   blockId: number;
+};
+
+export type SlideAnimationType = {
+  blockId: string;
+  animationType: AnimationType;
 };
 
 export type PositionType = {

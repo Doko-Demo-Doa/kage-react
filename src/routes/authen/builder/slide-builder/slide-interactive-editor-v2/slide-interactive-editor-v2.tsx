@@ -7,6 +7,7 @@ import { dataUtils } from "~/utils/utils-data";
 import { SlideBlock } from "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-block-v2/slide-block-v2";
 
 import "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-interactive-editor-v2.scss";
+import { AnimationType } from "~/common/static-data";
 
 export const SlideInteractiveEditor: React.FC = () => {
   const [slideList, setSlideList] = useRecoilState(slideListState);
@@ -82,6 +83,26 @@ export const SlideInteractiveEditor: React.FC = () => {
     }
   };
 
+  const onToggleAnimation = (blockId: string) => {
+    const newSlideArray: SlideType[] = dataUtils.convertToMutableData(slideList);
+    const slideIndex = slideBuilderMeta.selectedIndex;
+    const activeSlide = newSlideArray[slideIndex];
+
+    const targetAnim = activeSlide.animations.findIndex((n) => n.blockId === blockId);
+
+    if (targetAnim === -1) {
+      activeSlide.animations.push({
+        animationType: AnimationType.APPEAR,
+        blockId,
+      });
+      newSlideArray[slideIndex] = activeSlide;
+
+      console.log(newSlideArray);
+
+      setSlideList(newSlideArray);
+    }
+  };
+
   // Nếu lỗi thì bỏ hết những children trong Layer.
   return (
     <>
@@ -105,6 +126,9 @@ export const SlideInteractiveEditor: React.FC = () => {
               }}
               onTextChanged={(blockId, newText) => {
                 modifyTextBlock(blockId, newText);
+              }}
+              onToggleAnimation={(blockId) => {
+                onToggleAnimation(blockId);
               }}
             />
           );
