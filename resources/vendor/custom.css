@@ -1,0 +1,16 @@
+.reveal img {
+  margin: 0;
+  max-height: unset;
+}
+
+.reveal h2 {
+  color: #222;
+  font-family: "Source Sans Pro", Helvetica, sans-serif;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-shadow: none;
+  word-wrap: break-word;
+  font-size: 67px;
+  text-transform: unset;
+}
