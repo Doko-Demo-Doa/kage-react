@@ -7,11 +7,14 @@ function fsNotAvailable() {
 
 const CACHE_DIR_NAME = "kage-cache";
 
-function getCacheDirectory() {
+function getCacheDirectory(type?: "assets" | "quiz" | "vendor" | "") {
   if (fsNotAvailable()) return;
+
+  const subdir = type !== undefined ? type : "";
+
   const remote = require("electron").remote;
   const path = remote.require("path");
-  const cPath = path.join(remote.app.getPath("cache"), CACHE_DIR_NAME);
+  const cPath = path.join(remote.app.getPath("cache"), subdir, CACHE_DIR_NAME);
   return cPath.replace(/\\/g, "/");
 }
 

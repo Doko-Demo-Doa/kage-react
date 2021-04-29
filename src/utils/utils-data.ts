@@ -76,9 +76,6 @@ export const dataUtils = {
   saveSlideJsonToCache: (jsonData: string) => {
     const p = fileUtils.createFilePathAtCacheDir("manifest.json");
     fs.writeFileSync(p, jsonData);
-    console.log(process.env.NODE_ENV);
-    // @ts-ignore
-    console.log(path.resolve("./"));
   },
 
   writeToHtml: (content: string) => {
