@@ -1,4 +1,4 @@
-productName: "Dora Kage"
+productName: "dora-kage"
 artifactName: "kage-${os}.${ext}"
 appId: "appId"
 copyright: "Copyright @ 2021"
@@ -6,12 +6,11 @@ extends: null
 
 files:
   - "build/"
+  - "package.json"
 
 extraResources:
-  - from: "resources/vendor"
-    to: "vendor"
-    filter:
-      - "**/*"
+  - from: extra/vendor
+    to: dora-extra
 
 # Mac OS configuration
 mac:

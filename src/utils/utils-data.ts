@@ -1,4 +1,5 @@
 import fs from "fs";
+import path from "path";
 import pretty from "pretty";
 import { stripIndent } from "common-tags";
 import { AnimationType, MediaType } from "~/common/static-data";
@@ -73,8 +74,11 @@ export const dataUtils = {
     return JSON.parse(JSON.stringify(inputData));
   },
   saveSlideJsonToCache: (jsonData: string) => {
-    const path = fileUtils.createFilePathAtCacheDir("manifest.json");
-    fs.writeFileSync(path, jsonData);
+    const p = fileUtils.createFilePathAtCacheDir("manifest.json");
+    fs.writeFileSync(p, jsonData);
+    console.log(process.env.NODE_ENV);
+    // @ts-ignore
+    console.log(path.resolve("./"));
   },
 
   writeToHtml: (content: string) => {
