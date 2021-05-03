@@ -15,6 +15,7 @@ function singleSlideConstructor(slide: SlideType) {
         .map((block) => {
           const anim = slide.animations.findIndex((n) => n.blockId === block.id);
           let animAppend = "";
+
           if (anim !== -1) {
             // Thống nhất dặt fragment-index bắt đầu từ 1
             animAppend = `class="fragment" data-fragment-index="${anim + 1}" `;

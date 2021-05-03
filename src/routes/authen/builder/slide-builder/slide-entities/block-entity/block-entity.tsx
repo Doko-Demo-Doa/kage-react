@@ -1,5 +1,5 @@
 import React from "react";
-import { Popover, Checkbox } from "antd";
+import { Popover } from "antd";
 import { VideoCameraTwoTone, HeartTwoTone, SoundTwoTone, PictureTwoTone } from "@ant-design/icons";
 
 import { MediaType } from "~/common/static-data";
