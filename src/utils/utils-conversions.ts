@@ -47,7 +47,7 @@ export const audioUtils = {
 
     if (isAudio) {
       const tempName = `${dayjs().unix()}.${NORMALIZED_EXT}`;
-      const dest = path.join(fileUtils.getCacheDirectory(), tempName);
+      const dest = path.join(fileUtils.getCacheDirectory("assets"), tempName);
       const cmd = ffmpeg()
         .on("progress", function (data: any) {
           // console.log("[ffmpeg]:", data);
@@ -55,7 +55,10 @@ export const audioUtils = {
         })
         .on("end", function () {
           const newName = fileUtils.getCRC32(dest);
-          const newDest = path.join(fileUtils.getCacheDirectory(), `${newName}.${NORMALIZED_EXT}`);
+          const newDest = path.join(
+            fileUtils.getCacheDirectory("assets"),
+            `${newName}.${NORMALIZED_EXT}`
+          );
           fs.renameSync(dest, newDest);
           progressCallback?.("end", newDest, newName, NORMALIZED_EXT);
         })
@@ -107,14 +110,15 @@ export const imageUtils = {
     const crc32 = remote.require("crc").crc32;
     const name = crc32(dataBuf).toString(16);
 
-    const dest = path.join(fileUtils.getCacheDirectory(), `${name}.jpg`);
+    const EXT = "png";
+    const dest = path.join(fileUtils.getCacheDirectory("assets"), `${name}.${EXT}`);
 
     fs.writeFileSync(dest, dataBuf);
 
     const result = {
       filePath: dest,
       fileName: name,
-      extension: "jpg",
+      extension: EXT,
       extra: {
         width: newWidth,
         height: newHeight,
@@ -163,7 +167,7 @@ export const ffmpegUtils = {
 
     if (isVideo) {
       const tempName = `${dayjs().unix()}.mp4`;
-      const dest = path.join(fileUtils.getCacheDirectory(), tempName);
+      const dest = path.join(fileUtils.getCacheDirectory("assets"), tempName);
       const cmd = ffmpeg()
         .on("start", function (ffmpegCommand: string) {
           console.log("[ffmpeg command]:", ffmpegCommand);
@@ -176,7 +180,7 @@ export const ffmpegUtils = {
           console.log("[ffmpeg end]");
 
           const newName = `${fileUtils.getCRC32(dest)}.mp4`;
-          const newDest = path.join(fileUtils.getCacheDirectory(), newName);
+          const newDest = path.join(fileUtils.getCacheDirectory("assets"), newName);
           fs.renameSync(dest, newDest);
           progressCallback?.("end", newDest);
         })

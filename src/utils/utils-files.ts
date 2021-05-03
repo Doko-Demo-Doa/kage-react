@@ -113,6 +113,6 @@ export const fileUtils = {
     return path.join(cachePath, filename);
   },
   getUsableAssetUrl: (assetName: string) => {
-    return `${RESOURCE_PROTOCOL}${getCacheDirectory()}/${assetName}`;
+    return `${RESOURCE_PROTOCOL}${getCacheDirectory("assets")}/${assetName}`;
   },
 };
