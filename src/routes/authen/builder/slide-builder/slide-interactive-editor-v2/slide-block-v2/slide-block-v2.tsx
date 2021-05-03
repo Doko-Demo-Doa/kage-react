@@ -165,6 +165,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
       const html = converter.convert();
       return (
         <Rnd
+          bounds="parent"
           onDragStop={(e, d) => {
             const topLeftX = d.x;
             const topLeftY = d.y;

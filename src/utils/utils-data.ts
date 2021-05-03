@@ -20,13 +20,6 @@ function singleSlideConstructor(slide: SlideType) {
             // Tìm trong danh sách animation mà có blockId trùng thì lấy ra xử lý.
             const anim = slide.animations.findIndex((n) => n.blockId === block.id);
 
-            // const skeleton = (subContent: string) => `
-            //   <section data-auto-animate>
-            //     <h2>${slide.title}</h2>
-            //     ${subContent}
-            //   </section>
-            // `;
-
             let blockContentHtml = "";
 
             if (block.type === MediaType.VIDEO) {
@@ -73,11 +66,18 @@ function singleSlideConstructor(slide: SlideType) {
             return blockContentHtml;
           })
           .join("\n")}
-        
-        ${slide.animations.map((ani) => {
-          return "";
-        })}
       </section>
+
+      ${slide.animations.map((ani) => {
+        // Hàm khung xương
+        const skeleton = (subContent: string) => `
+          <section data-auto-animate>
+            <h2>${slide.title}</h2>
+            ${subContent}
+          </section>
+        `;
+        return "";
+      })}
     </section>`);
 }
 
