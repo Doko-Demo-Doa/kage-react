@@ -6,6 +6,7 @@ function fsNotAvailable() {
 }
 
 const CACHE_DIR_NAME = "kage-cache";
+const EXPORT_DIR_NAME = "slide_export";
 
 /**
  * assets: Chứa các file ảnh, audio, video đã qua xử lý.
@@ -66,8 +67,28 @@ export const fileUtils = {
     const path = remote.require("path");
 
     const cacheDir: string = getCacheDirectory();
-    const destF = path.join(dest, "slide_export");
+    const destF = path.join(dest, EXPORT_DIR_NAME);
     fs.copySync(cacheDir, destF);
+  },
+  // Copy các file vendor vào thư mục chỉ định.
+  copyVendorFilesToDest: async (dest: string) => {
+    if (fsNotAvailable()) return;
+    const remote = require("electron").remote;
+    const fs = remote.require("fs-extra");
+    const path = remote.require("path");
+
+    let vendorPath = "";
+
+    if (process.env.NODE_ENV !== "production") {
+      // Copy từ folder trong project ra. Nằm ở extra/vendor nếu là dev
+      vendorPath = path.join(path.resolve("./"), "extra", "vendor");
+    } else {
+      // Nếu là release thì nó nằm ở dora-extra. Tham khảo file electron-builder.yml
+      vendorPath = path.dirname(__dirname, "dora-extra");
+    }
+
+    const destVendor = path.join(dest, EXPORT_DIR_NAME, "vendor");
+    fs.copySync(vendorPath, destVendor);
   },
   selectMultipleFiles: () => {
     if (fsNotAvailable()) return;

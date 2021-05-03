@@ -1,4 +1,5 @@
 import React from "react";
+import clsx from "clsx";
 import AudioPlayer from "react-h5-audio-player";
 import { MediaType } from "~/common/static-data";
 import { fileUtils } from "~/utils/utils-files";
@@ -32,5 +33,12 @@ export const MediaPreviewPopup: React.FC<MediaPreviewPopupProps> = ({ assetName,
     }
   };
 
-  return <div className="media-preview-popup">{getMainComponent()}</div>;
+  return (
+    <div
+      className="media-preview-popup"
+      style={{ width: type === MediaType.AUDIO ? "300px" : undefined }}
+    >
+      {getMainComponent()}
+    </div>
+  );
 };

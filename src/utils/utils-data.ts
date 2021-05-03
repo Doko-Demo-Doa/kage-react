@@ -6,7 +6,7 @@ import { SlideType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
 
 function singleSlideConstructor(slide: SlideType) {
-  const subfolderPath = "assets/"; // "data/";
+  const subfolderPath = "assets"; // "data";
 
   return stripIndent(`
     <section>
