@@ -1,5 +1,4 @@
 import fs from "fs";
-import path from "path";
 import pretty from "pretty";
 import { stripIndent } from "common-tags";
 import { AnimationType, MediaType } from "~/common/static-data";
@@ -7,7 +6,7 @@ import { SlideType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
 
 function singleSlideConstructor(slide: SlideType) {
-  const subfolderPath = "."; // "data/";
+  const subfolderPath = "assets/"; // "data/";
 
   return stripIndent(`
     <section>
@@ -95,10 +94,10 @@ export const dataUtils = {
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-        <link rel="stylesheet" href="./reset.css" />
-        <link rel="stylesheet" href="./reveal.css" />
-        <link rel="stylesheet" href="./theme/white.css" id="theme" />
-        <link rel="stylesheet" href="./custom.css" />
+        <link rel="stylesheet" href="./vendor/reset.css" />
+        <link rel="stylesheet" href="./vendor/reveal.css" />
+        <link rel="stylesheet" href="./vendor/themes/white.css" id="theme" />
+        <link rel="stylesheet" href="./vendor/custom.css" />
       </head>
 
       <body>
@@ -108,7 +107,7 @@ export const dataUtils = {
           </div>
         </div>
 
-        <script src="./reveal.js"></script>
+        <script src="./vendor/reveal.js"></script>
         <script>
           Reveal.initialize({
             hash: true,

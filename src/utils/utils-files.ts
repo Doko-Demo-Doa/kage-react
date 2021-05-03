@@ -65,7 +65,7 @@ export const fileUtils = {
     const fs = remote.require("fs-extra");
     const path = remote.require("path");
 
-    const cacheDir: string = path.join(remote.app.getPath("cache"), CACHE_DIR_NAME);
+    const cacheDir: string = getCacheDirectory();
     const destF = path.join(dest, "slide_export");
     fs.copySync(cacheDir, destF);
   },
@@ -108,8 +108,7 @@ export const fileUtils = {
     if (fsNotAvailable()) return;
     const remote = require("electron").remote;
     const path = remote.require("path");
-    const cacheDir = remote.app.getPath("cache");
-    const cachePath = path.join(cacheDir, CACHE_DIR_NAME);
+    const cachePath = getCacheDirectory();
     return path.join(cachePath, filename);
   },
   getUsableAssetUrl: (assetName: string) => {
