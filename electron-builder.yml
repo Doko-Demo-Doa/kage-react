@@ -9,7 +9,7 @@ files:
   - "package.json"
 
 extraResources:
-  - from: extra/vendor
+  - from: extra
     to: dora-extra
 
 # Mac OS configuration

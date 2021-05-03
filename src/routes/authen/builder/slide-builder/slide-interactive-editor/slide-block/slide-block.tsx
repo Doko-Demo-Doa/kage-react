@@ -17,7 +17,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
   type,
   assetName,
 }) => {
-  const assetUrl = `${RESOURCE_PROTOCOL}${fileUtils.getCacheDirectory()}/${assetName}`;
+  const assetUrl = `${RESOURCE_PROTOCOL}${fileUtils.getCacheDirectory("assets")}/${assetName}`;
 
   const [image] = useImage(`${assetUrl}` || "");
   const mainBlockRef = React.useRef<Konva.Image>(null);

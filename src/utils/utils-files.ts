@@ -7,6 +7,12 @@ function fsNotAvailable() {
 
 const CACHE_DIR_NAME = "kage-cache";
 
+/**
+ * assets: Chứa các file ảnh, audio, video đã qua xử lý.
+ * quiz: Chứa các file quiz json tạo ra từ quiz builder.
+ * @param type Tên loại thư mục cần lấy ra từ cache:
+ * @returns
+ */
 function getCacheDirectory(type?: "assets" | "quiz" | "vendor" | "") {
   if (fsNotAvailable()) return;
 
