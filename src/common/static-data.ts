@@ -39,4 +39,5 @@ export enum MediaType {
   IMAGE,
   TEXT_BLOCK,
   TABLE,
+  CALLOUT,
 }

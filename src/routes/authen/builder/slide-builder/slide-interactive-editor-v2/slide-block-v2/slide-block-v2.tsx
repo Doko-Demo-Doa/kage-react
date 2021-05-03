@@ -4,6 +4,7 @@ import { Delta } from "quill";
 import { PlusOutlined } from "@ant-design/icons";
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
 import { MediaType, RESOURCE_PROTOCOL } from "~/common/static-data";
+import { Calllout } from "~/components/callout/callout";
 import { SlideAnimationType, SlideBlockType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
 import { htmlToJSX } from "~/utils/utils-formatting";
@@ -192,6 +193,24 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
           </div>
         </Rnd>
       );
+    }
+
+    if (type === MediaType.CALLOUT) {
+      <Rnd
+        bounds="parent"
+        onDragStop={(e, d) => {
+          const topLeftX = d.x;
+          const topLeftY = d.y;
+
+          onDrag?.(id, { x: topLeftX, y: topLeftY });
+        }}
+        position={{
+          x: initX,
+          y: initY,
+        }}
+      >
+        <Calllout name="callout-rect-left" />
+      </Rnd>;
     }
 
     return null;

@@ -2,7 +2,6 @@ import { useRecoilState } from "recoil";
 import { Delta } from "quill";
 import dayjs from "dayjs";
 import { AnimationType } from "~/common/static-data";
-import { Calllout } from "~/components/callout/callout";
 import { slideListState } from "~/atoms/slide-list-atom";
 import { slideBuilderState } from "~/atoms/slide-builder-atom";
 import { BlockSizeType, PositionType, SlideType } from "~/typings/types";
@@ -114,8 +113,6 @@ export const SlideInteractiveEditor: React.FC = () => {
     <>
       <div id="slide-interactive-editor">
         <h2 className="slide-title">{slideTitle}</h2>
-
-        <Calllout />
 
         {blocks.map((n, i) => {
           return (
