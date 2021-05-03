@@ -42,7 +42,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
 }) => {
   const textBlockRef = useRef<HTMLDivElement>(null);
 
-  const assetUrl = `${RESOURCE_PROTOCOL}${fileUtils.getCacheDirectory()}/${assetName}`;
+  const assetUrl = `${RESOURCE_PROTOCOL}${fileUtils.getCacheDirectory("assets")}/${assetName}`;
   const animIndex = animations?.findIndex((n) => n.blockId === id);
 
   let initW = 0;

@@ -49,6 +49,20 @@ $slide-height: 120px;
       width: 184px;
       max-width: 184px;
     }
+
+    .asset-columns {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+
+      .column1 {
+        border-right: 1px solid $color-gray-light;
+      }
+
+      .column2 {
+        //
+      }
+    }
   }
 }
 

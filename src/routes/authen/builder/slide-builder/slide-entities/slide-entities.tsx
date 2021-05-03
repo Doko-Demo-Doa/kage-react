@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { Input, Divider } from "antd";
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { AnimationEntity } from "~/routes/authen/builder/slide-builder/slide-entities/animation-entity/animation-entity";
+import { BlockEntity } from "~/routes/authen/builder/slide-builder/slide-entities/block-entity/block-entity";
 
 import { useRecoilState } from "recoil";
 
@@ -76,24 +77,36 @@ export const SlideEntities: React.FC = () => {
             className="slide-title-input"
           />
           <Divider type="horizontal" />
-          <h2>Hiệu ứng</h2>
+          <h2>Asset / Hiệu ứng</h2>
 
-          {animations.map((item) => {
-            return (
-              <AnimationEntity
-                id={item.id}
-                key={item.id}
-                onClick={(id, blockId) => {
-                  selectAnim(id);
-                  selectBlock(blockId);
-                }}
-                selected={selectedAnim === item.id}
-                animationType={item.animationType}
-                blockId={item.blockId}
-                blocks={blocks}
-              />
-            );
-          })}
+          <div className="asset-columns">
+            <div className="column1">
+              {blocks.map((item) => {
+                return <BlockEntity key={item.id} assetName={item.assetName} type={item.type} />;
+              })}
+            </div>
+
+            <div className="separator" />
+
+            <div className="column2">
+              {animations.map((item) => {
+                return (
+                  <AnimationEntity
+                    id={item.id}
+                    key={item.id}
+                    onClick={(id, blockId) => {
+                      selectAnim(id);
+                      selectBlock(blockId);
+                    }}
+                    selected={selectedAnim === item.id}
+                    animationType={item.animationType}
+                    blockId={item.blockId}
+                    blocks={blocks}
+                  />
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </>

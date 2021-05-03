@@ -11,10 +11,10 @@ import "~/routes/authen/builder/slide-builder/slide-entities/block-entity/block-
 
 type BlockEntityType = {
   type: MediaType;
-  assetName: string;
+  assetName?: string;
 };
 
-export const SingleBlockEntity: React.FC<BlockEntityType> = ({ type, assetName }) => {
+export const BlockEntity: React.FC<BlockEntityType> = ({ type, assetName }) => {
   function getIcon() {
     if (type === MediaType.AUDIO) {
       return <SoundTwoTone size={35} className="audio" twoToneColor={Colors.DODGER_BLUE} />;
@@ -30,18 +30,13 @@ export const SingleBlockEntity: React.FC<BlockEntityType> = ({ type, assetName }
 
   return (
     <div className="entity-cell">
-      <Checkbox />
-
       <Popover
         arrowContent
-        content={<MediaPreviewPopup assetName={assetName} type={type} />}
+        content={<MediaPreviewPopup assetName={assetName ?? ""} type={type} />}
         trigger="click"
         destroyTooltipOnHide
       >
-        <div className="cell-selectable">
-          {getIcon()}
-          <div className="entity-label">{assetName}</div>
-        </div>
+        <div className="cell-selectable">{getIcon()}</div>
       </Popover>
     </div>
   );

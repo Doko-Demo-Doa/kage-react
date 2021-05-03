@@ -1,9 +1,10 @@
 .animation-entity {
   margin: 8px 0;
-  width: 180px;
+  width: 100%;
   display: flex;
   align-items: center;
-  padding: 5px 12px;
+  padding: 5px 10px;
+  margin-left: 8px;
   border: 1px solid transparent;
   cursor: pointer;
   transition: 0.2s linear all;

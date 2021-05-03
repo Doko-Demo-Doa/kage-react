@@ -2,18 +2,13 @@
   display: flex;
   align-items: center;
   height: 42px;
-  cursor: grab;
+  cursor: pointer;
 
   .cell-selectable {
     display: flex;
     align-items: center;
-    margin-left: 18px;
-    margin-top: 4px;
-  }
-
-  .entity-label {
-    margin-left: 0.8rem;
-    white-space: nowrap;
-    color: $color-gray-high;
+    margin-left: 4px;
+    margin-right: 16px;
+    margin-top: -2px;
   }
 }

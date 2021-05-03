@@ -20,7 +20,7 @@ function getCacheDirectory(type?: "assets" | "quiz" | "vendor" | "") {
 
   const remote = require("electron").remote;
   const path = remote.require("path");
-  const cPath = path.join(remote.app.getPath("cache"), subdir, CACHE_DIR_NAME);
+  const cPath = path.join(remote.app.getPath("cache"), CACHE_DIR_NAME, subdir);
   return cPath.replace(/\\/g, "/");
 }
 
@@ -95,13 +95,27 @@ export const fileUtils = {
     if (fsNotAvailable()) return;
     const remote = require("electron").remote;
     const fs = remote.require("fs");
-    const path = remote.require("path");
 
-    const cacheDir = path.join(remote.app.getPath("cache"), CACHE_DIR_NAME);
+    // Tạo cache dir
+    const cacheDir = getCacheDirectory();
     if (!fs.existsSync(cacheDir)) {
       fs.mkdirSync(cacheDir);
     }
+    const assetsDir = getCacheDirectory("assets");
+    if (!fs.existsSync(assetsDir)) {
+      fs.mkdirSync(assetsDir);
+    }
+    const vendorDir = getCacheDirectory("vendor");
+    if (!fs.existsSync(vendorDir)) {
+      fs.mkdirSync(vendorDir);
+    }
+    const quizDir = getCacheDirectory("quiz");
+    if (!fs.existsSync(quizDir)) {
+      fs.mkdirSync(quizDir);
+    }
+
     return remote.app.getPath("cache");
+    // TODO: Tạo file html revealjs mồi để sau này làm preview.
   },
   getCacheDirectory,
   createFilePathAtCacheDir: (filename: string) => {
