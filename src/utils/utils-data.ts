@@ -10,65 +10,74 @@ function singleSlideConstructor(slide: SlideType) {
 
   return stripIndent(`
     <section>
-      <h2>${slide.title}</h2>
-      ${slide.slideBlocks
-        .map((block) => {
-          // Tìm trong danh sách animation mà có blockId trùng thì lấy ra xử lý.
-          const anim = slide.animations.findIndex((n) => n.blockId === block.id);
-          let animAppend = "";
+      <section data-auto-animate>
+        <h2>${slide.title}</h2>
+        ${slide.slideBlocks
+          .map((block) => {
+            // Mặc định ta sẽ cho hiển thị tất cả các block trong một <section> con của <section> mẹ.
+            // Nếu có animation thì bắt đầu nhân bản các section ra.
 
-          if (anim !== -1) {
-            // Thống nhất dặt fragment-index bắt đầu từ 1
-            animAppend = `class="fragment" data-fragment-index="${anim + 1}" `;
-          }
+            // Tìm trong danh sách animation mà có blockId trùng thì lấy ra xử lý.
+            const anim = slide.animations.findIndex((n) => n.blockId === block.id);
 
-          if (block.type === MediaType.VIDEO) {
-            const sizeAppend = `${
-              block.size ? `width="${block.size.w}" height="${block.size.h}"` : ""
-            }`;
-            const positionAppend = `${
-              block.position ? `style="left: ${block.position.x}; top: ${block.position.y}"` : ""
-            }`;
-            return stripIndent(`
-            <video class="r-stack" src="${subfolderPath}/${block.assetName}"
-              ${animAppend}
-              ${sizeAppend}
-              ${positionAppend}
-              ${block.autoPlay ? "data-autoplay" : ""}
-            />
-            `);
-          }
+            // const skeleton = (subContent: string) => `
+            //   <section data-auto-animate>
+            //     <h2>${slide.title}</h2>
+            //     ${subContent}
+            //   </section>
+            // `;
 
-          if (block.type === MediaType.IMAGE) {
-            const sizeAppend = `${
-              block.size ? `width: ${block.size.w}px; height: ${block.size.h}px; ` : ""
-            }`;
-            const positionAppend = `${
-              block.position
-                ? `position: absolute; left: ${block.position.x}px; top: ${block.position.y}px;`
-                : ""
-            }`;
-            const styleAppend = (dataIn: string) => `style="${dataIn}"`;
-            return stripIndent(`
-            <img src="${subfolderPath}/${block.assetName}"
-              ${animAppend}
-              ${styleAppend(sizeAppend + positionAppend)}
-              ${block.autoPlay ? "data-autoplay" : ""}
-            />`);
-          }
+            let blockContentHtml = "";
 
-          // Ta chỉ xử lý những audio trong danh sách animation
-          // vì nếu không đưa vào danh sách animation, audio sẽ luôn bật ở chế độ nền.
-          if (block.type === MediaType.AUDIO && anim) {
-            return `
-            <audio src="${subfolderPath}/${block.assetName}"
-              ${animAppend}
-              ${block.autoPlay ? "data-autoplay" : ""}
-            />`;
-          }
-          return `<div>${block.content}</div>`;
-        })
-        .join("\n")}
+            if (block.type === MediaType.VIDEO) {
+              const sizeAppend = `${
+                block.size ? `width="${block.size.w}" height="${block.size.h}"` : ""
+              }`;
+              const positionAppend = `${
+                block.position ? `style="left: ${block.position.x}; top: ${block.position.y}"` : ""
+              }`;
+              blockContentHtml = stripIndent(`
+              <video class="r-stack" src="${subfolderPath}/${block.assetName}"
+                ${sizeAppend}
+                ${positionAppend}
+                ${block.autoPlay ? "data-autoplay" : ""}
+              />
+              `);
+            }
+
+            if (block.type === MediaType.IMAGE) {
+              const sizeAppend = `${
+                block.size ? `width: ${block.size.w}px; height: ${block.size.h}px; ` : ""
+              }`;
+              const positionAppend = `${
+                block.position
+                  ? `position: absolute; left: ${block.position.x}px; top: ${block.position.y}px;`
+                  : ""
+              }`;
+              const styleAppend = (dataIn: string) => `style="${dataIn}"`;
+              blockContentHtml = stripIndent(`
+              <img src="${subfolderPath}/${block.assetName}"
+                ${styleAppend(sizeAppend + positionAppend)}
+                ${block.autoPlay ? "data-autoplay" : ""}
+              />`);
+            }
+
+            // Ta chỉ xử lý những audio trong danh sách animation
+            // vì nếu không đưa vào danh sách animation, audio sẽ luôn bật ở chế độ nền.
+            if (block.type === MediaType.AUDIO && anim !== -1) {
+              blockContentHtml = `
+              <audio src="${subfolderPath}/${block.assetName}"
+                ${block.autoPlay ? "data-autoplay" : ""}
+              />`;
+            }
+            return blockContentHtml;
+          })
+          .join("\n")}
+        
+        ${slide.animations.map((ani) => {
+          return "";
+        })}
+      </section>
     </section>`);
 }
 

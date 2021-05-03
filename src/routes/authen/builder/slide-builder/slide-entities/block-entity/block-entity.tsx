@@ -11,10 +11,17 @@ import "~/routes/authen/builder/slide-builder/slide-entities/block-entity/block-
 
 type BlockEntityType = {
   type: MediaType;
+  blockId: string;
   assetName?: string;
+  onDoubleClick?: (blockId: string) => void | undefined;
 };
 
-export const BlockEntity: React.FC<BlockEntityType> = ({ type, assetName }) => {
+export const BlockEntity: React.FC<BlockEntityType> = ({
+  type,
+  assetName,
+  blockId,
+  onDoubleClick,
+}) => {
   function getIcon() {
     if (type === MediaType.AUDIO) {
       return <SoundTwoTone size={35} className="audio" twoToneColor={Colors.DODGER_BLUE} />;
@@ -36,7 +43,16 @@ export const BlockEntity: React.FC<BlockEntityType> = ({ type, assetName }) => {
         trigger="click"
         destroyTooltipOnHide
       >
-        <div className="cell-selectable">{getIcon()}</div>
+        <div
+          className="cell-selectable"
+          onDoubleClick={() => {
+            if (type === MediaType.AUDIO && onDoubleClick) {
+              onDoubleClick?.(blockId);
+            }
+          }}
+        >
+          {getIcon()}
+        </div>
       </Popover>
     </div>
   );

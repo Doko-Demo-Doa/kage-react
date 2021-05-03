@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import clsx from "clsx";
 import { Input, Divider } from "antd";
+import dayjs from "dayjs";
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
+import { useRecoilState } from "recoil";
+
+import { SlideType } from "~/typings/types";
+import { dataUtils } from "~/utils/utils-data";
+import { AnimationType } from "~/common/static-data";
 import { AnimationEntity } from "~/routes/authen/builder/slide-builder/slide-entities/animation-entity/animation-entity";
 import { BlockEntity } from "~/routes/authen/builder/slide-builder/slide-entities/block-entity/block-entity";
 
-import { useRecoilState } from "recoil";
-
 import { slideBuilderState } from "~/atoms/slide-builder-atom";
 import { slideListState } from "~/atoms/slide-list-atom";
-import { SlideBlockType } from "~/typings/types";
 
 import "react-h5-audio-player/lib/styles.css";
 import "~/routes/authen/builder/slide-builder/slide-entities/slide-entities.scss";
@@ -45,17 +48,27 @@ export const SlideEntities: React.FC = () => {
     setSlideList([...newSlideArray]);
   };
 
+  const onToggleAnimation = (blockId: string) => {
+    const newSlideArray: SlideType[] = dataUtils.convertToMutableData(slideList);
+    const slideIndex = slideBuilderMeta.selectedIndex;
+    const activeSlide = newSlideArray[slideIndex];
+
+    const targetAnim = activeSlide.animations.findIndex((n) => n.blockId === blockId);
+
+    if (targetAnim === -1) {
+      activeSlide.animations.push({
+        id: dayjs().unix().toString(),
+        animationType: AnimationType.APPEAR,
+        blockId,
+      });
+      newSlideArray[slideIndex] = activeSlide;
+
+      setSlideList(newSlideArray);
+    }
+  };
+
   const blocks = slideList[slideBuilderMeta.selectedIndex]?.slideBlocks || [];
   const animations = slideList[slideBuilderMeta.selectedIndex]?.animations || [];
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const reorder = (list: SlideBlockType[], startIndex: number, endIndex: number) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-
-    return result;
-  };
 
   return (
     <>
@@ -82,7 +95,15 @@ export const SlideEntities: React.FC = () => {
           <div className="asset-columns">
             <div className="column1">
               {blocks.map((item) => {
-                return <BlockEntity key={item.id} assetName={item.assetName} type={item.type} />;
+                return (
+                  <BlockEntity
+                    key={item.id}
+                    assetName={item.assetName}
+                    blockId={item.id}
+                    type={item.type}
+                    onDoubleClick={(blockId) => onToggleAnimation(blockId)}
+                  />
+                );
               })}
             </div>
 
