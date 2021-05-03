@@ -144,7 +144,7 @@ export const SlideBuilderToolbar: React.FC = () => {
       id: dayjs().unix().toString(),
       type,
       assetName: `${assetName}.${extension}`,
-      autoPlay: false,
+      autoPlay: true,
       content: "",
       position: {
         x: InitialBlockCoordinate.x,

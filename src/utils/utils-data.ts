@@ -13,6 +13,7 @@ function singleSlideConstructor(slide: SlideType) {
       <h2>${slide.title}</h2>
       ${slide.slideBlocks
         .map((block) => {
+          // Tìm trong danh sách animation mà có blockId trùng thì lấy ra xử lý.
           const anim = slide.animations.findIndex((n) => n.blockId === block.id);
           let animAppend = "";
 
@@ -56,7 +57,9 @@ function singleSlideConstructor(slide: SlideType) {
             />`);
           }
 
-          if (block.type === MediaType.AUDIO) {
+          // Ta chỉ xử lý những audio trong danh sách animation
+          // vì nếu không đưa vào danh sách animation, audio sẽ luôn bật ở chế độ nền.
+          if (block.type === MediaType.AUDIO && anim) {
             return `
             <audio src="${subfolderPath}/${block.assetName}"
               ${animAppend}
