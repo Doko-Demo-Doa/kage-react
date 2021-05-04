@@ -64,6 +64,7 @@ function singleSlideConstructor(slide: SlideType) {
             // Last line is to remove line breaks.
             const styleAppend = `
               position: absolute;
+              padding: 16px;
               user-select: auto;
               width: auto;
               height: auto;
@@ -128,9 +129,9 @@ export const dataUtils = {
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-        <link rel="stylesheet" href="./vendor/reset.css" />
         <link rel="stylesheet" href="./vendor/reveal.css" />
         <link rel="stylesheet" href="./vendor/themes/white.css" id="theme" />
+        <link rel="stylesheet" href="./vendor/reset.css" />
         <link rel="stylesheet" href="./vendor/custom.css" />
       </head>
 

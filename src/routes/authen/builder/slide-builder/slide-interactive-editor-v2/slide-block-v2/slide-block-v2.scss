@@ -7,26 +7,65 @@ $animation-anchor-size: 24px;
   border: 1px solid $color-gray-medium;
 }
 
+.animation-anchor {
+  width: $animation-anchor-size;
+  height: $animation-anchor-size;
+  left: 50%;
+  top: -10px;
+  text-align: center;
+  vertical-align: middle;
+  position: absolute;
+  background: white;
+  border: 1px dashed $color-aqua-highlighted;
+  cursor: pointer;
+  z-index: 2;
+}
+
 .imageblock-holder {
   width: 100%;
   height: 100%;
   position: relative;
-
-  .animation-anchor {
-    width: $animation-anchor-size;
-    height: $animation-anchor-size;
-    left: 50%;
-    top: -10px;
-    text-align: center;
-    vertical-align: middle;
-    position: absolute;
-    background: white;
-    border: 1px dashed $color-aqua-highlighted;
-    cursor: pointer;
-  }
 }
 
 .interactive-text-block {
+  position: relative;
+
+  .quiller {
+    border: 1px dashed $color-aqua-highlighted;
+
+    .ql-tooltip {
+      width: max-content;
+    }
+
+    .ql-container {
+      .ql-editor {
+        line-height: 1.2;
+        letter-spacing: normal;
+
+        h1 {
+          font-size: 42px;
+          font-weight: 400;
+        }
+        h2 {
+          font-size: 32px;
+        }
+        p {
+          font-size: 22px;
+        }
+      }
+    }
+  }
+
+  .drag-handle {
+    width: 24px;
+    height: 24px;
+    padding: 10px;
+    border: 1px dashed wheat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .separated-block {
     color: green;
   }

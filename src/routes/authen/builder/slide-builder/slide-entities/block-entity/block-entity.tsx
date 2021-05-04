@@ -1,6 +1,12 @@
 import React from "react";
 import { Popover } from "antd";
-import { VideoCameraTwoTone, HeartTwoTone, SoundTwoTone, PictureTwoTone } from "@ant-design/icons";
+import {
+  VideoCameraTwoTone,
+  HeartTwoTone,
+  SoundTwoTone,
+  PictureTwoTone,
+  FontSizeOutlined,
+} from "@ant-design/icons";
 
 import { MediaType } from "~/common/static-data";
 import { Colors } from "~/common/colors";
@@ -31,6 +37,9 @@ export const BlockEntity: React.FC<BlockEntityType> = ({
     }
     if (type === MediaType.VIDEO) {
       return <VideoCameraTwoTone twoToneColor={Colors.PALE_RED} />;
+    }
+    if (type === MediaType.TEXT_BLOCK) {
+      return <FontSizeOutlined color={Colors.DODGER_BLUE} />;
     }
     return <HeartTwoTone twoToneColor={Colors.BARBIE_PINK} />;
   }

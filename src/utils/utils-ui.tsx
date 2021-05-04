@@ -65,7 +65,7 @@ export const uiUtils = {
                 quillRef = ref;
               }
             }}
-            theme="bubble"
+            theme="snow"
           />
         </>
       ),

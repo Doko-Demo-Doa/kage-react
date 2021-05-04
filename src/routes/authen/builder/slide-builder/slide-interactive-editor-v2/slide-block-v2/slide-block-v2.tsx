@@ -1,15 +1,19 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Rnd } from "react-rnd";
 import { Delta } from "quill";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, DragOutlined } from "@ant-design/icons";
+import ReactQuill, { Quill } from "react-quill";
 import { MediaType, RESOURCE_PROTOCOL } from "~/common/static-data";
 import { Calllout } from "~/components/callout/callout";
 import { SlideAnimationType, SlideBlockType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
-import { htmlToJSX, quillDeltaToHtml } from "~/utils/utils-formatting";
-import { uiUtils } from "~/utils/utils-ui";
+import { defaultQuillToolbar } from "~/utils/utils-ui";
 
 import "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-block-v2/slide-block-v2.scss";
+
+const SizeStyle = Quill.import("attributors/style/size");
+SizeStyle.whitelist = ["10px", "15px", "18px", "20px", "32px", "54px"];
+Quill.register(SizeStyle, true);
 
 type SlideBlockComponentType = SlideBlockType & {
   selected?: boolean;
@@ -41,6 +45,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
   onToggleAnimation,
 }) => {
   const textBlockRef = useRef<HTMLDivElement>(null);
+  const quillRef = useRef<ReactQuill>(null);
 
   const assetUrl = `${RESOURCE_PROTOCOL}${fileUtils.getCacheDirectory("assets")}/${assetName}`;
   const animIndex = animations?.findIndex((n) => n.blockId === id);
@@ -75,15 +80,6 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
       initH = textBlockRef.current?.clientHeight ?? 0;
     }
   }, []);
-
-  const updateTextBlockSize = () => {
-    if (type === MediaType.TEXT_BLOCK) {
-      const newW = textBlockRef.current?.clientWidth ?? 0;
-      const newH = textBlockRef.current?.clientHeight ?? 0;
-      setBlockW(newW);
-      setBlockH(newH);
-    }
-  };
 
   const getMainComponent = () => {
     if (type === MediaType.IMAGE) {
@@ -160,8 +156,6 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
     }
 
     if (type === MediaType.TEXT_BLOCK) {
-      const ops = deltaContent?.ops;
-      const html = quillDeltaToHtml(ops!);
       return (
         <Rnd
           bounds="parent"
@@ -176,18 +170,32 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
             y: initY,
           }}
           enableResizing={false}
+          dragHandleClassName="handle"
         >
-          <div
-            ref={textBlockRef}
-            onDoubleClick={() => {
-              uiUtils.showQuillEditor(deltaContent || "", (data) => {
-                updateTextBlockSize();
+          <div ref={textBlockRef} onClick={() => onSelect(id)} className="interactive-text-block">
+            {selected && (
+              <div
+                className="handle animation-anchor"
+                title="Click đôi để thêm animation"
+                onDoubleClick={() => onToggleAnimation?.(id)}
+              >
+                {animIndex !== undefined && animIndex > -1 ? `${animIndex + 1}` : <DragOutlined />}
+              </div>
+            )}
+
+            <ReactQuill
+              ref={quillRef}
+              defaultValue={deltaContent}
+              className="quiller"
+              modules={{
+                toolbar: defaultQuillToolbar,
+              }}
+              onChange={() => {
+                const data = quillRef.current?.getEditor().getContents();
                 onTextChanged?.(id, data);
-              });
-            }}
-            className="interactive-text-block"
-          >
-            {htmlToJSX(html)}
+              }}
+              theme="bubble"
+            />
           </div>
         </Rnd>
       );
