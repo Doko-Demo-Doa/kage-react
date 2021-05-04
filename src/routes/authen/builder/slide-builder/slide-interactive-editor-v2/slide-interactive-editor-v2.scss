@@ -25,6 +25,20 @@
     margin: 0 auto;
   }
 
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  blockquote,
+  strong,
+  pre,
+  a {
+    font-family: "Source Sans Pro", Helvetica, sans-serif;
+  }
+
   .single-block {
     z-index: 0;
     background-color: bisque;

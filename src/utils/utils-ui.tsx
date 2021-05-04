@@ -4,6 +4,7 @@ import ReactQuill from "react-quill";
 
 // Alternative: react-quill/dist/quill.bubble.css
 import "react-quill/dist/quill.snow.css";
+import "react-quill/dist/quill.bubble.css";
 import "~/routes/authen/builder/slide-builder/slide-builder-toolbar/slide-builder-toolbar.scss";
 
 export type NotificationType = "success" | "error" | "info" | "warning" | "warn" | "open";
@@ -64,7 +65,7 @@ export const uiUtils = {
                 quillRef = ref;
               }
             }}
-            theme="snow"
+            theme="bubble"
           />
         </>
       ),
@@ -83,5 +84,5 @@ export const defaultQuillToolbar = [
   [{ color: [] }, { background: [] }],
   [{ list: "ordered" }, { list: "bullet" }],
   ["clean"],
-  [{ "align": [] }],
+  [{ align: [] }],
 ];

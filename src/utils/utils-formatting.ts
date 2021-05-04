@@ -1,5 +1,7 @@
 import { split } from "rambdax";
 import parse, { HTMLReactParserOptions } from "html-react-parser";
+import { DeltaOperation } from "quill";
+import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
 
 export function getTextWithCondition(str: string, condition: RegExp | string) {
   const regexStr = new RegExp(condition);
@@ -58,4 +60,10 @@ export function breakStringByLineBreaks(inputStr: string) {
 export function htmlToJSX(inputHtml: string, options?: HTMLReactParserOptions) {
   console.log(inputHtml);
   return parse(furiganaTemplateToHTML(inputHtml), options);
+}
+
+export function quillDeltaToHtml(ops: DeltaOperation[]) {
+  const converter = new QuillDeltaToHtmlConverter(ops!, {});
+  const html = converter.convert();
+  return html;
 }

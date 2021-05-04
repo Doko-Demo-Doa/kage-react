@@ -2,12 +2,11 @@ import React, { useState, useRef, useEffect } from "react";
 import { Rnd } from "react-rnd";
 import { Delta } from "quill";
 import { PlusOutlined } from "@ant-design/icons";
-import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
 import { MediaType, RESOURCE_PROTOCOL } from "~/common/static-data";
 import { Calllout } from "~/components/callout/callout";
 import { SlideAnimationType, SlideBlockType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
-import { htmlToJSX } from "~/utils/utils-formatting";
+import { htmlToJSX, quillDeltaToHtml } from "~/utils/utils-formatting";
 import { uiUtils } from "~/utils/utils-ui";
 
 import "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-block-v2/slide-block-v2.scss";
@@ -162,8 +161,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
 
     if (type === MediaType.TEXT_BLOCK) {
       const ops = deltaContent?.ops;
-      const converter = new QuillDeltaToHtmlConverter(ops!, {});
-      const html = converter.convert();
+      const html = quillDeltaToHtml(ops!);
       return (
         <Rnd
           bounds="parent"

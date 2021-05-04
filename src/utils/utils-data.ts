@@ -4,80 +4,101 @@ import { stripIndent } from "common-tags";
 import { AnimationType, MediaType } from "~/common/static-data";
 import { SlideType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
+import { quillDeltaToHtml } from "~/utils/utils-formatting";
 
 function singleSlideConstructor(slide: SlideType) {
   const subfolderPath = "assets"; // "data";
 
   return stripIndent(`
     <section>
-      <section data-auto-animate>
-        <h2>${slide.title}</h2>
-        ${slide.slideBlocks
-          .map((block) => {
-            // Mặc định ta sẽ cho hiển thị tất cả các block trong một <section> con của <section> mẹ.
-            // Nếu có animation thì bắt đầu nhân bản các section ra.
+      <h2>${slide.title}</h2>
+      ${slide.slideBlocks
+        .map((block) => {
+          // Tìm trong danh sách animation mà có blockId trùng thì lấy ra xử lý.
+          const anim = slide.animations.findIndex((n) => n.blockId === block.id);
+          let animAppend = "";
 
-            // Tìm trong danh sách animation mà có blockId trùng thì lấy ra xử lý.
-            const anim = slide.animations.findIndex((n) => n.blockId === block.id);
+          if (anim !== -1) {
+            // Thống nhất dặt fragment-index bắt đầu từ 1
+            animAppend = `class="fragment" data-fragment-index="${anim + 1}" `;
+          }
 
-            let blockContentHtml = "";
+          if (block.type === MediaType.VIDEO) {
+            const sizeAppend = `${
+              block.size ? `width="${block.size.w}" height="${block.size.h}"` : ""
+            }`;
+            const positionAppend = `${
+              block.position ? `style="left: ${block.position.x}; top: ${block.position.y}"` : ""
+            }`;
+            return stripIndent(`
+            <video class="r-stack" src="${subfolderPath}/${block.assetName}"
+              ${animAppend}
+              ${sizeAppend}
+              ${positionAppend}
+              ${block.autoPlay ? "data-autoplay" : ""}
+            />
+            `);
+          }
 
-            if (block.type === MediaType.VIDEO) {
-              const sizeAppend = `${
-                block.size ? `width="${block.size.w}" height="${block.size.h}"` : ""
-              }`;
-              const positionAppend = `${
-                block.position ? `style="left: ${block.position.x}; top: ${block.position.y}"` : ""
-              }`;
-              blockContentHtml = stripIndent(`
-              <video class="r-stack" src="${subfolderPath}/${block.assetName}"
-                ${sizeAppend}
-                ${positionAppend}
-                ${block.autoPlay ? "data-autoplay" : ""}
-              />
-              `);
-            }
+          if (block.type === MediaType.IMAGE) {
+            const sizeAppend = `${
+              block.size ? `width: ${block.size.w}px; height: ${block.size.h}px; ` : ""
+            }`;
+            const positionAppend = `${
+              block.position
+                ? `position: absolute; left: ${block.position.x}px; top: ${block.position.y}px;`
+                : ""
+            }`;
+            const styleAppend = (dataIn: string) => `style="${dataIn}"`;
+            return stripIndent(`
+            <img src="${subfolderPath}/${block.assetName}"
+              ${animAppend}
+              ${styleAppend(sizeAppend + positionAppend)}
+              ${block.autoPlay ? "data-autoplay" : ""}
+            />`);
+          }
 
-            if (block.type === MediaType.IMAGE) {
-              const sizeAppend = `${
-                block.size ? `width: ${block.size.w}px; height: ${block.size.h}px; ` : ""
-              }`;
-              const positionAppend = `${
-                block.position
-                  ? `position: absolute; left: ${block.position.x}px; top: ${block.position.y}px;`
-                  : ""
-              }`;
-              const styleAppend = (dataIn: string) => `style="${dataIn}"`;
-              blockContentHtml = stripIndent(`
-              <img src="${subfolderPath}/${block.assetName}"
-                ${styleAppend(sizeAppend + positionAppend)}
-                ${block.autoPlay ? "data-autoplay" : ""}
-              />`);
-            }
+          if (block.type === MediaType.TEXT_BLOCK) {
+            const ops = block.deltaContent?.ops;
+            const html = quillDeltaToHtml(ops!);
+            // Last line is to remove line breaks.
+            const styleAppend = `
+              position: absolute;
+              user-select: auto;
+              width: auto;
+              height: auto;
+              display: inline-block;
+              top: ${block.position?.y}px;
+              left: ${block.position?.x}px;
+              box-sizing: border-box;
+              flex-shrink: 0;
+            `
+              .replace(/(\r\n|\n|\r)/gm, "")
+              .replace(" ", "");
 
-            // Ta chỉ xử lý những audio trong danh sách animation
-            // vì nếu không đưa vào danh sách animation, audio sẽ luôn bật ở chế độ nền.
-            if (block.type === MediaType.AUDIO && anim !== -1) {
-              blockContentHtml = `
-              <audio src="${subfolderPath}/${block.assetName}"
-                ${block.autoPlay ? "data-autoplay" : ""}
-              />`;
-            }
-            return blockContentHtml;
-          })
-          .join("\n")}
-      </section>
+            const result = pretty(
+              stripIndent(`
+              <div style="${styleAppend}">
+                ${html}
+              </div>
+            `)
+            );
 
-      ${slide.animations.map((ani) => {
-        // Hàm khung xương
-        const skeleton = (subContent: string) => `
-          <section data-auto-animate>
-            <h2>${slide.title}</h2>
-            ${subContent}
-          </section>
-        `;
-        return "";
-      })}
+            return result;
+          }
+
+          // Ta chỉ xử lý những audio trong danh sách animation
+          // vì nếu không đưa vào danh sách animation, audio sẽ luôn bật ở chế độ nền.
+          if (block.type === MediaType.AUDIO && anim) {
+            return `
+            <audio src="${subfolderPath}/${block.assetName}"
+              ${animAppend}
+              ${block.autoPlay ? "data-autoplay" : ""}
+            />`;
+          }
+          return `<div>${block.content}</div>`;
+        })
+        .join("\n")}
     </section>`);
 }
 
