@@ -11,6 +11,7 @@ import { furiganaTemplateToHTML, htmlToJSX } from "~/utils/utils-formatting";
 import { SlideBlock } from "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-block-v2/slide-block-v2";
 
 import "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-interactive-editor-v2.scss";
+import { Calllout } from "~/components/callout/callout";
 
 export const SlideInteractiveEditor: React.FC = () => {
   const [slideList, setSlideList] = useRecoilState(slideListState);
@@ -115,6 +116,16 @@ export const SlideInteractiveEditor: React.FC = () => {
     <>
       <div id="slide-interactive-editor">
         <h1 className="slide-title">{htmlToJSX(furiganaTemplateToHTML(slideTitle || ""))}</h1>
+
+        <Calllout
+          box={{ x: 100, y: 100, width: 300, height: 105 }}
+          pointer={{ x: 400, y: 400 }}
+          style={{ borderRadius: "5px" }}
+          backgroundColor="green"
+          strokeColor="#f5f5f5"
+        >
+          <div>Inside</div>
+        </Calllout>
 
         {blocks.map((n, i) => {
           return (

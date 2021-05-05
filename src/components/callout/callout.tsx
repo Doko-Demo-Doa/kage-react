@@ -17,7 +17,7 @@ type Position = {
 type PositionType = "top" | "left" | "right" | "bottom";
 
 type Props = {
-  className: string;
+  className?: string;
   backgroundColor: string;
   box: Box;
   pointer: Position;
@@ -29,6 +29,7 @@ type Props = {
   maxWidth?: number;
   strokeColor?: string;
   zIndex?: number;
+  marker?: string | React.ReactElement;
   // Funcs
   onBoxDragStart?: () => void | undefined;
   onBoxDrag?: (data: { x: number; y: number }) => void | undefined;
@@ -50,6 +51,7 @@ export const Calllout: React.FC<Props> = ({
   maxWidth,
   className,
   zIndex,
+  marker,
   backgroundColor,
   draggingDisabled,
   resizingDisabled,
@@ -63,32 +65,6 @@ export const Calllout: React.FC<Props> = ({
   onPointerDrag,
   onPointerDragStop,
 }) => {
-  const getPointer = (b: Box, destination: Position) => {
-    const boxCenter = getBoxCenter(b);
-    const type = getPointerType(boxCenter, destination);
-    return calculatePointer(destination, b, type);
-  };
-
-  const [localPointer, setLocalPointer] = useState(getPointer(box, pointer));
-  const [localBox, setLocalBox] = useState<Box>(box);
-  const [localMaxHeight, setLocalMaxHeight] = useState(maxHeight);
-  const [localMaxWidth, setLocalMaxWidth] = useState(maxWidth);
-
-  const wrapper: React.LegacyRef<HTMLDivElement> = useRef(null);
-
-  useEffect(() => {
-    const pointerState = getPointer(box, pointer);
-    setLocalPointer(pointerState);
-    setLocalBox(box);
-  }, [box, pointer]);
-
-  const getBoxCenter = (b: Box) => {
-    return {
-      x: b.x + b.width / 2,
-      y: b.y + b.height / 2,
-    };
-  };
-
   const getDegree = (origin: Position, destination: Position) => {
     const x = destination.x - origin.x;
     const y = origin.y - destination.y;
@@ -103,6 +79,13 @@ export const Calllout: React.FC<Props> = ({
     if (degree >= 45 && degree < 135) return "top";
     if ((degree >= 135 && degree <= 180) || (degree >= -180 && degree < -135)) return "left";
     return "bottom";
+  };
+
+  const getBoxCenter = (b: Box) => {
+    return {
+      x: b.x + b.width / 2,
+      y: b.y + b.height / 2,
+    };
   };
 
   const calculatePointer = (destination: Position, b: Box, type: PositionType) => {
@@ -155,6 +138,25 @@ export const Calllout: React.FC<Props> = ({
       destination,
     };
   };
+
+  const getPointer = (b: Box, destination: Position) => {
+    const boxCenter = getBoxCenter(b);
+    const type = getPointerType(boxCenter, destination);
+    return calculatePointer(destination, b, type);
+  };
+
+  const [localPointer, setLocalPointer] = useState(getPointer(box, pointer));
+  const [localBox, setLocalBox] = useState<Box>(box);
+  const [localMaxHeight, setLocalMaxHeight] = useState(maxHeight);
+  const [localMaxWidth, setLocalMaxWidth] = useState(maxWidth);
+
+  const wrapper: React.LegacyRef<HTMLDivElement> = useRef(null);
+
+  useEffect(() => {
+    const pointerState = getPointer(box, pointer);
+    setLocalPointer(pointerState);
+    setLocalBox(box);
+  }, [box, pointer]);
 
   const onDrag = (e: DraggableEvent, data: DraggableData) => {
     const { width, height } = localBox;
@@ -233,6 +235,7 @@ export const Calllout: React.FC<Props> = ({
           backgroundColor,
           pointerEvents: "auto",
           position: "absolute",
+          zIndex,
         }}
         disableDragging={draggingDisabled}
         enableResizing={
@@ -277,12 +280,12 @@ export const Calllout: React.FC<Props> = ({
         y={pointer.y - 15}
         width={10}
         height={10}
-        style={{ pointerEvents: "auto" }}
+        style={{ pointerEvents: "auto", zIndex }}
         onDragStart={onPointerDragStart}
         onDrag={_onPointerDrag}
         onDragStop={_onPointerDragStop}
         bounds="parent"
-        isResizable={{
+        enableResizing={{
           top: false,
           right: false,
           bottom: false,
@@ -292,9 +295,8 @@ export const Calllout: React.FC<Props> = ({
           topLeft: false,
           bottomLeft: false,
         }}
-        zIndex={zIndex}
       >
-        {"Test"}
+        {marker || <div style={{ width: "30px", height: "30px" }} />}
       </Rnd>
       <svg width="100%" height="100%" style={{ zIndex, pointerEvents: "none" }}>
         <path
