@@ -39,10 +39,10 @@ export function replaceString(str: string, strSub: string, strReplace: string) {
 export function furiganaTemplateToHTML(inputStr: string) {
   if (inputStr.includes("{{") && inputStr.includes("}}")) {
     const ruby = inputStr
-      .replace("{{", "<ruby>")
-      .replace("}}", "</ruby>")
-      .replace("((", "<rt>")
-      .replace("))", "</rt>");
+      .replace(/{{/g, "<ruby>")
+      .replace(/}}/g, "</ruby>")
+      .replaceAll("((", "<rt>")
+      .replaceAll("))", "</rt>");
     return ruby;
   }
 
@@ -58,7 +58,6 @@ export function breakStringByLineBreaks(inputStr: string) {
 }
 
 export function htmlToJSX(inputHtml: string, options?: HTMLReactParserOptions) {
-  console.log(inputHtml);
   return parse(furiganaTemplateToHTML(inputHtml), options);
 }
 

@@ -4,14 +4,14 @@ import { stripIndent } from "common-tags";
 import { AnimationType, MediaType } from "~/common/static-data";
 import { SlideType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
-import { quillDeltaToHtml } from "~/utils/utils-formatting";
+import { furiganaTemplateToHTML, quillDeltaToHtml } from "~/utils/utils-formatting";
 
 function singleSlideConstructor(slide: SlideType) {
   const subfolderPath = "assets"; // "data";
 
   return stripIndent(`
     <section>
-      <h2>${slide.title}</h2>
+      <h1 class="slide-title">${furiganaTemplateToHTML(slide.title ?? "")}</h1>
       ${slide.slideBlocks
         .map((block) => {
           // Tìm trong danh sách animation mà có blockId trùng thì lấy ra xử lý.
@@ -79,7 +79,7 @@ function singleSlideConstructor(slide: SlideType) {
 
             const result = pretty(
               stripIndent(`
-              <div style="${styleAppend}">
+              <div style="${styleAppend}" ${animAppend}">
                 ${html}
               </div>
             `)
@@ -90,12 +90,13 @@ function singleSlideConstructor(slide: SlideType) {
 
           // Ta chỉ xử lý những audio trong danh sách animation
           // vì nếu không đưa vào danh sách animation, audio sẽ luôn bật ở chế độ nền.
-          if (block.type === MediaType.AUDIO && anim) {
+          console.log(block.type, anim);
+          if (block.type === MediaType.AUDIO && anim !== -1) {
             return `
-            <audio src="${subfolderPath}/${block.assetName}"
+            <p
               ${animAppend}
-              ${block.autoPlay ? "data-autoplay" : ""}
-            />`;
+              data-audio-src="${subfolderPath}/${block.assetName}">
+            </p>`;
           }
           return `<div>${block.content}</div>`;
         })
@@ -143,8 +144,16 @@ export const dataUtils = {
         </div>
 
         <script src="./vendor/reveal.js"></script>
+        <script src="./vendor/plugins/audio-plugin.js"></script>
         <script>
           Reveal.initialize({
+            plugins: [ RevealAudioSlideshow ],
+            audio: {
+              defaultAudios: false,
+              playerOpacity: 0,
+              startAtFragment: true,
+              autoplay: true,
+            },
             hash: true,
             controls: true,
             disableLayout: false,

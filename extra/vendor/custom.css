@@ -6,6 +6,22 @@
   text-align: start;
 }
 
+.reveal .slide-title {
+  color: #222;
+  font-family: "Source Sans Pro", Helvetica, sans-serif;
+  font-size: 54px;
+  font-weight: 600;
+  letter-spacing: normal;
+  line-height: 1.2;
+  position: relative;
+  text-align: center;
+  text-shadow: none;
+  top: 8px;
+  max-width: 580px;
+  word-wrap: break-word;
+  margin: 0 auto;
+}
+
 .reveal img {
   margin: 0;
   max-height: unset;

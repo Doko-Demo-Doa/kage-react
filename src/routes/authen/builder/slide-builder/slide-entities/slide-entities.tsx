@@ -4,6 +4,7 @@ import { Input, Divider } from "antd";
 import dayjs from "dayjs";
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { useRecoilState } from "recoil";
+import KeyboardEventHandler from "react-keyboard-event-handler";
 
 import { SlideType } from "~/typings/types";
 import { dataUtils } from "~/utils/utils-data";
@@ -110,22 +111,24 @@ export const SlideEntities: React.FC = () => {
             <div className="separator" />
 
             <div className="column2">
-              {animations.map((item) => {
-                return (
-                  <AnimationEntity
-                    id={item.id}
-                    key={item.id}
-                    onClick={(id, blockId) => {
-                      selectAnim(id);
-                      selectBlock(blockId);
-                    }}
-                    selected={selectedAnim === item.id}
-                    animationType={item.animationType}
-                    blockId={item.blockId}
-                    blocks={blocks}
-                  />
-                );
-              })}
+              <KeyboardEventHandler>
+                {animations.map((item) => {
+                  return (
+                    <AnimationEntity
+                      id={item.id}
+                      key={item.id}
+                      onClick={(id, blockId) => {
+                        selectAnim(id);
+                        selectBlock(blockId);
+                      }}
+                      selected={selectedAnim === item.id}
+                      animationType={item.animationType}
+                      blockId={item.blockId}
+                      blocks={blocks}
+                    />
+                  );
+                })}
+              </KeyboardEventHandler>
             </div>
           </div>
         </div>

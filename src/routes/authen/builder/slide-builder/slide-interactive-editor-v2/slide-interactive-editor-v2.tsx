@@ -6,6 +6,7 @@ import { slideListState } from "~/atoms/slide-list-atom";
 import { slideBuilderState } from "~/atoms/slide-builder-atom";
 import { BlockSizeType, PositionType, SlideType } from "~/typings/types";
 import { dataUtils } from "~/utils/utils-data";
+import { furiganaTemplateToHTML, htmlToJSX } from "~/utils/utils-formatting";
 import { SlideBlock } from "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-block-v2/slide-block-v2";
 
 import "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-interactive-editor-v2.scss";
@@ -112,7 +113,7 @@ export const SlideInteractiveEditor: React.FC = () => {
   return (
     <>
       <div id="slide-interactive-editor">
-        <h2 className="slide-title">{slideTitle}</h2>
+        <h1 className="slide-title">{htmlToJSX(furiganaTemplateToHTML(slideTitle || ""))}</h1>
 
         {blocks.map((n, i) => {
           return (
