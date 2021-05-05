@@ -1,6 +1,7 @@
 import { useRecoilState } from "recoil";
 import { Delta } from "quill";
 import dayjs from "dayjs";
+// @ts-ignore
 import { AnimationType } from "~/common/static-data";
 import { slideListState } from "~/atoms/slide-list-atom";
 import { slideBuilderState } from "~/atoms/slide-builder-atom";

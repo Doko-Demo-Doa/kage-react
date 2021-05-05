@@ -215,7 +215,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
           y: initY,
         }}
       >
-        <Calllout name="callout-rect-left" />
+        <div />
       </Rnd>;
     }
 
