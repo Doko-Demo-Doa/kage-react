@@ -3,8 +3,7 @@ import { Rnd } from "react-rnd";
 import { Delta } from "quill";
 import { PlusOutlined, DragOutlined } from "@ant-design/icons";
 import ReactQuill, { Quill } from "react-quill";
-import { MediaType, RESOURCE_PROTOCOL } from "~/common/static-data";
-import { Calllout } from "~/components/callout/callout";
+import { MediaType, MinimumCanvasSize, RESOURCE_PROTOCOL } from "~/common/static-data";
 import { SlideAnimationType, SlideBlockType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
 import { defaultQuillToolbar } from "~/utils/utils-ui";
@@ -20,6 +19,7 @@ type SlideBlockComponentType = SlideBlockType & {
   animations?: SlideAnimationType[];
   onSelect: (id: string) => void | undefined;
   onDrag?: (blockId: string, pos: { x: number; y: number }) => void | undefined;
+  onDragAnchor?: (blockId: string, pos: { x: number; y: number }) => void | undefined;
   onResized?: (
     blockId: string,
     topLeft: { x: number; y: number },
@@ -35,11 +35,13 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
   assetName,
   size,
   position,
+  anchor,
   deltaContent,
   selected,
   animations,
   onSelect,
   onDrag,
+  onDragAnchor,
   onResized,
   onTextChanged,
   onToggleAnimation,
@@ -131,10 +133,6 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
             width: size?.w ?? 0,
             height: size?.h ?? 0,
           }}
-          position={{
-            x: initX,
-            y: initY,
-          }}
           className="single-block"
           style={{
             backgroundImage: `url(${assetUrl})`,
@@ -201,22 +199,82 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
       );
     }
 
-    if (type === MediaType.CALLOUT) {
-      <Rnd
-        bounds="parent"
-        onDragStop={(e, d) => {
-          const topLeftX = d.x;
-          const topLeftY = d.y;
+    if (type === MediaType.CALLOUT && position && size && anchor) {
+      const shiftLeg1 = size.w * 0.25;
+      const shiftLeg2 = size.w * 0.75;
 
-          onDrag?.(id, { x: topLeftX, y: topLeftY });
-        }}
-        position={{
-          x: initX,
-          y: initY,
-        }}
-      >
-        <div />
-      </Rnd>;
+      const leg1 = { x: position.x + shiftLeg1, y: position.y + size.h };
+      const leg2 = { x: position.x + shiftLeg2, y: position.y + size.h };
+
+      return (
+        <div className="callout-custom">
+          <Rnd
+            bounds="#slide-interactive-editor"
+            onDragStop={(e, d) => {
+              const topLeftX = d.x;
+              const topLeftY = d.y;
+
+              onDrag?.(id, { x: topLeftX, y: topLeftY });
+            }}
+            position={{
+              x: position.x ?? 0,
+              y: position.y ?? 0,
+            }}
+            default={{
+              x: initX,
+              y: initY,
+              width: initW,
+              height: initH,
+            }}
+            enableResizing={false}
+          >
+            <div
+              className="callout-inside"
+              style={{
+                background: "transparent",
+                border: "1px solid black",
+                width: initW,
+                height: initH,
+              }}
+            >
+              Test
+            </div>
+          </Rnd>
+          <Rnd
+            bounds="#slide-interactive-editor"
+            disableDragging={false}
+            enableResizing={false}
+            onDragStop={(e, d) => {
+              const topLeftX = d.x;
+              const topLeftY = d.y;
+
+              onDragAnchor?.(id, { x: topLeftX, y: topLeftY });
+            }}
+            position={{
+              x: anchor.x,
+              y: anchor.y,
+            }}
+          >
+            <div style={{ width: 20, height: 20, background: "black" }} />
+          </Rnd>
+          <svg
+            style={{
+              position: "absolute",
+              zIndex: -1,
+              width: MinimumCanvasSize.WIDTH,
+              height: MinimumCanvasSize.HEIGHT,
+            }}
+          >
+            <polyline
+              points={`${leg1.x},${leg1.y} ${anchor.x},${anchor.y} ${leg2.x},${leg2.y}`}
+              fill="red"
+              stroke="black"
+              style={{ position: "absolute" }}
+            />
+            Trình duyệt không hỗ trợ hiển thị
+          </svg>
+        </div>
+      );
     }
 
     return null;

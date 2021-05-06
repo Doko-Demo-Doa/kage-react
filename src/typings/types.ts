@@ -21,6 +21,7 @@ export interface SlideBlockType {
   assetName?: string;
   autoPlay?: boolean;
   position?: PositionType;
+  anchor?: PositionType; // Dùng cho block Callout
   size?: BlockSizeType;
 }
 

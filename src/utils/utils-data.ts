@@ -1,7 +1,7 @@
 import fs from "fs";
 import pretty from "pretty";
 import { stripIndent } from "common-tags";
-import { AnimationType, MediaType } from "~/common/static-data";
+import { AnimationType, MediaType, MinimumCanvasSize } from "~/common/static-data";
 import { SlideType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
 import { furiganaTemplateToHTML, quillDeltaToHtml } from "~/utils/utils-formatting";
@@ -157,8 +157,8 @@ export const dataUtils = {
             hash: true,
             controls: true,
             disableLayout: false,
-            width: 740,
-            height: 540,
+            width: ${MinimumCanvasSize.WIDTH},
+            height: ${MinimumCanvasSize.HEIGHT},
             center: false,
           });
         </script>

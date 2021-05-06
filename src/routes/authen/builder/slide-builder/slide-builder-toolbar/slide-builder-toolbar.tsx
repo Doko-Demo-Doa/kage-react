@@ -16,7 +16,6 @@ import { useRecoilState } from "recoil";
 import { slideListState } from "~/atoms/slide-list-atom";
 import { slideBuilderState } from "~/atoms/slide-builder-atom";
 
-import { CalloutMatrix } from "~/components/callout-matrix/callout-matrix";
 import { TableConstructor } from "~/components/table-constructor/table-constructor";
 import { fileUtils } from "~/utils/utils-files";
 import { audioUtils, ffmpegUtils, imageUtils } from "~/utils/utils-conversions";
@@ -113,6 +112,10 @@ export const SlideBuilderToolbar: React.FC = () => {
     });
   };
 
+  const onInsertCallout = () => {
+    insertBlock(MediaType.CALLOUT, "", "", { width: 200, height: 102 });
+  };
+
   const onPublish = async () => {
     dataUtils.saveSlideJsonToCache(JSON.stringify(slideList, null, 2));
     const convertedStr = dataUtils.convertToHtmlSlideData(slideList);
@@ -151,8 +154,12 @@ export const SlideBuilderToolbar: React.FC = () => {
         y: InitialBlockCoordinate.y,
       },
       size: {
-        w: width * AppDefaults.DEFAULT_IMAGE_SCALE,
-        h: height * AppDefaults.DEFAULT_IMAGE_SCALE,
+        w: width * getOptimalScale(type),
+        h: height * getOptimalScale(type),
+      },
+      anchor: {
+        x: InitialBlockCoordinate.x,
+        y: InitialBlockCoordinate.y + height / 2 + 40, // Dịch toạ độ điểm neo xuống dưới một chút.
       },
       deltaContent: quillData ?? undefined,
     };
@@ -170,6 +177,11 @@ export const SlideBuilderToolbar: React.FC = () => {
     const newArr = [...newSlideArray.slice(0, idx), activeSlide, ...newSlideArray.slice(idx + 1)];
 
     setSlideList([...newArr]);
+  };
+
+  const getOptimalScale = (type: MediaType) => {
+    if (type === MediaType.CALLOUT) return 1;
+    return AppDefaults.DEFAULT_IMAGE_SCALE;
   };
 
   return (
@@ -195,13 +207,13 @@ export const SlideBuilderToolbar: React.FC = () => {
           />
         </Tooltip>
 
-        <Popover
-          arrowContent
-          visible={!shouldDisable ? undefined : false}
-          content={<CalloutMatrix />}
-        >
-          <Button disabled={shouldDisable} type="link" icon={<MessageOutlined />} size="middle" />
-        </Popover>
+        <Button
+          disabled={shouldDisable}
+          type="link"
+          icon={<MessageOutlined />}
+          size="middle"
+          onClick={() => onInsertCallout()}
+        />
 
         <Popover
           arrowContent

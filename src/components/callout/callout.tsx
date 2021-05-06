@@ -42,6 +42,8 @@ type Props = {
   onPointerDragStop?: (data: { x: number; y: number }) => void | undefined;
 };
 
+const OFFSET = 7;
+
 export const Calllout: React.FC<Props> = ({
   children,
   style,
@@ -52,7 +54,6 @@ export const Calllout: React.FC<Props> = ({
   className,
   zIndex,
   marker,
-  backgroundColor,
   draggingDisabled,
   resizingDisabled,
   onBoxDragStart,
@@ -158,15 +159,15 @@ export const Calllout: React.FC<Props> = ({
     setLocalBox(box);
   }, [box, pointer]);
 
-  const onDrag = (e: DraggableEvent, data: DraggableData) => {
+  const _onDrag = (e: DraggableEvent, data: DraggableData) => {
     const { width, height } = localBox;
     const { destination } = localPointer;
 
     const { x, y } = data;
-    const box = { x, y, width, height };
-    const pointerState = getPointer(box, destination);
+    const newBox = { x, y, width, height };
+    const pointerState = getPointer(newBox, destination);
+    setLocalBox(newBox);
     setLocalPointer(pointerState);
-    setLocalBox(box);
 
     onBoxDrag?.({ x, y });
   };
@@ -201,7 +202,7 @@ export const Calllout: React.FC<Props> = ({
 
   const _onPointerDrag: DraggableEventHandler = (e, d) => {
     // TODO: Kiểm tra xem tại sao lại là 15.
-    const destination = { x: d.x + 15, y: d.y + 15 };
+    const destination = { x: d.x + OFFSET, y: d.y + OFFSET };
     const pointerState = getPointer(localBox, destination);
     setLocalPointer(pointerState);
     onPointerDrag?.({ x: d.x, y: d.y });
@@ -230,9 +231,13 @@ export const Calllout: React.FC<Props> = ({
           x: box.x,
           y: box.y,
         }}
+        size={{
+          width: box.width,
+          height: box.height,
+        }}
         style={{
           ...style,
-          backgroundColor,
+          backgroundColor: "grey",
           pointerEvents: "auto",
           position: "absolute",
           zIndex,
@@ -262,7 +267,7 @@ export const Calllout: React.FC<Props> = ({
               }
         }
         onDragStart={onBoxDragStart}
-        onDrag={onDrag}
+        onDrag={_onDrag}
         onDragStop={_onDragStop}
         onResizeStart={onBoxResizeStart}
         onResize={_onResize}
@@ -277,7 +282,7 @@ export const Calllout: React.FC<Props> = ({
       </Rnd>
       <Rnd
         x={pointer.x}
-        y={pointer.y - 15}
+        y={pointer.y - OFFSET}
         width={10}
         height={10}
         style={{ pointerEvents: "auto", zIndex }}
@@ -285,6 +290,7 @@ export const Calllout: React.FC<Props> = ({
         onDrag={_onPointerDrag}
         onDragStop={_onPointerDragStop}
         bounds="parent"
+        // Đây là ô vuông chỉnh hướng callout, chỉ drag
         enableResizing={{
           top: false,
           right: false,
@@ -296,15 +302,24 @@ export const Calllout: React.FC<Props> = ({
           bottomLeft: false,
         }}
       >
-        {marker || <div style={{ width: "30px", height: "30px" }} />}
+        {marker || (
+          <div
+            style={{
+              width: "10px",
+              height: "10px",
+              background: "white",
+              border: "1px solid grey",
+            }}
+          />
+        )}
       </Rnd>
       <svg width="100%" height="100%" style={{ zIndex, pointerEvents: "none" }}>
         <path
           d={`M ${base[0].x} ${base[0].y}
                  Q ${control.x} ${control.y} ${destination.x} ${destination.y}
                  Q ${control.x} ${control.y} ${base[1].x} ${base[1].y}`}
-          fill={backgroundColor}
-          stroke={"black"}
+          fill={"grey"}
+          stroke={"grey"}
           strokeWidth={1}
         />
       </svg>

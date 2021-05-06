@@ -11,7 +11,6 @@ import { furiganaTemplateToHTML, htmlToJSX } from "~/utils/utils-formatting";
 import { SlideBlock } from "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-block-v2/slide-block-v2";
 
 import "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-interactive-editor-v2.scss";
-import { Calllout } from "~/components/callout/callout";
 
 export const SlideInteractiveEditor: React.FC = () => {
   const [slideList, setSlideList] = useRecoilState(slideListState);
@@ -87,6 +86,24 @@ export const SlideInteractiveEditor: React.FC = () => {
     }
   };
 
+  const dispatchDragAnchor = (blockId: string, newAnchor: PositionType) => {
+    const newSlideArray: SlideType[] = dataUtils.convertToMutableData(slideList);
+    const slideIndex = slideBuilderMeta.selectedIndex;
+    const activeSlide = newSlideArray[slideIndex];
+
+    const targetBlock = activeSlide.slideBlocks.findIndex((n) => n.id === blockId);
+
+    if (targetBlock !== -1) {
+      const blk = { ...activeSlide.slideBlocks[targetBlock] };
+      blk.anchor = newAnchor;
+
+      activeSlide.slideBlocks[targetBlock] = blk;
+      newSlideArray[slideIndex] = activeSlide;
+
+      setSlideList(newSlideArray);
+    }
+  };
+
   const onToggleAnimation = (blockId: string) => {
     const newSlideArray: SlideType[] = dataUtils.convertToMutableData(slideList);
     const slideIndex = slideBuilderMeta.selectedIndex;
@@ -101,9 +118,6 @@ export const SlideInteractiveEditor: React.FC = () => {
         blockId,
       });
       newSlideArray[slideIndex] = activeSlide;
-
-      console.log(newSlideArray);
-
       setSlideList(newSlideArray);
     }
   };
@@ -117,16 +131,6 @@ export const SlideInteractiveEditor: React.FC = () => {
       <div id="slide-interactive-editor">
         <h1 className="slide-title">{htmlToJSX(furiganaTemplateToHTML(slideTitle || ""))}</h1>
 
-        <Calllout
-          box={{ x: 100, y: 100, width: 300, height: 105 }}
-          pointer={{ x: 400, y: 400 }}
-          style={{ borderRadius: "5px" }}
-          backgroundColor="green"
-          strokeColor="#f5f5f5"
-        >
-          <div>Inside</div>
-        </Calllout>
-
         {blocks.map((n, i) => {
           return (
             <SlideBlock
@@ -139,6 +143,9 @@ export const SlideInteractiveEditor: React.FC = () => {
               }}
               onDrag={(blockId, pos) => {
                 dispatchDragBlock(blockId, pos);
+              }}
+              onDragAnchor={(blockId, pos) => {
+                dispatchDragAnchor(blockId, pos);
               }}
               onResized={(blockId, pos, size) => {
                 dispatchResizeBlock(blockId, pos, size);
