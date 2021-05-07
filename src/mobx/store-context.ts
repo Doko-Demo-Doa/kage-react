@@ -1,5 +1,5 @@
 import React from "react";
-import { RootStore } from "~/mobx/root-store";
+import { rootStore, RootStore } from "~/mobx/root-store";
 
 // MobX store.
-export const StoreContext = React.createContext<RootStore | null>(null);
+export const StoreContext = React.createContext<RootStore>(rootStore);

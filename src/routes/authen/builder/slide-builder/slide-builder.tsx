@@ -8,7 +8,7 @@ import "~/routes/authen/builder/slide-builder/slide-builder.scss";
 
 export const SlideBuilder: React.FC = () => {
   return (
-    <div className="slide-builder">
+    <div className="builder slide-builder">
       <SlideBuilderToolbar />
       <div className="main-slide-builder">
         <SlideList />

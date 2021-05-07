@@ -11,7 +11,6 @@ export class SlideListStore {
     this.rootStore = rs;
     makeAutoObservable(this, {
       list: observable,
-      animationCount: computed,
       newSlide: action,
       setList: action,
     });

@@ -10,12 +10,12 @@ export class QuizDeckStore {
     this.rootStore = rs;
     makeAutoObservable(this, {
       list: observable,
-      newSlide: action,
+      newQuiz: action,
       setList: action,
     });
   }
 
-  newSlide() {
+  newQuiz() {
     this.list.push(new QuizModel());
   }
 
