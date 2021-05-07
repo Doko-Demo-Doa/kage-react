@@ -1,6 +1,7 @@
 import fs from "fs";
 import pretty from "pretty";
 import { stripIndent } from "common-tags";
+import { v4 } from "uuid";
 import { AnimationType, MediaType, MinimumCanvasSize } from "~/common/static-data";
 import { SlideType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
@@ -173,5 +174,8 @@ export const dataUtils = {
     if (type === AnimationType.APPEAR) return "Mờ dần";
     if (type === AnimationType.MOVE) return "Di chuyển";
     return "";
+  },
+  generateUid: () => {
+    return v4();
   },
 };

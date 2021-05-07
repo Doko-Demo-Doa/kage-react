@@ -200,6 +200,8 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
     }
 
     if (type === MediaType.CALLOUT && position && size && anchor) {
+      const ANCHOR_SIZE = 8;
+
       const shiftLeg1 = size.w * 0.25;
       const shiftLeg2 = size.w * 0.75;
 
@@ -244,7 +246,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
             bounds="#slide-interactive-editor"
             disableDragging={false}
             enableResizing={false}
-            onDragStop={(e, d) => {
+            onDrag={(e, d) => {
               const topLeftX = d.x;
               const topLeftY = d.y;
 
@@ -255,7 +257,15 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
               y: anchor.y,
             }}
           >
-            <div style={{ width: 20, height: 20, background: "black" }} />
+            <div
+              style={{
+                width: ANCHOR_SIZE,
+                height: ANCHOR_SIZE,
+                background: "white",
+                border: "1px solid grey",
+                transform: "translate(-2px,-2px)",
+              }}
+            />
           </Rnd>
           <svg
             style={{
@@ -267,7 +277,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
           >
             <polyline
               points={`${leg1.x},${leg1.y} ${anchor.x},${anchor.y} ${leg2.x},${leg2.y}`}
-              fill="red"
+              fill="transparent"
               stroke="black"
               style={{ position: "absolute" }}
             />

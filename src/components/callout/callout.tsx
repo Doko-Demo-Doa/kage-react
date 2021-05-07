@@ -283,8 +283,6 @@ export const Calllout: React.FC<Props> = ({
       <Rnd
         x={pointer.x}
         y={pointer.y - OFFSET}
-        width={10}
-        height={10}
         style={{ pointerEvents: "auto", zIndex }}
         onDragStart={onPointerDragStart}
         onDrag={_onPointerDrag}
