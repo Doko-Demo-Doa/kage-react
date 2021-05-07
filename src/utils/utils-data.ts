@@ -65,7 +65,7 @@ function singleSlideConstructor(slide: SlideType) {
             // Last line is to remove line breaks.
             const styleAppend = `
               position: absolute;
-              padding: 16px;
+              padding: 12px 15px;
               user-select: auto;
               width: auto;
               height: auto;

@@ -168,12 +168,12 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
             y: initY,
           }}
           enableResizing={false}
-          dragHandleClassName="handle"
+          dragHandleClassName="block-handle"
         >
           <div ref={textBlockRef} onClick={() => onSelect(id)} className="interactive-text-block">
             {selected && (
               <div
-                className="handle animation-anchor"
+                className="block-handle animation-anchor"
                 title="Click đôi để thêm animation"
                 onDoubleClick={() => onToggleAnimation?.(id)}
               >
@@ -202,21 +202,34 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
     if (type === MediaType.CALLOUT && position && size && anchor) {
       const ANCHOR_SIZE = 8;
 
-      const shiftLeg1 = size.w * 0.25;
-      const shiftLeg2 = size.w * 0.75;
+      const shiftLeg1 = size.w * 0.35;
+      const shiftLeg2 = Math.min(size.w * 0.75, size.w * 0.35 + 120);
 
       const leg1 = { x: position.x + shiftLeg1, y: position.y + size.h };
       const leg2 = { x: position.x + shiftLeg2, y: position.y + size.h };
 
       return (
-        <div className="callout-custom">
+        <div className="interactive-callout">
           <Rnd
             bounds="#slide-interactive-editor"
+            dragHandleClassName="block-handle"
             onDragStop={(e, d) => {
               const topLeftX = d.x;
               const topLeftY = d.y;
 
               onDrag?.(id, { x: topLeftX, y: topLeftY });
+            }}
+            onResizeStop={(mouseEvent, direction, element, delta, position) => {
+              const newW = blockW + delta.width;
+              const newH = blockH + delta.height;
+
+              setBlockW(newW);
+              setBlockH(newH);
+
+              const newX = position.x;
+              const newY = position.y;
+
+              onResized?.(id, { x: newX, y: newY }, { w: newW, h: newH });
             }}
             position={{
               x: position.x ?? 0,
@@ -228,25 +241,57 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
               width: initW,
               height: initH,
             }}
-            enableResizing={false}
+            cancel=".quiller"
+            style={{
+              border: "1px solid black",
+            }}
+            enableResizing={{
+              top: false,
+              right: false,
+              bottom: false,
+              left: false,
+              topRight: true,
+              bottomRight: true,
+              bottomLeft: true,
+              topLeft: true,
+            }}
           >
-            <div
-              className="callout-inside"
-              style={{
-                background: "transparent",
-                border: "1px solid black",
-                width: initW,
-                height: initH,
-              }}
-            >
-              Test
+            <div className="callout-inside" onClick={() => onSelect?.(id)}>
+              {selected && (
+                <div
+                  className="block-handle animation-anchor"
+                  title="Click đôi để thêm animation"
+                  onDoubleClick={() => onToggleAnimation?.(id)}
+                >
+                  {animIndex !== undefined && animIndex > -1 ? (
+                    `${animIndex + 1}`
+                  ) : (
+                    <DragOutlined />
+                  )}
+                </div>
+              )}
+              <ReactQuill
+                ref={quillRef}
+                defaultValue={deltaContent}
+                className="quiller"
+                modules={{
+                  toolbar: defaultQuillToolbar,
+                }}
+                onChange={() => {
+                  const data = quillRef.current?.getEditor().getContents();
+                  onTextChanged?.(id, data);
+                }}
+                bounds="#root"
+                style={{ maxHeight: "100%" }}
+                theme="bubble"
+              />
             </div>
           </Rnd>
           <Rnd
             bounds="#slide-interactive-editor"
             disableDragging={false}
             enableResizing={false}
-            onDrag={(e, d) => {
+            onDragStop={(e, d) => {
               const topLeftX = d.x;
               const topLeftY = d.y;
 

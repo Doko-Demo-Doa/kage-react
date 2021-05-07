@@ -18,7 +18,7 @@ $animation-anchor-size: 24px;
   background: white;
   border: 1px dashed $color-aqua-highlighted;
   cursor: pointer;
-  z-index: 2;
+  z-index: 4;
 }
 
 .imageblock-holder {
@@ -29,32 +29,7 @@ $animation-anchor-size: 24px;
 
 .interactive-text-block {
   position: relative;
-
-  .quiller {
-    border: 1px dashed $color-aqua-highlighted;
-
-    .ql-tooltip {
-      width: max-content;
-    }
-
-    .ql-container {
-      .ql-editor {
-        line-height: 1.2;
-        letter-spacing: normal;
-
-        h1 {
-          font-size: 42px;
-          font-weight: 400;
-        }
-        h2 {
-          font-size: 32px;
-        }
-        p {
-          font-size: 22px;
-        }
-      }
-    }
-  }
+  border: 1px dashed $color-aqua-highlighted;
 
   .drag-handle {
     width: 24px;
@@ -71,7 +46,36 @@ $animation-anchor-size: 24px;
   }
 }
 
-.callout-custom {
+.interactive-callout {
   position: absolute;
   top: 0;
+
+  .callout-inside {
+    position: relative;
+    height: 100%;
+  }
+}
+
+.quiller {
+  .ql-tooltip {
+    width: max-content;
+  }
+
+  .ql-container {
+    .ql-editor {
+      line-height: 1.2;
+      letter-spacing: normal;
+
+      h1 {
+        font-size: 42px;
+        font-weight: 400;
+      }
+      h2 {
+        font-size: 32px;
+      }
+      p {
+        font-size: 22px;
+      }
+    }
+  }
 }
