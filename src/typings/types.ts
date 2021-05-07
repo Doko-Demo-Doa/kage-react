@@ -46,6 +46,8 @@ export type BlockSizeType = {
   scale?: number;
 };
 
+// Misc
+
 export type FFProbeMetaType = {
   chapters: string[];
   streams: [MediaStreamType];

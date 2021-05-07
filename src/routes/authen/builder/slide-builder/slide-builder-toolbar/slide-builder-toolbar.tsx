@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Space, Button, Divider, Tooltip, notification, Popover } from "antd";
 import {
   FontSizeOutlined,
@@ -13,8 +13,11 @@ import {
 import dayjs from "dayjs";
 import { Delta } from "quill";
 import { useRecoilState } from "recoil";
+import { observer } from "mobx-react";
 import { slideListState } from "~/atoms/slide-list-atom";
 import { slideBuilderState } from "~/atoms/slide-builder-atom";
+
+import { rootStore } from "~/mobx/root-store";
 
 import { TableConstructor } from "~/components/table-constructor/table-constructor";
 import { fileUtils } from "~/utils/utils-files";
@@ -26,6 +29,14 @@ import { uiUtils } from "~/utils/utils-ui";
 import { SlideBlockType } from "~/typings/types";
 
 import "~/routes/authen/builder/slide-builder/slide-builder-toolbar/slide-builder-toolbar.scss";
+import { StoreContext } from "~/mobx/store-context";
+
+export const TestComp = observer(() => {
+  const [data] = useState(() => rootStore);
+  const test = useContext(StoreContext);
+
+  return <div>Test</div>;
+});
 
 export const SlideBuilderToolbar: React.FC = () => {
   const [tableConstructorVisible, setTableConstructorVisible] = useState(false);

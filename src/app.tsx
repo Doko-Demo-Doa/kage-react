@@ -5,6 +5,9 @@ import { Builder } from "~/routes/authen/builder/builder";
 import { isElectron } from "~/utils/utils-platform";
 import { initializeApp } from "~/services/initializer";
 
+import { StoreContext } from "~/mobx/store-context";
+import { rootStore } from "~/mobx/root-store";
+
 import "react-perfect-scrollbar/dist/css/styles.css";
 import "antd/dist/antd.css";
 import "./app.scss";
@@ -16,12 +19,14 @@ initializeApp();
 
 const App = (): React.ReactElement => (
   <RecoilRoot>
-    <AppRouter>
-      <Switch>
-        <Route exact path="/" component={Builder} />
-        <Route exact path="/login" component={LoginRoute} />
-      </Switch>
-    </AppRouter>
+    <StoreContext.Provider value={rootStore}>
+      <AppRouter>
+        <Switch>
+          <Route exact path="/" component={Builder} />
+          <Route exact path="/login" component={LoginRoute} />
+        </Switch>
+      </AppRouter>
+    </StoreContext.Provider>
   </RecoilRoot>
 );
 
