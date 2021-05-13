@@ -37,12 +37,14 @@ export function replaceString(str: string, strSub: string, strReplace: string) {
 }
 
 export function furiganaTemplateToHTML(inputStr: string) {
-  if (inputStr.includes("{{") && inputStr.includes("}}")) {
+  const rxp = /{([^}]+)}/g;
+  const matched = rxp.exec(inputStr);
+  if (matched?.[1]) {
     const ruby = inputStr
-      .replace(/{{/g, "<ruby>")
-      .replace(/}}/g, "</ruby>")
-      .replaceAll("((", "<rt>")
-      .replaceAll("))", "</rt>");
+      .replace(/{/g, "<ruby>")
+      .replace(/}/g, "</ruby>")
+      .replaceAll("(", "<rt>")
+      .replaceAll(")", "</rt>");
     return ruby;
   }
 
