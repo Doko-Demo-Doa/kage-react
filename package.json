@@ -58,7 +58,7 @@
     "crc": "3.8.0",
     "electron-devtools-installer": "3.2.0",
     "electron-is-dev": "2.0.0",
-    "electron-updater": "4.3.8",
+    "electron-updater": "4.3.9",
     "fs-extra": "10.0.0",
     "sharp": "0.28.1"
   },
@@ -90,7 +90,6 @@
     "@types/react-beautiful-dnd": "13.0.0",
     "@types/react-dom": "17.0.3",
     "@types/react-keyboard-event-handler": "1.5.0",
-    "@types/react-resizable": "1.7.2",
     "@types/react-router-dom": "5.1.7",
     "@types/react-test-renderer": "17.0.1",
     "@types/sharp": "0.28.0",
@@ -108,7 +107,7 @@
     "craco-sass-resources-loader": "1.1.0",
     "cross-env": "7.0.3",
     "dayjs": "1.10.4",
-    "electron": "12.0.6",
+    "electron": "12.0.7",
     "electron-builder": "22.11.1",
     "electronmon": "2.0.1",
     "eslint-config-react-app": "6.0.0",
@@ -158,7 +157,6 @@
     "react-konva-utils": "0.1.2",
     "react-perfect-scrollbar": "1.5.8",
     "react-quill": "1.3.5",
-    "react-resizable": "1.11.1",
     "react-rnd": "10.2.4",
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.3",
@@ -172,7 +170,7 @@
     "use-image": "1.0.7",
     "uuid": "8.3.2",
     "wait-on": "5.3.0",
-    "web-vitals": "1.1.1",
+    "web-vitals": "1.1.2",
     "yup": "0.32.9"
   },
   "electronmon": {
