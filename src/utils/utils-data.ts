@@ -99,21 +99,56 @@ function singleSlideConstructor(slide: SlideType) {
             </p>`;
           }
           if (block.type === MediaType.CALLOUT) {
+            const ops = block.deltaContent?.ops;
+            const html = quillDeltaToHtml(ops!);
+
+            const shiftLeg1 = (block.size?.w || 0) * 0.35;
+            const shiftLeg2 = Math.min(
+              (block.size?.w || 0) * 0.75,
+              (block.size?.w || 0) * 0.35 + 120
+            );
+
+            const leg1 = {
+              x: (block.position?.x || 0) + shiftLeg1,
+              y: (block.position?.y || 0) + (block.size?.h || 0),
+            };
+            const leg2 = {
+              x: (block.position?.x || 0) + shiftLeg2,
+              y: (block.position?.y || 0) + (block.size?.h || 0),
+            };
+
+            const anchor = block.anchor!;
+
+            const wrapperStyleAppend = `
+              position: absolute;
+              width: 100%;
+              height: 100%
+              left: 0;
+              top: 0;
+            `;
+
             const styleAppend = `
               position: absolute;
-              padding: 12px 15px;
+              padding: 10px;
               border: 1px solid black;
               width: ${block.size?.w || 1}px;
               height: ${block.size?.h || 1}px;
               top: ${block.position?.y}px;
               left: ${block.position?.x}px;
-              overflow: visible;
-              flex-shrink: 0;
+              box-sizing: border-box;
             `;
 
             return `
-            <div style="${styleAppend}" ${animAppend}">
-              aaaaa
+            <div style="${wrapperStyleAppend}" ${animAppend}">
+              <article class="interactive-callout" style="${styleAppend}">
+                ${html}
+              </article>
+              <svg style="position: absolute; width: ${MinimumCanvasSize.WIDTH}px; height: ${MinimumCanvasSize.HEIGHT}px; top: 0; left: 0;">
+                <polyline points="${leg1.x},${leg1.y} ${anchor.x},${anchor.y} ${leg2.x},${leg2.y}" fill="transparent" stroke="black"
+                  style="position: absolute;"
+                />
+                Trình duyệt không hỗ trợ hiển thị
+              </svg>
             </div>
             `;
           }
