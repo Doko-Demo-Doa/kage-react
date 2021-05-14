@@ -115,7 +115,8 @@ export const fileUtils = {
   createCacheDir: () => {
     if (fsNotAvailable()) return;
     const remote = require("electron").remote;
-    const fs = remote.require("fs");
+    const path = require("path");
+    const fs = remote.require("fs-extra");
 
     // Tạo cache dir
     const cacheDir = getCacheDirectory();
@@ -135,8 +136,11 @@ export const fileUtils = {
       fs.mkdirSync(quizDir);
     }
 
+    // Copy đống file từ extra vào cache
+    const vendorPath = path.join(path.resolve("./"), "extra", "vendor");
+    const destVendor = vendorDir;
+    fs.copySync(vendorPath, destVendor);
     return remote.app.getPath("cache");
-    // TODO: Tạo file html revealjs mồi để sau này làm preview.
   },
   getCacheDirectory,
   createFilePathAtCacheDir: (filename: string) => {
