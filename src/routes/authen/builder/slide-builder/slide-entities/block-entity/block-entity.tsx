@@ -6,6 +6,7 @@ import {
   SoundTwoTone,
   PictureTwoTone,
   FontSizeOutlined,
+  WechatFilled,
 } from "@ant-design/icons";
 
 import { MediaType } from "~/common/static-data";
@@ -41,6 +42,9 @@ export const BlockEntity: React.FC<BlockEntityType> = ({
     if (type === MediaType.TEXT_BLOCK) {
       return <FontSizeOutlined color={Colors.DODGER_BLUE} />;
     }
+    if (type === MediaType.CALLOUT) {
+      return <WechatFilled size={35} style={{ color: Colors.GREEN }} />;
+    }
     return <HeartTwoTone twoToneColor={Colors.BARBIE_PINK} />;
   }
 
@@ -55,7 +59,7 @@ export const BlockEntity: React.FC<BlockEntityType> = ({
         <div
           className="cell-selectable"
           onDoubleClick={() => {
-            if (type === MediaType.AUDIO && onDoubleClick) {
+            if (type === MediaType.AUDIO) {
               onDoubleClick?.(blockId);
             }
           }}

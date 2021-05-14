@@ -91,13 +91,31 @@ function singleSlideConstructor(slide: SlideType) {
 
           // Ta chỉ xử lý những audio trong danh sách animation
           // vì nếu không đưa vào danh sách animation, audio sẽ luôn bật ở chế độ nền.
-          console.log(block.type, anim);
           if (block.type === MediaType.AUDIO && anim !== -1) {
             return `
             <p
               ${animAppend}
               data-audio-src="${subfolderPath}/${block.assetName}">
             </p>`;
+          }
+          if (block.type === MediaType.CALLOUT) {
+            const styleAppend = `
+              position: absolute;
+              padding: 12px 15px;
+              border: 1px solid black;
+              width: ${block.size?.w || 1}px;
+              height: ${block.size?.h || 1}px;
+              top: ${block.position?.y}px;
+              left: ${block.position?.x}px;
+              overflow: visible;
+              flex-shrink: 0;
+            `;
+
+            return `
+            <div style="${styleAppend}" ${animAppend}">
+              aaaaa
+            </div>
+            `;
           }
           return `<div>${block.content}</div>`;
         })

@@ -111,7 +111,14 @@ export const SlideEntities: React.FC = () => {
             <div className="separator" />
 
             <div className="column2">
-              <KeyboardEventHandler>
+              <KeyboardEventHandler
+                handleKeys={["del"]}
+                onKeyEvent={(key) => {
+                  if (key === "del") {
+                    // Code...
+                  }
+                }}
+              >
                 {animations.map((item) => {
                   return (
                     <AnimationEntity
