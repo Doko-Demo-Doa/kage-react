@@ -1,8 +1,9 @@
-import React, { useContext, useState, useMemo } from "react";
+import React, { useContext, useState } from "react";
 import clsx from "clsx";
 import { Input, Divider } from "antd";
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import KeyboardEventHandler from "react-keyboard-event-handler";
+import { observer } from "mobx-react";
 
 import { AnimationEntity } from "~/routes/authen/builder/slide-builder/slide-entities/animation-entity/animation-entity";
 import { BlockEntity } from "~/routes/authen/builder/slide-builder/slide-entities/block-entity/block-entity";
@@ -11,18 +12,14 @@ import { StoreContext } from "~/mobx/store-context";
 import "react-h5-audio-player/lib/styles.css";
 import "~/routes/authen/builder/slide-builder/slide-entities/slide-entities.scss";
 
-export const SlideEntities: React.FC = () => {
+export const SlideEntities: React.FC = observer(() => {
   const [expanded, setExpanded] = useState(false);
   const [selectedAnim, selectAnim] = useState("");
   const store = useContext(StoreContext);
   const { list, selectBlock, setTitle, toggleAnimation } = store.slideListStore;
   const { selectedIndex } = store.slideBuilderStore;
 
-  const slideTitle = useMemo(() => list[selectedIndex]?.title || "", [selectedIndex]);
-
-  function setSlideTitle(newTitle: string) {
-    setTitle(newTitle);
-  }
+  const slideTitle = list[selectedIndex]?.title || "";
 
   const onToggleAnimation = (blockId: string) => {
     toggleAnimation(blockId);
@@ -42,10 +39,9 @@ export const SlideEntities: React.FC = () => {
           <p>Tiêu đề slide:</p>
           <Input
             placeholder="Slide title"
-            onChange={(e) => setSlideTitle(e.target.value)}
+            onChange={(e) => setTitle(e.target.value)}
             disabled={list.length <= 0}
             value={slideTitle}
-            defaultValue={slideTitle}
             multiple
             maxLength={46}
             className="slide-title-input"
@@ -102,4 +98,4 @@ export const SlideEntities: React.FC = () => {
       </div>
     </>
   );
-};
+});
