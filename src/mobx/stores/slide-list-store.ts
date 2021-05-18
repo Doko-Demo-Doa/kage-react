@@ -1,4 +1,4 @@
-import { makeAutoObservable, observable, computed, action } from "mobx";
+import { makeAutoObservable, observable, action } from "mobx";
 import { SlideType } from "~/typings/types";
 import { RootStore } from "~/mobx/root-store";
 
