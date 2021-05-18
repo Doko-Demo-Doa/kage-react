@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Space, Button, Divider, Tooltip, notification, Popover } from "antd";
 import {
   FontSizeOutlined,
@@ -12,9 +12,7 @@ import {
 } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { Delta } from "quill";
-import { useRecoilState } from "recoil";
-import { slideListState } from "~/atoms/slide-list-atom";
-import { slideBuilderState } from "~/atoms/slide-builder-atom";
+import { observer } from "mobx-react";
 
 import { TableConstructor } from "~/components/table-constructor/table-constructor";
 import { fileUtils } from "~/utils/utils-files";
@@ -24,29 +22,21 @@ import { dataUtils } from "~/utils/utils-data";
 import { isElectron } from "~/utils/utils-platform";
 import { uiUtils } from "~/utils/utils-ui";
 import { SlideBlockType } from "~/typings/types";
+import { StoreContext } from "~/mobx/store-context";
 
 import "~/routes/authen/builder/slide-builder/slide-builder-toolbar/slide-builder-toolbar.scss";
 
-export const SlideBuilderToolbar: React.FC = () => {
+export const SlideBuilderToolbar: React.FC = observer(() => {
   const [tableConstructorVisible, setTableConstructorVisible] = useState(false);
-  const [slideList, setSlideList] = useRecoilState(slideListState);
-  const [slideBuilderMeta] = useRecoilState(slideBuilderState);
 
-  const shouldDisable = slideList.length <= 0;
+  const store = useContext(StoreContext);
+  const { list, setList, newSlide } = store.slideListStore;
+  const slideBuilderMeta = store.slideBuilderStore;
+
+  const shouldDisable = list.length <= 0;
 
   const onNewSlide = () => {
-    const newSlide = {
-      title: "",
-      slideBlocks: [],
-      animations: [],
-    };
-    if (slideList.length <= 0) {
-      setSlideList([newSlide]);
-      return;
-    }
-
-    const newSlideArray = [...slideList, newSlide];
-    setSlideList(newSlideArray);
+    newSlide();
   };
 
   const onInsertMedia = async () => {
@@ -117,8 +107,8 @@ export const SlideBuilderToolbar: React.FC = () => {
   };
 
   const onPublish = async () => {
-    dataUtils.saveSlideJsonToCache(JSON.stringify(slideList, null, 2));
-    const convertedStr = dataUtils.convertToHtmlSlideData(slideList);
+    dataUtils.saveSlideJsonToCache(JSON.stringify(list, null, 2));
+    const convertedStr = dataUtils.convertToHtmlSlideData(list);
     dataUtils.writeToHtml(convertedStr);
 
     const folderPath = await fileUtils.openFolderSaveDialog();
@@ -133,7 +123,7 @@ export const SlideBuilderToolbar: React.FC = () => {
   };
 
   const onTogglePreview = () => {
-    console.log(slideList);
+    console.log(list);
   };
 
   const insertBlock = (
@@ -166,7 +156,7 @@ export const SlideBuilderToolbar: React.FC = () => {
 
     // Try not to mutate original object / array.
     const idx = slideBuilderMeta.selectedIndex;
-    const newSlideArray = [...slideList];
+    const newSlideArray = [...list];
 
     const activeSlide = { ...newSlideArray[idx] };
 
@@ -176,7 +166,7 @@ export const SlideBuilderToolbar: React.FC = () => {
 
     const newArr = [...newSlideArray.slice(0, idx), activeSlide, ...newSlideArray.slice(idx + 1)];
 
-    setSlideList([...newArr]);
+    setList([...newArr]);
   };
 
   const getOptimalScale = (type: MediaType) => {
@@ -264,4 +254,4 @@ export const SlideBuilderToolbar: React.FC = () => {
       </Space>
     </div>
   );
-};
+});

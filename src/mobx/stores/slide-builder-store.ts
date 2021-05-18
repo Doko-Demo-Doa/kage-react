@@ -1,4 +1,4 @@
-import { makeAutoObservable, observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 import { RootStore } from "~/mobx/root-store";
 
 export class SlideBuilderStore {
@@ -7,8 +7,10 @@ export class SlideBuilderStore {
 
   constructor(rs: RootStore) {
     this.rootStore = rs;
-    makeAutoObservable(this, {
-      selectedIndex: observable,
-    });
+    makeAutoObservable(this, {}, { autoBind: true });
+  }
+
+  setIndex(newIndex: number) {
+    this.selectedIndex = newIndex;
   }
 }

@@ -5,12 +5,23 @@ import reportWebVitals from "./reportWebVitals";
 
 import "./index.scss";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById("root"),
-);
+function render() {
+  ReactDOM.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>,
+    document.getElementById("root")
+  );
+}
+
+const hot = (module as any).hot;
+if (hot) {
+  hot.accept(() => {
+    render();
+  });
+}
+
+render();
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
