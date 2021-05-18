@@ -21,10 +21,6 @@ export const SlideEntities: React.FC = observer(() => {
 
   const slideTitle = list[selectedIndex]?.title || "";
 
-  const onToggleAnimation = (blockId: string) => {
-    toggleAnimation(blockId);
-  };
-
   const blocks = list[selectedIndex]?.slideBlocks || [];
   const animations = list[selectedIndex]?.animations || [];
 
@@ -58,7 +54,7 @@ export const SlideEntities: React.FC = observer(() => {
                     assetName={item.assetName}
                     blockId={item.id}
                     type={item.type}
-                    onDoubleClick={(blockId) => onToggleAnimation(blockId)}
+                    onDoubleClick={(blockId) => toggleAnimation(blockId)}
                   />
                 );
               })}

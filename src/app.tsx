@@ -1,5 +1,4 @@
 import { BrowserRouter, HashRouter, Switch, Route } from "react-router-dom";
-import { RecoilRoot } from "recoil";
 import { LoginRoute } from "~/routes/guest/login/login-route";
 import { Builder } from "~/routes/authen/builder/builder";
 import { isElectron } from "~/utils/utils-platform";
@@ -18,16 +17,14 @@ const AppRouter = ({ children }: { children: React.ReactElement }): React.ReactE
 initializeApp();
 
 const App = (): React.ReactElement => (
-  <RecoilRoot>
-    <StoreContext.Provider value={rootStore}>
-      <AppRouter>
-        <Switch>
-          <Route exact path="/" component={Builder} />
-          <Route exact path="/login" component={LoginRoute} />
-        </Switch>
-      </AppRouter>
-    </StoreContext.Provider>
-  </RecoilRoot>
+  <StoreContext.Provider value={rootStore}>
+    <AppRouter>
+      <Switch>
+        <Route exact path="/" component={Builder} />
+        <Route exact path="/login" component={LoginRoute} />
+      </Switch>
+    </AppRouter>
+  </StoreContext.Provider>
 );
 
 export default App;
