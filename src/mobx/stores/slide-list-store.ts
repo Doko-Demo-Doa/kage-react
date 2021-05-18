@@ -1,8 +1,10 @@
 import { makeAutoObservable } from "mobx";
 import dayjs from "dayjs";
-import { SlideType } from "~/typings/types";
+import { BlockSizeType, PositionType, SlideType } from "~/typings/types";
 import { RootStore } from "~/mobx/root-store";
 import { AnimationType } from "~/common/static-data";
+import { Delta } from "quill";
+import { dataUtils } from "~/utils/utils-data";
 
 export class SlideListStore {
   rootStore: RootStore;
@@ -24,6 +26,7 @@ export class SlideListStore {
     this.list.push(newSlide);
   }
 
+  // Use async:
   // *flow() {
   //   const response = yield fetch("http://example.com/value")
   //   this.value = yield response.json()
@@ -55,6 +58,44 @@ export class SlideListStore {
         animationType: AnimationType.APPEAR,
         blockId,
       });
+    }
+  }
+
+  // Block modificators:
+  modifyTextBlock(blockId: string, newText: Delta | undefined) {
+    const idx = this.rootStore.slideBuilderStore.selectedIndex;
+    const targetBlock = this.list[idx].slideBlocks.find((n) => n.id === blockId);
+
+    if (targetBlock) {
+      targetBlock.deltaContent = newText;
+    }
+  }
+
+  resizeBlock(blockId: string, newPosition: PositionType, newSize: BlockSizeType) {
+    const idx = this.rootStore.slideBuilderStore.selectedIndex;
+    const targetBlock = this.list[idx].slideBlocks.find((n) => n.id === blockId);
+
+    if (targetBlock) {
+      targetBlock.position = newPosition;
+      targetBlock.size = newSize;
+    }
+  }
+
+  dragBlock(blockId: string, newPosition: PositionType) {
+    const idx = this.rootStore.slideBuilderStore.selectedIndex;
+    const targetBlock = this.list[idx].slideBlocks.find((n) => n.id === blockId);
+
+    if (targetBlock) {
+      targetBlock.position = newPosition;
+    }
+  }
+
+  dragAnchor(blockId: string, newAnchor: PositionType) {
+    const idx = this.rootStore.slideBuilderStore.selectedIndex;
+    const targetBlock = this.list[idx].slideBlocks.find((n) => n.id === blockId);
+
+    if (targetBlock) {
+      targetBlock.anchor = newAnchor;
     }
   }
 }

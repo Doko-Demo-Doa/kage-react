@@ -1,129 +1,29 @@
-import { useRecoilState } from "recoil";
-import { Delta } from "quill";
-import dayjs from "dayjs";
-// @ts-ignore
-import { AnimationType } from "~/common/static-data";
-import { slideListState } from "~/atoms/slide-list-atom";
-import { slideBuilderState } from "~/atoms/slide-builder-atom";
-import { BlockSizeType, PositionType, SlideType } from "~/typings/types";
-import { dataUtils } from "~/utils/utils-data";
+import { useContext } from "react";
+
+import { observer } from "mobx-react";
 import { furiganaTemplateToHTML, htmlToJSX } from "~/utils/utils-formatting";
+import { StoreContext } from "~/mobx/store-context";
 import { SlideBlock } from "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-block-v2/slide-block-v2";
 
 import "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-interactive-editor-v2.scss";
 
-export const SlideInteractiveEditor: React.FC = () => {
-  const [slideList, setSlideList] = useRecoilState(slideListState);
-  const [slideBuilderMeta] = useRecoilState(slideBuilderState);
+export const SlideInteractiveEditor: React.FC = observer(() => {
+  const store = useContext(StoreContext);
+  const {
+    list,
+    selectBlock,
+    resizeBlock,
+    modifyTextBlock,
+    dragBlock,
+    dragAnchor,
+    toggleAnimation,
+  } = store.slideListStore;
+  const { selectedIndex } = store.slideBuilderStore;
 
-  const slideTitle = slideList[slideBuilderMeta.selectedIndex]?.title;
+  const slideTitle = list[selectedIndex]?.title || "";
 
-  const selectBlock = (slideIndex: number, blockId: string) => {
-    const newSlideArray = [...slideList];
-    const activeSlide = { ...newSlideArray[slideIndex] };
-    activeSlide.selectedBlock = blockId;
-    newSlideArray[slideIndex] = activeSlide;
-
-    setSlideList([...newSlideArray]);
-  };
-
-  const modifyTextBlock = (blockId: string, newText: Delta | undefined) => {
-    const newSlideArray: SlideType[] = dataUtils.convertToMutableData(slideList);
-    const slideIndex = slideBuilderMeta.selectedIndex;
-    const activeSlide = newSlideArray[slideIndex];
-
-    const targetBlock = activeSlide.slideBlocks.findIndex((n) => n.id === blockId);
-
-    if (targetBlock !== -1) {
-      const blk = activeSlide.slideBlocks[targetBlock];
-      blk.deltaContent = newText;
-
-      activeSlide.slideBlocks[targetBlock] = { ...blk };
-      newSlideArray[slideIndex] = activeSlide;
-
-      setSlideList(newSlideArray);
-    }
-  };
-
-  const dispatchResizeBlock = (
-    blockId: string,
-    newPosition: PositionType,
-    newSize: BlockSizeType
-  ) => {
-    const newSlideArray: SlideType[] = dataUtils.convertToMutableData(slideList);
-    const slideIndex = slideBuilderMeta.selectedIndex;
-    const activeSlide = newSlideArray[slideIndex];
-
-    const targetBlock = activeSlide.slideBlocks.findIndex((n) => n.id === blockId);
-
-    if (targetBlock !== -1) {
-      const blk = { ...activeSlide.slideBlocks[targetBlock] };
-      blk.size = newSize;
-      blk.position = newPosition;
-
-      activeSlide.slideBlocks[targetBlock] = { ...blk };
-      newSlideArray[slideIndex] = activeSlide;
-
-      setSlideList(newSlideArray);
-    }
-  };
-
-  const dispatchDragBlock = (blockId: string, newPosition: PositionType) => {
-    const newSlideArray: SlideType[] = dataUtils.convertToMutableData(slideList);
-    const slideIndex = slideBuilderMeta.selectedIndex;
-    const activeSlide = newSlideArray[slideIndex];
-
-    const targetBlock = activeSlide.slideBlocks.findIndex((n) => n.id === blockId);
-
-    if (targetBlock !== -1) {
-      const blk = { ...activeSlide.slideBlocks[targetBlock] };
-      blk.position = newPosition;
-
-      activeSlide.slideBlocks[targetBlock] = blk;
-      newSlideArray[slideIndex] = activeSlide;
-
-      setSlideList(newSlideArray);
-    }
-  };
-
-  const dispatchDragAnchor = (blockId: string, newAnchor: PositionType) => {
-    const newSlideArray: SlideType[] = dataUtils.convertToMutableData(slideList);
-    const slideIndex = slideBuilderMeta.selectedIndex;
-    const activeSlide = newSlideArray[slideIndex];
-
-    const targetBlock = activeSlide.slideBlocks.findIndex((n) => n.id === blockId);
-
-    if (targetBlock !== -1) {
-      const blk = { ...activeSlide.slideBlocks[targetBlock] };
-      blk.anchor = newAnchor;
-
-      activeSlide.slideBlocks[targetBlock] = blk;
-      newSlideArray[slideIndex] = activeSlide;
-
-      setSlideList(newSlideArray);
-    }
-  };
-
-  const onToggleAnimation = (blockId: string) => {
-    const newSlideArray: SlideType[] = dataUtils.convertToMutableData(slideList);
-    const slideIndex = slideBuilderMeta.selectedIndex;
-    const activeSlide = newSlideArray[slideIndex];
-
-    const targetAnim = activeSlide.animations.findIndex((n) => n.blockId === blockId);
-
-    if (targetAnim === -1) {
-      activeSlide.animations.push({
-        id: dayjs().unix().toString(),
-        animationType: AnimationType.APPEAR,
-        blockId,
-      });
-      newSlideArray[slideIndex] = activeSlide;
-      setSlideList(newSlideArray);
-    }
-  };
-
-  const blocks = slideList[slideBuilderMeta.selectedIndex]?.slideBlocks ?? [];
-  const anims = slideList[slideBuilderMeta.selectedIndex]?.animations ?? [];
+  const blocks = list[selectedIndex]?.slideBlocks ?? [];
+  const anims = list[selectedIndex]?.animations ?? [];
 
   // Nếu lỗi thì bỏ hết những children trong Layer.
   return (
@@ -137,24 +37,24 @@ export const SlideInteractiveEditor: React.FC = () => {
               key={i}
               {...n}
               animations={anims}
-              selected={n.id === slideList[slideBuilderMeta.selectedIndex]?.selectedBlock}
+              selected={n.id === list[selectedIndex]?.selectedBlock}
               onSelect={(blockId) => {
-                selectBlock(slideBuilderMeta.selectedIndex, blockId);
+                selectBlock(blockId);
               }}
               onDrag={(blockId, pos) => {
-                dispatchDragBlock(blockId, pos);
+                dragBlock(blockId, pos);
               }}
               onDragAnchor={(blockId, pos) => {
-                dispatchDragAnchor(blockId, pos);
+                dragAnchor(blockId, pos);
               }}
               onResized={(blockId, pos, size) => {
-                dispatchResizeBlock(blockId, pos, size);
+                resizeBlock(blockId, pos, size);
               }}
               onTextChanged={(blockId, newText) => {
                 modifyTextBlock(blockId, newText);
               }}
               onToggleAnimation={(blockId) => {
-                onToggleAnimation(blockId);
+                toggleAnimation(blockId);
               }}
             />
           );
@@ -162,4 +62,4 @@ export const SlideInteractiveEditor: React.FC = () => {
       </div>
     </>
   );
-};
+});
