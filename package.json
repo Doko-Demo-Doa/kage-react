@@ -13,6 +13,7 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
+    "test:coverage": "craco test --coverage",
     "eject": "react-scripts eject",
     "clean": "rimraf build release",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",

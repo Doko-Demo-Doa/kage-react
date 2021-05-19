@@ -1,4 +1,10 @@
+$column-width: 240px;
+
 .quiz-builder {
   position: relative;
   height: 100%;
+
+  .main-quiz-builder {
+    display: flex;
+  }
 }
