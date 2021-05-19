@@ -2,7 +2,7 @@ import fs from "fs";
 import pretty from "pretty";
 import { stripIndent } from "common-tags";
 import { v4 } from "uuid";
-import { AnimationType, MediaType, MinimumCanvasSize } from "~/common/static-data";
+import { AnimationType, MediaType, MinimumCanvasSize, QuizType } from "~/common/static-data";
 import { SlideType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
 import { furiganaTemplateToHTML, quillDeltaToHtml } from "~/utils/utils-formatting";
@@ -230,5 +230,14 @@ export const dataUtils = {
   },
   generateUid: () => {
     return v4();
+  },
+  mapQuizLabel: (type: QuizType) => {
+    if (type === QuizType.SINGLE_CHOICE) {
+      return "Chọn 1 đáp án đúng";
+    }
+    if (type === QuizType.MULTIPLE_CHOICES) {
+      return "Chọn nhiều đáp án";
+    }
+    return "";
   },
 };

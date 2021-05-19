@@ -10,6 +10,17 @@ $column-width: 240px;
 
     .quiz-edit-column {
       width: $column-width;
+      padding: 0 1rem;
+      padding-top: 1rem;
+      border-left: 1px solid $color-gray-light;
+    }
+
+    .quiz-detail-edit {
+      overflow-y: scroll;
+
+      .ant-select {
+        width: 100%;
+      }
     }
   }
 }

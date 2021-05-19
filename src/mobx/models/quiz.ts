@@ -11,7 +11,7 @@ export default class QuizModel {
 
   constructor() {
     this.id = "0";
-    this.type = QuizType.MULTIPLE_CHOICE;
+    this.type = QuizType.SINGLE_CHOICE;
     this.score = 0;
   }
 }

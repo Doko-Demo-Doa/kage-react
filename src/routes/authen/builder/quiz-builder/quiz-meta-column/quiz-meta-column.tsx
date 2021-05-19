@@ -4,8 +4,6 @@ import { Input, Form, InputNumber } from "antd";
 import "~/routes/authen/builder/quiz-builder/quiz-meta-column/quiz-meta-column.scss";
 
 export const QuizMetaColumn: React.FC = () => {
-  const formLayout = { wrapperCol: { span: 14 } };
-
   return (
     <>
       <Form layout="vertical">

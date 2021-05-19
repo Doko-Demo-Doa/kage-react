@@ -4,12 +4,11 @@ $quiz-list-height: 160px;
   height: $quiz-list-height;
   min-height: $quiz-list-height;
   overflow-x: auto;
-  border-top: 1px solid $color-gray-medium;
+  border-top: 1px solid $color-gray-light;
   display: flex;
   align-items: center;
   padding: 0 20px;
   outline: none;
-  background: red;
 
   .quiz-cell {
     margin-right: 20px;
