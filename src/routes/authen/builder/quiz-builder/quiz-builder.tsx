@@ -1,7 +1,9 @@
 import React, { useContext } from "react";
 import { observer } from "mobx-react";
-import { QuizBuilderToolbar } from "~/routes/authen/builder/quiz-builder/quiz-builder-toolbar/quiz-builder-toolbar";
 import { StoreContext } from "~/mobx/store-context";
+import { QuizBuilderToolbar } from "~/routes/authen/builder/quiz-builder/quiz-builder-toolbar/quiz-builder-toolbar";
+import { QuizPreview } from "~/routes/authen/builder/quiz-builder/quiz-preview/quiz-preview";
+import { QuizList } from "~/routes/authen/builder/quiz-builder/quiz-list/quiz-list";
 
 import "~/routes/authen/builder/quiz-builder/quiz-builder.scss";
 
@@ -12,10 +14,12 @@ export const QuizBuilder: React.FC = observer(() => {
     <div className="quiz-builder">
       <QuizBuilderToolbar />
       <div className="builder main-quiz-builder">
-        <div>Quiz Preview</div>
-        <div className="quiz-detail-edit">Quiz detail edit</div>
-        <div className="quiz-meta">Quiz meta</div>
+        <QuizPreview />
+        <div className="quiz-edit-column quiz-detail-edit">Quiz detail edit</div>
+        <div className="quiz-edit-column quiz-meta">Quiz meta</div>
       </div>
+
+      <QuizList />
     </div>
   );
 });
