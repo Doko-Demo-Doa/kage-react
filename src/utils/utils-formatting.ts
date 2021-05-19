@@ -37,4 +37,15 @@ export const formattingUtils = {
   furiganaTemplateToHTML,
   htmlToJSX,
   quillDeltaToHtml,
+  trimTextTo: (input: string, maxLength: number) => {
+    if (!input) return "";
+    if (input.length > maxLength) {
+      const trimmed = input.substr(0, maxLength);
+      return `${trimmed}...`;
+    }
+    return input;
+  },
+  furiganaToJSX: (input: string) => {
+    return formattingUtils.htmlToJSX(formattingUtils.furiganaTemplateToHTML(input));
+  },
 };

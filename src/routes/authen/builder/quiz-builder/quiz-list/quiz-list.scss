@@ -12,7 +12,7 @@ $quiz-list-height: 160px;
 
   .quiz-cell {
     margin-right: 20px;
-    min-width: 180px;
+    width: 180px;
     height: 100px;
     border-radius: 4px;
     cursor: pointer;
@@ -21,6 +21,7 @@ $quiz-list-height: 160px;
     display: flex;
     justify-content: center;
     align-items: center;
+    text-overflow: ellipsis;
     &:hover {
       border: 1px solid $color-midnight;
     }
@@ -28,6 +29,7 @@ $quiz-list-height: 160px;
   .meta-cell {
     border: 1px dashed $color-gray-medium;
     border-radius: 4px;
+    flex-direction: column;
   }
   .selected-cell {
     border: 1px solid $color-midnight;

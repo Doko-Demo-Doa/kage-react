@@ -26,6 +26,10 @@ export class QuizDeckStore {
     makeAutoObservable(this, {}, { autoBind: true });
   }
 
+  setIndex(newIndex: number) {
+    this.selectedIndex = newIndex;
+  }
+
   setDeckName(newTitle: string) {
     this.name = newTitle;
   }

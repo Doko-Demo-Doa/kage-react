@@ -1,6 +1,7 @@
 import React, { useContext, useMemo } from "react";
 import { observer } from "mobx-react";
 import { StoreContext } from "~/mobx/store-context";
+import { formattingUtils } from "~/utils/utils-formatting";
 
 import "~/routes/authen/builder/quiz-builder/quiz-preview/quiz-preview.scss";
 
@@ -14,7 +15,7 @@ export const QuizPreview: React.FC = observer(() => {
     <div className="quiz-preview">
       {showIntro ? (
         <div className="quiz-intro">
-          <h1>{name || " "}</h1>
+          <h1>{formattingUtils.furiganaToJSX(name)}</h1>
           <div className="instruction">{instruction}</div>
         </div>
       ) : (

@@ -13,6 +13,10 @@ $column-width: 240px;
       padding: 0 1rem;
       padding-top: 1rem;
       border-left: 1px solid $color-gray-light;
+
+      hr {
+        border-top: 1px solid $color-gray-light;
+      }
     }
 
     .quiz-detail-edit {
