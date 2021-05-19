@@ -1,30 +1,40 @@
-import { makeAutoObservable, observable, action } from "mobx";
+import { makeAutoObservable } from "mobx";
 import { RootStore } from "~/mobx/root-store";
-import QuizModel from "~/mobx/models/quiz";
+import QuizDeckModel from "../models/quiz-deck";
 
 export class QuizDeckStore {
   rootStore: RootStore;
-  list: QuizModel[] = [];
+  id: string;
+  name: string;
+  level: string;
+  syllabus: string;
+  instruction: string;
+  selectedIndex: number;
+  passingScore: number;
 
   constructor(rs: RootStore) {
     this.rootStore = rs;
-    makeAutoObservable(this, {
-      list: observable,
-      newQuiz: action,
-      setList: action,
-    });
+    const scaffold = new QuizDeckModel();
+    this.id = scaffold.id;
+    this.name = scaffold.name;
+    this.level = scaffold.level;
+    this.syllabus = scaffold.syllabus;
+    this.instruction = scaffold.instruction;
+    this.selectedIndex = scaffold.selectedIndex;
+    this.passingScore = scaffold.passingScore;
+
+    makeAutoObservable(this, {}, { autoBind: true });
   }
 
-  newQuiz() {
-    this.list.push(new QuizModel());
+  setDeckName(newTitle: string) {
+    this.name = newTitle;
   }
 
-  // Set the whole list
-  setList(newList: QuizModel[]) {
-    this.list = newList;
+  setDeckLevel(newLevel: string) {
+    this.level = newLevel;
   }
 
-  resetList() {
-    this.list = [];
+  setInstruction(instruction: string) {
+    this.instruction = instruction;
   }
 }

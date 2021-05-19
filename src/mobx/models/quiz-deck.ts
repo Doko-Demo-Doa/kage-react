@@ -1,5 +1,6 @@
 import { dataUtils } from "~/utils/utils-data";
 
+// Quiz metadata
 export default class QuizDeckModel {
   id: string;
   name: string;
@@ -11,10 +12,10 @@ export default class QuizDeckModel {
 
   constructor() {
     this.id = dataUtils.generateUid();
-    this.name = "Tiêu đề quiz";
+    this.name = "";
     this.level = "";
     this.syllabus = "";
-    this.instruction = "Hướng dẫn làm bài";
+    this.instruction = "";
     this.selectedIndex = -1;
     this.passingScore = 100;
   }

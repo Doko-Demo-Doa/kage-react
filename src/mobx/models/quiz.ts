@@ -1,4 +1,5 @@
 import { QuizType } from "~/common/static-data";
+import { dataUtils } from "~/utils/utils-data";
 
 // Single quiz object.
 export default class QuizModel {
@@ -10,8 +11,11 @@ export default class QuizModel {
   score: number;
 
   constructor() {
-    this.id = "0";
+    this.id = dataUtils.generateUid();
     this.type = QuizType.SINGLE_CHOICE;
+    this.countdown = 0;
+    this.title = "";
+    this.note = "";
     this.score = 0;
   }
 }
