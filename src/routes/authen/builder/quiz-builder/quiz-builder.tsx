@@ -5,6 +5,8 @@ import { QuizBuilderToolbar } from "~/routes/authen/builder/quiz-builder/quiz-bu
 import { QuizPreview } from "~/routes/authen/builder/quiz-builder/quiz-preview/quiz-preview";
 import { QuizList } from "~/routes/authen/builder/quiz-builder/quiz-list/quiz-list";
 
+import { QuizMetaColumn } from "~/routes/authen/builder/quiz-builder/quiz-meta-column/quiz-meta-column";
+
 import "~/routes/authen/builder/quiz-builder/quiz-builder.scss";
 
 export const QuizBuilder: React.FC = observer(() => {
@@ -16,7 +18,9 @@ export const QuizBuilder: React.FC = observer(() => {
       <div className="builder main-quiz-builder">
         <QuizPreview />
         <div className="quiz-edit-column quiz-detail-edit">Quiz detail edit</div>
-        <div className="quiz-edit-column quiz-meta">Quiz meta</div>
+        <div className="quiz-edit-column quiz-meta">
+          <QuizMetaColumn />
+        </div>
       </div>
 
       <QuizList />

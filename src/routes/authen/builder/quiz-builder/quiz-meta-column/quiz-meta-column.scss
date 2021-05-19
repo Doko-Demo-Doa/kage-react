@@ -1,0 +1,18 @@
+.quiz-meta {
+  padding: 0 1rem;
+  padding-top: 1rem;
+  border-left: 1px solid $color-gray-medium;
+
+  .max-score {
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    .max-score-input {
+      flex-grow: 2;
+    }
+    .lbl {
+      margin-left: 0.6rem;
+    }
+  }
+}
