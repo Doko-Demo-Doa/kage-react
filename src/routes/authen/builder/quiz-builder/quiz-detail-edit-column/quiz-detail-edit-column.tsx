@@ -24,6 +24,9 @@ const options = [
 export const QuizDetailEditColumn: React.FC = observer(() => {
   const store = useContext(StoreContext);
   const { selectedIndex } = store.quizDeckStore;
+  const { list, setQuizType } = store.quizListStore;
+
+  const thisQuiz = list[selectedIndex];
 
   return (
     <>
@@ -34,7 +37,11 @@ export const QuizDetailEditColumn: React.FC = observer(() => {
           <strong>{`Quiz ${selectedIndex + 1}`}</strong>
           <Form layout="vertical">
             <Form.Item label="Loại câu hỏi">
-              <Select id="quiz-type">
+              <Select
+                id="quiz-type"
+                defaultValue={thisQuiz.type}
+                onChange={(x) => setQuizType(thisQuiz.type, x)}
+              >
                 {options.map((n) => (
                   <Option key={n.value} value={n.value}>
                     {n.label}

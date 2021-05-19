@@ -51,7 +51,7 @@ export const SlideList: React.FC = observer(() => {
           <SlideThumbnail
             id={`slide-thumb-${idx}`}
             onClick={(index) => onClickSlide(index)}
-            title={n.title}
+            title={n?.title}
             index={idx}
             inactive={slideBuilderMeta.selectedIndex !== idx}
             key={idx}

@@ -45,7 +45,8 @@ export const formattingUtils = {
     }
     return input;
   },
-  furiganaToJSX: (input: string) => {
+  furiganaToJSX: (input: string | undefined) => {
+    if (!input) return "";
     return formattingUtils.htmlToJSX(formattingUtils.furiganaTemplateToHTML(input));
   },
 };
