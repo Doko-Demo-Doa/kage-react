@@ -11,7 +11,6 @@ export const QuizPreview: React.FC = observer(() => {
   const { list } = store.quizListStore;
 
   const thisQuiz = list[selectedIndex];
-  console.log(Boolean(thisQuiz));
 
   return (
     <div className="quiz-preview">

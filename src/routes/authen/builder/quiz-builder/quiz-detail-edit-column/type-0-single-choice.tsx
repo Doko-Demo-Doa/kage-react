@@ -6,8 +6,7 @@ import { StoreContext } from "~/mobx/store-context";
 export const SingleChoiceForm: React.FC = observer(() => {
   const store = useContext(StoreContext);
   const { selectedIndex } = store.quizDeckStore;
-  const { list, setQuizType, setQuizTitle } = store.quizListStore;
-
+  const { list, setQuizTitle } = store.quizListStore;
   const thisQuiz = list[selectedIndex];
 
   return (
@@ -17,7 +16,7 @@ export const SingleChoiceForm: React.FC = observer(() => {
           <Input.TextArea
             maxLength={60}
             defaultValue={thisQuiz?.title}
-            onChange={(e) => setQuizTitle(e.target.value)}
+            onChange={(e) => setQuizTitle(thisQuiz.id, e.target.value)}
             autoSize={{
               minRows: 3,
               maxRows: 6,
