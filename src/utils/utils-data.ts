@@ -5,14 +5,14 @@ import { v4 } from "uuid";
 import { AnimationType, MediaType, MinimumCanvasSize, QuizType } from "~/common/static-data";
 import { SlideType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
-import { furiganaTemplateToHTML, quillDeltaToHtml } from "~/utils/utils-formatting";
+import { formattingUtils } from "~/utils/utils-formatting";
 
 function singleSlideConstructor(slide: SlideType) {
   const subfolderPath = "assets"; // "data";
 
   return stripIndent(`
     <section>
-      <h1 class="slide-title">${furiganaTemplateToHTML(slide.title ?? "")}</h1>
+      <h1 class="slide-title">${formattingUtils.furiganaTemplateToHTML(slide.title ?? "")}</h1>
       ${slide.slideBlocks
         .map((block) => {
           // Tìm trong danh sách animation mà có blockId trùng thì lấy ra xử lý.
@@ -61,7 +61,7 @@ function singleSlideConstructor(slide: SlideType) {
 
           if (block.type === MediaType.TEXT_BLOCK) {
             const ops = block.deltaContent?.ops;
-            const html = quillDeltaToHtml(ops!);
+            const html = formattingUtils.quillDeltaToHtml(ops!);
             // Last line is to remove line breaks.
             const styleAppend = `
               position: absolute;
@@ -100,7 +100,7 @@ function singleSlideConstructor(slide: SlideType) {
           }
           if (block.type === MediaType.CALLOUT) {
             const ops = block.deltaContent?.ops;
-            const html = quillDeltaToHtml(ops!);
+            const html = formattingUtils.quillDeltaToHtml(ops!);
 
             const shiftLeg1 = (block.size?.w || 0) * 0.35;
             const shiftLeg2 = Math.min(

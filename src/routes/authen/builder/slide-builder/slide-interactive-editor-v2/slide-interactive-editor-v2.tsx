@@ -1,7 +1,7 @@
 import { useContext } from "react";
 
 import { observer } from "mobx-react";
-import { furiganaTemplateToHTML, htmlToJSX } from "~/utils/utils-formatting";
+import { formattingUtils } from "~/utils/utils-formatting";
 import { StoreContext } from "~/mobx/store-context";
 import { SlideBlock } from "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-block-v2/slide-block-v2";
 
@@ -29,7 +29,9 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
   return (
     <>
       <div id="slide-interactive-editor">
-        <h1 className="slide-title">{htmlToJSX(furiganaTemplateToHTML(slideTitle || ""))}</h1>
+        <h1 className="slide-title">
+          {formattingUtils.htmlToJSX(formattingUtils.furiganaTemplateToHTML(slideTitle || ""))}
+        </h1>
 
         {blocks.map((n, i) => {
           return (

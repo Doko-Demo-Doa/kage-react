@@ -37,4 +37,8 @@ export class QuizDeckStore {
   setInstruction(instruction: string) {
     this.instruction = instruction;
   }
+
+  setPassingScore(score: number) {
+    this.passingScore = score;
+  }
 }
