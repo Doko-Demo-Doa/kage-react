@@ -2,8 +2,10 @@ import React, { useContext } from "react";
 import ScrollBar from "react-perfect-scrollbar";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 import { observer } from "mobx-react";
+import { Container, Draggable } from "react-smooth-dnd";
 import { SlideThumbnail } from "~/routes/authen/builder/slide-builder/slide-list/slide-thumbnail/slide-thumbnail";
 import { StoreContext } from "~/mobx/store-context";
+import { dataUtils } from "~/utils/utils-data";
 
 import "./slide-list.scss";
 
@@ -51,16 +53,22 @@ export const SlideList: React.FC = observer(() => {
       }}
     >
       <ScrollBar id="slide-list" options={{ suppressScrollX: true }} tabIndex={1}>
-        {slides.map((n, idx) => (
-          <SlideThumbnail
-            id={`slide-thumb-${idx}`}
-            onClick={(index) => onClickSlide(index)}
-            title={n?.title}
-            index={idx}
-            inactive={slideBuilderMeta.selectedIndex !== idx}
-            key={idx}
-          />
-        ))}
+        <Container
+          onDrop={(e) => store.slideListStore.setList(dataUtils.createSortedList(slides, e))}
+        >
+          {slides.map((n, idx) => (
+            <Draggable key={n.id}>
+              <SlideThumbnail
+                id={n.id}
+                onClick={(index) => onClickSlide(index)}
+                title={n?.title}
+                index={idx}
+                inactive={slideBuilderMeta.selectedIndex !== idx}
+                key={idx}
+              />
+            </Draggable>
+          ))}
+        </Container>
       </ScrollBar>
     </KeyboardEventHandler>
   );

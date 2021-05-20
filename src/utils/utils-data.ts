@@ -3,6 +3,7 @@ import pretty from "pretty";
 import { stripIndent } from "common-tags";
 import { v4 } from "uuid";
 import shortUid from "short-uuid";
+import { DropResult } from "smooth-dnd";
 import { AnimationType, MediaType, MinimumCanvasSize, QuizType } from "~/common/static-data";
 import { SlideType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
@@ -243,5 +244,22 @@ export const dataUtils = {
       return "Chọn nhiều đáp án";
     }
     return "";
+  },
+  createSortedList: (arr: Array<any>, dropResult: DropResult) => {
+    const { removedIndex, addedIndex, payload } = dropResult;
+    if (removedIndex === null && addedIndex === null) return arr;
+
+    const result = [...arr];
+    let itemToAdd = payload;
+
+    if (removedIndex !== null) {
+      itemToAdd = result.splice(removedIndex, 1)[0];
+    }
+
+    if (addedIndex !== null) {
+      result.splice(addedIndex, 0, itemToAdd);
+    }
+
+    return result;
   },
 };

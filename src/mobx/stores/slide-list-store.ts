@@ -4,6 +4,7 @@ import { BlockSizeType, PositionType, SlideType } from "~/typings/types";
 import { RootStore } from "~/mobx/root-store";
 import { AnimationType } from "~/common/static-data";
 import { Delta } from "quill";
+import { dataUtils } from "~/utils/utils-data";
 
 export class SlideListStore {
   rootStore: RootStore;
@@ -17,6 +18,7 @@ export class SlideListStore {
 
   newSlide() {
     const newSlide = {
+      id: dataUtils.generateShortUid(),
       title: "",
       slideBlocks: [],
       animations: [],
