@@ -1,16 +1,36 @@
+import { useEffect, useState } from "react";
 import { Tabs } from "antd";
 import { HomeOutlined, FileOutlined, SettingOutlined } from "@ant-design/icons";
 import { SlideBuilder } from "~/routes/authen/builder/slide-builder/slide-builder";
 import { QuizBuilder } from "~/routes/authen/builder/quiz-builder/quiz-builder";
+import { EventBus } from "~/services/events-helper";
 
 const { TabPane } = Tabs;
 
 import "~/routes/authen/builder/builder.scss";
 
 export function Builder() {
+  const [tabKey, setTabKey] = useState("0");
+
+  useEffect(() => {
+    EventBus.on("SWITCH_TAB", (nk: string) => {
+      setTabKey(nk);
+    });
+
+    return () => {
+      EventBus.off("SWITCH_TAB", () => null);
+    };
+  }, []);
+
   return (
     <div className="main-layout editor-wrapper">
-      <Tabs type="card" className="tabs-wrapper">
+      <Tabs
+        type="card"
+        defaultActiveKey="0"
+        activeKey={tabKey}
+        onChange={(nk) => setTabKey(nk)}
+        className="tabs-wrapper"
+      >
         <TabPane
           tab={
             <span>
@@ -18,7 +38,7 @@ export function Builder() {
               Slides
             </span>
           }
-          key="1"
+          key="0"
         >
           <SlideBuilder />
         </TabPane>
@@ -29,7 +49,7 @@ export function Builder() {
               Quiz
             </span>
           }
-          key="2"
+          key="1"
         >
           <QuizBuilder />
         </TabPane>
@@ -40,7 +60,7 @@ export function Builder() {
               Settings
             </span>
           }
-          key="3"
+          key="2"
         >
           <p>Content of Tab Pane 3</p>
           <p>Content of Tab Pane 3</p>

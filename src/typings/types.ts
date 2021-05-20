@@ -83,3 +83,5 @@ export type MediaReturnType = {
   extension: string;
   extra?: any; // Size, position, etc
 };
+
+export type AppEventType = "SWITCH_TAB";

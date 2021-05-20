@@ -3,6 +3,7 @@ import { Space, Button } from "antd";
 import { observer } from "mobx-react";
 import { PlusOutlined, SoundOutlined, PictureFilled, BackwardFilled } from "@ant-design/icons";
 import { StoreContext } from "~/mobx/store-context";
+import { EventBus } from "~/services/events-helper";
 
 import "~/routes/authen/builder/quiz-builder/quiz-builder-toolbar/quiz-builder-toolbar.scss";
 
@@ -28,7 +29,12 @@ export const QuizBuilderToolbar: React.FC = observer(() => {
         <hr />
         <div>Bạn đang edit bộ quiz nằm ở slide số 12</div>
 
-        <Button onClick={() => null} icon={<BackwardFilled />} type="primary" danger>
+        <Button
+          onClick={() => EventBus.emit("SWITCH_TAB", "0")}
+          icon={<BackwardFilled />}
+          type="primary"
+          danger
+        >
           Quay lại
         </Button>
       </Space>
