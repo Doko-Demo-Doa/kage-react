@@ -1,6 +1,7 @@
 import { notification, message, Modal } from "antd";
 import { Delta } from "quill";
 import ReactQuill from "react-quill";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 // Alternative: react-quill/dist/quill.bubble.css
 import "react-quill/dist/quill.snow.css";
@@ -11,6 +12,24 @@ export type NotificationType = "success" | "error" | "info" | "warning" | "warn"
 export type MessageType = "success" | "error" | "info" | "warning" | "warn" | "loading";
 
 export const uiUtils = {
+  showConfirmation: (
+    title: string,
+    desc: string,
+    onOk: () => void | undefined,
+    onCancel: () => void | undefined
+  ) => {
+    Modal.confirm({
+      title,
+      icon: <ExclamationCircleOutlined />,
+      content: desc,
+      onOk() {
+        onOk();
+      },
+      onCancel() {
+        onCancel();
+      },
+    });
+  },
   /**
    * Type must be one of:
    * success

@@ -4,15 +4,14 @@ import clsx from "clsx";
 import ScrollBar from "react-perfect-scrollbar";
 import { StoreContext } from "~/mobx/store-context";
 import { formattingUtils } from "~/utils/utils-formatting";
+import { dataUtils } from "~/utils/utils-data";
 
 import "~/routes/authen/builder/quiz-builder/quiz-list/quiz-list.scss";
-import { dataUtils } from "~/utils/utils-data";
 
 export const QuizList: React.FC = observer(() => {
   const store = useContext(StoreContext);
   const { list } = store.quizListStore;
   const { name, instruction, selectedIndex, setIndex } = store.quizDeckStore;
-  const thisQuiz = list[selectedIndex];
 
   return (
     <div className="quiz-list" tabIndex={2}>
@@ -31,7 +30,7 @@ export const QuizList: React.FC = observer(() => {
             onClick={() => setIndex(idx)}
           >
             <strong>Quiz</strong>
-            <p>{`${dataUtils.mapQuizLabel(thisQuiz.type)}`}</p>
+            <p>{`${dataUtils.mapQuizLabel(n.type)}`}</p>
           </div>
         ))}
       </ScrollBar>
