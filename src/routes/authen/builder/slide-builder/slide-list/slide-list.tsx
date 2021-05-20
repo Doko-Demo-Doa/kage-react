@@ -19,6 +19,10 @@ export const SlideList: React.FC = observer(() => {
 
   const onDeleteCurrentSlide = () => {
     const currentIndex = slideBuilderMeta.selectedIndex;
+
+    if (slides.length > 1 && currentIndex !== 0) {
+      slideBuilderMeta.setIndex(currentIndex - 1);
+    }
     const newSlides = [...slides.slice(0, currentIndex), ...slides.slice(currentIndex + 1)];
 
     store.slideListStore.setList(newSlides);
@@ -26,7 +30,7 @@ export const SlideList: React.FC = observer(() => {
 
   return (
     <KeyboardEventHandler
-      handleKeys={["up", "down", "del"]} // Up and down
+      handleKeys={["up", "down", "del", "backspace", "clear"]} // Up and down
       onKeyEvent={(key) => {
         let newIndex = slideBuilderMeta.selectedIndex;
         if (key === "up" && slideBuilderMeta.selectedIndex > 0) {
