@@ -55,6 +55,7 @@ export const QuizDetailEditColumn: React.FC = observer(() => {
               <Select
                 id="quiz-type"
                 defaultValue={thisQuiz.type}
+                value={thisQuiz.type}
                 onChange={(x) => {
                   setTimeout(() => {
                     uiUtils.showConfirmation(
@@ -65,7 +66,7 @@ export const QuizDetailEditColumn: React.FC = observer(() => {
                       },
                       () => undefined
                     );
-                  }, 300);
+                  }, 300); // Delay để đỡ bị đè UI
                 }}
               >
                 {options.map((n) => (

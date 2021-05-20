@@ -1,0 +1,39 @@
+{
+  "id": "G106",
+  "name": "Bunpou quiz 105",
+  "level": "N3",
+  "syllabus": "shinkanzen-master-n3",
+  "instruction": "Hãy chọn các đáp án đúng",
+  "passing_score": 80,
+  "type": "MULTIPLE_RESPONSE",
+  "auto_audit": true,
+  "quizzes": [
+    {
+      "audio_link": "https://google.com",
+      "image_link": "https://google.com",
+      "countdown": 90,
+      "title": "",
+      "content": "彼女は、毎日_____アイスクリームがすきです。",
+      "score": 5,
+      "correct_indexes": [1, 2, 3],
+      "choices": [
+        {
+          "id": 0,
+          "label": "{食(た)}べると"
+        },
+        {
+          "id": 1,
+          "label": "{食(た)}べ始める"
+        },
+        {
+          "id": 2,
+          "label": "{食(た)}べるほど"
+        },
+        {
+          "id": 3,
+          "label": "{食(た)}べるなら"
+        }
+      ]
+    }
+  ]
+}

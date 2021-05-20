@@ -8,16 +8,16 @@ type Choice = {
 };
 
 // Single quiz object.
-export default class QuizSingleChoiceModel extends QuizModel {
+export default class QuizMultipleChoicesModel extends QuizModel {
   audioLink?: string;
   imageVideoLink?: string;
-  correctIndex: number;
+  correctIndexes: number[];
   choices: Choice[];
 
   constructor() {
     super();
     this.type = QuizType.SINGLE_CHOICE;
-    this.correctIndex = 0;
+    this.correctIndexes = [0];
     this.choices = [
       { id: dataUtils.generateUid(), label: "Lựa chọn 1" },
       { id: dataUtils.generateUid(), label: "Lựa chọn 2" },

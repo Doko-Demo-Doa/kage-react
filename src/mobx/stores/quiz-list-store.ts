@@ -4,6 +4,7 @@ import QuizModel from "~/mobx/models/quiz";
 import { QuizType } from "~/common/static-data";
 import QuizSingleChoiceModel from "~/mobx/models/quiz-single-choice";
 import { dataUtils } from "~/utils/utils-data";
+import QuizMultipleChoicesModel from "../models/quiz-multiple-choices";
 
 export class QuizListStore {
   rootStore: RootStore;
@@ -16,10 +17,6 @@ export class QuizListStore {
 
   newQuiz() {
     const newQuiz = new QuizSingleChoiceModel();
-    newQuiz.choices = [
-      { id: dataUtils.generateUid(), label: "Lựa chọn 1" },
-      { id: dataUtils.generateUid(), label: "Lựa chọn 2" },
-    ];
 
     this.list.push(newQuiz);
   }
@@ -48,9 +45,20 @@ export class QuizListStore {
 
   setQuizType(quizId: string, newType: QuizType) {
     const qi = this.list.findIndex((n) => n.id === quizId);
+
     if (qi !== -1) {
       const newList = this.list.slice();
-      newList[qi].type = newType;
+      let n = new QuizModel();
+
+      if (newType === QuizType.SINGLE_CHOICE) {
+        n = new QuizSingleChoiceModel();
+      } else if (newType === QuizType.MULTIPLE_CHOICES) {
+        n = new QuizMultipleChoicesModel();
+      } else {
+        n = new QuizSingleChoiceModel();
+      }
+      newList[qi] = n;
+
       this.list = newList;
     }
   }
