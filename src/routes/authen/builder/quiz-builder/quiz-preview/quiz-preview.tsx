@@ -22,7 +22,7 @@ export const QuizPreview: React.FC = observer(() => {
         <Radio.Group value={q.correctIndex}>
           <Space direction="vertical">
             {q.choices.map((n, idx) => (
-              <Radio key={idx} value={idx} disabled>
+              <Radio key={idx} value={idx}>
                 {n.label}
               </Radio>
             ))}

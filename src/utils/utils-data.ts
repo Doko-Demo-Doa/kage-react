@@ -2,6 +2,7 @@ import fs from "fs";
 import pretty from "pretty";
 import { stripIndent } from "common-tags";
 import { v4 } from "uuid";
+import shortUid from "short-uuid";
 import { AnimationType, MediaType, MinimumCanvasSize, QuizType } from "~/common/static-data";
 import { SlideType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
@@ -230,6 +231,9 @@ export const dataUtils = {
   },
   generateUid: () => {
     return v4();
+  },
+  generateShortUid: () => {
+    return shortUid.generate();
   },
   mapQuizLabel: (type: QuizType) => {
     if (type === QuizType.SINGLE_CHOICE) {

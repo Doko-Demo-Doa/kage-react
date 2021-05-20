@@ -9,6 +9,7 @@ $radio-size: 60px;
   width: 220px;
   text-align: center;
   user-select: text;
+  position: relative;
 
   .quiz-intro {
     min-height: 360px;
@@ -27,6 +28,7 @@ $radio-size: 60px;
     padding: 0 2rem;
     min-width: 86%;
     text-align: start;
+    user-select: none;
 
     .ant-radio-group {
       transform: scale(1.2);
