@@ -6,11 +6,13 @@ import { StoreContext } from "~/mobx/store-context";
 import { formattingUtils } from "~/utils/utils-formatting";
 
 import "~/routes/authen/builder/quiz-builder/quiz-list/quiz-list.scss";
+import { dataUtils } from "~/utils/utils-data";
 
 export const QuizList: React.FC = observer(() => {
   const store = useContext(StoreContext);
   const { list } = store.quizListStore;
   const { name, instruction, selectedIndex, setIndex } = store.quizDeckStore;
+  const thisQuiz = list[selectedIndex];
 
   return (
     <div className="quiz-list" tabIndex={2}>
@@ -28,7 +30,8 @@ export const QuizList: React.FC = observer(() => {
             className={clsx("quiz-cell", selectedIndex === idx ? "selected-cell" : "")}
             onClick={() => setIndex(idx)}
           >
-            Quiz
+            <strong>Quiz</strong>
+            <p>{`${dataUtils.mapQuizLabel(thisQuiz.type)}`}</p>
           </div>
         ))}
       </ScrollBar>
