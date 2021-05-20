@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { observer } from "mobx-react";
-import { Radio, Input, Space } from "antd";
+import { Radio, Space } from "antd";
 import { StoreContext } from "~/mobx/store-context";
 import { formattingUtils } from "~/utils/utils-formatting";
 import { QuizType } from "~/common/static-data";
