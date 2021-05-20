@@ -14,7 +14,7 @@ export const QuizList: React.FC = observer(() => {
     <div className="quiz-list" tabIndex={2}>
       <div className="quiz-cell meta-cell" onClick={() => setIndex(-1)}>
         <strong>{formattingUtils.furiganaToJSX(name)}</strong>
-        <div>{formattingUtils.trimTextTo(instruction, 20)}</div>
+        <div>{formattingUtils.furiganaToJSX(formattingUtils.trimTextTo(instruction, 20))}</div>
       </div>
       {list.map((n, idx) => (
         <div key={n.id} className="quiz-cell" onClick={() => setIndex(idx)}>

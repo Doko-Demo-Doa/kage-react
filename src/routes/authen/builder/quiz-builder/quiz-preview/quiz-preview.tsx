@@ -17,7 +17,7 @@ export const QuizPreview: React.FC = observer(() => {
       {!thisQuiz ? (
         <div className="quiz-intro">
           <h1>{formattingUtils.furiganaToJSX(name)}</h1>
-          <div className="instruction">{instruction}</div>
+          <div className="instruction">{formattingUtils.furiganaToJSX(instruction)}</div>
         </div>
       ) : (
         <div className="quiz-main">
