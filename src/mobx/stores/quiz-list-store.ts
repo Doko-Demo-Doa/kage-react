@@ -2,6 +2,8 @@ import { makeAutoObservable } from "mobx";
 import { RootStore } from "~/mobx/root-store";
 import QuizModel from "~/mobx/models/quiz";
 import { QuizType } from "~/common/static-data";
+import QuizSingleChoiceModel from "~/mobx/models/quiz-single-choice";
+import { dataUtils } from "~/utils/utils-data";
 
 export class QuizListStore {
   rootStore: RootStore;
@@ -13,7 +15,13 @@ export class QuizListStore {
   }
 
   newQuiz() {
-    this.list.push(new QuizModel());
+    const newQuiz = new QuizSingleChoiceModel();
+    newQuiz.choices = [
+      { id: dataUtils.generateUid(), label: "Lựa chọn 1" },
+      { id: dataUtils.generateUid(), label: "Lựa chọn 2" },
+    ];
+
+    this.list.push(newQuiz);
   }
 
   removeQuiz(id: string) {
@@ -41,7 +49,48 @@ export class QuizListStore {
   setQuizType(quizId: string, newType: QuizType) {
     const qi = this.list.findIndex((n) => n.id === quizId);
     if (qi !== -1) {
-      this.list[qi].type = newType;
+      const newList = this.list.slice();
+      newList[qi].type = newType;
+      this.list = newList;
+    }
+  }
+
+  // Only for single choice
+  setSingleCorrectChoice(quizId: string, correctChoiceIndex: number) {
+    const qi = this.list.findIndex((n) => n.id === quizId);
+    if (qi !== -1) {
+      const newList = this.list.slice();
+      if (newList[qi].type !== QuizType.SINGLE_CHOICE) return;
+      const target = newList[qi] as QuizSingleChoiceModel;
+      target.correctIndex = correctChoiceIndex;
+      newList[qi] = target;
+      this.list = newList;
+    }
+  }
+
+  addNewChoice(quizId: string) {
+    const qi = this.list.findIndex((n) => n.id === quizId);
+    if (qi !== -1) {
+      const newList = this.list.slice();
+
+      if (newList[qi].type !== QuizType.SINGLE_CHOICE) return;
+      const target = newList[qi] as QuizSingleChoiceModel;
+      target.choices.push({ id: dataUtils.generateUid(), label: "" });
+      newList[qi] = target;
+      this.list = newList;
+    }
+  }
+
+  removeChoice(quizId: string, choiceIndex: number) {
+    const qi = this.list.findIndex((n) => n.id === quizId);
+    if (qi !== -1) {
+      const newList = this.list.slice();
+
+      if (newList[qi].type !== QuizType.SINGLE_CHOICE) return;
+      const target = newList[qi] as QuizSingleChoiceModel;
+      target.choices.splice(choiceIndex, 1);
+      newList[qi] = target;
+      this.list = newList;
     }
   }
 }

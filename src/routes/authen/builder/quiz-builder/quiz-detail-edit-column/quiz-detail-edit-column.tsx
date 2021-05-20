@@ -7,6 +7,8 @@ import { dataUtils } from "~/utils/utils-data";
 
 import { SingleChoiceForm } from "~/routes/authen/builder/quiz-builder/quiz-detail-edit-column/type-0-single-choice";
 
+import "~/routes/authen/builder/quiz-builder/quiz-detail-edit-column/quiz-edit-form.scss";
+
 const { Option } = Select;
 
 const options = [

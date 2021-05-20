@@ -1,0 +1,12 @@
+.quiz-edit-form {
+  padding-bottom: 2rem;
+
+  .single-choice {
+    display: flex;
+    align-items: center;
+
+    .separator {
+      width: 0.5rem;
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react";
+import ScrollBar from "react-perfect-scrollbar";
 import { QuizBuilderToolbar } from "~/routes/authen/builder/quiz-builder/quiz-builder-toolbar/quiz-builder-toolbar";
 import { QuizPreview } from "~/routes/authen/builder/quiz-builder/quiz-preview/quiz-preview";
 import { QuizList } from "~/routes/authen/builder/quiz-builder/quiz-list/quiz-list";
@@ -15,9 +16,9 @@ export const QuizBuilder: React.FC = observer(() => {
       <QuizBuilderToolbar />
       <div className="builder main-quiz-builder">
         <QuizPreview />
-        <div className="quiz-edit-column quiz-detail-edit">
+        <ScrollBar className="quiz-edit-column quiz-detail-edit">
           <QuizDetailEditColumn />
-        </div>
+        </ScrollBar>
         <div className="quiz-edit-column quiz-meta">
           <QuizMetaColumn />
         </div>

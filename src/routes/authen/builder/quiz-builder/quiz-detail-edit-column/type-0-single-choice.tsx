@@ -1,17 +1,28 @@
 import React, { useContext } from "react";
-import { Form, Input } from "antd";
+import { Form, Input, Radio, Button } from "antd";
+import { CloseCircleFilled, PlusOutlined } from "@ant-design/icons";
 import { observer } from "mobx-react";
 import { StoreContext } from "~/mobx/store-context";
+import QuizSingleChoiceModel from "~/mobx/models/quiz-single-choice";
+import { Colors } from "~/common/colors";
 
 export const SingleChoiceForm: React.FC = observer(() => {
   const store = useContext(StoreContext);
   const { selectedIndex } = store.quizDeckStore;
-  const { list, setQuizTitle } = store.quizListStore;
-  const thisQuiz = list[selectedIndex];
+  const {
+    list,
+    setQuizTitle,
+    setSingleCorrectChoice,
+    addNewChoice,
+    removeChoice,
+  } = store.quizListStore;
+  const thisQuiz = list[selectedIndex] as QuizSingleChoiceModel;
+
+  const disableRemoval = thisQuiz.choices.length <= 2;
 
   return (
     <>
-      <Form layout="vertical">
+      <Form className="quiz-edit-form" layout="vertical">
         <Form.Item label="Nội dung câu hỏi">
           <Input.TextArea
             maxLength={60}
@@ -24,21 +35,44 @@ export const SingleChoiceForm: React.FC = observer(() => {
           />
         </Form.Item>
 
-        <Form.Item label="Lựa chọn">
-          <Input />
-        </Form.Item>
+        {thisQuiz.choices.map((n, idx) => (
+          <Form.Item key={n.id}>
+            <div className="single-choice">
+              <Radio
+                checked={thisQuiz.correctIndex === idx}
+                onChange={() => setSingleCorrectChoice(thisQuiz.id, idx)}
+              />
+              <div className="separator" />
+              <Input placeholder={`Lựa chọn ${idx + 1}`} />
+              <div className="separator" />
+              <Button
+                type="text"
+                size="small"
+                disabled={disableRemoval}
+                onClick={() => removeChoice(thisQuiz.id, idx)}
+                icon={
+                  <CloseCircleFilled
+                    style={{
+                      color: Colors.PALE_RED,
+                      visibility: disableRemoval ? "hidden" : "visible",
+                    }}
+                  />
+                }
+              />
+            </div>
+          </Form.Item>
+        ))}
 
-        <Form.Item label="Lựa chọn">
-          <Input />
-        </Form.Item>
-
-        <Form.Item label="Lựa chọn">
-          <Input />
-        </Form.Item>
-
-        <Form.Item label="Lựa chọn">
-          <Input />
-        </Form.Item>
+        {thisQuiz.choices.length < 4 && (
+          <Button
+            style={{ marginBottom: 24 }}
+            icon={<PlusOutlined />}
+            type="dashed"
+            onClick={() => addNewChoice(thisQuiz.id)}
+          >
+            Thêm lựa chọn
+          </Button>
+        )}
       </Form>
     </>
   );
