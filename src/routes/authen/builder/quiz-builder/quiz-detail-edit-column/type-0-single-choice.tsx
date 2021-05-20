@@ -15,6 +15,7 @@ export const SingleChoiceForm: React.FC = observer(() => {
     setSingleCorrectChoice,
     addNewChoice,
     removeChoice,
+    editChoiceLabel,
   } = store.quizListStore;
   const thisQuiz = list[selectedIndex] as QuizSingleChoiceModel;
 
@@ -43,7 +44,11 @@ export const SingleChoiceForm: React.FC = observer(() => {
                 onChange={() => setSingleCorrectChoice(thisQuiz.id, idx)}
               />
               <div className="separator" />
-              <Input placeholder={`Lựa chọn ${idx + 1}`} />
+              <Input
+                placeholder={`Lựa chọn ${idx + 1}`}
+                defaultValue={n.label}
+                onChange={(e) => editChoiceLabel(thisQuiz.id, idx, e.target.value)}
+              />
               <div className="separator" />
               <Button
                 type="text"

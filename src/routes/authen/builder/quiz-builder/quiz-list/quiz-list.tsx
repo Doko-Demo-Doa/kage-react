@@ -25,7 +25,7 @@ export const QuizList: React.FC = observer(() => {
         {list.map((n, idx) => (
           <div
             key={n.id}
-            className={clsx("quiz-cell", selectedIndex !== -1 ? "selected-cell" : "")}
+            className={clsx("quiz-cell", selectedIndex === idx ? "selected-cell" : "")}
             onClick={() => setIndex(idx)}
           >
             Quiz

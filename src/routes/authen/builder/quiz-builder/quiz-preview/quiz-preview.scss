@@ -25,33 +25,11 @@ $radio-size: 60px;
 
   .quiz-main {
     padding: 0 2rem;
+    min-width: 86%;
+    text-align: start;
 
-    .choice-group {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-
-      .ant-radio-wrapper {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-
-        .ant-radio {
-          display: flex;
-          align-items: center;
-          margin: 2rem 0;
-          margin-right: 2rem;
-          font-size: 22px;
-
-          .ant-radio-inner {
-            transform: scale(2);
-            span {
-              font-size: 22px;
-            }
-          }
-        }
-      }
+    .ant-radio-group {
+      transform: scale(1.2);
     }
   }
 }

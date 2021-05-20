@@ -81,6 +81,18 @@ export class QuizListStore {
     }
   }
 
+  editChoiceLabel(quizId: string, choiceIndex: number, newlabel: string) {
+    const qi = this.list.findIndex((n) => n.id === quizId);
+    if (qi !== -1) {
+      const newList = this.list.slice();
+      if (newList[qi].type !== QuizType.SINGLE_CHOICE) return;
+      const target = newList[qi] as QuizSingleChoiceModel;
+      target.choices[choiceIndex].label = newlabel;
+      newList[qi] = target;
+      this.list = newList;
+    }
+  }
+
   removeChoice(quizId: string, choiceIndex: number) {
     const qi = this.list.findIndex((n) => n.id === quizId);
     if (qi !== -1) {
