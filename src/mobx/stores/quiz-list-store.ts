@@ -3,9 +3,11 @@ import { uniq } from "rambdax";
 import { RootStore } from "~/mobx/root-store";
 import QuizModel from "~/mobx/models/quiz";
 import { QuizType } from "~/common/static-data";
-import QuizSingleChoiceModel from "~/mobx/models/quiz-single-choice";
 import { dataUtils } from "~/utils/utils-data";
-import QuizMultipleChoicesModel from "../models/quiz-multiple-choices";
+
+import QuizSingleChoiceModel from "~/mobx/models/quiz-single-choice";
+import QuizMultipleChoicesModel from "~/mobx/models/quiz-multiple-choices";
+import QuizSelectInBlanksModel from "~/mobx/models/quiz-select-in-blanks";
 
 export class QuizListStore {
   rootStore: RootStore;
@@ -17,7 +19,7 @@ export class QuizListStore {
   }
 
   newQuiz() {
-    const newQuiz = new QuizSingleChoiceModel();
+    const newQuiz = new QuizSelectInBlanksModel();
 
     this.list.push(newQuiz);
   }

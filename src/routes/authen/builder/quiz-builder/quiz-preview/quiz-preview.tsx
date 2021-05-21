@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { observer } from "mobx-react";
-import { Radio, Space, Checkbox } from "antd";
+import { Radio, Space, Checkbox, Select } from "antd";
 import { StoreContext } from "~/mobx/store-context";
 import { formattingUtils } from "~/utils/utils-formatting";
 import { QuizType } from "~/common/static-data";
@@ -8,6 +8,8 @@ import QuizSingleChoiceModel from "~/mobx/models/quiz-single-choice";
 import QuizMultipleChoicesModel from "~/mobx/models/quiz-multiple-choices";
 
 import "~/routes/authen/builder/quiz-builder/quiz-preview/quiz-preview.scss";
+
+const { Option } = Select;
 
 export const QuizPreview: React.FC = observer(() => {
   const store = useContext(StoreContext);
@@ -41,6 +43,29 @@ export const QuizPreview: React.FC = observer(() => {
             </Checkbox>
           ))}
         </Space>
+      );
+    }
+    if (thisQuiz.type === QuizType.SELECT_IN_THE_BLANKS) {
+      const q = thisQuiz as QuizMultipleChoicesModel;
+      return (
+        <div className="quiz-select-in-blanks-preview">
+          {"今日なにを食べる"}
+          <Select className="choice-selector">
+            <Option value="jack">Jack</Option>
+            <Option value="lucy">Lucy</Option>
+          </Select>
+          今日なにを食べる
+          <Select className="choice-selector">
+            <Option value="jack">Jack</Option>
+            <Option value="lucy">Lucy</Option>
+          </Select>
+          今日なにを食べる 今日なにを食べる
+          <Select className="choice-selector">
+            <Option value="jack">Jack</Option>
+            <Option value="lucy">Lucy</Option>
+          </Select>
+          今日なにを食べる
+        </div>
       );
     }
     return null;

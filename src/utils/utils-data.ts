@@ -243,6 +243,9 @@ export const dataUtils = {
     if (type === QuizType.MULTIPLE_CHOICES) {
       return "Chọn nhiều đáp án";
     }
+    if (type === QuizType.SELECT_IN_THE_BLANKS) {
+      return "Chọn từ điền chỗ trống";
+    }
     return "";
   },
   createSortedList: (arr: Array<any>, dropResult: DropResult) => {

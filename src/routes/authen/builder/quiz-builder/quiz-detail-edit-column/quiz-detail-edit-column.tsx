@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Select, Form, Empty, Checkbox, Popover } from "antd";
+import { Select, Form, Empty, Checkbox } from "antd";
 import { observer } from "mobx-react";
 import { StoreContext } from "~/mobx/store-context";
 import { QuizType } from "~/common/static-data";
@@ -22,6 +22,10 @@ const options = [
     value: QuizType.MULTIPLE_CHOICES,
     label: dataUtils.mapQuizLabel(QuizType.MULTIPLE_CHOICES),
   },
+  {
+    value: QuizType.SELECT_IN_THE_BLANKS,
+    label: dataUtils.mapQuizLabel(QuizType.SELECT_IN_THE_BLANKS),
+  },
 ];
 
 // Cột này để edit quiz lẻ
@@ -39,7 +43,7 @@ export const QuizDetailEditColumn: React.FC = observer(() => {
       case QuizType.MULTIPLE_CHOICES:
         return <MultipleChoicesForm />;
       default:
-        return <SingleChoiceForm />;
+        return null;
     }
   }
 
@@ -77,13 +81,7 @@ export const QuizDetailEditColumn: React.FC = observer(() => {
               </Select>
             </Form.Item>
 
-            <Popover
-              arrowContent
-              destroyTooltipOnHide
-              content="Nếu được đánh dấu, khi làm bài này thì kết quả luôn được tính là đúng"
-            >
-              <Checkbox>{"Không kiểm tra đúng sai"}</Checkbox>
-            </Popover>
+            <Checkbox>{"Không kiểm tra đúng sai"}</Checkbox>
           </Form>
           <hr />
           {getQuizFormComponent()}
