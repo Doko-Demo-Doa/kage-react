@@ -113,7 +113,7 @@ export class QuizListStore {
       )
         return;
       const target = newList[qi] as QuizSingleChoiceModel | QuizMultipleChoicesModel;
-      target.choices.push({ id: dataUtils.generateUid(), label: "" });
+      target.choices.push({ id: dataUtils.generateShortUid(), label: "" });
       newList[qi] = target;
       this.list = newList;
     }

@@ -9,6 +9,7 @@ import "~/routes/authen/builder/quiz-builder/quiz-builder-toolbar/quiz-builder-t
 
 export const QuizBuilderToolbar: React.FC = observer(() => {
   const store = useContext(StoreContext);
+  const { list } = store.quizListStore;
 
   return (
     <div className="quiz-builder-toolbar">
@@ -36,6 +37,10 @@ export const QuizBuilderToolbar: React.FC = observer(() => {
           danger
         >
           Quay lại
+        </Button>
+
+        <Button onClick={() => console.log(list.slice())} type="primary">
+          Log
         </Button>
       </Space>
     </div>
