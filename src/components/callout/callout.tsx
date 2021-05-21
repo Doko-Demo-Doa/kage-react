@@ -197,6 +197,8 @@ export const Calllout: React.FC<Props> = ({
     setLocalMaxHeight(newMaxHeight);
     setLocalMaxWidth(newMaxWidth);
 
+    console.log(localMaxWidth, localMaxHeight);
+
     onBoxResize?.({ width: newW, height: newH });
   };
 

@@ -20,6 +20,7 @@ build:
   stage: build
   script:
     - npm install
+    - npm run test
     - npm run electron:build-win
 
   # artifacts:

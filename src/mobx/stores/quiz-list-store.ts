@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { union } from "rambdax";
+import { uniq } from "rambdax";
 import { RootStore } from "~/mobx/root-store";
 import QuizModel from "~/mobx/models/quiz";
 import { QuizType } from "~/common/static-data";
@@ -71,7 +71,10 @@ export class QuizListStore {
       const newList = this.list.slice();
       if (newList[qi].type !== QuizType.MULTIPLE_CHOICES) return;
       const target = newList[qi] as QuizMultipleChoicesModel;
-      // target.correctIndexes = union([correctChoiceIndex]);
+      const corrects = newValue
+        ? uniq([...target.correctIndexes, correctChoiceIndex])
+        : target.correctIndexes.filter((n) => n !== correctChoiceIndex);
+      target.correctIndexes = [...corrects];
       newList[qi] = target;
       this.list = newList;
     }

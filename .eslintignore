@@ -7,3 +7,5 @@ vendor
 storybook-static
 vendor
 resources/vendor
+.coverage/
+coverage/
