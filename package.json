@@ -12,7 +12,7 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test",
+    "test": "craco test --watchAll=false",
     "test:coverage": "craco test --coverage",
     "eject": "react-scripts eject",
     "clean": "rimraf build release",

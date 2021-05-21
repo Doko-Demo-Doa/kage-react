@@ -1,4 +1,5 @@
 import { makeAutoObservable } from "mobx";
+import { union } from "rambdax";
 import { RootStore } from "~/mobx/root-store";
 import QuizModel from "~/mobx/models/quiz";
 import { QuizType } from "~/common/static-data";
@@ -59,6 +60,19 @@ export class QuizListStore {
       }
       newList[qi] = n;
 
+      this.list = newList;
+    }
+  }
+
+  // Only for multiple choice
+  setMultipleCorrectChoice(quizId: string, correctChoiceIndex: number, newValue: boolean) {
+    const qi = this.list.findIndex((n) => n.id === quizId);
+    if (qi !== -1) {
+      const newList = this.list.slice();
+      if (newList[qi].type !== QuizType.MULTIPLE_CHOICES) return;
+      const target = newList[qi] as QuizMultipleChoicesModel;
+      // target.correctIndexes = union([correctChoiceIndex]);
+      newList[qi] = target;
       this.list = newList;
     }
   }

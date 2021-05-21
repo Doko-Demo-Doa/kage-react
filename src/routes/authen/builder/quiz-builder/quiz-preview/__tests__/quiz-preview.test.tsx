@@ -1,10 +1,9 @@
 import { render } from "@testing-library/react";
 import { QuizPreview } from "../quiz-preview";
 
-test("it renders", () => {
+test.only("it renders", () => {
   const screen = render(<QuizPreview />);
-  screen.debug();
 
-  const textElem = screen.getByText("Quiz Intro");
+  const textElem = screen.getByRole("quiz-preview");
   expect(textElem).toBeInTheDocument();
 });

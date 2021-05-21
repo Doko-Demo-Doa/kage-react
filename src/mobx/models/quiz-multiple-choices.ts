@@ -16,7 +16,7 @@ export default class QuizMultipleChoicesModel extends QuizModel {
 
   constructor() {
     super();
-    this.type = QuizType.SINGLE_CHOICE;
+    this.type = QuizType.MULTIPLE_CHOICES;
     this.correctIndexes = [0];
     this.choices = [
       { id: dataUtils.generateUid(), label: "Lựa chọn 1" },
