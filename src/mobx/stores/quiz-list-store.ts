@@ -44,6 +44,7 @@ export class QuizListStore {
     }
   };
 
+  // All
   setQuizType(quizId: string, newType: QuizType) {
     const qi = this.list.findIndex((n) => n.id === quizId);
 
@@ -64,23 +65,27 @@ export class QuizListStore {
     }
   }
 
-  // Only for multiple choice
-  setMultipleCorrectChoice(quizId: string, correctChoiceIndex: number, newValue: boolean) {
+  /**
+   * Multiple choices
+   */
+  setMultipleCorrectChoice(quizId: string, choiceId: string, isCorrect: boolean) {
     const qi = this.list.findIndex((n) => n.id === quizId);
     if (qi !== -1) {
       const newList = this.list.slice();
       if (newList[qi].type !== QuizType.MULTIPLE_CHOICES) return;
       const target = newList[qi] as QuizMultipleChoicesModel;
-      const corrects = newValue
-        ? uniq([...target.correctIndexes, correctChoiceIndex])
-        : target.correctIndexes.filter((n) => n !== correctChoiceIndex);
-      target.correctIndexes = [...corrects];
+      const corrects = isCorrect
+        ? uniq([...target.correctIds, choiceId])
+        : target.correctIds.filter((n) => n !== choiceId);
+      target.correctIds = [...corrects];
       newList[qi] = target;
       this.list = newList;
     }
   }
 
-  // Only for single choice
+  /**
+   * Single choice
+   */
   setSingleCorrectChoice(quizId: string, correctChoiceIndex: number) {
     const qi = this.list.findIndex((n) => n.id === quizId);
     if (qi !== -1) {
@@ -92,39 +97,61 @@ export class QuizListStore {
       this.list = newList;
     }
   }
-
+  /**
+   * Single choice
+   * Multiple choices
+   */
   addNewChoice(quizId: string) {
     const qi = this.list.findIndex((n) => n.id === quizId);
     if (qi !== -1) {
       const newList = this.list.slice();
+      console.log(newList[qi].type);
 
-      if (newList[qi].type !== QuizType.SINGLE_CHOICE) return;
-      const target = newList[qi] as QuizSingleChoiceModel;
+      if (
+        newList[qi].type !== QuizType.SINGLE_CHOICE &&
+        newList[qi].type !== QuizType.MULTIPLE_CHOICES
+      )
+        return;
+      const target = newList[qi] as QuizSingleChoiceModel | QuizMultipleChoicesModel;
       target.choices.push({ id: dataUtils.generateUid(), label: "" });
       newList[qi] = target;
       this.list = newList;
     }
   }
-
+  /**
+   * Single choice
+   * Multiple choices
+   */
   editChoiceLabel(quizId: string, choiceIndex: number, newlabel: string) {
     const qi = this.list.findIndex((n) => n.id === quizId);
     if (qi !== -1) {
       const newList = this.list.slice();
-      if (newList[qi].type !== QuizType.SINGLE_CHOICE) return;
-      const target = newList[qi] as QuizSingleChoiceModel;
+      if (
+        newList[qi].type !== QuizType.SINGLE_CHOICE &&
+        newList[qi].type !== QuizType.MULTIPLE_CHOICES
+      )
+        return;
+      const target = newList[qi] as QuizSingleChoiceModel | QuizMultipleChoicesModel;
       target.choices[choiceIndex].label = newlabel;
       newList[qi] = target;
       this.list = newList;
     }
   }
-
+  /**
+   * Single choice
+   * Multiple choices
+   */
   removeChoice(quizId: string, choiceIndex: number) {
     const qi = this.list.findIndex((n) => n.id === quizId);
     if (qi !== -1) {
       const newList = this.list.slice();
 
-      if (newList[qi].type !== QuizType.SINGLE_CHOICE) return;
-      const target = newList[qi] as QuizSingleChoiceModel;
+      if (
+        newList[qi].type !== QuizType.SINGLE_CHOICE &&
+        newList[qi].type !== QuizType.MULTIPLE_CHOICES
+      )
+        return;
+      const target = newList[qi] as QuizSingleChoiceModel | QuizMultipleChoicesModel;
       target.choices.splice(choiceIndex, 1);
       newList[qi] = target;
       this.list = newList;

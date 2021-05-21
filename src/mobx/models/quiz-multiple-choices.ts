@@ -11,16 +11,16 @@ type Choice = {
 export default class QuizMultipleChoicesModel extends QuizModel {
   audioLink?: string;
   imageVideoLink?: string;
-  correctIndexes: number[];
+  correctIds: string[];
   choices: Choice[];
 
   constructor() {
     super();
     this.type = QuizType.MULTIPLE_CHOICES;
-    this.correctIndexes = [0];
+    this.correctIds = [];
     this.choices = [
-      { id: dataUtils.generateUid(), label: "Lựa chọn 1" },
-      { id: dataUtils.generateUid(), label: "Lựa chọn 2" },
+      { id: dataUtils.generateShortUid(), label: "Lựa chọn 1" },
+      { id: dataUtils.generateShortUid(), label: "Lựa chọn 2" },
     ];
   }
 }

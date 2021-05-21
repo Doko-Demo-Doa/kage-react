@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import { observer } from "mobx-react";
-import { Radio, Space } from "antd";
+import { Radio, Space, Checkbox } from "antd";
 import { StoreContext } from "~/mobx/store-context";
 import { formattingUtils } from "~/utils/utils-formatting";
 import { QuizType } from "~/common/static-data";
 import QuizSingleChoiceModel from "~/mobx/models/quiz-single-choice";
+import QuizMultipleChoicesModel from "~/mobx/models/quiz-multiple-choices";
 
 import "~/routes/authen/builder/quiz-builder/quiz-preview/quiz-preview.scss";
 
@@ -28,6 +29,18 @@ export const QuizPreview: React.FC = observer(() => {
             ))}
           </Space>
         </Radio.Group>
+      );
+    }
+    if (thisQuiz.type === QuizType.MULTIPLE_CHOICES) {
+      const q = thisQuiz as QuizMultipleChoicesModel;
+      return (
+        <Space direction="vertical">
+          {q.choices.map((n) => (
+            <Checkbox key={n.id} checked={q.correctIds.includes(n.id)}>
+              {n.label}
+            </Checkbox>
+          ))}
+        </Space>
       );
     }
     return null;

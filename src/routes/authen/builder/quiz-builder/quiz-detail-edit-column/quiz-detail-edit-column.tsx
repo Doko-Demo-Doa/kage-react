@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Select, Form, Empty } from "antd";
+import { Select, Form, Empty, Checkbox, Popover } from "antd";
 import { observer } from "mobx-react";
 import { StoreContext } from "~/mobx/store-context";
 import { QuizType } from "~/common/static-data";
@@ -76,6 +76,14 @@ export const QuizDetailEditColumn: React.FC = observer(() => {
                 ))}
               </Select>
             </Form.Item>
+
+            <Popover
+              arrowContent
+              destroyTooltipOnHide
+              content="Nếu được đánh dấu, khi làm bài này thì kết quả luôn được tính là đúng"
+            >
+              <Checkbox>{"Không kiểm tra đúng sai"}</Checkbox>
+            </Popover>
           </Form>
           <hr />
           {getQuizFormComponent()}

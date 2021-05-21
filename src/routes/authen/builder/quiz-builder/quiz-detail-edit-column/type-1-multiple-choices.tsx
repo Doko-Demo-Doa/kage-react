@@ -3,7 +3,7 @@ import { Form, Input, Checkbox, Button } from "antd";
 import { CloseCircleFilled, PlusOutlined } from "@ant-design/icons";
 import { observer } from "mobx-react";
 import { StoreContext } from "~/mobx/store-context";
-import QuizSingleChoiceModel from "~/mobx/models/quiz-single-choice";
+import QuizMultipleChoicesModel from "~/mobx/models/quiz-multiple-choices";
 import { Colors } from "~/common/colors";
 
 export const MultipleChoicesForm: React.FC = observer(() => {
@@ -12,12 +12,12 @@ export const MultipleChoicesForm: React.FC = observer(() => {
   const {
     list,
     setQuizTitle,
-    setSingleCorrectChoice,
+    setMultipleCorrectChoice,
     addNewChoice,
     removeChoice,
     editChoiceLabel,
   } = store.quizListStore;
-  const thisQuiz = list[selectedIndex] as QuizSingleChoiceModel;
+  const thisQuiz = list[selectedIndex] as QuizMultipleChoicesModel;
 
   const disableRemoval = thisQuiz.choices.length <= 2;
 
@@ -36,37 +36,42 @@ export const MultipleChoicesForm: React.FC = observer(() => {
           />
         </Form.Item>
 
-        {thisQuiz.choices.map((n, idx) => (
-          <Form.Item key={n.id}>
-            <div className="single-choice">
-              <Checkbox
-                checked={thisQuiz.correctIndex === idx}
-                onChange={() => setSingleCorrectChoice(thisQuiz.id, idx)}
-              />
-              <div className="separator" />
-              <Input
-                placeholder={`Lựa chọn ${idx + 1}`}
-                defaultValue={n.label}
-                onChange={(e) => editChoiceLabel(thisQuiz.id, idx, e.target.value)}
-              />
-              <div className="separator" />
-              <Button
-                type="text"
-                size="small"
-                disabled={disableRemoval}
-                onClick={() => removeChoice(thisQuiz.id, idx)}
-                icon={
-                  <CloseCircleFilled
-                    style={{
-                      color: Colors.PALE_RED,
-                      visibility: disableRemoval ? "hidden" : "visible",
-                    }}
-                  />
-                }
-              />
-            </div>
-          </Form.Item>
-        ))}
+        {thisQuiz.choices.map((n, idx) => {
+          const checked = thisQuiz.correctIds.includes(n.id);
+          return (
+            <Form.Item key={n.id}>
+              <div className="single-choice">
+                <Checkbox
+                  checked={checked}
+                  onChange={() => {
+                    setMultipleCorrectChoice(thisQuiz.id, n.id, !checked);
+                  }}
+                />
+                <div className="separator" />
+                <Input
+                  placeholder={`Lựa chọn ${idx + 1}`}
+                  defaultValue={n.label}
+                  onChange={(e) => editChoiceLabel(thisQuiz.id, idx, e.target.value)}
+                />
+                <div className="separator" />
+                <Button
+                  type="text"
+                  size="small"
+                  disabled={disableRemoval}
+                  onClick={() => removeChoice(thisQuiz.id, idx)}
+                  icon={
+                    <CloseCircleFilled
+                      style={{
+                        color: Colors.PALE_RED,
+                        visibility: disableRemoval ? "hidden" : "visible",
+                      }}
+                    />
+                  }
+                />
+              </div>
+            </Form.Item>
+          );
+        })}
 
         {thisQuiz.choices.length < 4 && (
           <Button
