@@ -46,17 +46,25 @@ export const QuizPreview: React.FC = observer(() => {
       );
     }
     if (thisQuiz.type === QuizType.SELECT_IN_THE_BLANKS) {
-      const q = thisQuiz as QuizMultipleChoicesModel;
       return (
         <div className="quiz-select-in-blanks-preview">
           {"今日なにを食べる"}
-          <Select className="choice-selector">
+          <Select className="choice-selector" dropdownStyle={{ minWidth: "max-content" }}>
             <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy</Option>
+            <Option value="lucy">
+              JackJackJackJackJack
+              <ruby>
+                漢<rt>かん</rt>字<rt>じ</rt>
+              </ruby>
+            </Option>
           </Select>
           今日なにを食べる
           <Select className="choice-selector">
-            <Option value="jack">Jack</Option>
+            <Option value="jack">
+              <ruby>
+                漢<rt>かん</rt>字<rt>じ</rt>
+              </ruby>
+            </Option>
             <Option value="lucy">Lucy</Option>
           </Select>
           今日なにを食べる 今日なにを食べる
@@ -65,6 +73,7 @@ export const QuizPreview: React.FC = observer(() => {
             <Option value="lucy">Lucy</Option>
           </Select>
           今日なにを食べる
+          <div>{formattingUtils.furiganaToJSX(thisQuiz.note)}</div>
         </div>
       );
     }

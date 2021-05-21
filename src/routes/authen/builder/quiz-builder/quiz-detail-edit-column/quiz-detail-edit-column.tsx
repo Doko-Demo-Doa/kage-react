@@ -8,6 +8,7 @@ import { uiUtils } from "~/utils/utils-ui";
 
 import { SingleChoiceForm } from "~/routes/authen/builder/quiz-builder/quiz-detail-edit-column/type-0-single-choice";
 import { MultipleChoicesForm } from "~/routes/authen/builder/quiz-builder/quiz-detail-edit-column/type-1-multiple-choices";
+import { SelectInBlanksForm } from "~/routes/authen/builder/quiz-builder/quiz-detail-edit-column/type-2-select-in-blanks";
 
 import "~/routes/authen/builder/quiz-builder/quiz-detail-edit-column/quiz-edit-form.scss";
 
@@ -42,6 +43,8 @@ export const QuizDetailEditColumn: React.FC = observer(() => {
         return <SingleChoiceForm />;
       case QuizType.MULTIPLE_CHOICES:
         return <MultipleChoicesForm />;
+      case QuizType.SELECT_IN_THE_BLANKS:
+        return <SelectInBlanksForm />;
       default:
         return null;
     }
