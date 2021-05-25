@@ -7,7 +7,7 @@ import QuizSelectInBlanksModel from "~/mobx/models/quiz-select-in-blanks";
 export const SelectInBlanksForm: React.FC = observer(() => {
   const store = useContext(StoreContext);
   const { selectedIndex } = store.quizDeckStore;
-  const { list, setQuizTitle, setQuizNote } = store.quizListStore;
+  const { list, setQuizNote } = store.quizListStore;
   const thisQuiz = list[selectedIndex] as QuizSelectInBlanksModel;
 
   return (
@@ -15,7 +15,7 @@ export const SelectInBlanksForm: React.FC = observer(() => {
       <Form className="quiz-edit-form" layout="vertical">
         <Form.Item label="Nội dung câu hỏi">
           <Input.TextArea
-            maxLength={60}
+            maxLength={1000}
             defaultValue={thisQuiz?.note}
             onChange={(e) => setQuizNote(thisQuiz.id, e.target.value)}
             autoSize={{

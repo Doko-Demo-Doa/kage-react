@@ -9,6 +9,7 @@ export default class QuizModel {
   title?: string;
   note?: string;
   score: number;
+  autoAudit?: boolean;
 
   constructor() {
     this.id = dataUtils.generateUid();
@@ -17,5 +18,6 @@ export default class QuizModel {
     this.title = "";
     this.note = "";
     this.score = 0;
+    this.autoAudit = false;
   }
 }
