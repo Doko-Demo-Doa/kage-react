@@ -6,6 +6,7 @@ import { formattingUtils } from "~/utils/utils-formatting";
 import { QuizType } from "~/common/static-data";
 import QuizSingleChoiceModel from "~/mobx/models/quiz-single-choice";
 import QuizMultipleChoicesModel from "~/mobx/models/quiz-multiple-choices";
+import QuizSelectInBlanksModel from "~/mobx/models/quiz-select-in-blanks";
 
 import "~/routes/authen/builder/quiz-builder/quiz-preview/quiz-preview.scss";
 
@@ -14,7 +15,7 @@ const { Option } = Select;
 export const QuizPreview: React.FC = observer(() => {
   const store = useContext(StoreContext);
   const { name, instruction, selectedIndex } = store.quizDeckStore;
-  const { list } = store.quizListStore;
+  const { list, mapMatchers } = store.quizListStore;
 
   const thisQuiz = list[selectedIndex];
 
@@ -46,11 +47,14 @@ export const QuizPreview: React.FC = observer(() => {
       );
     }
     if (thisQuiz.type === QuizType.SELECT_IN_THE_BLANKS) {
+      // const q = thisQuiz as QuizSelectInBlanksModel;
+
       return (
         <div className="quiz-select-in-blanks-preview">
           <div>
-            {formattingUtils.replaceData(thisQuiz.note ?? "").with(
-              (key) => (
+            {formattingUtils
+              .replaceData(thisQuiz.note ?? "")
+              .with((key) => (
                 <Select key={key} className="choice-selector">
                   <Option value="jack">
                     <ruby>
@@ -59,9 +63,16 @@ export const QuizPreview: React.FC = observer(() => {
                   </Option>
                   <Option value="lucy">Lucy</Option>
                 </Select>
-              ),
-              true
-            )}
+              ))
+              .map((elem: string | React.ReactNode) => {
+                if (React.isValidElement(elem)) {
+                  mapMatchers(thisQuiz.id, [elem.key?.toString() || ""]);
+                  return React.cloneElement(elem);
+                }
+                if (typeof elem === "string") {
+                  return formattingUtils.htmlToJSX(elem);
+                }
+              })}
           </div>
         </div>
       );

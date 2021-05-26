@@ -2,6 +2,7 @@ import reactStringReplace from "react-string-replace";
 import parse, { HTMLReactParserOptions } from "html-react-parser";
 import { DeltaOperation } from "quill";
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
+import { dataUtils } from "./utils-data";
 
 function replaceString(str: string, strSub: string, strReplace: string) {
   const result = str.replace(strSub, strReplace);
@@ -45,9 +46,10 @@ export const formattingUtils = {
     const newData = input;
 
     return {
-      with: (data: (key: string | number) => JSX.Element, normalizeFurigana?: boolean) => {
+      with: (data: (key: string | number) => JSX.Element) => {
         return reactStringReplace(newData, "||", (match, i) => {
-          return data(i);
+          console.info(i);
+          return data(dataUtils.generateShortUid());
         });
       },
     };

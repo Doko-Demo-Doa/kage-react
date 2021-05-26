@@ -86,3 +86,14 @@ export type MediaReturnType = {
 };
 
 export type AppEventType = "SWITCH_TAB";
+
+export type Choice = {
+  id: string;
+  label: string;
+};
+
+export type BlankMatcher = {
+  id: string;
+  label: string;
+  isCorrect: boolean;
+};
