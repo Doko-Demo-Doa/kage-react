@@ -49,7 +49,7 @@ export const formattingUtils = {
       with: (data: (key: string, pos: number) => JSX.Element) => {
         const rxp = /\[(.*?)\]/g;
         return reactStringReplace(newData, rxp, (match, i) => {
-          return data(dataUtils.generateShortUid(), i);
+          return data(match, i);
         });
       },
     };

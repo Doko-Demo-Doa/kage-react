@@ -53,9 +53,9 @@ export const QuizPreview: React.FC = observer(() => {
           <div>
             {formattingUtils
               .replaceData(thisQuiz.note ?? "")
-              .with((key, position) => (
-                <EditableSelectableDropdown key={key} id={key} position={position} />
-              ))
+              .with((key) => {
+                return <EditableSelectableDropdown key={key} id={key} />;
+              })
               .map((elem: string | React.ReactNode) => {
                 if (React.isValidElement(elem)) {
                   return React.cloneElement(elem);

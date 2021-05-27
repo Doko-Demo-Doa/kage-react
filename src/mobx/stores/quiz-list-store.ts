@@ -46,35 +46,6 @@ export class QuizListStore {
     }
   };
 
-  // - Select in blanks
-  setQuizNote = (quizId: string, newNote: string) => {
-    const qi = this.list.findIndex((n) => n.id === quizId);
-    if (qi !== -1) {
-      const newList = this.list.slice() as QuizSelectInBlanksModel[];
-      newList[qi].note = newNote;
-
-      // const rxp = /\[(.*?)\]/g;
-      // const newMatchers = newNote.match(rxp) || [];
-      // newList[qi].matchers = newMatchers.map(() => ({
-      //   id: dataUtils.generateShortUid(),
-      //   isCorrect: false,
-      //   label: "",
-      //   choices: [],
-      // }));
-      this.list = newList;
-    }
-  };
-
-  addNewSelectInBlankDropdown(quizId: string) {
-    const qi = this.list.findIndex((n) => n.id === quizId);
-    if (qi !== -1) {
-      const newList = this.list.slice() as QuizSelectInBlanksModel[];
-      newList[qi].note += `[${dataUtils.generateShortUid()}]`;
-
-      this.list = newList;
-    }
-  }
-
   // All
   setQuizType(quizId: string, newType: QuizType) {
     const qi = this.list.findIndex((n) => n.id === quizId);
@@ -184,6 +155,45 @@ export class QuizListStore {
       const target = newList[qi] as QuizSingleChoiceModel | QuizMultipleChoicesModel;
       target.choices.splice(choiceIndex, 1);
       newList[qi] = target;
+      this.list = newList;
+    }
+  }
+
+  // - Select in blanks
+  setQuizNote = (quizId: string, newNote: string) => {
+    const qi = this.list.findIndex((n) => n.id === quizId);
+    if (qi !== -1) {
+      const newList = this.list.slice() as QuizSelectInBlanksModel[];
+      newList[qi].note = newNote;
+
+      const rxp = /\[(.*?)\]/g;
+      const newMatchers = newNote.match(rxp) || [];
+      newList[qi].matchers = newMatchers.map((subToken) => ({
+        id: subToken.replace("[", "").replace("]", ""),
+        isCorrect: false,
+        label: "",
+        choices: dataUtils.generateInitQuizChoices(),
+      }));
+      this.list = newList;
+    }
+  };
+
+  // - Select in blanks
+  addNewSelectInBlankDropdown(quizId: string) {
+    const qi = this.list.findIndex((n) => n.id === quizId);
+    if (qi !== -1) {
+      const newList = this.list.slice() as QuizSelectInBlanksModel[];
+      newList[qi].note += `[${dataUtils.generateShortUid()}]`;
+
+      const rxp = /\[(.*?)\]/g;
+      const newMatchers = newList[qi].note?.match(rxp) || [];
+      newList[qi].matchers = newMatchers.map((subToken) => ({
+        id: subToken.replace("[", "").replace("]", ""),
+        isCorrect: false,
+        label: "",
+        choices: dataUtils.generateInitQuizChoices(),
+      }));
+
       this.list = newList;
     }
   }

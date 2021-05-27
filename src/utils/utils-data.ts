@@ -160,6 +160,10 @@ function singleSlideConstructor(slide: SlideType) {
     </section>`);
 }
 
+function generateShortUid() {
+  return shortUid.generate().toString();
+}
+
 export const dataUtils = {
   convertToMutableData: (inputData: Record<string, any> | Array<any>) => {
     return JSON.parse(JSON.stringify(inputData));
@@ -233,8 +237,12 @@ export const dataUtils = {
   generateUid: () => {
     return v4();
   },
-  generateShortUid: () => {
-    return shortUid.generate().toString();
+  generateShortUid,
+  generateInitQuizChoices: () => {
+    return [
+      { id: generateShortUid(), label: "Lựa chọn 1" },
+      { id: generateShortUid(), label: "Lựa chọn 2" },
+    ];
   },
   mapQuizLabel: (type: QuizType) => {
     if (type === QuizType.SINGLE_CHOICE) {
