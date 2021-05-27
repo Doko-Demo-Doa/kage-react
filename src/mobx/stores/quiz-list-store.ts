@@ -1,10 +1,9 @@
 import { makeAutoObservable } from "mobx";
-import { uniq, intersection } from "rambdax";
+import { uniq } from "rambdax";
 import { RootStore } from "~/mobx/root-store";
 import QuizModel from "~/mobx/models/quiz";
 import { QuizType } from "~/common/static-data";
 import { dataUtils } from "~/utils/utils-data";
-import { Choice } from "~/typings/types";
 
 import QuizSingleChoiceModel from "~/mobx/models/quiz-single-choice";
 import QuizMultipleChoicesModel from "~/mobx/models/quiz-multiple-choices";
@@ -47,11 +46,20 @@ export class QuizListStore {
     }
   };
 
+  // - Select in blanks
   setQuizNote = (quizId: string, newNote: string) => {
     const qi = this.list.findIndex((n) => n.id === quizId);
     if (qi !== -1) {
-      const newList = this.list.slice();
+      const newList = this.list.slice() as QuizSelectInBlanksModel[];
       newList[qi].note = newNote;
+
+      const newMatchers = newNote.match(/\|\|/g) || [];
+      newList[qi].matchers = newMatchers.map(() => ({
+        id: dataUtils.generateShortUid(),
+        isCorrect: false,
+        label: "",
+        choices: [],
+      }));
       this.list = newList;
     }
   };
@@ -128,30 +136,7 @@ export class QuizListStore {
       this.list = newList;
     }
   }
-  /**
-   * Select in blanks
-   */
-  mapMatchers(quizId: string, keys: string[]) {
-    const qi = this.list.findIndex((n) => n.id === quizId);
-    if (qi !== -1) {
-      const newList = this.list.slice();
-      if (newList[qi].type !== QuizType.SELECT_IN_THE_BLANKS) return;
 
-      const target = newList[qi] as QuizSelectInBlanksModel;
-
-      const matcherList = intersection(
-        target.matchers,
-        keys.map((n) => ({ id: n, label: "", isCorrect: false }))
-      );
-
-      console.log(target.matchers);
-      console.log(keys.map((n) => ({ id: n, label: "", isCorrect: false })));
-
-      target.matchers = [...matcherList];
-      newList[qi] = target;
-      this.list = newList;
-    }
-  }
   /**
    * Single choice
    * Multiple choices

@@ -1,0 +1,14 @@
+.editable-selectable-dropdown-menu {
+  .inner {
+    display: flex;
+    align-items: center;
+
+    .separator {
+      width: 1rem;
+    }
+  }
+
+  .add-btn {
+    margin: 12px 14px;
+  }
+}

@@ -96,4 +96,5 @@ export type BlankMatcher = {
   id: string;
   label: string;
   isCorrect: boolean;
+  choices: Choice[];
 };

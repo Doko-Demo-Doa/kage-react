@@ -6,16 +6,15 @@ import { formattingUtils } from "~/utils/utils-formatting";
 import { QuizType } from "~/common/static-data";
 import QuizSingleChoiceModel from "~/mobx/models/quiz-single-choice";
 import QuizMultipleChoicesModel from "~/mobx/models/quiz-multiple-choices";
-import QuizSelectInBlanksModel from "~/mobx/models/quiz-select-in-blanks";
+
+import { EditableSelectableDropdown } from "~/components/editable-selectable-dropdown/editable-selectable-dropdown";
 
 import "~/routes/authen/builder/quiz-builder/quiz-preview/quiz-preview.scss";
-
-const { Option } = Select;
 
 export const QuizPreview: React.FC = observer(() => {
   const store = useContext(StoreContext);
   const { name, instruction, selectedIndex } = store.quizDeckStore;
-  const { list, mapMatchers } = store.quizListStore;
+  const { list } = store.quizListStore;
 
   const thisQuiz = list[selectedIndex];
 
@@ -54,19 +53,9 @@ export const QuizPreview: React.FC = observer(() => {
           <div>
             {formattingUtils
               .replaceData(thisQuiz.note ?? "")
-              .with((key) => (
-                <Select key={key} className="choice-selector">
-                  <Option value="jack">
-                    <ruby>
-                      漢<rt>かん</rt>字<rt>じ</rt>
-                    </ruby>
-                  </Option>
-                  <Option value="lucy">Lucy</Option>
-                </Select>
-              ))
+              .with((key) => <EditableSelectableDropdown key={key} id={key} />)
               .map((elem: string | React.ReactNode) => {
                 if (React.isValidElement(elem)) {
-                  mapMatchers(thisQuiz.id, [elem.key?.toString() || ""]);
                   return React.cloneElement(elem);
                 }
                 if (typeof elem === "string") {
