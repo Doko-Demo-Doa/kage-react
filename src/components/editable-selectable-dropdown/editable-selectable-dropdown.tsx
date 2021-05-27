@@ -6,7 +6,8 @@ import { Colors } from "~/common/colors";
 import "~/components/editable-selectable-dropdown/editable-selectable-dropdown.scss";
 
 interface Props {
-  id: string | number;
+  id: string;
+  position: number;
   onChangeValue?: (idx: number, newValue: string) => void | undefined;
   onRemove?: (idx: number) => void | undefined;
   onSelectCorrectAnswer?: (idx: number) => void | undefined;
@@ -56,7 +57,7 @@ export const EditableSelectableDropdown: React.FC<Props> = () => {
           />
         </div>
       </Menu.Item>
-      <Menu.Item key="3">Clicking me will close the menu</Menu.Item>
+      <Menu.Item disabled>Clicking me will close the menu</Menu.Item>
 
       <Button className="add-btn">Add New option</Button>
     </Menu>

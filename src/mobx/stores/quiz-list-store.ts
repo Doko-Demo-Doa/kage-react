@@ -53,16 +53,27 @@ export class QuizListStore {
       const newList = this.list.slice() as QuizSelectInBlanksModel[];
       newList[qi].note = newNote;
 
-      const newMatchers = newNote.match(/\|\|/g) || [];
-      newList[qi].matchers = newMatchers.map(() => ({
-        id: dataUtils.generateShortUid(),
-        isCorrect: false,
-        label: "",
-        choices: [],
-      }));
+      // const rxp = /\[(.*?)\]/g;
+      // const newMatchers = newNote.match(rxp) || [];
+      // newList[qi].matchers = newMatchers.map(() => ({
+      //   id: dataUtils.generateShortUid(),
+      //   isCorrect: false,
+      //   label: "",
+      //   choices: [],
+      // }));
       this.list = newList;
     }
   };
+
+  addNewSelectInBlankDropdown(quizId: string) {
+    const qi = this.list.findIndex((n) => n.id === quizId);
+    if (qi !== -1) {
+      const newList = this.list.slice() as QuizSelectInBlanksModel[];
+      newList[qi].note += `[${dataUtils.generateShortUid()}]`;
+
+      this.list = newList;
+    }
+  }
 
   // All
   setQuizType(quizId: string, newType: QuizType) {

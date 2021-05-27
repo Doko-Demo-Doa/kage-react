@@ -46,10 +46,10 @@ export const formattingUtils = {
     const newData = input;
 
     return {
-      with: (data: (key: string | number) => JSX.Element) => {
-        return reactStringReplace(newData, "||", (match, i) => {
-          console.info(i);
-          return data(dataUtils.generateShortUid());
+      with: (data: (key: string, pos: number) => JSX.Element) => {
+        const rxp = /\[(.*?)\]/g;
+        return reactStringReplace(newData, rxp, (match, i) => {
+          return data(dataUtils.generateShortUid(), i);
         });
       },
     };

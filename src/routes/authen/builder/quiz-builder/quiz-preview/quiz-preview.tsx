@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { observer } from "mobx-react";
-import { Radio, Space, Checkbox, Select } from "antd";
+import { Radio, Space, Checkbox } from "antd";
 import { StoreContext } from "~/mobx/store-context";
 import { formattingUtils } from "~/utils/utils-formatting";
 import { QuizType } from "~/common/static-data";
@@ -53,7 +53,9 @@ export const QuizPreview: React.FC = observer(() => {
           <div>
             {formattingUtils
               .replaceData(thisQuiz.note ?? "")
-              .with((key) => <EditableSelectableDropdown key={key} id={key} />)
+              .with((key, position) => (
+                <EditableSelectableDropdown key={key} id={key} position={position} />
+              ))
               .map((elem: string | React.ReactNode) => {
                 if (React.isValidElement(elem)) {
                   return React.cloneElement(elem);

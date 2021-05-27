@@ -234,7 +234,7 @@ export const dataUtils = {
     return v4();
   },
   generateShortUid: () => {
-    return shortUid.generate();
+    return shortUid.generate().toString();
   },
   mapQuizLabel: (type: QuizType) => {
     if (type === QuizType.SINGLE_CHOICE) {
