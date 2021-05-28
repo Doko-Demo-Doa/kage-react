@@ -17,7 +17,7 @@ export const EditableSelectableDropdown: React.FC<Props> = observer(({ id }) => 
   const [visible, setVisible] = useState(false);
 
   const store = useContext(StoreContext);
-  const { name, instruction, selectedIndex } = store.quizDeckStore;
+  const { selectedIndex } = store.quizDeckStore;
   const {
     list,
     chooseCorrectMatcher,

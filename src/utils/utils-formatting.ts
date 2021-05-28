@@ -2,7 +2,6 @@ import reactStringReplace from "react-string-replace";
 import parse, { HTMLReactParserOptions } from "html-react-parser";
 import { DeltaOperation } from "quill";
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
-import { dataUtils } from "./utils-data";
 
 function replaceString(str: string, strSub: string, strReplace: string) {
   const result = str.replace(strSub, strReplace);
