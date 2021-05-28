@@ -9,7 +9,8 @@ import { rootStore } from "~/mobx/root-store";
 
 import "react-perfect-scrollbar/dist/css/styles.css";
 import "antd/dist/antd.css";
-import "./app.scss";
+
+import "~/app.scss";
 
 const AppRouter = ({ children }: { children: React.ReactElement }): React.ReactElement =>
   isElectron() ? <HashRouter>{children}</HashRouter> : <BrowserRouter>{children}</BrowserRouter>;

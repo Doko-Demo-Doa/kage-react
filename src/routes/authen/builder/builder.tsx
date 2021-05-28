@@ -3,6 +3,8 @@ import { Tabs } from "antd";
 import { HomeOutlined, FileOutlined, SettingOutlined } from "@ant-design/icons";
 import { SlideBuilder } from "~/routes/authen/builder/slide-builder/slide-builder";
 import { QuizBuilder } from "~/routes/authen/builder/quiz-builder/quiz-builder";
+import { SettingsRoute } from "~/routes/authen/settings/settings-route";
+
 import { EventBus } from "~/services/events-helper";
 
 const { TabPane } = Tabs;
@@ -62,9 +64,7 @@ export function Builder() {
           }
           key="2"
         >
-          <p>Content of Tab Pane 3</p>
-          <p>Content of Tab Pane 3</p>
-          <p>Content of Tab Pane 3</p>
+          <SettingsRoute />
         </TabPane>
       </Tabs>
     </div>

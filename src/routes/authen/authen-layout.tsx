@@ -5,10 +5,10 @@ import "./authen-layout.scss";
 
 type AuthenLayoutProps = {
   component: React.ReactElement | React.ReactElement[];
-  title: string;
-  subTitle: string;
-  tags: React.ReactElement | React.ReactElement[];
-  extra: React.ReactNode;
+  title?: string;
+  subTitle?: string;
+  tags?: React.ReactElement | React.ReactElement[];
+  extra?: React.ReactNode;
   headerClassName?: string;
 };
 
