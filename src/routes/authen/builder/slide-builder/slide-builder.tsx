@@ -16,7 +16,7 @@ export const SlideBuilder: React.FC = () => {
         <SlideEntities />
       </div>
 
-      <div className="slide-builder-bottom">Status</div>
+      <div className="slide-builder-bottom">Status: 1.0.2</div>
     </div>
   );
 };

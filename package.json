@@ -1,6 +1,6 @@
 {
   "name": "dora-kage",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "author": "WabiSabi",
   "license": "Commercial",
   "homepage": "./",
@@ -23,6 +23,7 @@
     "electron:build-win": "cross-env WEBPACK_TARGET=electron npm run build && tsc -p electron && electron-builder -w",
     "electron:build-mac": "cross-env WEBPACK_TARGET=electron npm run build && tsc -p electron && electron-builder -m",
     "electron:build-linux": "cross-env WEBPACK_TARGET=electron npm run build && tsc -p electron && electron-builder -l",
+    "electron:deploy-mac": "cross-env WEBPACK_TARGET=electron npm run build && tsc -p electron && electron-builder build --mac --publish always",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
   },
@@ -83,7 +84,7 @@
     "@types/electron-devtools-installer": "2.2.0",
     "@types/fluent-ffmpeg": "2.1.17",
     "@types/jest": "26.0.23",
-    "@types/node": "15.6.1",
+    "@types/node": "14.17.1",
     "@types/pretty": "2.0.0",
     "@types/react": "17.0.8",
     "@types/react-beautiful-dnd": "13.0.0",
@@ -107,7 +108,7 @@
     "cross-env": "7.0.3",
     "dayjs": "1.10.5",
     "electron": "13.0.1",
-    "electron-builder": "22.11.1",
+    "electron-builder": "22.10.5",
     "electronmon": "2.0.1",
     "eslint-config-react-app": "6.0.0",
     "eslint-import-resolver-typescript": "2.4.0",

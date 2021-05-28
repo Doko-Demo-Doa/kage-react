@@ -1,5 +1,5 @@
 productName: "dora-kage"
-artifactName: "kage-${os}.${ext}"
+artifactName: "kage-${os}-${version}.${ext}"
 appId: "appId"
 copyright: "Copyright @ 2021"
 extends: null
@@ -39,3 +39,6 @@ nsis:
 directories:
   buildResources: "resources"
   output: "release"
+
+publish:
+  provider: github

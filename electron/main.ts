@@ -1,5 +1,5 @@
-/* eslint-disable no-console */
 import { app, protocol, BrowserWindow } from "electron";
+import { autoUpdater } from "electron-updater";
 import path from "path";
 import fs from "fs";
 import isDev from "electron-is-dev";
@@ -40,6 +40,10 @@ function createWindow() {
 
   win.on("closed", () => {
     win = null;
+  });
+
+  win.once("ready-to-show", () => {
+    autoUpdater.checkForUpdatesAndNotify();
   });
 
   app.whenReady().then(() => {
@@ -103,3 +107,10 @@ if (isDev) {
     });
   }
 }
+
+autoUpdater.on("update-available", () => {
+  win.webContents.send("update_available");
+});
+autoUpdater.on("update-downloaded", () => {
+  win.webContents.send("update_downloaded");
+});

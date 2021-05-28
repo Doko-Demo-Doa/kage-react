@@ -38,3 +38,6 @@ storybook-static/
 .yarn/
 .yarnrc.*
 .pnp.js
+
+docs/
+deploy.sh

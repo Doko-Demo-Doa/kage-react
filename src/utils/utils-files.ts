@@ -136,10 +136,20 @@ export const fileUtils = {
       fs.mkdirSync(quizDir);
     }
 
+    let resourcePath = "";
+
     // Copy đống file từ extra vào cache
-    const vendorPath = path.join(path.resolve("./"), "extra", "vendor");
-    const destVendor = vendorDir;
-    fs.copySync(vendorPath, destVendor);
+    if (process.env.NODE_ENV !== "production") {
+      // Copy từ folder trong project ra. Nằm ở extra/vendor nếu là dev
+      resourcePath = path.join(path.resolve("./"), "extra", "vendor");
+    } else {
+      // Nếu là release thì nó nằm ở dora-extra. Tham khảo file electron-builder.yml
+      resourcePath = path.dirname(__dirname, "dora-extra");
+    }
+
+    const destVendor = path.join(vendorDir);
+
+    fs.copySync(resourcePath, destVendor);
     return remote.app.getPath("cache");
   },
   getCacheDirectory,
