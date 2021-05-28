@@ -1,13 +1,6 @@
 import React from "react";
 import { Menu } from "antd";
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
+import { UserOutlined, UploadOutlined, SettingOutlined } from "@ant-design/icons";
 
 import "~/routes/authen/settings/settings-route.scss";
 
