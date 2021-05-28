@@ -11,6 +11,8 @@ $radio-size: 60px;
   user-select: text;
   position: relative;
   font-size: 1.2rem;
+  white-space: break-spaces;
+  word-break: break-word;
 
   .quiz-intro {
     min-height: 360px;

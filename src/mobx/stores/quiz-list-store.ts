@@ -1,5 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { uniq } from "rambdax";
+import dayjs from "dayjs";
 import { RootStore } from "~/mobx/root-store";
 import QuizModel from "~/mobx/models/quiz";
 import { QuizType } from "~/common/static-data";
@@ -170,7 +171,7 @@ export class QuizListStore {
       const newMatchers = newNote.match(rxp) || [];
       newList[qi].matchers = newMatchers.map((subToken) => ({
         id: subToken.replace("[", "").replace("]", ""),
-        isCorrect: false,
+        correctChoice: "",
         label: "",
         choices: dataUtils.generateInitQuizChoices(),
       }));
@@ -179,22 +180,86 @@ export class QuizListStore {
   };
 
   // - Select in blanks
+  // Thêm 1 ô quiz trong dòng câu.
   addNewSelectInBlankDropdown(quizId: string) {
     const qi = this.list.findIndex((n) => n.id === quizId);
     if (qi !== -1) {
       const newList = this.list.slice() as QuizSelectInBlanksModel[];
-      newList[qi].note += `[${dataUtils.generateShortUid()}]`;
+      newList[qi].note += `[${dayjs().unix()}]`;
 
       const rxp = /\[(.*?)\]/g;
       const newMatchers = newList[qi].note?.match(rxp) || [];
       newList[qi].matchers = newMatchers.map((subToken) => ({
         id: subToken.replace("[", "").replace("]", ""),
-        isCorrect: false,
+        correctChoice: "",
         label: "",
         choices: dataUtils.generateInitQuizChoices(),
       }));
 
       this.list = newList;
+    }
+  }
+
+  /**
+   * - Select in blanks
+   */
+  addNewOptionInDropdown(quizId: string, matcherId: string | undefined) {
+    const qi = this.list.findIndex((n) => n.id === quizId);
+    if (qi !== -1) {
+      const newList = this.list.slice() as QuizSelectInBlanksModel[];
+      const matcherIndex = newList[qi].matchers.findIndex((n) => n.id === matcherId);
+      if (matcherIndex !== -1) {
+        newList[qi].matchers[matcherIndex].choices.push({
+          id: dayjs().unix().toString(),
+          label: "",
+        });
+      }
+
+      this.list = newList;
+    }
+  }
+
+  /**
+   * - Select in blanks
+   * Choose correct choice in matcher
+   */
+  chooseCorrectMatcher(quizId: string, matcherId: string | undefined, choiceId: string) {
+    const qi = this.list.findIndex((n) => n.id === quizId);
+    if (qi !== -1) {
+      const newList = this.list.slice() as QuizSelectInBlanksModel[];
+      const matcherIndex = newList[qi].matchers.findIndex((n) => n.id === matcherId);
+      if (matcherIndex !== -1) {
+        newList[qi].matchers[matcherIndex].correctChoice = choiceId;
+      }
+
+      this.list = newList;
+    }
+  }
+
+  /**
+   * - Select in blanks
+   */
+  changeChoiceLabel(
+    quizId: string,
+    matcherId: string | undefined,
+    choiceId: string,
+    newLabel: string
+  ) {
+    const qi = this.list.findIndex((n) => n.id === quizId);
+    if (qi !== -1) {
+      const newList = this.list.slice() as QuizSelectInBlanksModel[];
+      const matcherIndex = newList[qi].matchers.findIndex((n) => n.id === matcherId);
+      if (matcherIndex !== -1) {
+        const choiceIndex = newList[qi].matchers[matcherIndex].choices.findIndex(
+          (n) => n.id === choiceId
+        );
+        if (choiceIndex !== -1) {
+          newList[qi].matchers[matcherIndex].choices[choiceIndex].label = newLabel;
+        }
+      }
+
+      this.list = newList;
+      console.log(this.list);
     }
   }
 }

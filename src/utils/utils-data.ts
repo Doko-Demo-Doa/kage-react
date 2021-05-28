@@ -1,5 +1,6 @@
 import fs from "fs";
 import pretty from "pretty";
+import dayjs from "dayjs";
 import { stripIndent } from "common-tags";
 import { v4 } from "uuid";
 import shortUid from "short-uuid";
@@ -240,8 +241,8 @@ export const dataUtils = {
   generateShortUid,
   generateInitQuizChoices: () => {
     return [
-      { id: generateShortUid(), label: "Lựa chọn 1" },
-      { id: generateShortUid(), label: "Lựa chọn 2" },
+      { id: dayjs().unix().toString(), label: "Lựa chọn 1" },
+      { id: (dayjs().unix() + 1).toString(), label: "Lựa chọn 2" },
     ];
   },
   mapQuizLabel: (type: QuizType) => {
