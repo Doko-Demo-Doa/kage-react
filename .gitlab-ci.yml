@@ -7,6 +7,8 @@ image: node:14.16.1-alpine
     - windows-1809
 
 stages:
+  - prepare
+  - test
   - build
 
 before_script:
@@ -14,13 +16,25 @@ before_script:
   - echo ${time}
   - echo "started by ${GITLAB_USER_NAME}"
 
+prepare:
+  extends:
+    - .shared_windows_runners
+  stage: prepare
+  script:
+    - npm install
+
+test:
+  extends:
+    - .shared_windows_runners
+  stage: test
+  script:
+    - npm run test
+
 build:
   extends:
     - .shared_windows_runners
   stage: build
   script:
-    - npm install
-    - npm run test
     - npm run electron:build-win
 
   # artifacts:
