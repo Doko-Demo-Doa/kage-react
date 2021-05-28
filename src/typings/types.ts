@@ -98,3 +98,5 @@ export type BlankMatcher = {
   correctChoice: string;
   choices: Choice[];
 };
+
+export type SettingKey = "auth" | "profile" | "upload" | "general";

@@ -1,27 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { Menu } from "antd";
 import { UserOutlined, UploadOutlined, SettingOutlined } from "@ant-design/icons";
+import { SettingDetail } from "~/routes/authen/settings/detail/setting-detail";
+import { SettingKey } from "~/typings/types";
 
 import "~/routes/authen/settings/settings-route.scss";
 
 export const SettingsRoute: React.FC = () => {
+  const [menuKey, setMenuKey] = useState<SettingKey>("auth");
+
   return (
     <div className="settings-route">
       <div className="left-col">
-        <Menu theme="light" mode="inline" defaultSelectedKeys={["1"]}>
-          <Menu.Item key="1" icon={<SettingOutlined />}>
+        <Menu theme="light" mode="inline" defaultSelectedKeys={["general"]}>
+          <Menu.Item key="general" icon={<SettingOutlined />} onClick={() => setMenuKey("general")}>
             Thiết lập chung
           </Menu.Item>
-          <Menu.Item key="2" icon={<UserOutlined />}>
+          <Menu.Item key="auth" icon={<UserOutlined />} onClick={() => setMenuKey("auth")}>
             Tài khoản
           </Menu.Item>
-          <Menu.Item key="3" icon={<UploadOutlined />}>
+          <Menu.Item key="upload" icon={<UploadOutlined />} onClick={() => setMenuKey("upload")}>
             Tải lên
           </Menu.Item>
         </Menu>
       </div>
 
-      <div className="right-col">222</div>
+      <div className="right-col">
+        <SettingDetail type={menuKey} />
+      </div>
     </div>
   );
 };
