@@ -6,10 +6,12 @@ import { StoreContext } from "~/mobx/store-context";
 import { EventBus } from "~/services/events-helper";
 
 import "~/routes/authen/builder/quiz-builder/quiz-builder-toolbar/quiz-builder-toolbar.scss";
+import { fileUtils } from "~/utils/utils-files";
 
 export const QuizBuilderToolbar: React.FC = observer(() => {
   const store = useContext(StoreContext);
   const { list } = store.quizListStore;
+  const deck = store.quizDeckStore;
 
   return (
     <div className="quiz-builder-toolbar">
@@ -41,6 +43,15 @@ export const QuizBuilderToolbar: React.FC = observer(() => {
 
         <Button onClick={() => console.log(list.slice())} type="primary">
           Log
+        </Button>
+
+        <Button
+          onClick={() => {
+            fileUtils.exportQuizToFile(deck, list.slice());
+          }}
+          type="dashed"
+        >
+          Xuất ra file quiz
         </Button>
       </Space>
     </div>

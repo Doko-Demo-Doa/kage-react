@@ -1,5 +1,8 @@
+import fs from "fs-extra";
 import { isEmpty } from "rambdax";
+import dayjs from "dayjs";
 import { MediaType, RESOURCE_PROTOCOL } from "~/common/static-data";
+import QuizDeckModel from "~/mobx/models/quiz-deck";
 
 function fsNotAvailable() {
   return isEmpty(require("fs"));
@@ -162,5 +165,38 @@ export const fileUtils = {
   },
   getUsableAssetUrl: (assetName: string) => {
     return `${RESOURCE_PROTOCOL}${getCacheDirectory("assets")}/${assetName}`;
+  },
+  // Quiz related
+  /**
+   * Export quiz into file. Should be named *.drq, which is actually a zip file.
+   * @param quizMeta Meta data
+   * @param quizArray The quiz array
+   * @returns void
+   */
+  exportQuizToFile: async (quizMeta: QuizDeckModel, quizArray: any[]) => {
+    if (fsNotAvailable()) return;
+    const data = await require("electron").remote.dialog.showSaveDialog({
+      defaultPath: `quiz-${dayjs().format("YYYYMMDD.HHmmss")}.json`,
+      properties: ["dontAddToRecent", "createDirectory"],
+      message: "Chọn thư mục xuất file quiz",
+    });
+    const dest = data.filePath;
+    if (!dest) return;
+    // const remote = require("electron").remote;
+    // const fs = require("fs-extra");
+
+    // Consult quiz-template.json:
+    const exportData = {
+      id: quizMeta.id,
+      name: quizMeta.name,
+      creationTime: dayjs().unix(),
+      instruction: quizMeta.instruction,
+      passingScore: quizMeta.passingScore,
+      quizzes: quizArray,
+    };
+    const result = await fs.writeJSON(dest, exportData, {
+      spaces: 2,
+    });
+    return result;
   },
 };
