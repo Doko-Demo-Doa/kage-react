@@ -1,14 +1,24 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom";
-import App from "./app";
+// import App from "./app";
+const App = lazy(() => import("./app"));
+import PlayerRoot from "./_player";
 import reportWebVitals from "./reportWebVitals";
 
 import "./index.scss";
 
+const isPlayer = process.env.REACT_APP_ISPLAYER;
+
 function render() {
   ReactDOM.render(
     <React.StrictMode>
-      <App />
+      {isPlayer ? (
+        <PlayerRoot />
+      ) : (
+        <Suspense fallback={null}>
+          <App />
+        </Suspense>
+      )}
     </React.StrictMode>,
     document.getElementById("root")
   );

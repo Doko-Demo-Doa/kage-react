@@ -11,7 +11,9 @@
   },
   "scripts": {
     "start": "craco start",
+    "start:player": "cross-env REACT_APP_ISPLAYER=1 craco start",
     "build": "craco build",
+    "build:player": "cross-env REACT_APP_ISPLAYER=1 craco build",
     "test": "craco test --watchAll=false",
     "test:coverage": "craco test --coverage",
     "eject": "react-scripts eject",
