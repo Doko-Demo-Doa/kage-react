@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Dropdown, Menu } from "antd";
 import { MenuOutlined, RightCircleFilled } from "@ant-design/icons";
 import { Colors } from "~/common/colors";
+import { QuizLayoutSingleChoice } from "~/_player/quiz-layouts/implementations/quiz-layout-single-choice";
 
 import "~/_player/main-layout/main-layout.scss";
 
@@ -38,7 +39,9 @@ export const MainLayout: React.FC = () => {
             Câu thứ <strong>1</strong> trên tổng số <strong>13</strong>
           </div>
         </div>
-        <div className="content">Content</div>
+        <div className="content">
+          <QuizLayoutSingleChoice />
+        </div>
         <div className="footer">
           <div className="left-side">
             Điểm hiện tại: <strong>233</strong>
