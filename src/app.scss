@@ -1,5 +1,7 @@
 @import "~antd/dist/antd.css";
 
-#root {
-  height: 100%;
+// Do conflict với Player nên để tạm đây
+html {
+  min-width: 900px;
+  min-height: 620px;
 }

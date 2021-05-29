@@ -1,3 +1,56 @@
+// 744/636
+html {
+  min-width: unset;
+  min-height: unset;
+}
+
 .main-layout {
-  background: wheat;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: $color-gray-light;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .main-frame {
+    position: relative;
+    border: 0.5px solid $color-gray-medium;
+    background-color: white;
+    border-radius: 12px;
+    width: 744px;
+    height: 636px;
+    min-height: 300px;
+    min-width: 348px;
+    display: flex;
+    flex-direction: column;
+
+    .head {
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      border-bottom: 1px solid $color-gray-light;
+    }
+
+    .content {
+      flex-grow: 2;
+    }
+
+    .footer {
+      border-top: 1px solid $color-gray-light;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+
+      .left-side {
+        strong {
+          color: $color-light-red;
+        }
+      }
+    }
+  }
 }
