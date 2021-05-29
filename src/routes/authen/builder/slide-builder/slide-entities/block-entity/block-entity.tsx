@@ -13,7 +13,6 @@ import { MediaType } from "~/common/static-data";
 import { Colors } from "~/common/colors";
 import { MediaPreviewPopup } from "~/components/media-preview-popup/media-preview-popup";
 
-import "react-h5-audio-player/lib/styles.css";
 import "~/routes/authen/builder/slide-builder/slide-entities/block-entity/block-entity.scss";
 
 type BlockEntityType = {

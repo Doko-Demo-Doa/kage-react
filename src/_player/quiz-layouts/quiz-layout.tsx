@@ -1,4 +1,6 @@
 import React from "react";
+import "react-h5-audio-player/lib/styles.css";
+
 import "~/_player/quiz-layouts/quiz-layout.scss";
 
 interface Props {

@@ -9,7 +9,6 @@ import { AnimationEntity } from "~/routes/authen/builder/slide-builder/slide-ent
 import { BlockEntity } from "~/routes/authen/builder/slide-builder/slide-entities/block-entity/block-entity";
 import { StoreContext } from "~/mobx/store-context";
 
-import "react-h5-audio-player/lib/styles.css";
 import "~/routes/authen/builder/slide-builder/slide-entities/slide-entities.scss";
 
 export const SlideEntities: React.FC = observer(() => {

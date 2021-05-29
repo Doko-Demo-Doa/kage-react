@@ -1,3 +1,17 @@
 .quiz-layout {
   background-color: white;
+
+  .quiz-layout-single-choice {
+    padding: 10px;
+    background: wheat;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .naiyou {
+      margin-top: 12px;
+    }
+  }
 }

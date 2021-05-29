@@ -7,6 +7,7 @@ import { initializeApp } from "~/services/initializer";
 import { StoreContext } from "~/mobx/store-context";
 import { rootStore } from "~/mobx/root-store";
 
+import "react-h5-audio-player/lib/styles.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import "antd/dist/antd.css";
 
