@@ -182,8 +182,6 @@ export const fileUtils = {
     });
     const dest = data.filePath;
     if (!dest) return;
-    // const remote = require("electron").remote;
-    // const fs = require("fs-extra");
 
     // Consult quiz-template.json:
     const exportData = {

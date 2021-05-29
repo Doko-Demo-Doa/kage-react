@@ -68,6 +68,17 @@ export class QuizListStore {
     }
   }
 
+  toggleAutoAudit(quizId: string, isAutoAudit: boolean) {
+    const qi = this.list.findIndex((n) => n.id === quizId);
+
+    if (qi !== -1) {
+      const newList = this.list.slice();
+      newList[qi].autoAudit = isAutoAudit;
+
+      this.list = newList;
+    }
+  }
+
   /**
    * Multiple choices
    */

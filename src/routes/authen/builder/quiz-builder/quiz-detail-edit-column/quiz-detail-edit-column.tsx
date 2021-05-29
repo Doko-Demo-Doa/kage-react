@@ -33,7 +33,7 @@ const options = [
 export const QuizDetailEditColumn: React.FC = observer(() => {
   const store = useContext(StoreContext);
   const { selectedIndex } = store.quizDeckStore;
-  const { list, setQuizType } = store.quizListStore;
+  const { list, setQuizType, toggleAutoAudit } = store.quizListStore;
 
   const thisQuiz = list[selectedIndex];
 
@@ -84,7 +84,12 @@ export const QuizDetailEditColumn: React.FC = observer(() => {
               </Select>
             </Form.Item>
 
-            <Checkbox>{"Không kiểm tra đúng sai"}</Checkbox>
+            <Checkbox
+              checked={thisQuiz.autoAudit}
+              onChange={() => toggleAutoAudit(thisQuiz.id, !thisQuiz.autoAudit)}
+            >
+              {"Không kiểm tra đúng sai"}
+            </Checkbox>
           </Form>
           <hr />
           {getQuizFormComponent()}
