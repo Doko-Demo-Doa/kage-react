@@ -37,14 +37,14 @@ export const MainLayout: React.FC = () => {
 
   function getProperQuizLayout() {
     const target = sample.quizzes[activeIndex];
-    if (!target) return null;
+    if (!target) return <div />;
     if (target.type === QuizType.SINGLE_CHOICE) {
       return <QuizLayoutSingleChoice data={target} />;
     }
     if (target.type === QuizType.MULTIPLE_CHOICES) {
       return <QuizLayoutMultipleChoices data={target} />;
     }
-    return null;
+    return <div />;
   }
 
   return (

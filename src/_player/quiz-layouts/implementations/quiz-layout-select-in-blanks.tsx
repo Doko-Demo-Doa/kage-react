@@ -17,7 +17,7 @@ export const QuizLayoutSelectInBlanks: React.FC<Props> = ({ data }) => {
   return (
     <QuizLayout
       content={
-        <div className="quiz-layout-choices quiz-layout-multiple-choices">
+        <div className="quiz-layout-select-in-blanks">
           {data.audioLink && (
             <CustomAudioPlayer
               autoPlay={false}

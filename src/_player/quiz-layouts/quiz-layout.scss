@@ -1,6 +1,11 @@
 .quiz-layout {
   background-color: white;
 
+  .irasutoya {
+    max-width: 140px;
+    margin-top: 1.2rem;
+  }
+
   .quiz-layout-choices {
     padding: 10px;
     height: 100%;
@@ -9,11 +14,6 @@
     align-items: center;
     flex-direction: column;
     padding-bottom: 4rem;
-
-    .irasutoya {
-      max-width: 140px;
-      margin-top: 1.2rem;
-    }
 
     .naiyou {
       margin-top: 2.6rem;
@@ -27,5 +27,8 @@
         transform: scale(1.6);
       }
     }
+  }
+
+  .quiz-layout-select-in-blanks {
   }
 }
