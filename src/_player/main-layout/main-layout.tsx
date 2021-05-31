@@ -44,7 +44,7 @@ export const MainLayout: React.FC = () => {
     if (target.type === QuizType.MULTIPLE_CHOICES) {
       return <QuizLayoutMultipleChoices data={target} />;
     }
-    return <QuizLayoutSingleChoice data={target} />;
+    return null;
   }
 
   return (

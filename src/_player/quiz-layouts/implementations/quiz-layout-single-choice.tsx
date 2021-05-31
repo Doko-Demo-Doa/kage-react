@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Space, Radio } from "antd";
-import AudioPlayer from "react-h5-audio-player";
 import { QuizLayout } from "~/_player/quiz-layouts/quiz-layout";
 import { formattingUtils } from "~/utils/utils-formatting";
+import { CustomAudioPlayer } from "~/components/audio-player/audio-player";
 
 interface Props {
   // TODO: Remove "any"
@@ -21,16 +21,11 @@ export const QuizLayoutSingleChoice: React.FC<Props> = ({ data }) => {
       content={
         <div className="quiz-layout-choices quiz-layout-single-choice">
           {data.audioLink && (
-            <AudioPlayer
+            <CustomAudioPlayer
               autoPlay={false}
-              autoPlayAfterSrcChange={false}
               src={data.audioLink}
               header="Audio bunpou mondai 2"
-              showJumpControls={false}
-              customVolumeControls={[]}
-              customAdditionalControls={[]}
               style={{ width: "60%", userSelect: "none" }}
-              onPlay={() => console.log("onPlay")}
             />
           )}
 

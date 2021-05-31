@@ -13,7 +13,7 @@ interface Props {
  * Chỉ dùng đúng 1 loại component AudioPlayer để đảm bảo hiển thị tốt trên tất cả các
  * thiết bị / browser khác nhau.
  */
-export const QuizLayoutMultipleChoices: React.FC<Props> = ({ data }) => {
+export const QuizLayoutSelectInBlanks: React.FC<Props> = ({ data }) => {
   return (
     <QuizLayout
       content={
