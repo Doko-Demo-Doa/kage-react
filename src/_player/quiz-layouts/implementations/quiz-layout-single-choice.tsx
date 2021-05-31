@@ -34,6 +34,8 @@ export const QuizLayoutSingleChoice: React.FC<Props> = ({ data }) => {
             />
           )}
 
+          <img className="irasutoya" src={data.imageLink} />
+
           <div className="naiyou">
             <h2 className="title">{formattingUtils.furiganaToJSX(data.content)}</h2>
             <Radio.Group

@@ -1,4 +1,7 @@
 // 744/636
+$head-height: 46px;
+$footer-height: 50px;
+
 html {
   min-width: unset;
   min-height: unset;
@@ -18,7 +21,7 @@ html {
     flex-direction: column;
 
     .head {
-      height: 46px;
+      height: $head-height;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -27,12 +30,13 @@ html {
     }
 
     .content {
-      flex-grow: 2;
+      // 2px là 1px trên 1px dưới của border.
+      height: calc(100vh - #{$head-height} - #{$footer-height} - 2px);
     }
 
     .footer {
       border-top: 1px solid $color-gray-light;
-      height: 50px;
+      height: $footer-height;
       display: flex;
       align-items: center;
       justify-content: space-between;
