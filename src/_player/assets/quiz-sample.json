@@ -8,7 +8,7 @@
   "auto_audit": true,
   "quizzes": [
     {
-      "type": "MULTIPLE_CHOICE",
+      "type": "SINGLE_CHOICE",
       "audio_link": "https://google.com",
       "image_link": "https://google.com",
       "countdown": 90,

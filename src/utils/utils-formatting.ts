@@ -1,7 +1,5 @@
 import reactStringReplace from "react-string-replace";
 import parse, { HTMLReactParserOptions } from "html-react-parser";
-import { DeltaOperation } from "quill";
-import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
 
 function replaceString(str: string, strSub: string, strReplace: string) {
   const result = str.replace(strSub, strReplace);
@@ -27,17 +25,10 @@ function htmlToJSX(inputHtml: string, options?: HTMLReactParserOptions) {
   return parse(furiganaTemplateToHTML(inputHtml), options);
 }
 
-function quillDeltaToHtml(ops: DeltaOperation[]) {
-  const converter = new QuillDeltaToHtmlConverter(ops!, {});
-  const html = converter.convert();
-  return html;
-}
-
 export const formattingUtils = {
   replaceString,
   furiganaTemplateToHTML,
   htmlToJSX,
-  quillDeltaToHtml,
   parseHtml: (input: string) => {
     return parse(input);
   },

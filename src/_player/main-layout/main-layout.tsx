@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Dropdown, Menu } from "antd";
 import { MenuOutlined, RightCircleFilled } from "@ant-design/icons";
+import ScrollBar from "react-perfect-scrollbar";
 import { Colors } from "~/common/colors";
 import { QuizLayoutSingleChoice } from "~/_player/quiz-layouts/implementations/quiz-layout-single-choice";
+
+import sample from "~/_player/assets/quiz-sample.json";
 
 import "~/_player/main-layout/main-layout.scss";
 
@@ -27,9 +30,16 @@ const menu = (
 );
 
 export const MainLayout: React.FC = () => {
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const maxIndex = sample.quizzes.length;
+
+  function getProperQuizLayout() {
+    return <QuizLayoutSingleChoice />;
+  }
+
   return (
-    <div className="main-layout">
-      <div className="main-frame">
+    <div className="main-layout ant-row">
+      <div className="main-frame ant-col-md-18 ant-col-xs-24 ant-col-md-offset-3">
         <div className="head">
           <Dropdown overlay={menu} trigger={["click"]}>
             <Button icon={<MenuOutlined />}>Danh sách câu hỏi</Button>
@@ -39,9 +49,7 @@ export const MainLayout: React.FC = () => {
             Câu thứ <strong>1</strong> trên tổng số <strong>13</strong>
           </div>
         </div>
-        <div className="content">
-          <QuizLayoutSingleChoice />
-        </div>
+        <ScrollBar className="content">{getProperQuizLayout()}</ScrollBar>
         <div className="footer">
           <div className="left-side">
             Điểm hiện tại: <strong>233</strong>

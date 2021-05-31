@@ -9,6 +9,7 @@ import { AnimationType, MediaType, MinimumCanvasSize, QuizType } from "~/common/
 import { SlideType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
 import { formattingUtils } from "~/utils/utils-formatting";
+import { quillUtils } from "~/utils/utils-quill";
 
 function singleSlideConstructor(slide: SlideType) {
   const subfolderPath = "assets"; // "data";
@@ -64,7 +65,7 @@ function singleSlideConstructor(slide: SlideType) {
 
           if (block.type === MediaType.TEXT_BLOCK) {
             const ops = block.deltaContent?.ops;
-            const html = formattingUtils.quillDeltaToHtml(ops!);
+            const html = quillUtils.quillDeltaToHtml(ops!);
             // Last line is to remove line breaks.
             const styleAppend = `
               position: absolute;
@@ -103,7 +104,7 @@ function singleSlideConstructor(slide: SlideType) {
           }
           if (block.type === MediaType.CALLOUT) {
             const ops = block.deltaContent?.ops;
-            const html = formattingUtils.quillDeltaToHtml(ops!);
+            const html = quillUtils.quillDeltaToHtml(ops!);
 
             const shiftLeg1 = (block.size?.w || 0) * 0.35;
             const shiftLeg2 = Math.min(

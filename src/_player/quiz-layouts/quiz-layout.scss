@@ -3,7 +3,6 @@
 
   .quiz-layout-single-choice {
     padding: 10px;
-    background: wheat;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -11,7 +10,16 @@
     flex-direction: column;
 
     .naiyou {
-      margin-top: 12px;
+      margin-top: 3rem;
+      width: 75%;
+
+      .title {
+        margin-bottom: 3.2rem;
+      }
+
+      .selections {
+        transform: scale(1.6);
+      }
     }
   }
 }
