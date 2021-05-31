@@ -4,6 +4,7 @@ import { MenuOutlined, RightCircleFilled } from "@ant-design/icons";
 import ScrollBar from "react-perfect-scrollbar";
 import { Colors } from "~/common/colors";
 import { QuizLayoutSingleChoice } from "~/_player/quiz-layouts/implementations/quiz-layout-single-choice";
+import { QuizLayoutMultipleChoices } from "~/_player/quiz-layouts/implementations/quiz-layout-multiple-choices";
 
 import sample from "~/_player/assets/quiz-sample.json";
 
@@ -39,6 +40,9 @@ export const MainLayout: React.FC = () => {
     if (!target) return null;
     if (target.type === QuizType.SINGLE_CHOICE) {
       return <QuizLayoutSingleChoice data={target} />;
+    }
+    if (target.type === QuizType.MULTIPLE_CHOICES) {
+      return <QuizLayoutMultipleChoices data={target} />;
     }
     return <QuizLayoutSingleChoice data={target} />;
   }

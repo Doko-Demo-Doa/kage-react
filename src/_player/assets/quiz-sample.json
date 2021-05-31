@@ -38,14 +38,14 @@
     },
     {
       "id": "test2",
-      "type": "SINGLE_CHOICE",
+      "type": "MULTIPLE_CHOICES",
       "audioLink": "https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3",
       "imageLink": "https://1.bp.blogspot.com/-cz4aU7tHXs0/Xrea5FcPFRI/AAAAAAABY08/hteaI-LIrQA2tdsVQlO6SuuT7v6VawICwCNcBGAsYHQ/s450/nimotsu_uketoru_woman.png",
       "countdown": 90,
       "title": "",
       "content": "{彼女(かのじょ)}は、毎日_____アイスクリームがaaaa。",
       "score": 5,
-      "correctIndex": 2,
+      "correctIds": [2, 1],
       "choices": [
         {
           "id": 0,

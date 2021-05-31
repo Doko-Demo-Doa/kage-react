@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Space, Radio } from "antd";
+import React from "react";
+import { Space, Checkbox } from "antd";
 import AudioPlayer from "react-h5-audio-player";
 import { QuizLayout } from "~/_player/quiz-layouts/quiz-layout";
 import { formattingUtils } from "~/utils/utils-formatting";
@@ -13,13 +13,11 @@ interface Props {
  * Chỉ dùng đúng 1 loại component AudioPlayer để đảm bảo hiển thị tốt trên tất cả các
  * thiết bị / browser khác nhau.
  */
-export const QuizLayoutSingleChoice: React.FC<Props> = ({ data }) => {
-  const [selected, setSelected] = useState(0);
-
+export const QuizLayoutMultipleChoices: React.FC<Props> = ({ data }) => {
   return (
     <QuizLayout
       content={
-        <div className="quiz-layout-choices quiz-layout-single-choice">
+        <div className="quiz-layout-choices quiz-layout-multiple-choices">
           {data.audioLink && (
             <AudioPlayer
               autoPlay={false}
@@ -38,18 +36,14 @@ export const QuizLayoutSingleChoice: React.FC<Props> = ({ data }) => {
 
           <div className="naiyou">
             <h2 className="title">{formattingUtils.furiganaToJSX(data.content)}</h2>
-            <Radio.Group
-              className="selections"
-              onChange={(e) => setSelected(e.target.value)}
-              value={selected}
-            >
+            <Checkbox.Group className="selections">
               <Space direction="vertical">
-                <Radio value={1}>{formattingUtils.furiganaToJSX("{食(た)}べると")}</Radio>
-                <Radio value={2}>{"{食(た)}べ始める"}</Radio>
-                <Radio value={3}>{"{食(た)}べるほど"}</Radio>
-                <Radio value={4}>{"{食(た)}べるなら"}</Radio>
+                <Checkbox value={1}>{formattingUtils.furiganaToJSX("{食(た)}べると")}</Checkbox>
+                <Checkbox value={2}>{"{食(た)}べ始める"}</Checkbox>
+                <Checkbox value={3}>{"{食(た)}べるほど"}</Checkbox>
+                <Checkbox value={4}>{"{食(た)}べるなら"}</Checkbox>
               </Space>
-            </Radio.Group>
+            </Checkbox.Group>
           </div>
         </div>
       }
