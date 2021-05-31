@@ -20,19 +20,22 @@ export const QuizLayoutSingleChoice: React.FC<Props> = ({ data }) => {
     <QuizLayout
       content={
         <div className="quiz-layout-single-choice">
-          <AudioPlayer
-            autoPlay={false}
-            src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
-            header="Audio bunpou mondai 2"
-            showJumpControls={false}
-            customVolumeControls={[]}
-            customAdditionalControls={[]}
-            style={{ width: "60%", userSelect: "none" }}
-            onPlay={() => console.log("onPlay")}
-          />
+          {data.audioLink && (
+            <AudioPlayer
+              autoPlay={false}
+              autoPlayAfterSrcChange={false}
+              src={data.audioLink}
+              header="Audio bunpou mondai 2"
+              showJumpControls={false}
+              customVolumeControls={[]}
+              customAdditionalControls={[]}
+              style={{ width: "60%", userSelect: "none" }}
+              onPlay={() => console.log("onPlay")}
+            />
+          )}
 
           <div className="naiyou">
-            <h2 className="title">{"彼女は、毎日_____アイスクリームがすきです。"}</h2>
+            <h2 className="title">{formattingUtils.furiganaToJSX(data.content)}</h2>
             <Radio.Group
               className="selections"
               onChange={(e) => setSelected(e.target.value)}

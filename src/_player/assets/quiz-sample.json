@@ -10,8 +10,8 @@
     {
       "id": "test1",
       "type": "SINGLE_CHOICE",
-      "audioLink": "https://google.com",
-      "imageLink": "https://google.com",
+      "audioLink": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+      "imageLink": "https://1.bp.blogspot.com/-mJvAQiJVh5A/YEGQAsYtOBI/AAAAAAABdc4/kcorr0P6KMoSKRDpyHUe2l0J8sLXeIf9QCNcBGAsYHQ/s400/buranko_businesswoman_smile.png",
       "countdown": 90,
       "title": "",
       "content": "彼女は、毎日_____アイスクリームがすきです。",
@@ -39,11 +39,11 @@
     {
       "id": "test2",
       "type": "SINGLE_CHOICE",
-      "audioLink": "https://google.com",
-      "imageLink": "https://google.com",
+      "audioLink": "https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3",
+      "imageLink": "https://1.bp.blogspot.com/-cz4aU7tHXs0/Xrea5FcPFRI/AAAAAAABY08/hteaI-LIrQA2tdsVQlO6SuuT7v6VawICwCNcBGAsYHQ/s450/nimotsu_uketoru_woman.png",
       "countdown": 90,
       "title": "",
-      "content": "彼女は、毎日_____アイスクリームがaaaa。",
+      "content": "{彼女(かのじょ)}は、毎日_____アイスクリームがaaaa。",
       "score": 5,
       "correctIndex": 2,
       "choices": [

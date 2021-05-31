@@ -61,7 +61,7 @@ export const MainLayout: React.FC = () => {
             Điểm hiện tại: <strong>233</strong>
           </div>
           <Button
-            onClick={() => setActiveIndex(0)}
+            onClick={() => setActiveIndex(activeIndex + 1)}
             icon={<RightCircleFilled style={{ color: Colors.GREEN }} />}
           >
             OK
