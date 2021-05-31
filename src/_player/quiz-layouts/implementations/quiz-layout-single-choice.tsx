@@ -1,14 +1,19 @@
 import React, { useState } from "react";
-import { Form, Space, Radio, Button } from "antd";
+import { Space, Radio } from "antd";
 import AudioPlayer from "react-h5-audio-player";
 import { QuizLayout } from "~/_player/quiz-layouts/quiz-layout";
 import { formattingUtils } from "~/utils/utils-formatting";
+
+interface Props {
+  // TODO: Remove "any"
+  data: any;
+}
 
 /**
  * Chỉ dùng đúng 1 loại component AudioPlayer để đảm bảo hiển thị tốt trên tất cả các
  * thiết bị / browser khác nhau.
  */
-export const QuizLayoutSingleChoice: React.FC = () => {
+export const QuizLayoutSingleChoice: React.FC<Props> = ({ data }) => {
   const [selected, setSelected] = useState(0);
 
   return (

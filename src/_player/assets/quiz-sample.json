@@ -4,18 +4,48 @@
   "level": "N5",
   "syllabus": "shinkanzen-master-n3",
   "instruction": "Hãy chọn một đáp án đúng trong số 4 đáp án A-B-C-D",
-  "passing_score": 70,
-  "auto_audit": true,
+  "passingScore": 70,
+  "autoAudit": true,
   "quizzes": [
     {
+      "id": "test1",
       "type": "SINGLE_CHOICE",
-      "audio_link": "https://google.com",
-      "image_link": "https://google.com",
+      "audioLink": "https://google.com",
+      "imageLink": "https://google.com",
       "countdown": 90,
       "title": "",
       "content": "彼女は、毎日_____アイスクリームがすきです。",
       "score": 5,
-      "correct_index": 2,
+      "correctIndex": 2,
+      "choices": [
+        {
+          "id": 0,
+          "label": "{食(た)}べると"
+        },
+        {
+          "id": 1,
+          "label": "{食(た)}べ始める"
+        },
+        {
+          "id": 2,
+          "label": "{食(た)}べるほど"
+        },
+        {
+          "id": 3,
+          "label": "{食(た)}べるなら"
+        }
+      ]
+    },
+    {
+      "id": "test2",
+      "type": "SINGLE_CHOICE",
+      "audioLink": "https://google.com",
+      "imageLink": "https://google.com",
+      "countdown": 90,
+      "title": "",
+      "content": "彼女は、毎日_____アイスクリームがaaaa。",
+      "score": 5,
+      "correctIndex": 2,
       "choices": [
         {
           "id": 0,

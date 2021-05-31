@@ -8,6 +8,7 @@ import { QuizLayoutSingleChoice } from "~/_player/quiz-layouts/implementations/q
 import sample from "~/_player/assets/quiz-sample.json";
 
 import "~/_player/main-layout/main-layout.scss";
+import { QuizType } from "~/common/static-data";
 
 const menu = (
   <Menu>
@@ -31,10 +32,15 @@ const menu = (
 
 export const MainLayout: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(-1);
-  const maxIndex = sample.quizzes.length;
+  // const maxIndex = sample.quizzes.length;
 
   function getProperQuizLayout() {
-    return <QuizLayoutSingleChoice />;
+    const target = sample.quizzes[activeIndex];
+    if (!target) return null;
+    if (target.type === QuizType.SINGLE_CHOICE) {
+      return <QuizLayoutSingleChoice data={target} />;
+    }
+    return <QuizLayoutSingleChoice data={target} />;
   }
 
   return (
@@ -54,7 +60,12 @@ export const MainLayout: React.FC = () => {
           <div className="left-side">
             Điểm hiện tại: <strong>233</strong>
           </div>
-          <Button icon={<RightCircleFilled style={{ color: Colors.GREEN }} />}>OK</Button>
+          <Button
+            onClick={() => setActiveIndex(0)}
+            icon={<RightCircleFilled style={{ color: Colors.GREEN }} />}
+          >
+            OK
+          </Button>
         </div>
       </div>
     </div>

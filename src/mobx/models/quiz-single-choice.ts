@@ -1,11 +1,7 @@
 import { QuizType } from "~/common/static-data";
 import QuizModel from "~/mobx/models/quiz";
+import { Choice } from "~/typings/types";
 import { dataUtils } from "~/utils/utils-data";
-
-type Choice = {
-  id: string;
-  label: string;
-};
 
 // Single quiz object.
 export default class QuizSingleChoiceModel extends QuizModel {

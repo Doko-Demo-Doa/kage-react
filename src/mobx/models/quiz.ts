@@ -8,6 +8,7 @@ export default class QuizModel {
   countdown?: number;
   title?: string;
   note?: string;
+  hint?: string;
   score: number;
   autoAudit?: boolean;
 
@@ -17,6 +18,7 @@ export default class QuizModel {
     this.countdown = 0;
     this.title = "";
     this.note = "";
+    this.hint = "";
     this.score = 0;
     this.autoAudit = false;
   }
