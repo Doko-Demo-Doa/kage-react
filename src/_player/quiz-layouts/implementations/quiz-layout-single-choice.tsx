@@ -14,7 +14,7 @@ export const QuizLayoutSingleChoice: React.FC = () => {
       content={
         <div className="quiz-layout-single-choice">
           <AudioPlayer
-            autoPlay
+            autoPlay={false}
             src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
             header="Audio bunpou mondai 2"
             showJumpControls={false}
