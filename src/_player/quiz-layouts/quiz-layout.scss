@@ -6,7 +6,7 @@
     margin-top: 1.2rem;
   }
 
-  .quiz-layout-choices {
+  .quiz-layout-inner {
     padding: 10px;
     height: 100%;
     display: flex;
@@ -14,7 +14,9 @@
     align-items: center;
     flex-direction: column;
     padding-bottom: 4rem;
+  }
 
+  .quiz-layout-choices {
     .naiyou {
       margin-top: 2.6rem;
       width: 75%;
@@ -30,5 +32,11 @@
   }
 
   .quiz-layout-select-in-blanks {
+    .content {
+      margin-top: 2rem;
+      font-size: 1.17rem;
+      line-height: 2.2em;
+      padding: 0 10px;
+    }
   }
 }

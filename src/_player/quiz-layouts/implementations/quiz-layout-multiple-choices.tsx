@@ -17,12 +17,11 @@ export const QuizLayoutMultipleChoices: React.FC<Props> = ({ data }) => {
   return (
     <QuizLayout
       content={
-        <div className="quiz-layout-choices quiz-layout-multiple-choices">
+        <div className="quiz-layout-inner quiz-layout-choices quiz-layout-multiple-choices">
           {data.audioLink && (
             <CustomAudioPlayer
               autoPlay={false}
               src={data.audioLink}
-              header="Audio bunpou mondai 2"
               style={{ width: "60%", userSelect: "none" }}
             />
           )}

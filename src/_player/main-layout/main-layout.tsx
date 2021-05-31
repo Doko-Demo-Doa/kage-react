@@ -3,13 +3,14 @@ import { Button, Dropdown, Menu } from "antd";
 import { MenuOutlined, RightCircleFilled } from "@ant-design/icons";
 import ScrollBar from "react-perfect-scrollbar";
 import { Colors } from "~/common/colors";
+import { QuizType } from "~/common/static-data";
 import { QuizLayoutSingleChoice } from "~/_player/quiz-layouts/implementations/quiz-layout-single-choice";
 import { QuizLayoutMultipleChoices } from "~/_player/quiz-layouts/implementations/quiz-layout-multiple-choices";
+import { QuizLayoutSelectInBlanks } from "~/_player/quiz-layouts/implementations/quiz-layout-select-in-blanks";
 
 import sample from "~/_player/assets/quiz-sample.json";
 
 import "~/_player/main-layout/main-layout.scss";
-import { QuizType } from "~/common/static-data";
 
 const menu = (
   <Menu>
@@ -44,6 +45,9 @@ export const MainLayout: React.FC = () => {
     if (target.type === QuizType.MULTIPLE_CHOICES) {
       return <QuizLayoutMultipleChoices data={target} />;
     }
+    if (target.type === QuizType.SELECT_IN_THE_BLANKS) {
+      return <QuizLayoutSelectInBlanks data={target} />;
+    }
     return <div />;
   }
 
@@ -56,7 +60,7 @@ export const MainLayout: React.FC = () => {
           </Dropdown>
 
           <div className="right-side">
-            Câu thứ <strong>1</strong> trên tổng số <strong>13</strong>
+            Câu <strong>1</strong> / <strong>13</strong>
           </div>
         </div>
         <ScrollBar className="content">{getProperQuizLayout()}</ScrollBar>

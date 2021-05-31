@@ -1,3 +1,4 @@
+import React from "react";
 import reactStringReplace from "react-string-replace";
 import parse, { HTMLReactParserOptions } from "html-react-parser";
 
@@ -36,7 +37,7 @@ export const formattingUtils = {
     const newData = input;
 
     return {
-      with: (data: (key: string, pos: number) => JSX.Element) => {
+      with: (data: (key: string, pos: number) => React.ReactNode) => {
         const rxp = /\[(.*?)\]/g;
         return reactStringReplace(newData, rxp, (match, i) => {
           return data(match, i);
