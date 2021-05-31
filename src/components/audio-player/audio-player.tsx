@@ -1,6 +1,8 @@
 import React from "react";
 import AudioPlayer from "react-h5-audio-player";
 
+import "~/components/audio-player/audio-player.scss";
+
 interface Props {
   autoPlay?: boolean;
   src?: string;
