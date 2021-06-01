@@ -1,8 +1,8 @@
 import React from "react";
-import { Button, Dropdown, Menu } from "antd";
 import { QuizLayout } from "~/_player/quiz-layouts/quiz-layout";
 import { formattingUtils } from "~/utils/utils-formatting";
 import { CustomAudioPlayer } from "~/components/audio-player/audio-player";
+import { CustomDropdown } from "~/_player/custom-dropdown/custom-dropdown";
 
 interface Props {
   // TODO: Remove "any"
@@ -29,33 +29,11 @@ export const QuizLayoutSelectInBlanks: React.FC<Props> = ({ data }) => {
           <img className="irasutoya" src={data.imageLink} />
 
           <div className="naiyou">
-            <div className="content">
+            <div className="sentence">
               {formattingUtils
                 .replaceData(data.content ?? "")
                 .with((key) => {
-                  const menu = (
-                    <Menu>
-                      <Menu.Item key="1">
-                        <a
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          href="https://www.antgroup.com"
-                        >
-                          1st menu item
-                        </a>
-                      </Menu.Item>
-                      <Menu.Item key="2">
-                        <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-                          2nd menu item
-                        </a>
-                      </Menu.Item>
-                    </Menu>
-                  );
-                  return (
-                    <Dropdown trigger={["click"]} overlay={menu} key={key}>
-                      <Button>Test</Button>
-                    </Dropdown>
-                  );
+                  return <CustomDropdown key={key} id={key} matchers={data.matchers} />;
                 })
                 .map((elem: string | React.ReactNode) => {
                   if (React.isValidElement(elem)) {

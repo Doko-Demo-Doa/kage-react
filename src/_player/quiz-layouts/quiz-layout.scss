@@ -13,10 +13,10 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding-bottom: 4rem;
   }
 
   .quiz-layout-choices {
+    padding-bottom: 4rem;
     .naiyou {
       margin-top: 2.6rem;
       width: 75%;
@@ -32,7 +32,7 @@
   }
 
   .quiz-layout-select-in-blanks {
-    .content {
+    .sentence {
       margin-top: 2rem;
       font-size: 1.17rem;
       line-height: 2.2em;

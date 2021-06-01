@@ -14,28 +14,28 @@
       "imageLink": "https://1.bp.blogspot.com/-cz4aU7tHXs0/Xrea5FcPFRI/AAAAAAABY08/hteaI-LIrQA2tdsVQlO6SuuT7v6VawICwCNcBGAsYHQ/s450/nimotsu_uketoru_woman.png",
       "countdown": 120,
       "title": "",
-      "content": "{彼女(かのじょ)}は、毎日 [q0] アイスクリームがaaaa。[q1] {食(た)}べると [q2]. {食(た)}べると {食(た)}べると [q3] {食(た)}べると [q4] asdsdsadafdsds",
+      "content": "{彼女(かのじょ)}は、毎日 [m1] アイスクリームがaaaa。[m2] {食(た)}べると {食(た)}べると {食(た)}べると {食(た)}べると asdsdsadafdsds",
       "score": 5,
       "matchers": [
         {
           "id": "m1",
           "label": "{食(た)}べると",
-          "correctChoice": 2,
+          "correctChoice": "bb",
           "choices": [
             {
-              "id": 0,
+              "id": "gg",
               "label": "{食(た)}べると"
             },
             {
-              "id": 1,
+              "id": "aa",
               "label": "{食(た)}べ始める"
             },
             {
-              "id": 2,
+              "id": "bb",
               "label": "{食(た)}べるほど"
             },
             {
-              "id": 3,
+              "id": "cc",
               "label": "{食(た)}べるなら"
             }
           ]
