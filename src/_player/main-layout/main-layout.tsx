@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Button, Dropdown, Menu } from "antd";
+import { Button, Dropdown, Menu, Modal } from "antd";
 import { MenuOutlined, RightCircleFilled } from "@ant-design/icons";
 import ScrollBar from "react-perfect-scrollbar";
 import { Colors } from "~/common/colors";
 import { QuizType } from "~/common/static-data";
+import { ResultNotification } from "~/_player/result-notification/result-notification";
+
 import { QuizLayoutSingleChoice } from "~/_player/quiz-layouts/implementations/quiz-layout-single-choice";
 import { QuizLayoutMultipleChoices } from "~/_player/quiz-layouts/implementations/quiz-layout-multiple-choices";
 import { QuizLayoutSelectInBlanks } from "~/_player/quiz-layouts/implementations/quiz-layout-select-in-blanks";
@@ -51,6 +53,19 @@ export const MainLayout: React.FC = () => {
     return <div />;
   }
 
+  function showModal() {
+    Modal.confirm({
+      title: "",
+      icon: <div></div>,
+      content: <ResultNotification isCorrect />,
+      onOk() {
+        //
+      },
+      onCancel: undefined,
+      cancelButtonProps: { style: { display: "none" } },
+    });
+  }
+
   return (
     <div className="main-layout ant-row">
       <div className="main-frame ant-col-md-18 ant-col-xs-24 ant-col-md-offset-3">
@@ -65,7 +80,7 @@ export const MainLayout: React.FC = () => {
         </div>
         <ScrollBar className="content">{getProperQuizLayout()}</ScrollBar>
         <div className="footer">
-          <div className="left-side">
+          <div className="left-side" onClick={() => showModal()}>
             Điểm hiện tại: <strong>233</strong>
           </div>
           <Button
