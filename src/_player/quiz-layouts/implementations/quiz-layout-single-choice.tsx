@@ -3,10 +3,11 @@ import { Space, Radio } from "antd";
 import { QuizLayout } from "~/_player/quiz-layouts/quiz-layout";
 import { formattingUtils } from "~/utils/utils-formatting";
 import { CustomAudioPlayer } from "~/components/audio-player/audio-player";
+import QuizSingleChoiceModel from "~/mobx/models/quiz-single-choice";
 
 interface Props {
   // TODO: Remove "any"
-  data: any;
+  data: QuizSingleChoiceModel;
 }
 
 /**
@@ -31,17 +32,18 @@ export const QuizLayoutSingleChoice: React.FC<Props> = ({ data }) => {
           <img className="irasutoya" src={data.imageLink} />
 
           <div className="naiyou">
-            <h2 className="title">{formattingUtils.furiganaToJSX(data.content)}</h2>
+            <h2 className="title">{formattingUtils.furiganaToJSX(data.title)}</h2>
             <Radio.Group
               className="selections"
               onChange={(e) => setSelected(e.target.value)}
               value={selected}
             >
               <Space direction="vertical">
-                <Radio value={1}>{formattingUtils.furiganaToJSX("{食(た)}べると")}</Radio>
-                <Radio value={2}>{"{食(た)}べ始める"}</Radio>
-                <Radio value={3}>{"{食(た)}べるほど"}</Radio>
-                <Radio value={4}>{"{食(た)}べるなら"}</Radio>
+                {data.choices.map((n) => (
+                  <Radio key={n.id} value={n.id}>
+                    {formattingUtils.furiganaToJSX(n.label)}
+                  </Radio>
+                ))}
               </Space>
             </Radio.Group>
           </div>

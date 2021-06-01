@@ -9,12 +9,16 @@ import { ResultNotification } from "~/_player/result-notification/result-notific
 import { QuizListItem } from "~/_player/main-layout/quiz-list-item/quiz-list-item";
 import { Countdown } from "~/_player/countdown/countdown";
 
+import QuizSingleChoiceModel from "~/mobx/models/quiz-single-choice";
+import QuizMultipleChoicesModel from "~/mobx/models/quiz-multiple-choices";
+import QuizModel from "~/mobx/models/quiz";
+
 import { QuizInstruction } from "~/_player/quiz-instruction/quiz-instruction";
 import { QuizLayoutSingleChoice } from "~/_player/quiz-layouts/implementations/quiz-layout-single-choice";
 import { QuizLayoutMultipleChoices } from "~/_player/quiz-layouts/implementations/quiz-layout-multiple-choices";
 import { QuizLayoutSelectInBlanks } from "~/_player/quiz-layouts/implementations/quiz-layout-select-in-blanks";
 
-import sample from "~/_player/assets/quiz-sample.json";
+const sample = require("~/_player/assets/quiz-sample.json");
 
 import "~/_player/main-layout/main-layout.scss";
 
@@ -23,7 +27,7 @@ const menu = (
     <Menu.Item key="head" disabled>
       <QuizListItem isHead />
     </Menu.Item>
-    {sample.quizzes.map((n) => {
+    {sample.quizzes.map((n: QuizModel) => {
       const qType = n.type as QuizType;
       return (
         <Menu.Item key={n.id}>
@@ -45,10 +49,12 @@ export const MainLayout: React.FC = () => {
     const target = sample.quizzes[activeIndex];
     if (!target) return <div />;
     if (target.type === QuizType.SINGLE_CHOICE) {
-      return <QuizLayoutSingleChoice data={target} />;
+      const t = target as QuizSingleChoiceModel;
+      return <QuizLayoutSingleChoice data={t} />;
     }
     if (target.type === QuizType.MULTIPLE_CHOICES) {
-      return <QuizLayoutMultipleChoices data={target} />;
+      const t = target as QuizMultipleChoicesModel;
+      return <QuizLayoutMultipleChoices data={t} />;
     }
     if (target.type === QuizType.SELECT_IN_THE_BLANKS) {
       return <QuizLayoutSelectInBlanks data={target} />;

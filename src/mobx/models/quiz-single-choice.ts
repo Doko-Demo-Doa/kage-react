@@ -6,7 +6,7 @@ import { dataUtils } from "~/utils/utils-data";
 // Single quiz object.
 export default class QuizSingleChoiceModel extends QuizModel {
   audioLink?: string;
-  imageVideoLink?: string;
+  imageLink?: string;
   correctIndex: number;
   choices: Choice[];
 

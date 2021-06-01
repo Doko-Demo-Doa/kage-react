@@ -3,10 +3,10 @@ import { Space, Checkbox } from "antd";
 import { QuizLayout } from "~/_player/quiz-layouts/quiz-layout";
 import { formattingUtils } from "~/utils/utils-formatting";
 import { CustomAudioPlayer } from "~/components/audio-player/audio-player";
+import QuizMultipleChoicesModel from "~/mobx/models/quiz-multiple-choices";
 
 interface Props {
-  // TODO: Remove "any"
-  data: any;
+  data: QuizMultipleChoicesModel;
 }
 
 /**
@@ -29,13 +29,12 @@ export const QuizLayoutMultipleChoices: React.FC<Props> = ({ data }) => {
           <img className="irasutoya" src={data.imageLink} />
 
           <div className="naiyou">
-            <h2 className="title">{formattingUtils.furiganaToJSX(data.content)}</h2>
+            <h2 className="title">{formattingUtils.furiganaToJSX(data.title)}</h2>
             <Checkbox.Group className="selections">
               <Space direction="vertical">
-                <Checkbox value={1}>{formattingUtils.furiganaToJSX("{食(た)}べると")}</Checkbox>
-                <Checkbox value={2}>{"{食(た)}べ始める"}</Checkbox>
-                <Checkbox value={3}>{"{食(た)}べるほど"}</Checkbox>
-                <Checkbox value={4}>{"{食(た)}べるなら"}</Checkbox>
+                {data.choices.map((n) => (
+                  <Checkbox key={n.id}>{formattingUtils.furiganaToJSX(n.label)}</Checkbox>
+                ))}
               </Space>
             </Checkbox.Group>
           </div>
