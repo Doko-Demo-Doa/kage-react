@@ -1,4 +1,3 @@
-import fs from "fs";
 import pretty from "pretty";
 import dayjs from "dayjs";
 import { stripIndent } from "common-tags";
@@ -7,7 +6,6 @@ import shortUid from "short-uuid";
 import { DropResult } from "smooth-dnd";
 import { AnimationType, MediaType, MinimumCanvasSize, QuizType } from "~/common/static-data";
 import { SlideType } from "~/typings/types";
-import { fileUtils } from "~/utils/utils-files";
 import { formattingUtils } from "~/utils/utils-formatting";
 import { quillUtils } from "~/utils/utils-quill";
 
@@ -169,15 +167,6 @@ function generateShortUid() {
 export const dataUtils = {
   convertToMutableData: (inputData: Record<string, any> | Array<any>) => {
     return JSON.parse(JSON.stringify(inputData));
-  },
-  saveSlideJsonToCache: (jsonData: string) => {
-    const p = fileUtils.createFilePathAtCacheDir("manifest.json");
-    fs.writeFileSync(p, jsonData);
-  },
-
-  writeToHtml: (content: string) => {
-    const path = fileUtils.createFilePathAtCacheDir("slide.html");
-    fs.writeFileSync(path, content);
   },
   convertToHtmlSlideData: (slides: SlideType[]) => {
     // Convert từng slide vào template HTML

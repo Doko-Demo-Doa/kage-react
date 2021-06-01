@@ -197,4 +197,16 @@ export const fileUtils = {
     });
     return result;
   },
+  saveSlideJsonToCache: (jsonData: string) => {
+    const p = fileUtils.createFilePathAtCacheDir("manifest.json");
+    const remote = require("electron").remote;
+    const fs = remote.require("fs");
+    fs.writeFileSync(p, jsonData);
+  },
+  writeToHtml: (content: string) => {
+    const path = fileUtils.createFilePathAtCacheDir("slide.html");
+    const remote = require("electron").remote;
+    const fs = remote.require("fs");
+    fs.writeFileSync(path, content);
+  },
 };

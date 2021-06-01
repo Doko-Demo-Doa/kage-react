@@ -4,6 +4,7 @@ import { MenuOutlined, RightCircleFilled } from "@ant-design/icons";
 import ScrollBar from "react-perfect-scrollbar";
 import { Colors } from "~/common/colors";
 import { QuizType } from "~/common/static-data";
+import { dataUtils } from "~/utils/utils-data";
 import { ResultNotification } from "~/_player/result-notification/result-notification";
 import { QuizListItem } from "~/_player/main-layout/quiz-list-item/quiz-list-item";
 
@@ -17,15 +18,17 @@ import "~/_player/main-layout/main-layout.scss";
 
 const menu = (
   <Menu>
-    <Menu.Item key="0" disabled>
+    <Menu.Item key="head" disabled>
       <QuizListItem isHead />
     </Menu.Item>
-    <Menu.Item key="1">
-      <QuizListItem />
-    </Menu.Item>
-    <Menu.Item key="2">
-      <QuizListItem />
-    </Menu.Item>
+    {sample.quizzes.map((n) => {
+      const qType = n.type as QuizType;
+      return (
+        <Menu.Item key={n.id}>
+          <QuizListItem type={qType} score={23} tagline={dataUtils.mapQuizLabel(qType)} />
+        </Menu.Item>
+      );
+    })}
   </Menu>
 );
 

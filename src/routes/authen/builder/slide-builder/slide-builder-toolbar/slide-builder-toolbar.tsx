@@ -107,9 +107,9 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
   };
 
   const onPublish = async () => {
-    dataUtils.saveSlideJsonToCache(JSON.stringify(list, null, 2));
+    fileUtils.saveSlideJsonToCache(JSON.stringify(list, null, 2));
     const convertedStr = dataUtils.convertToHtmlSlideData(list);
-    dataUtils.writeToHtml(convertedStr);
+    fileUtils.writeToHtml(convertedStr);
 
     const folderPath = await fileUtils.openFolderSaveDialog();
     if (folderPath) {

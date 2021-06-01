@@ -1,13 +1,16 @@
 .quiz-list-lead {
   font-weight: bold;
   user-select: none;
+  height: 32px;
 }
 
 .quiz-list-item {
   display: flex;
+  height: 46px;
+  align-items: center;
 
   .question {
-    min-width: 180px;
+    min-width: 220px;
   }
 
   .score {
