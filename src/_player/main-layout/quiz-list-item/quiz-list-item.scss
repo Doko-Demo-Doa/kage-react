@@ -1,0 +1,20 @@
+.quiz-list-lead {
+  font-weight: bold;
+  user-select: none;
+}
+
+.quiz-list-item {
+  display: flex;
+
+  .question {
+    min-width: 180px;
+  }
+
+  .score {
+    min-width: 60px;
+  }
+
+  .result {
+    min-width: 40px;
+  }
+}

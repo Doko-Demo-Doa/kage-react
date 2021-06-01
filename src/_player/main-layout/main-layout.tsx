@@ -5,6 +5,7 @@ import ScrollBar from "react-perfect-scrollbar";
 import { Colors } from "~/common/colors";
 import { QuizType } from "~/common/static-data";
 import { ResultNotification } from "~/_player/result-notification/result-notification";
+import { QuizListItem } from "~/_player/main-layout/quiz-list-item/quiz-list-item";
 
 import { QuizLayoutSingleChoice } from "~/_player/quiz-layouts/implementations/quiz-layout-single-choice";
 import { QuizLayoutMultipleChoices } from "~/_player/quiz-layouts/implementations/quiz-layout-multiple-choices";
@@ -16,27 +17,20 @@ import "~/_player/main-layout/main-layout.scss";
 
 const menu = (
   <Menu>
-    <Menu.Item>
-      <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-        1st menu item
-      </a>
+    <Menu.Item key="0" disabled>
+      <QuizListItem isHead />
     </Menu.Item>
-    <Menu.Item>
-      <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-        2nd menu item
-      </a>
+    <Menu.Item key="1">
+      <QuizListItem />
     </Menu.Item>
-    <Menu.Item>
-      <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-        3rd menu item
-      </a>
+    <Menu.Item key="2">
+      <QuizListItem />
     </Menu.Item>
   </Menu>
 );
 
 export const MainLayout: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(-1);
-  // const maxIndex = sample.quizzes.length;
 
   function getProperQuizLayout() {
     const target = sample.quizzes[activeIndex];
