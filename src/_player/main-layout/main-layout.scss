@@ -31,6 +31,7 @@ html {
 
     .content {
       // 2px là 1px trên 1px dưới của border.
+      position: relative;
       height: calc(100vh - #{$head-height} - #{$footer-height} - 2px);
     }
 

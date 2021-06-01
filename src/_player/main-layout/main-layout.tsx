@@ -7,6 +7,7 @@ import { QuizType } from "~/common/static-data";
 import { dataUtils } from "~/utils/utils-data";
 import { ResultNotification } from "~/_player/result-notification/result-notification";
 import { QuizListItem } from "~/_player/main-layout/quiz-list-item/quiz-list-item";
+import { Countdown } from "~/_player/countdown/countdown";
 
 import { QuizLayoutSingleChoice } from "~/_player/quiz-layouts/implementations/quiz-layout-single-choice";
 import { QuizLayoutMultipleChoices } from "~/_player/quiz-layouts/implementations/quiz-layout-multiple-choices";
@@ -76,6 +77,8 @@ export const MainLayout: React.FC = () => {
           </div>
         </div>
         <ScrollBar className="content">{getProperQuizLayout()}</ScrollBar>
+        <Countdown />
+
         <div className="footer">
           <div className="left-side" onClick={() => showModal()}>
             Điểm hiện tại: <strong>233</strong>
