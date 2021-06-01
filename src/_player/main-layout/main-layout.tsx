@@ -9,6 +9,7 @@ import { ResultNotification } from "~/_player/result-notification/result-notific
 import { QuizListItem } from "~/_player/main-layout/quiz-list-item/quiz-list-item";
 import { Countdown } from "~/_player/countdown/countdown";
 
+import { QuizInstruction } from "~/_player/quiz-instruction/quiz-instruction";
 import { QuizLayoutSingleChoice } from "~/_player/quiz-layouts/implementations/quiz-layout-single-choice";
 import { QuizLayoutMultipleChoices } from "~/_player/quiz-layouts/implementations/quiz-layout-multiple-choices";
 import { QuizLayoutSelectInBlanks } from "~/_player/quiz-layouts/implementations/quiz-layout-select-in-blanks";
@@ -37,6 +38,10 @@ export const MainLayout: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(-1);
 
   function getProperQuizLayout() {
+    if (activeIndex === -1) {
+      return <QuizInstruction />;
+    }
+
     const target = sample.quizzes[activeIndex];
     if (!target) return <div />;
     if (target.type === QuizType.SINGLE_CHOICE) {
