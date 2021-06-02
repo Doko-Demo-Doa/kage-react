@@ -10,7 +10,7 @@ import { fileUtils } from "~/utils/utils-files";
 
 export const QuizBuilderToolbar: React.FC = observer(() => {
   const store = useContext(StoreContext);
-  const { list } = store.quizListStore;
+  const { list, newQuiz } = store.quizListStore;
   const deck = store.quizDeckStore;
 
   function insertMediaFile() {
@@ -24,7 +24,10 @@ export const QuizBuilderToolbar: React.FC = observer(() => {
           icon={<PlusOutlined />}
           type="primary"
           ghost
-          onClick={() => store.quizListStore.newQuiz()}
+          onClick={() => {
+            newQuiz();
+            deck.setIndex(deck.selectedIndex + 1);
+          }}
         >
           Tạo quiz mới
         </Button>

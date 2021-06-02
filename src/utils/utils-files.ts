@@ -100,7 +100,7 @@ export const fileUtils = {
       filters: [{ name: "Ảnh", extensions: ["jpg", "png", "gif"] }],
     });
   },
-  selectSingleFile: (specificType?: MediaType) => {
+  selectSingleFile: async (specificType?: MediaType) => {
     if (fsNotAvailable()) return;
     const imageTypes = ["jpg", "png", "gif", "webp"];
     const videoTypes = ["webm", "avi", "mp4", "mkv", "wmv"];
@@ -116,10 +116,11 @@ export const fileUtils = {
       filterz = union(filterz, audioTypes).slice();
     }
 
-    return require("electron").remote.dialog.showOpenDialog({
+    const resp = await require("electron").remote.dialog.showOpenDialog({
       properties: ["openFile", "dontAddToRecent"],
       filters: [{ name: "Media", extensions: filterz }],
     });
+    return resp?.filePaths[0];
   },
   getWorkingDirectory: () => {
     if (fsNotAvailable()) return;

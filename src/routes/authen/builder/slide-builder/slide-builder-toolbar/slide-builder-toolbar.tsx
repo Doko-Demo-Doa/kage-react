@@ -40,8 +40,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
   };
 
   const onInsertMedia = async () => {
-    const resp = await fileUtils.selectSingleFile();
-    const path = resp?.filePaths[0];
+    const path = await fileUtils.selectSingleFile();
     if (path) {
       const mType = fileUtils.detectMediaType(path);
       if (mType === MediaType.VIDEO) {

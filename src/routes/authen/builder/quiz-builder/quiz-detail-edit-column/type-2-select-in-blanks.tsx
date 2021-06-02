@@ -27,8 +27,9 @@ export const SelectInBlanksForm: React.FC = observer(() => {
         </Form.Item>
 
         <div className="note-select-in-blanks">
-          Các câu hỏi được sắp xếp từ trái qua phải. Đáp án đầu tiên là đáp án đúng (sau khi xuất ra
-          thì sẽ được xáo trộn thứ tự)
+          Các câu hỏi được sắp xếp từ trái qua phải. Đặt vị trí các câu hỏi trong ngoặc vuông. Ví
+          dụ: [q0] với q0 là mã hiệu câu hỏi. Trong cùng 1 câu quiz không được đặt 2 ngoặc vuông có
+          mã hiệu giống nhau.
         </div>
 
         <Button onClick={() => addNewSelectInBlankDropdown(thisQuiz.id)}>Thêm nút lựa chọn</Button>

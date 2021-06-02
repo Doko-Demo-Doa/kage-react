@@ -92,6 +92,7 @@ export const QuizDetailEditColumn: React.FC = observer(() => {
             </Checkbox>
           </Form>
           <hr />
+
           {getQuizFormComponent()}
         </>
       )}
