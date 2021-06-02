@@ -6,8 +6,8 @@ import { fileUtils } from "~/utils/utils-files";
 import { MediaType } from "~/common/static-data";
 
 const OptimalImageSize = {
-  width: 800,
-  height: 525,
+  width: 1000,
+  height: 725,
 };
 
 export const audioUtils = {
@@ -111,7 +111,14 @@ export const imageUtils = {
     const newWidth = Math.min(OptimalImageSize.width, width);
     const newHeight = Math.min(OptimalImageSize.height, height);
 
-    const data = sharp(filePath).resize(newWidth, newHeight).jpeg({ mozjpeg: true, quality: 85 });
+    const data = sharp(filePath)
+      .resize({
+        width: newWidth,
+        height: newHeight,
+        fit: sharp.fit.inside,
+        withoutEnlargement: true,
+      })
+      .jpeg({ quality: 92 });
 
     const dataBuf = await data.toBuffer();
     const crc32 = remote.require("crc").crc32;
@@ -120,6 +127,8 @@ export const imageUtils = {
     const EXT = "png";
     const dest = path.join(customOutput || fileUtils.getCacheDirectory("assets"), `${name}.${EXT}`);
 
+    const newMeta = await sharp(dataBuf).metadata();
+
     fs.writeFileSync(dest, dataBuf);
 
     const result = {
@@ -127,8 +136,8 @@ export const imageUtils = {
       fileName: name,
       extension: EXT,
       extra: {
-        width: newWidth,
-        height: newHeight,
+        width: newMeta.width,
+        height: newMeta.height,
       },
     };
 

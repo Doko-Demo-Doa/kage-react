@@ -132,6 +132,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
     { width, height }: { width: number; height: number },
     quillData?: Delta
   ) => {
+    console.log("lll", width, height);
     const blockData: SlideBlockType = {
       id: dayjs().unix().toString(),
       type,

@@ -32,6 +32,9 @@ $radio-size: 60px;
 
     .quiz-image {
       max-width: 400px;
+      max-height: 500px;
+      object-fit: contain;
+      margin: 0 auto;
     }
 
     .ant-radio-group {
