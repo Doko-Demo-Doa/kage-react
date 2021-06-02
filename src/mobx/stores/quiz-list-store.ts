@@ -38,11 +38,22 @@ export class QuizListStore {
     this.list = [];
   }
 
+  // All
   setQuizTitle = (quizId: string, newTitle: string) => {
     const qi = this.list.findIndex((n) => n.id === quizId);
     if (qi !== -1) {
       const newList = this.list.slice();
       newList[qi].title = newTitle;
+      this.list = newList;
+    }
+  };
+
+  // All
+  setQuizAudio = (quizId: string, mediaName: string) => {
+    const qi = this.list.findIndex((n) => n.id === quizId);
+    if (qi !== -1) {
+      const newList = this.list.slice();
+      newList[qi].audioLink = mediaName;
       this.list = newList;
     }
   };

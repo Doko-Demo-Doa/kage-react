@@ -1,8 +1,10 @@
 import React, { useContext } from "react";
 import { Select, Form, Empty, Space, InputNumber, Checkbox } from "antd";
+import { FileImageFilled, AudioOutlined } from "@ant-design/icons";
 import { observer } from "mobx-react";
 import { StoreContext } from "~/mobx/store-context";
 import { QuizType } from "~/common/static-data";
+import { Colors } from "~/common/colors";
 import { dataUtils } from "~/utils/utils-data";
 import { uiUtils } from "~/utils/utils-ui";
 
@@ -113,6 +115,23 @@ export const QuizDetailEditColumn: React.FC = observer(() => {
               {"Không kiểm tra đúng sai"}
             </Checkbox>
           </Form>
+
+          {(thisQuiz.imageLink || thisQuiz.audioLink) && <hr />}
+
+          {thisQuiz.imageLink && (
+            <div className="media-item">
+              <FileImageFilled style={{ color: Colors.CYAN_HIGH }} />
+              <strong>Ảnh minh hoạ</strong>
+            </div>
+          )}
+
+          {thisQuiz.audioLink && (
+            <div className="media-item">
+              <AudioOutlined style={{ color: Colors.CYAN_HIGH }} />
+              <strong>Audio minh hoạ</strong>
+            </div>
+          )}
+
           <hr />
 
           {getQuizFormComponent()}

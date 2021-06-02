@@ -20,6 +20,22 @@ $column-width: 240px;
     }
 
     .quiz-detail-edit {
+      .media-item {
+        padding: 8px;
+        border: 1px solid transparent;
+        transition: 0.2s linear all;
+
+        strong {
+          margin-left: 8px;
+        }
+
+        &:hover {
+          cursor: pointer;
+          border: 1px solid $color-orange;
+          background-color: $color-gold-light;
+        }
+      }
+
       .ant-select {
         width: 100%;
       }

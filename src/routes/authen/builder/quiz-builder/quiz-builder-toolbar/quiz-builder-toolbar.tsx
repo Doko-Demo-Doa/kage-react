@@ -12,10 +12,16 @@ import "~/routes/authen/builder/quiz-builder/quiz-builder-toolbar/quiz-builder-t
 
 export const QuizBuilderToolbar: React.FC = observer(() => {
   const store = useContext(StoreContext);
-  const { list, newQuiz } = store.quizListStore;
+  const { list, newQuiz, setQuizAudio } = store.quizListStore;
   const deck = store.quizDeckStore;
 
-  async function insertMediaFile() {
+  /**
+   * Chèn media vào quiz.
+   * @param currentQuizIndex Cần biến này là vì trong quá trình convert, user có thể navigate linh tinh sang các tab khác.
+   * Cần phải đặt vững số index để tránh bị insert nhầm.
+   * @returns
+   */
+  async function insertMediaFile(currentQuizIndex: number) {
     const path = await fileUtils.selectSingleFile();
     if (!path) return;
     const mType = fileUtils.detectMediaType(path);
@@ -25,8 +31,10 @@ export const QuizBuilderToolbar: React.FC = observer(() => {
         path,
         quizCacheAssetDir,
         (progress, filePath, fileName, extension) => {
+          const thisQuiz = list[currentQuizIndex];
           if (progress === "end") {
             // Hiển thị message báo convert
+            setQuizAudio(thisQuiz.id, `${fileName}.${extension}`);
             console.log(filePath, fileName, extension);
           }
         }
@@ -55,7 +63,7 @@ export const QuizBuilderToolbar: React.FC = observer(() => {
             icon={<GiftOutlined />}
             size="middle"
             disabled={deck.selectedIndex < 0}
-            onClick={() => insertMediaFile()}
+            onClick={() => insertMediaFile(deck.selectedIndex)}
           />
         </Tooltip>
 

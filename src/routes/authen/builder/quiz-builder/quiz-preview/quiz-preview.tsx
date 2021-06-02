@@ -6,6 +6,7 @@ import { formattingUtils } from "~/utils/utils-formatting";
 import { QuizType } from "~/common/static-data";
 import QuizSingleChoiceModel from "~/mobx/models/quiz-single-choice";
 import QuizMultipleChoicesModel from "~/mobx/models/quiz-multiple-choices";
+import { CustomAudioPlayer } from "~/components/audio-player/audio-player";
 
 import { EditableSelectableDropdown } from "~/components/editable-selectable-dropdown/editable-selectable-dropdown";
 
@@ -80,6 +81,8 @@ export const QuizPreview: React.FC = observer(() => {
         </div>
       ) : (
         <div className="quiz-main">
+          {thisQuiz.audioLink && <CustomAudioPlayer src={thisQuiz.audioLink} />}
+
           <h2 className="quiz-content">
             {formattingUtils.furiganaToJSX(list[selectedIndex]?.title)}
           </h2>

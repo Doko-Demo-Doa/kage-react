@@ -6,4 +6,5 @@ export const Colors = {
   GOLD_LIGHT: "#fff1b8",
   GREEN: "#21a343",
   WHITE: "#FFF",
+  CYAN_HIGH: "#13c2c2",
 };
