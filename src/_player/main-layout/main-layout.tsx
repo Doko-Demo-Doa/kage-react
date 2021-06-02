@@ -7,7 +7,6 @@ import { QuizType } from "~/common/static-data";
 import { dataUtils } from "~/utils/utils-data";
 import { ResultNotification } from "~/_player/result-notification/result-notification";
 import { QuizListItem } from "~/_player/main-layout/quiz-list-item/quiz-list-item";
-import { Countdown } from "~/_player/countdown/countdown";
 
 import QuizSingleChoiceModel from "~/mobx/models/quiz-single-choice";
 import QuizMultipleChoicesModel from "~/mobx/models/quiz-multiple-choices";
@@ -88,7 +87,6 @@ export const MainLayout: React.FC = () => {
           </div>
         </div>
         <ScrollBar className="content">{getProperQuizLayout()}</ScrollBar>
-        <Countdown />
 
         <div className="footer">
           <div className="left-side" onClick={() => showModal()}>

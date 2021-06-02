@@ -28,9 +28,14 @@ export const audioUtils = {
       });
     });
   },
-  // Convert to MP3
+  /**
+   * Convert to MP3
+   * @param filePath file path đầu vào.
+   * @param progressCallback
+   */
   optimizeAudio: (
     filePath: string,
+    outputPath?: string,
     progressCallback?: (
       percent: number | string,
       filePath: string,
@@ -47,7 +52,7 @@ export const audioUtils = {
 
     if (isAudio) {
       const tempName = `${dayjs().unix()}.${NORMALIZED_EXT}`;
-      const dest = path.join(fileUtils.getCacheDirectory("assets"), tempName);
+      const dest = path.join(outputPath || fileUtils.getCacheDirectory("assets"), tempName);
       const cmd = ffmpeg()
         .on("progress", function (data: any) {
           // console.log("[ffmpeg]:", data);

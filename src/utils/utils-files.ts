@@ -12,19 +12,38 @@ const CACHE_DIR_NAME = "kage-cache";
 const EXPORT_DIR_NAME = "slide_export";
 
 /**
- * assets: Chứa các file ảnh, audio, video đã qua xử lý.
- * quiz: Chứa các file quiz json tạo ra từ quiz builder.
+ * - assets: Chứa các file ảnh, audio, video đã qua xử lý.
+ * - quiz: Chứa các file quiz json tạo ra từ quiz builder.
+ * - vendor: Chứa các file code từ bên thứ 3.
+ *
  * @param type Tên loại thư mục cần lấy ra từ cache:
- * @returns
+ * @returns String path đã chuẩn hoá trên các hệ điều hành
  */
-function getCacheDirectory(type?: "assets" | "quiz" | "vendor" | "") {
-  if (fsNotAvailable()) return;
+function getCacheDirectory(type?: "assets" | "quiz" | "vendor" | ""): string {
+  if (fsNotAvailable()) return "";
 
   const subdir = type !== undefined ? type : "";
 
   const remote = require("electron").remote;
   const path = remote.require("path");
   const cPath = path.join(remote.app.getPath("cache"), CACHE_DIR_NAME, subdir);
+  return cPath.replace(/\\/g, "/");
+}
+
+/**
+ * Lấy path của folder quiz cache. Nằm ở kage-cache/quiz
+ * Nếu có type thì lấy path thư mục con là tên của type.
+ * VD: kage-cache/quiz/assets hay kage-cache/quiz/vendor
+ */
+function getQuizCacheDirectory(type?: "assets" | "vendor") {
+  if (fsNotAvailable()) return "";
+
+  const subdir = type !== undefined ? type : "";
+
+  const remote = require("electron").remote;
+  const path = remote.require("path");
+  const cPath = path.join(getCacheDirectory("quiz"), subdir);
+
   return cPath.replace(/\\/g, "/");
 }
 
@@ -168,6 +187,7 @@ export const fileUtils = {
     return remote.app.getPath("cache");
   },
   getCacheDirectory,
+  getQuizCacheDirectory,
   createFilePathAtCacheDir: (filename: string) => {
     if (fsNotAvailable()) return;
     const remote = require("electron").remote;

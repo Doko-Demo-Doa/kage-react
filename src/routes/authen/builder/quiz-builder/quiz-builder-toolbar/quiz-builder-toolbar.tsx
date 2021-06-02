@@ -5,6 +5,7 @@ import { PlusOutlined, BackwardFilled, GiftOutlined, LoadingOutlined } from "@an
 import { StoreContext } from "~/mobx/store-context";
 import { EventBus } from "~/services/events-helper";
 import { fileUtils } from "~/utils/utils-files";
+import { audioUtils } from "~/utils/utils-conversions";
 import { MediaType } from "~/common/static-data";
 
 import "~/routes/authen/builder/quiz-builder/quiz-builder-toolbar/quiz-builder-toolbar.scss";
@@ -16,11 +17,19 @@ export const QuizBuilderToolbar: React.FC = observer(() => {
 
   async function insertMediaFile() {
     const path = await fileUtils.selectSingleFile();
-    if (path) {
-      const mType = fileUtils.detectMediaType(path);
-      if (mType === MediaType.AUDIO) {
-        // Code
-      }
+    if (!path) return;
+    const mType = fileUtils.detectMediaType(path);
+    if (mType === MediaType.AUDIO) {
+      audioUtils.optimizeAudio(
+        path,
+        fileUtils.getQuizCacheDirectory("assets"),
+        (progress, filePath, fileName, extension) => {
+          if (progress === "end") {
+            // Hiển thị message báo convert
+            console.log(fileName, extension);
+          }
+        }
+      );
     }
   }
 

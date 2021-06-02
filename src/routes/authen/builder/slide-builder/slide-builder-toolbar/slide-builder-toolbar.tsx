@@ -72,7 +72,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
         insertBlock(mType, fileName, extension, extra);
         return;
       } else if (mType === MediaType.AUDIO) {
-        audioUtils.optimizeAudio(path, (progress, filePath, fileName, extension) => {
+        audioUtils.optimizeAudio(path, undefined, (progress, filePath, fileName, extension) => {
           if (progress === "end") {
             // Hiển thị message báo convert
             console.log(fileName, extension);
