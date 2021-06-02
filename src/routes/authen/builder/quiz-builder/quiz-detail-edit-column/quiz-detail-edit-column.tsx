@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Select, Form, Empty, Checkbox } from "antd";
+import { Select, Form, Empty, Space, InputNumber, Checkbox } from "antd";
 import { observer } from "mobx-react";
 import { StoreContext } from "~/mobx/store-context";
 import { QuizType } from "~/common/static-data";
@@ -33,7 +33,7 @@ const options = [
 export const QuizDetailEditColumn: React.FC = observer(() => {
   const store = useContext(StoreContext);
   const { selectedIndex } = store.quizDeckStore;
-  const { list, setQuizType, toggleAutoAudit } = store.quizListStore;
+  const { list, setQuizType, setCountdown, toggleAutoAudit } = store.quizListStore;
 
   const thisQuiz = list[selectedIndex];
 
@@ -82,6 +82,28 @@ export const QuizDetailEditColumn: React.FC = observer(() => {
                   </Option>
                 ))}
               </Select>
+            </Form.Item>
+
+            <Form.Item>
+              <Space direction="vertical">
+                <Checkbox
+                  onChange={() => {
+                    setCountdown(thisQuiz.id, (thisQuiz.countdown || 0) < 0 ? 60 : -1);
+                  }}
+                  checked={(thisQuiz.countdown || 0) > 0}
+                >
+                  Giới hạn thời gian (giây)
+                </Checkbox>
+                {(thisQuiz.countdown || 0) > 0 && (
+                  <InputNumber
+                    min={1}
+                    max={9999}
+                    defaultValue={60}
+                    onChange={(v) => setCountdown(thisQuiz.id, v)}
+                    value={thisQuiz.countdown}
+                  />
+                )}
+              </Space>
             </Form.Item>
 
             <Checkbox

@@ -20,13 +20,14 @@ export const QuizBuilderToolbar: React.FC = observer(() => {
     if (!path) return;
     const mType = fileUtils.detectMediaType(path);
     if (mType === MediaType.AUDIO) {
+      const quizCacheAssetDir = fileUtils.getQuizCacheDirectory("assets");
       audioUtils.optimizeAudio(
         path,
-        fileUtils.getQuizCacheDirectory("assets"),
+        quizCacheAssetDir,
         (progress, filePath, fileName, extension) => {
           if (progress === "end") {
             // Hiển thị message báo convert
-            console.log(fileName, extension);
+            console.log(filePath, fileName, extension);
           }
         }
       );
@@ -53,6 +54,7 @@ export const QuizBuilderToolbar: React.FC = observer(() => {
             type="link"
             icon={<GiftOutlined />}
             size="middle"
+            disabled={deck.selectedIndex < 0}
             onClick={() => insertMediaFile()}
           />
         </Tooltip>

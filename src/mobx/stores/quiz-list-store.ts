@@ -68,6 +68,17 @@ export class QuizListStore {
     }
   }
 
+  setCountdown(quizId: string, newCountdown: number) {
+    const qi = this.list.findIndex((n) => n.id === quizId);
+    if (qi !== -1) {
+      const newList = this.list.slice();
+      const target = newList[qi] as QuizSingleChoiceModel;
+      target.countdown = newCountdown;
+      newList[qi] = target;
+      this.list = newList;
+    }
+  }
+
   toggleAutoAudit(quizId: string, isAutoAudit: boolean) {
     const qi = this.list.findIndex((n) => n.id === quizId);
 

@@ -168,6 +168,7 @@ export const fileUtils = {
     const quizDir = getCacheDirectory("quiz");
     if (!fs.existsSync(quizDir)) {
       fs.mkdirSync(quizDir);
+      fs.mkdirSync(`${quizDir}/assets`);
     }
 
     let resourcePath = "";

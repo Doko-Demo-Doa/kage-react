@@ -17,7 +17,7 @@ export default class QuizModel {
   constructor() {
     this.id = dataUtils.generateUid();
     this.type = QuizType.SINGLE_CHOICE;
-    this.countdown = 0;
+    this.countdown = -1;
     this.title = "";
     this.note = "";
     this.hint = "";

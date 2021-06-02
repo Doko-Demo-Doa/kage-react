@@ -51,6 +51,7 @@ export const audioUtils = {
     const NORMALIZED_EXT = "mp3";
 
     if (isAudio) {
+      // Đầu tiên ta convert audio với file name là <unix timestamp>.<đuôi file>
       const tempName = `${dayjs().unix()}.${NORMALIZED_EXT}`;
       const dest = path.join(outputPath || fileUtils.getCacheDirectory("assets"), tempName);
       const cmd = ffmpeg()
@@ -59,9 +60,10 @@ export const audioUtils = {
           progressCallback?.(data.percent, "", "", "");
         })
         .on("end", function () {
+          // Sau khi convert xong thì tính toán CRC32 (1 dạng hash giống MD5 nhưng ngắn hơn) của file đầu ra và đặt tên cho nó.
           const newName = fileUtils.getCRC32(dest);
           const newDest = path.join(
-            fileUtils.getCacheDirectory("assets"),
+            outputPath || fileUtils.getCacheDirectory("assets"),
             `${newName}.${NORMALIZED_EXT}`
           );
           fs.renameSync(dest, newDest);
