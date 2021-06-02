@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import { Space, Button } from "antd";
+import { Space, Button, Tooltip } from "antd";
 import { observer } from "mobx-react";
-import { PlusOutlined, SoundOutlined, PictureFilled, BackwardFilled } from "@ant-design/icons";
+import { PlusOutlined, BackwardFilled, GiftOutlined } from "@ant-design/icons";
 import { StoreContext } from "~/mobx/store-context";
 import { EventBus } from "~/services/events-helper";
 
@@ -12,6 +12,10 @@ export const QuizBuilderToolbar: React.FC = observer(() => {
   const store = useContext(StoreContext);
   const { list } = store.quizListStore;
   const deck = store.quizDeckStore;
+
+  function insertMediaFile() {
+    // Code
+  }
 
   return (
     <div className="quiz-builder-toolbar">
@@ -25,9 +29,14 @@ export const QuizBuilderToolbar: React.FC = observer(() => {
           Tạo quiz mới
         </Button>
 
-        <Button type="link" icon={<PictureFilled />} size="middle" />
-
-        <Button type="link" icon={<SoundOutlined />} size="middle" />
+        <Tooltip placement="bottom" title="Chèn ảnh / video">
+          <Button
+            type="link"
+            icon={<GiftOutlined />}
+            size="middle"
+            onClick={() => insertMediaFile()}
+          />
+        </Tooltip>
 
         <hr />
         <div>Bạn đang edit bộ quiz nằm ở slide số 12</div>

@@ -1,5 +1,5 @@
 import fs from "fs-extra";
-import { isEmpty } from "rambdax";
+import { isEmpty, union } from "rambdax";
 import dayjs from "dayjs";
 import { MediaType, RESOURCE_PROTOCOL } from "~/common/static-data";
 import QuizDeckModel from "~/mobx/models/quiz-deck";
@@ -100,14 +100,25 @@ export const fileUtils = {
       filters: [{ name: "Ảnh", extensions: ["jpg", "png", "gif"] }],
     });
   },
-  selectSingleFile: () => {
+  selectSingleFile: (specificType?: MediaType) => {
     if (fsNotAvailable()) return;
-    const imageTypes = ["jpg", "png", "gif"];
-    const videoTypes = ["webm", "avi", "mp4", "mkv"];
+    const imageTypes = ["jpg", "png", "gif", "webp"];
+    const videoTypes = ["webm", "avi", "mp4", "mkv", "wmv"];
     const audioTypes = ["mp3", "aac", "ogg", "ts", "flac"];
+    let filterz: string[] = [];
+    if (specificType === MediaType.IMAGE) {
+      filterz = union(filterz, imageTypes).slice();
+    }
+    if (specificType === MediaType.VIDEO) {
+      filterz = union(filterz, videoTypes).slice();
+    }
+    if (specificType === MediaType.AUDIO) {
+      filterz = union(filterz, audioTypes).slice();
+    }
+
     return require("electron").remote.dialog.showOpenDialog({
       properties: ["openFile", "dontAddToRecent"],
-      filters: [{ name: "Media", extensions: [...imageTypes, ...videoTypes, ...audioTypes] }],
+      filters: [{ name: "Media", extensions: filterz }],
     });
   },
   getWorkingDirectory: () => {
