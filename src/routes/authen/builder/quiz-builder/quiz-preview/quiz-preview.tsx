@@ -1,8 +1,10 @@
 import React, { useContext } from "react";
 import { observer } from "mobx-react";
 import { Radio, Space, Checkbox } from "antd";
+import ScrollBar from "react-perfect-scrollbar";
 import { StoreContext } from "~/mobx/store-context";
 import { formattingUtils } from "~/utils/utils-formatting";
+import { fileUtils } from "~/utils/utils-files";
 import { QuizType } from "~/common/static-data";
 import QuizSingleChoiceModel from "~/mobx/models/quiz-single-choice";
 import QuizMultipleChoicesModel from "~/mobx/models/quiz-multiple-choices";
@@ -73,7 +75,7 @@ export const QuizPreview: React.FC = observer(() => {
   }
 
   return (
-    <div className="quiz-preview" role="quiz-preview">
+    <ScrollBar className="quiz-preview" role="quiz-preview">
       {!thisQuiz ? (
         <div className="quiz-intro">
           <h1>{formattingUtils.furiganaToJSX(name)}</h1>
@@ -81,7 +83,20 @@ export const QuizPreview: React.FC = observer(() => {
         </div>
       ) : (
         <div className="quiz-main">
-          {thisQuiz.audioLink && <CustomAudioPlayer src={thisQuiz.audioLink} />}
+          {thisQuiz.audioLink && (
+            <CustomAudioPlayer
+              src={fileUtils.getUsableQuizAssetUrl(thisQuiz.audioLink)}
+              style={{ width: "100%" }}
+            />
+          )}
+
+          {thisQuiz.imageLink && (
+            <img
+              alt="minh-hoa"
+              className="quiz-image"
+              src={fileUtils.getUsableQuizAssetUrl(thisQuiz.imageLink)}
+            />
+          )}
 
           <h2 className="quiz-content">
             {formattingUtils.furiganaToJSX(list[selectedIndex]?.title)}
@@ -90,6 +105,6 @@ export const QuizPreview: React.FC = observer(() => {
           {getQuizContentLayout()}
         </div>
       )}
-    </div>
+    </ScrollBar>
   );
 });

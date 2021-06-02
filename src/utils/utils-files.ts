@@ -206,6 +206,9 @@ export const fileUtils = {
    * @param quizArray The quiz array
    * @returns void
    */
+  getUsableQuizAssetUrl: (assetName: string) => {
+    return `${RESOURCE_PROTOCOL}${getQuizCacheDirectory("assets")}/${assetName}`;
+  },
   exportQuizToFile: async (quizMeta: QuizDeckModel, quizArray: any[]) => {
     if (fsNotAvailable()) return;
     const data = await require("electron").remote.dialog.showSaveDialog({

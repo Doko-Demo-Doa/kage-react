@@ -1,9 +1,6 @@
 $radio-size: 60px;
 
 .quiz-preview {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   padding: 0 4rem;
   flex-grow: 2;
   width: 220px;
@@ -28,10 +25,14 @@ $radio-size: 60px;
   }
 
   .quiz-main {
-    padding: 0 2rem;
+    padding: 1rem 2rem;
     min-width: 86%;
     text-align: start;
     user-select: none;
+
+    .quiz-image {
+      max-width: 400px;
+    }
 
     .ant-radio-group {
       transform: scale(1.2);

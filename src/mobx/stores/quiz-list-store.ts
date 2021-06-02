@@ -58,6 +58,15 @@ export class QuizListStore {
     }
   };
 
+  setQuizImage = (quizId: string, mediaName: string) => {
+    const qi = this.list.findIndex((n) => n.id === quizId);
+    if (qi !== -1) {
+      const newList = this.list.slice();
+      newList[qi].imageLink = mediaName;
+      this.list = newList;
+    }
+  };
+
   // All
   setQuizType(quizId: string, newType: QuizType) {
     const qi = this.list.findIndex((n) => n.id === quizId);

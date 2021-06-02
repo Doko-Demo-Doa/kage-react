@@ -100,7 +100,7 @@ export const imageUtils = {
    * @param filePath Input file path, use "path.join" to concentrate directories.
    * @returns Optimized file path.
    */
-  optimizeImage: async (filePath: string): Promise<MediaReturnType> => {
+  optimizeImage: async (filePath: string, customOutput?: string): Promise<MediaReturnType> => {
     const remote = require("electron").remote;
     const path = remote.require("path");
     const sharp = remote.require("sharp");
@@ -118,7 +118,7 @@ export const imageUtils = {
     const name = crc32(dataBuf).toString(16);
 
     const EXT = "png";
-    const dest = path.join(fileUtils.getCacheDirectory("assets"), `${name}.${EXT}`);
+    const dest = path.join(customOutput || fileUtils.getCacheDirectory("assets"), `${name}.${EXT}`);
 
     fs.writeFileSync(dest, dataBuf);
 
