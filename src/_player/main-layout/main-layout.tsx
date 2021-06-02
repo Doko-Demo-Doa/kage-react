@@ -22,24 +22,24 @@ const sample = require("~/_player/assets/quiz-sample.json");
 
 import "~/_player/main-layout/main-layout.scss";
 
-const menu = (
-  <Menu>
-    <Menu.Item key="head" disabled>
-      <QuizListItem isHead />
-    </Menu.Item>
-    {sample.quizzes.map((n: QuizModel) => {
-      const qType = n.type as QuizType;
-      return (
-        <Menu.Item key={n.id}>
-          <QuizListItem type={qType} score={23} tagline={dataUtils.mapQuizLabel(qType)} />
-        </Menu.Item>
-      );
-    })}
-  </Menu>
-);
-
 export const MainLayout: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(-1);
+
+  const menu = (
+    <Menu>
+      <Menu.Item key="head" disabled>
+        <QuizListItem isHead />
+      </Menu.Item>
+      {sample.quizzes.map((n: QuizModel, idx: number) => {
+        const qType = n.type as QuizType;
+        return (
+          <Menu.Item key={n.id} onClick={() => setActiveIndex(idx)}>
+            <QuizListItem type={qType} score={23} tagline={dataUtils.mapQuizLabel(qType)} />
+          </Menu.Item>
+        );
+      })}
+    </Menu>
+  );
 
   function getProperQuizLayout() {
     if (activeIndex === -1) {
