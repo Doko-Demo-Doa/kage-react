@@ -1,20 +1,27 @@
 import React, { useContext } from "react";
 import { Space, Button, Tooltip } from "antd";
 import { observer } from "mobx-react";
-import { PlusOutlined, BackwardFilled, GiftOutlined } from "@ant-design/icons";
+import { PlusOutlined, BackwardFilled, GiftOutlined, LoadingOutlined } from "@ant-design/icons";
 import { StoreContext } from "~/mobx/store-context";
 import { EventBus } from "~/services/events-helper";
+import { fileUtils } from "~/utils/utils-files";
+import { MediaType } from "~/common/static-data";
 
 import "~/routes/authen/builder/quiz-builder/quiz-builder-toolbar/quiz-builder-toolbar.scss";
-import { fileUtils } from "~/utils/utils-files";
 
 export const QuizBuilderToolbar: React.FC = observer(() => {
   const store = useContext(StoreContext);
   const { list, newQuiz } = store.quizListStore;
   const deck = store.quizDeckStore;
 
-  function insertMediaFile() {
-    // Code
+  async function insertMediaFile() {
+    const path = await fileUtils.selectSingleFile();
+    if (path) {
+      const mType = fileUtils.detectMediaType(path);
+      if (mType === MediaType.AUDIO) {
+        // Code
+      }
+    }
   }
 
   return (
@@ -65,6 +72,10 @@ export const QuizBuilderToolbar: React.FC = observer(() => {
         >
           Xuất ra file quiz
         </Button>
+
+        <div className="holder" />
+
+        <LoadingOutlined />
       </Space>
     </div>
   );

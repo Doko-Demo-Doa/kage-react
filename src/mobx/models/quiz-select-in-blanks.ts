@@ -4,8 +4,6 @@ import { BlankMatcher } from "~/typings/types";
 
 // Single quiz object.
 export default class QuizSelectInBlanksModel extends QuizModel {
-  audioLink?: string;
-  imageVideoLink?: string;
   matchers: BlankMatcher[];
 
   constructor() {

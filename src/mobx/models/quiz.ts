@@ -5,6 +5,8 @@ import { dataUtils } from "~/utils/utils-data";
 export default class QuizModel {
   id: string;
   type: QuizType;
+  imageLink?: string;
+  audioLink?: string;
   countdown?: number;
   title?: string;
   note?: string;
