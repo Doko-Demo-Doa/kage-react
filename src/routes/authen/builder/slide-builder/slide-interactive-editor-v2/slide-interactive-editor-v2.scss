@@ -3,8 +3,10 @@
   resize: horizontal;
   overflow: auto;
   padding: 0;
-  width: 740px;
-  height: 540px;
+  width: auto;
+  min-width: $interactive-editor-width;
+  height: auto;
+  min-height: $interactive-editor-height;
   overflow: hidden;
   // width: calc(100vw - #{$slide-list-width} - #{$entities-width});
   // height: calc(100vh - #{$header-height});
