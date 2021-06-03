@@ -33,18 +33,33 @@ export class SlideListStore {
   //   this.value = yield response.json()
   // }
 
+  duplicateSlideAt(index: number) {
+    const sourceSlide = this.list[index];
+    if (sourceSlide) {
+      const insertedItem = { ...sourceSlide };
+      insertedItem.id = dataUtils.generateShortUid();
+      const newL = this.list.slice();
+      newL.splice(index, 0, insertedItem);
+      this.list = newL;
+    }
+  }
+
   setList(newList: SlideType[]) {
     this.list = newList;
   }
 
   selectBlock(blockId: string) {
     const idx = this.rootStore.slideBuilderStore.selectedIndex;
-    this.list[idx].selectedBlock = blockId;
+    const newL = this.list.slice();
+    newL[idx].selectedBlock = blockId;
+    this.list = newL;
   }
 
   setTitle(newTitle: string) {
     const idx = this.rootStore.slideBuilderStore.selectedIndex;
-    this.list[idx].title = newTitle;
+    const newL = this.list.slice();
+    newL[idx].title = newTitle;
+    this.list = newL;
   }
 
   toggleAnimation(blockId: string) {

@@ -8,6 +8,7 @@ import {
   FolderOpenFilled,
   PictureFilled,
   MessageOutlined,
+  FileAddFilled,
   TableOutlined,
 } from "@ant-design/icons";
 import dayjs from "dayjs";
@@ -179,6 +180,9 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
       <Space>
         <Button icon={<PlusOutlined />} type="primary" ghost onClick={() => onNewSlide()}>
           Tạo Slide mới
+        </Button>
+        <Button icon={<FileAddFilled />} type="primary" ghost onClick={() => onNewSlide()}>
+          Tạo bộ quiz mới
         </Button>
         <Button
           type="link"
