@@ -29,16 +29,25 @@ $radio-size: 60px;
     min-width: 86%;
     text-align: start;
     user-select: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     .quiz-image {
       max-width: 400px;
       max-height: 500px;
       object-fit: contain;
-      margin: 0 auto;
+      margin: 1.6rem auto;
     }
 
-    .ant-radio-group {
-      transform: scale(1.2);
+    .radio-selections {
+      align-self: flex-start;
+      padding: 0 24px;
+      width: 100%;
+
+      .ant-radio-group {
+        transform: scale(1.2);
+      }
     }
 
     .quiz-select-in-blanks-preview {

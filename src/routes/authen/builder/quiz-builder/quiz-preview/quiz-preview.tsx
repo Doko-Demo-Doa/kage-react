@@ -25,15 +25,17 @@ export const QuizPreview: React.FC = observer(() => {
     if (thisQuiz.type === QuizType.SINGLE_CHOICE) {
       const q = thisQuiz as QuizSingleChoiceModel;
       return (
-        <Radio.Group value={q.correctIndex}>
-          <Space direction="vertical">
-            {q.choices.map((n, idx) => (
-              <Radio key={idx} value={idx}>
-                {n.label}
-              </Radio>
-            ))}
-          </Space>
-        </Radio.Group>
+        <div className="radio-selections">
+          <Radio.Group value={q.correctIndex}>
+            <Space direction="vertical">
+              {q.choices.map((n, idx) => (
+                <Radio key={idx} value={idx}>
+                  {n.label}
+                </Radio>
+              ))}
+            </Space>
+          </Radio.Group>
+        </div>
       );
     }
     if (thisQuiz.type === QuizType.MULTIPLE_CHOICES) {

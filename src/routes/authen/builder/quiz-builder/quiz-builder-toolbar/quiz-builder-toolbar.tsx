@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
-import { Space, Button, Tooltip } from "antd";
+import React, { useContext, useState } from "react";
+import { Space, Button, Tooltip, Spin } from "antd";
 import { observer } from "mobx-react";
-import { PlusOutlined, BackwardFilled, GiftOutlined, LoadingOutlined } from "@ant-design/icons";
+import { PlusOutlined, BackwardFilled, GiftOutlined } from "@ant-design/icons";
 import { StoreContext } from "~/mobx/store-context";
 import { EventBus } from "~/services/events-helper";
 import { fileUtils } from "~/utils/utils-files";
@@ -11,6 +11,8 @@ import { MediaType } from "~/common/static-data";
 import "~/routes/authen/builder/quiz-builder/quiz-builder-toolbar/quiz-builder-toolbar.scss";
 
 export const QuizBuilderToolbar: React.FC = observer(() => {
+  const [isLoading, setLoading] = useState(false);
+
   const store = useContext(StoreContext);
   const { list, newQuiz, setQuizAudio, setQuizImage } = store.quizListStore;
   const deck = store.quizDeckStore;
@@ -28,6 +30,7 @@ export const QuizBuilderToolbar: React.FC = observer(() => {
     if (mType === MediaType.AUDIO) {
       // Audio
       const quizCacheAssetDir = fileUtils.getQuizCacheDirectory("assets");
+      setLoading(true);
       audioUtils.optimizeAudio(
         path,
         quizCacheAssetDir,
@@ -37,6 +40,7 @@ export const QuizBuilderToolbar: React.FC = observer(() => {
             // Hiển thị message báo convert
             setQuizAudio(thisQuiz.id, `${fileName}.${extension}`);
             console.log(filePath, fileName, extension);
+            setLoading(false);
           }
         }
       );
@@ -103,7 +107,7 @@ export const QuizBuilderToolbar: React.FC = observer(() => {
 
         <div className="holder" />
 
-        <LoadingOutlined />
+        <Spin spinning={isLoading} />
       </Space>
     </div>
   );
