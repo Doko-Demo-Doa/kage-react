@@ -9,6 +9,7 @@ export type SlideType = {
   id: string;
   title?: string;
   theme?: string;
+  linkedQuizId?: string;
   selectedBlock?: string;
   slideBlocks: SlideBlockType[];
   animations: SlideAnimationType[];

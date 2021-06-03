@@ -1,5 +1,6 @@
 import { useContext } from "react";
-
+import { Result, Button } from "antd";
+import { FileUnknownOutlined } from "@ant-design/icons";
 import { observer } from "mobx-react";
 import { formattingUtils } from "~/utils/utils-formatting";
 import { StoreContext } from "~/mobx/store-context";
@@ -25,43 +26,53 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
   const blocks = list[selectedIndex]?.slideBlocks ?? [];
   const anims = list[selectedIndex]?.animations ?? [];
 
-  // Nếu lỗi thì bỏ hết những children trong Layer.
-  return (
-    <>
-      <div id="slide-interactive-editor">
-        <h1 className="slide-title">
-          {formattingUtils.htmlToJSX(formattingUtils.furiganaTemplateToHTML(slideTitle || ""))}
-        </h1>
+  const quizId = list[selectedIndex]?.linkedQuizId;
 
-        {blocks.map((n, i) => {
-          return (
-            <SlideBlock
-              key={i}
-              {...n}
-              animations={anims}
-              selected={n.id === list[selectedIndex]?.selectedBlock}
-              onSelect={(blockId) => {
-                selectBlock(blockId);
-              }}
-              onDrag={(blockId, pos) => {
-                dragBlock(blockId, pos);
-              }}
-              onDragAnchor={(blockId, pos) => {
-                dragAnchor(blockId, pos);
-              }}
-              onResized={(blockId, pos, size) => {
-                resizeBlock(blockId, pos, size);
-              }}
-              onTextChanged={(blockId, newText) => {
-                modifyTextBlock(blockId, newText);
-              }}
-              onToggleAnimation={(blockId) => {
-                toggleAnimation(blockId);
-              }}
-            />
-          );
-        })}
-      </div>
-    </>
+  // Nếu lỗi thì bỏ hết những children trong Layer.
+  return !quizId ? (
+    <div id="slide-interactive-editor">
+      <h1 className="slide-title">
+        {formattingUtils.htmlToJSX(formattingUtils.furiganaTemplateToHTML(slideTitle || ""))}
+      </h1>
+
+      {blocks.map((n, i) => {
+        return (
+          <SlideBlock
+            key={i}
+            {...n}
+            animations={anims}
+            selected={n.id === list[selectedIndex]?.selectedBlock}
+            onSelect={(blockId) => {
+              selectBlock(blockId);
+            }}
+            onDrag={(blockId, pos) => {
+              dragBlock(blockId, pos);
+            }}
+            onDragAnchor={(blockId, pos) => {
+              dragAnchor(blockId, pos);
+            }}
+            onResized={(blockId, pos, size) => {
+              resizeBlock(blockId, pos, size);
+            }}
+            onTextChanged={(blockId, newText) => {
+              modifyTextBlock(blockId, newText);
+            }}
+            onToggleAnimation={(blockId) => {
+              toggleAnimation(blockId);
+            }}
+          />
+        );
+      })}
+    </div>
+  ) : (
+    <div id="quiz-placeholder-p">
+      <Result
+        icon={<FileUnknownOutlined />}
+        title="Đây là slide chứa quiz"
+        subTitle={`ID: ${quizId}`}
+        extra={<Button type="primary">Sang trang chỉnh sửa quiz</Button>}
+      />
+      ,
+    </div>
   );
 });

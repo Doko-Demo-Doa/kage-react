@@ -6,6 +6,7 @@ import "~/routes/authen/builder/slide-builder/slide-list/slide-thumbnail/slide-t
 type SlideThumbnailProps = {
   id?: string;
   index: number;
+  linkedQuizId?: string;
   title?: string;
   inactive?: boolean;
   onClick: (idx: number) => void | undefined;
@@ -15,6 +16,7 @@ type SlideThumbnailProps = {
 
 export const SlideThumbnail: React.FC<SlideThumbnailProps> = ({
   id,
+  linkedQuizId,
   index,
   title,
   inactive,
@@ -41,9 +43,20 @@ export const SlideThumbnail: React.FC<SlideThumbnailProps> = ({
         onClick={() => onClick(index)}
       >
         <div className="counter">{index + 1}</div>
+
         <div className="block-inside">
-          <div className="title">{title?.length ?? 0 > 16 ? title?.substring(0, 15) : title}</div>
-          <div className="bord" />
+          {!linkedQuizId ? (
+            <>
+              <div className="title">
+                {title?.length ?? 0 > 16 ? title?.substring(0, 15) : title}
+              </div>
+              <div className="bord" />
+            </>
+          ) : (
+            <div className="quiz-set-placeholder">
+              <strong>Quiz</strong>
+            </div>
+          )}
         </div>
       </div>
     </Dropdown>

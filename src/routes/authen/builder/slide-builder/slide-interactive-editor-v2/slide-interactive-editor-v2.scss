@@ -1,3 +1,10 @@
+#quiz-placeholder-p {
+  width: auto;
+  height: auto;
+  min-width: $interactive-editor-width;
+  min-height: $interactive-editor-height;
+}
+
 #slide-interactive-editor {
   box-sizing: border-box;
   resize: horizontal;

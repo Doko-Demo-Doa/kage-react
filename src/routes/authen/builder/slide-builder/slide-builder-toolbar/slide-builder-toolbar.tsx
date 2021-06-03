@@ -31,7 +31,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
   const [tableConstructorVisible, setTableConstructorVisible] = useState(false);
 
   const store = useContext(StoreContext);
-  const { list, setList, newSlide } = store.slideListStore;
+  const { list, setList, newSlide, newQuizSet } = store.slideListStore;
   const slideBuilderMeta = store.slideBuilderStore;
 
   const shouldDisable = list.length <= 0;
@@ -181,7 +181,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
         <Button icon={<PlusOutlined />} type="primary" ghost onClick={() => onNewSlide()}>
           Tạo Slide mới
         </Button>
-        <Button icon={<FileAddFilled />} type="primary" ghost onClick={() => onNewSlide()}>
+        <Button icon={<FileAddFilled />} type="primary" ghost onClick={() => newQuizSet()}>
           Tạo bộ quiz mới
         </Button>
         <Button

@@ -64,6 +64,7 @@ export const SlideList: React.FC = observer(() => {
             <Draggable key={n.id}>
               <SlideThumbnail
                 id={n.id}
+                linkedQuizId={n.linkedQuizId}
                 onClick={(index) => onClickSlide(index)}
                 onClickDuplicate={(idx) => onDuplicateSlide(idx)}
                 title={n?.title}

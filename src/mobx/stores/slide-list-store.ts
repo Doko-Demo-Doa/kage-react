@@ -27,6 +27,17 @@ export class SlideListStore {
     this.list.push(newSlide);
   }
 
+  newQuizSet() {
+    const newSlide: SlideType = {
+      id: dataUtils.generateShortUid(),
+      linkedQuizId: dataUtils.generateShortUid(),
+      slideBlocks: [],
+      animations: [],
+    };
+
+    this.list.push(newSlide);
+  }
+
   // Use async:
   // *flow() {
   //   const response = yield fetch("http://example.com/value")
