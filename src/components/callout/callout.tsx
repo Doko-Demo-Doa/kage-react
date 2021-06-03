@@ -203,7 +203,6 @@ export const Calllout: React.FC<Props> = ({
   };
 
   const _onPointerDrag: DraggableEventHandler = (e, d) => {
-    // TODO: Kiểm tra xem tại sao lại là 15.
     const destination = { x: d.x + OFFSET, y: d.y + OFFSET };
     const pointerState = getPointer(localBox, destination);
     setLocalPointer(pointerState);

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Select, Form, Empty, Space, InputNumber, Checkbox } from "antd";
+import { Select, Form, Empty, Space, InputNumber, Checkbox, Input } from "antd";
 import { FileImageFilled, AudioOutlined } from "@ant-design/icons";
 import { observer } from "mobx-react";
 import { StoreContext } from "~/mobx/store-context";
@@ -108,12 +108,18 @@ export const QuizDetailEditColumn: React.FC = observer(() => {
               </Space>
             </Form.Item>
 
-            <Checkbox
-              checked={thisQuiz.autoAudit}
-              onChange={() => toggleAutoAudit(thisQuiz.id, !thisQuiz.autoAudit)}
-            >
-              {"Không kiểm tra đúng sai"}
-            </Checkbox>
+            <Form.Item>
+              <Checkbox
+                checked={thisQuiz.autoAudit}
+                onChange={() => toggleAutoAudit(thisQuiz.id, !thisQuiz.autoAudit)}
+              >
+                {"Không kiểm tra đúng sai"}
+              </Checkbox>
+            </Form.Item>
+            <br />
+            <Form.Item label="Gợi ý đáp án (?)">
+              <Input placeholder="Gợi ý" />
+            </Form.Item>
           </Form>
 
           {(thisQuiz.imageLink || thisQuiz.audioLink) && <hr />}
