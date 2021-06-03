@@ -40,7 +40,7 @@ export const SlideThumbnail: React.FC<SlideThumbnailProps> = ({
       <div
         id={id}
         className={clsx("slide-thumbnail", inactive ? "slide-thumbnail-inactive" : "")}
-        onClick={() => onClick(index)}
+        onMouseDown={() => onClick(index)}
       >
         <div className="counter">{index + 1}</div>
 

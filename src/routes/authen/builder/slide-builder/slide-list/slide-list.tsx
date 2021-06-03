@@ -58,7 +58,10 @@ export const SlideList: React.FC = observer(() => {
     >
       <ScrollBar id="slide-list" options={{ suppressScrollX: true }} tabIndex={1}>
         <Container
-          onDrop={(e) => store.slideListStore.setList(dataUtils.createSortedList(list, e))}
+          onDrop={(e) => {
+            store.slideListStore.setList(dataUtils.createSortedList(list, e));
+            e.addedIndex && onClickSlide(e.addedIndex);
+          }}
         >
           {list.map((n, idx) => (
             <Draggable key={n.id}>

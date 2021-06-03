@@ -27,10 +27,10 @@ export class SlideListStore {
     this.list.push(newSlide);
   }
 
-  newQuizSet() {
+  newQuizSet(customId?: string) {
     const newSlide: SlideType = {
       id: dataUtils.generateShortUid(),
-      linkedQuizId: dataUtils.generateShortUid(),
+      linkedQuizId: customId || dataUtils.generateShortUid(),
       slideBlocks: [],
       animations: [],
     };

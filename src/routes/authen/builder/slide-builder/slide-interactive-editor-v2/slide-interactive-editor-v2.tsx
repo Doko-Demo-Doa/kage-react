@@ -68,8 +68,9 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
     <div id="quiz-placeholder-p">
       <Result
         icon={<FileUnknownOutlined />}
-        title="Đây là slide chứa quiz"
+        title="Đây là trang quiz"
         subTitle={`ID: ${quizId}`}
+        status="success"
         extra={<Button type="primary">Sang trang chỉnh sửa quiz</Button>}
       />
       ,

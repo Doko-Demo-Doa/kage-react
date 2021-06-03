@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Space, Button, Divider, Tooltip, notification, Popover } from "antd";
+import { Button, Divider, Tooltip, notification, Popover, Space } from "antd";
 import {
   FontSizeOutlined,
   PlusOutlined,
@@ -8,7 +8,6 @@ import {
   FolderOpenFilled,
   PictureFilled,
   MessageOutlined,
-  FileAddFilled,
   TableOutlined,
 } from "@ant-design/icons";
 import dayjs from "dayjs";
@@ -16,6 +15,7 @@ import { Delta } from "quill";
 import { observer } from "mobx-react";
 
 import { TableConstructor } from "~/components/table-constructor/table-constructor";
+import { NewQuizSetBtn } from "~/routes/authen/builder/slide-builder/slide-builder-toolbar/new-quiz-set-btn/new-quiz-set-btn";
 import { fileUtils } from "~/utils/utils-files";
 import { audioUtils, ffmpegUtils, imageUtils } from "~/utils/utils-conversions";
 import { AppDefaults, InitialBlockCoordinate, MediaType } from "~/common/static-data";
@@ -31,7 +31,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
   const [tableConstructorVisible, setTableConstructorVisible] = useState(false);
 
   const store = useContext(StoreContext);
-  const { list, setList, newSlide, newQuizSet } = store.slideListStore;
+  const { list, setList, newSlide } = store.slideListStore;
   const slideBuilderMeta = store.slideBuilderStore;
 
   const shouldDisable = list.length <= 0;
@@ -76,14 +76,13 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
         audioUtils.optimizeAudio(path, undefined, (progress, filePath, fileName, extension) => {
           if (progress === "end") {
             // Hiển thị message báo convert
-            console.log(fileName, extension);
             insertBlock(mType, fileName, extension, { width: 0, height: 0 });
 
             notification.open({
               message: "Hoàn tất",
               description: "Audio đã được chuyển về định dạng chuẩn để có thể đưa vào slide.",
               onClick: () => {
-                console.log("Notification Clicked");
+                // Code
               },
             });
           }
@@ -133,7 +132,6 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
     { width, height }: { width: number; height: number },
     quillData?: Delta
   ) => {
-    console.log("lll", width, height);
     const blockData: SlideBlockType = {
       id: dayjs().unix().toString(),
       type,
@@ -176,86 +174,86 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
   };
 
   return (
-    <div className="slide-builder-toolbar">
-      <Space>
-        <Button icon={<PlusOutlined />} type="primary" ghost onClick={() => onNewSlide()}>
-          Tạo Slide mới
-        </Button>
-        <Button icon={<FileAddFilled />} type="primary" ghost onClick={() => newQuizSet()}>
-          Tạo bộ quiz mới
-        </Button>
-        <Button
-          type="link"
-          icon={<FontSizeOutlined />}
-          size="middle"
-          disabled={shouldDisable}
-          onClick={() => onNewRichText("")}
-        />
-        <Tooltip placement="bottom" title="Chèn ảnh / video">
-          <Button
-            type="link"
-            icon={<PictureFilled />}
-            size="middle"
-            disabled={shouldDisable}
-            onClick={() => onInsertMedia()}
-          />
-        </Tooltip>
-
-        <Button
-          disabled={shouldDisable}
-          type="link"
-          icon={<MessageOutlined />}
-          size="middle"
-          onClick={() => onInsertCallout()}
-        />
-
-        <Popover
-          arrowContent
-          trigger="click"
-          destroyTooltipOnHide
-          visible={tableConstructorVisible && !shouldDisable}
-          onVisibleChange={(visible) => setTableConstructorVisible(visible)}
-          content={
-            <TableConstructor
-              onSelect={(numRows, numCols) => {
-                console.log(numRows, numCols);
-                setTableConstructorVisible(false);
-              }}
-            />
-          }
-        >
-          <Button
-            disabled={shouldDisable}
-            type="link"
-            icon={<TableOutlined />}
-            size="middle"
-            onClick={() => onInsertTable()}
-          />
-        </Popover>
-
-        <Divider type="vertical" />
-        <Button
-          onClick={() => onTogglePreview()}
-          icon={<PullRequestOutlined />}
-          type="primary"
-          danger
-        >
-          Toggle Preview
-        </Button>
-        <Button
-          disabled={shouldDisable}
-          onClick={() => onPublish()}
-          icon={<UploadOutlined />}
-          type="primary"
-        >
-          Publish
-        </Button>
-        {isElectron() && (
-          <Button onClick={() => onOpenCache()} icon={<FolderOpenFilled />}>
-            Open Cache Folder
+    <>
+      <div className="slide-builder-toolbar">
+        <Space>
+          <Button icon={<PlusOutlined />} type="primary" ghost onClick={() => onNewSlide()}>
+            Tạo Slide mới
           </Button>
-        )}
-      </Space>
-    </div>
+          <NewQuizSetBtn />
+          <Button
+            type="link"
+            icon={<FontSizeOutlined />}
+            size="middle"
+            disabled={shouldDisable}
+            onClick={() => onNewRichText("")}
+          />
+          <Tooltip placement="bottom" title="Chèn ảnh / video">
+            <Button
+              type="link"
+              icon={<PictureFilled />}
+              size="middle"
+              disabled={shouldDisable}
+              onClick={() => onInsertMedia()}
+            />
+          </Tooltip>
+
+          <Button
+            disabled={shouldDisable}
+            type="link"
+            icon={<MessageOutlined />}
+            size="middle"
+            onClick={() => onInsertCallout()}
+          />
+
+          <Popover
+            arrowContent
+            trigger="click"
+            destroyTooltipOnHide
+            visible={tableConstructorVisible && !shouldDisable}
+            onVisibleChange={(visible) => setTableConstructorVisible(visible)}
+            content={
+              <TableConstructor
+                onSelect={(numRows, numCols) => {
+                  console.log(numRows, numCols);
+                  setTableConstructorVisible(false);
+                }}
+              />
+            }
+          >
+            <Button
+              disabled={shouldDisable}
+              type="link"
+              icon={<TableOutlined />}
+              size="middle"
+              onClick={() => onInsertTable()}
+            />
+          </Popover>
+
+          <Divider type="vertical" />
+          <Button
+            onClick={() => onTogglePreview()}
+            icon={<PullRequestOutlined />}
+            type="primary"
+            danger
+          >
+            Toggle Preview
+          </Button>
+          <Button
+            disabled={shouldDisable}
+            onClick={() => onPublish()}
+            icon={<UploadOutlined />}
+            type="primary"
+          >
+            Publish
+          </Button>
+          {isElectron() && (
+            <Button onClick={() => onOpenCache()} icon={<FolderOpenFilled />}>
+              Mở folder cache
+            </Button>
+          )}
+        </Space>
+      </div>
+    </>
   );
 });
