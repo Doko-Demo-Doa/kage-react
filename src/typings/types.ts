@@ -100,4 +100,10 @@ export type BlankMatcher = {
   choices: Choice[];
 };
 
+export type QuizAssetType = {
+  id: string;
+  fileName: string;
+  extension: string;
+};
+
 export type SettingKey = "auth" | "profile" | "upload" | "general";

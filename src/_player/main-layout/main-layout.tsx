@@ -17,6 +17,8 @@ import { QuizLayoutSingleChoice } from "~/_player/quiz-layouts/implementations/q
 import { QuizLayoutMultipleChoices } from "~/_player/quiz-layouts/implementations/quiz-layout-multiple-choices";
 import { QuizLayoutSelectInBlanks } from "~/_player/quiz-layouts/implementations/quiz-layout-select-in-blanks";
 
+import { ResultPreview } from "~/routes/authen/builder/quiz-builder/result-preview/result-preview";
+
 const sample = require("~/_player/assets/quiz-sample.json");
 
 import "~/_player/main-layout/main-layout.scss";
@@ -43,6 +45,10 @@ export const MainLayout: React.FC = () => {
   function getProperQuizLayout() {
     if (activeIndex === -1) {
       return <QuizInstruction />;
+    }
+
+    if (activeIndex === sample.quizzes.length) {
+      return <ResultPreview />;
     }
 
     const target = sample.quizzes[activeIndex];
