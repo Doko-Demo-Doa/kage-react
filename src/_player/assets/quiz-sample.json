@@ -9,6 +9,35 @@
   "autoAudit": true,
   "quizzes": [
     {
+      "id": "test1",
+      "type": "SINGLE_CHOICE",
+      "audioLink": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+      "imageLink": "https://1.bp.blogspot.com/-mJvAQiJVh5A/YEGQAsYtOBI/AAAAAAABdc4/kcorr0P6KMoSKRDpyHUe2l0J8sLXeIf9QCNcBGAsYHQ/s400/buranko_businesswoman_smile.png",
+      "countdown": 90,
+      "title": "",
+      "content": "彼女は、毎日_____アイスクリームがすきです。",
+      "score": 5,
+      "correctIndex": 2,
+      "choices": [
+        {
+          "id": 0,
+          "label": "{食(た)}べると"
+        },
+        {
+          "id": 1,
+          "label": "{食(た)}べ始める"
+        },
+        {
+          "id": 2,
+          "label": "{食(た)}べるほど"
+        },
+        {
+          "id": 3,
+          "label": "{食(た)}べるなら"
+        }
+      ]
+    },
+    {
       "id": "test3",
       "type": "SELECT_IN_THE_BLANKS",
       "audioLink": "https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3",
@@ -63,35 +92,6 @@
               "label": "{食(た)}べるなら"
             }
           ]
-        }
-      ]
-    },
-    {
-      "id": "test1",
-      "type": "SINGLE_CHOICE",
-      "audioLink": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-      "imageLink": "https://1.bp.blogspot.com/-mJvAQiJVh5A/YEGQAsYtOBI/AAAAAAABdc4/kcorr0P6KMoSKRDpyHUe2l0J8sLXeIf9QCNcBGAsYHQ/s400/buranko_businesswoman_smile.png",
-      "countdown": 90,
-      "title": "",
-      "content": "彼女は、毎日_____アイスクリームがすきです。",
-      "score": 5,
-      "correctIndex": 2,
-      "choices": [
-        {
-          "id": 0,
-          "label": "{食(た)}べると"
-        },
-        {
-          "id": 1,
-          "label": "{食(た)}べ始める"
-        },
-        {
-          "id": 2,
-          "label": "{食(た)}べるほど"
-        },
-        {
-          "id": 3,
-          "label": "{食(た)}べるなら"
         }
       ]
     },

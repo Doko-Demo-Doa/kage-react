@@ -86,7 +86,7 @@ export type MediaReturnType = {
   extra?: any; // Size, position, etc
 };
 
-export type AppEventType = "SWITCH_TAB";
+export type AppEventType = "SWITCH_TAB" | "NEXT_CLICK";
 
 export type Choice = {
   id: string;
@@ -104,6 +104,13 @@ export type QuizAssetType = {
   id: string;
   fileName: string;
   extension: string;
+};
+
+type QResult = "correct" | "incorrect" | "mixed" | "undetermined";
+export type QuizResultType = {
+  result: QResult;
+  acquired: number;
+  incorrectIds: string[];
 };
 
 export type SettingKey = "auth" | "profile" | "upload" | "general";

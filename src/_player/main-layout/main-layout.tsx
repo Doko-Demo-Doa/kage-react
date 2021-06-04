@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Button, Dropdown, Menu, Modal } from "antd";
 import { MenuOutlined, RightCircleFilled } from "@ant-design/icons";
+import { observer } from "mobx-react";
 import { Colors } from "~/common/colors";
 import { QuizType } from "~/common/static-data";
 import { dataUtils } from "~/utils/utils-data";
+import { EventBus } from "~/services/events-helper";
 import { ResultNotification } from "~/_player/result-notification/result-notification";
 import { QuizListItem } from "~/_player/main-layout/quiz-list-item/quiz-list-item";
 
@@ -24,7 +26,7 @@ const sample = require("~/_player/assets/quiz-sample.json");
 import "react-h5-audio-player/lib/styles.css";
 import "~/_player/main-layout/main-layout.scss";
 
-export const MainLayout: React.FC = () => {
+export const MainLayout: React.FC = observer(() => {
   const [activeIndex, setActiveIndex] = useState(-2);
 
   const menu = (
@@ -109,19 +111,23 @@ export const MainLayout: React.FC = () => {
         <>
           {getProperQuizLayout()}
 
-          {activeIndex <= -1 && (
-            <div className="footer">
-              <div className="left-side" />
-              <Button
-                onClick={() => setActiveIndex(activeIndex + 1)}
-                icon={<RightCircleFilled style={{ color: Colors.GREEN }} />}
-              >
-                {activeIndex <= sample.quizzes.length ? "Tiếp theo" : "Kết thúc"}
-              </Button>
-            </div>
-          )}
+          <div className="footer">
+            <div className="left-side" />
+            <Button
+              onClick={() => {
+                if (activeIndex >= 0) {
+                  EventBus.emit("NEXT_CLICK");
+                  return;
+                }
+                setActiveIndex(activeIndex + 1);
+              }}
+              icon={<RightCircleFilled style={{ color: Colors.GREEN }} />}
+            >
+              {activeIndex <= sample.quizzes.length ? "Tiếp theo" : "Kết thúc"}
+            </Button>
+          </div>
         </>
       </div>
     </div>
   );
-};
+});

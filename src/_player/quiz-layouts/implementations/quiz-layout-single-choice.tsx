@@ -1,21 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { Space, Radio } from "antd";
+import { CheckCircleFilled } from "@ant-design/icons";
+import { observer } from "mobx-react";
+import { EventBus } from "~/services/events-helper";
+
 import { QuizLayout } from "~/_player/quiz-layouts/quiz-layout";
 import { formattingUtils } from "~/utils/utils-formatting";
 import { CustomAudioPlayer } from "~/components/audio-player/audio-player";
 import QuizSingleChoiceModel from "~/mobx/models/quiz-single-choice";
 
 interface Props {
-  // TODO: Remove "any"
   data: QuizSingleChoiceModel;
+  showResult?: boolean;
 }
+
+let selected = -1;
 
 /**
  * Chỉ dùng đúng 1 loại component AudioPlayer để đảm bảo hiển thị tốt trên tất cả các
  * thiết bị / browser khác nhau.
  */
-export const QuizLayoutSingleChoice: React.FC<Props> = ({ data }) => {
-  const [selected, setSelected] = useState(0);
+export const QuizLayoutSingleChoice: React.FC<Props> = observer(({ data, showResult }) => {
+  useEffect(() => {
+    EventBus.on("NEXT_CLICK", () => {
+      if (selected === data.correctIndex) {
+        alert("Correct");
+      } else {
+        alert("Incorrect");
+      }
+    });
+
+    return () => EventBus.off("NEXT_CLICK", () => undefined);
+  }, []);
 
   return (
     <QuizLayout
@@ -35,14 +51,22 @@ export const QuizLayoutSingleChoice: React.FC<Props> = ({ data }) => {
             <h2 className="title">{formattingUtils.furiganaToJSX(data.title)}</h2>
             <Radio.Group
               className="selections"
-              onChange={(e) => setSelected(e.target.value)}
-              value={selected}
+              onChange={(e) => {
+                selected = e.target.value;
+              }}
             >
               <Space direction="vertical">
-                {data.choices.map((n) => (
-                  <Radio key={n.id} value={n.id}>
-                    {formattingUtils.furiganaToJSX(n.label)}
-                  </Radio>
+                {data.choices.map((n, idx) => (
+                  <div key={n.id} className="inner">
+                    <CheckCircleFilled
+                      className="ticker"
+                      style={{ fontSize: "1rem", visibility: showResult ? "visible" : "hidden" }}
+                    />
+
+                    <Radio key={n.id} value={idx}>
+                      {formattingUtils.furiganaToJSX(n.label)}
+                    </Radio>
+                  </div>
                 ))}
               </Space>
             </Radio.Group>
@@ -51,4 +75,4 @@ export const QuizLayoutSingleChoice: React.FC<Props> = ({ data }) => {
       }
     />
   );
-};
+});
