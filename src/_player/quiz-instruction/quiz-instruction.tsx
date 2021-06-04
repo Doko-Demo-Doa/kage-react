@@ -3,18 +3,19 @@ import { formattingUtils } from "~/utils/utils-formatting";
 
 import "~/_player/quiz-instruction/quiz-instruction.scss";
 
-export const QuizInstruction: React.FC = () => {
+interface Props {
+  instruction?: string;
+  example?: string;
+}
+
+export const QuizInstruction: React.FC<Props> = ({ instruction, example }) => {
   return (
     <div className="quiz-instruction">
       <h1>Hướng dẫn làm bài</h1>
       <h2>練習指導</h2>
 
-      <div className="ins">Nhìn tranh và viết câu hoàn chỉnh.</div>
-      <div className="ins">
-        {formattingUtils.furiganaToJSX(
-          "例：→ キング{牧師(ぼくし)}は {夢(ゆめ)}が あると {言(い)}いました。"
-        )}
-      </div>
+      <div className="ins">{instruction}</div>
+      <div className="ins">{formattingUtils.furiganaToJSX(example)}</div>
 
       <br />
 

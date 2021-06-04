@@ -12,6 +12,7 @@ import QuizSingleChoiceModel from "~/mobx/models/quiz-single-choice";
 import QuizMultipleChoicesModel from "~/mobx/models/quiz-multiple-choices";
 import QuizModel from "~/mobx/models/quiz";
 
+import { QuizIntro } from "~/_player/quiz-intro/quiz-intro";
 import { QuizInstruction } from "~/_player/quiz-instruction/quiz-instruction";
 import { QuizLayoutSingleChoice } from "~/_player/quiz-layouts/implementations/quiz-layout-single-choice";
 import { QuizLayoutMultipleChoices } from "~/_player/quiz-layouts/implementations/quiz-layout-multiple-choices";
@@ -24,10 +25,15 @@ const sample = require("~/_player/assets/quiz-sample.json");
 import "~/_player/main-layout/main-layout.scss";
 
 export const MainLayout: React.FC = () => {
-  const [activeIndex, setActiveIndex] = useState(-1);
+  const [activeIndex, setActiveIndex] = useState(-2);
 
   const menu = (
     <Menu>
+      <Menu.Item key="head" disabled>
+        <Button type="primary" onClick={() => setActiveIndex(-1)}>
+          Về trang hướng dẫn
+        </Button>
+      </Menu.Item>
       <Menu.Item key="head" disabled>
         <QuizListItem isHead />
       </Menu.Item>
@@ -42,9 +48,17 @@ export const MainLayout: React.FC = () => {
     </Menu>
   );
 
+  /**
+   * Quy ước: Index -2 là mở đầu, index -1 là hướng dẫn làm bài.
+   * Từ 0 trở đi là quiz
+   * @returns Component tương ứng
+   */
   function getProperQuizLayout() {
+    if (activeIndex === -2) {
+      return <QuizIntro id={sample.id} />;
+    }
     if (activeIndex === -1) {
-      return <QuizInstruction />;
+      return <QuizInstruction instruction={sample.instruction} example={sample.example} />;
     }
 
     if (activeIndex === sample.quizzes.length) {
@@ -70,7 +84,7 @@ export const MainLayout: React.FC = () => {
   function showModal() {
     Modal.confirm({
       title: "",
-      icon: <div></div>,
+      icon: <div />,
       content: <ResultNotification isCorrect />,
       onOk() {
         //
@@ -102,7 +116,7 @@ export const MainLayout: React.FC = () => {
             onClick={() => setActiveIndex(activeIndex + 1)}
             icon={<RightCircleFilled style={{ color: Colors.GREEN }} />}
           >
-            OK
+            {activeIndex <= sample.quizzes.length ? "Tiếp theo" : "Kết thúc"}
           </Button>
         </div>
       </div>
