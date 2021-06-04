@@ -1,6 +1,6 @@
 // 744/636
 $head-height: 46px;
-$footer-height: 50px;
+$footer-height: 54px;
 
 html {
   min-width: unset;
@@ -38,6 +38,7 @@ html {
     .footer {
       border-top: 1px solid $color-gray-light;
       height: $footer-height;
+      min-height: $footer-height;
       display: flex;
       align-items: center;
       justify-content: space-between;

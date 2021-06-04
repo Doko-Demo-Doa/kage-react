@@ -37,7 +37,7 @@ const columns: ColumnsType<ColumnMold> = [
     title: "Câu hỏi",
     dataIndex: "question",
     key: "question",
-    render: (value, record) => {
+    render: (value) => {
       return <h3>{formattingUtils.furiganaToJSX(value)}</h3>;
     },
   },

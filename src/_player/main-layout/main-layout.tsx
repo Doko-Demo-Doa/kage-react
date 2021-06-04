@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button, Dropdown, Menu, Modal } from "antd";
 import { MenuOutlined, RightCircleFilled } from "@ant-design/icons";
-import ScrollBar from "react-perfect-scrollbar";
 import { Colors } from "~/common/colors";
 import { QuizType } from "~/common/static-data";
 import { dataUtils } from "~/utils/utils-data";
@@ -22,6 +21,7 @@ import { ResultPreview } from "~/routes/authen/builder/quiz-builder/result-previ
 
 const sample = require("~/_player/assets/quiz-sample.json");
 
+import "react-h5-audio-player/lib/styles.css";
 import "~/_player/main-layout/main-layout.scss";
 
 export const MainLayout: React.FC = () => {
@@ -106,19 +106,21 @@ export const MainLayout: React.FC = () => {
             Câu <strong>1</strong> / <strong>13</strong>
           </div>
         </div>
-        <ScrollBar className="content">{getProperQuizLayout()}</ScrollBar>
+        <>
+          {getProperQuizLayout()}
 
-        <div className="footer">
-          <div className="left-side" onClick={() => showModal()}>
-            Điểm hiện tại: <strong>233</strong>
-          </div>
-          <Button
-            onClick={() => setActiveIndex(activeIndex + 1)}
-            icon={<RightCircleFilled style={{ color: Colors.GREEN }} />}
-          >
-            {activeIndex <= sample.quizzes.length ? "Tiếp theo" : "Kết thúc"}
-          </Button>
-        </div>
+          {activeIndex <= -1 && (
+            <div className="footer">
+              <div className="left-side" />
+              <Button
+                onClick={() => setActiveIndex(activeIndex + 1)}
+                icon={<RightCircleFilled style={{ color: Colors.GREEN }} />}
+              >
+                {activeIndex <= sample.quizzes.length ? "Tiếp theo" : "Kết thúc"}
+              </Button>
+            </div>
+          )}
+        </>
       </div>
     </div>
   );
