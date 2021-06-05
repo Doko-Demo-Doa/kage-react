@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Button, Dropdown, Menu, Modal } from "antd";
-import { MenuOutlined, RightCircleFilled } from "@ant-design/icons";
+import { Button, Dropdown, Menu, Modal, Space } from "antd";
+import { MenuOutlined, RightCircleFilled, ClockCircleFilled } from "@ant-design/icons";
 import { observer } from "mobx-react";
 import { Colors } from "~/common/colors";
 import { QuizType } from "~/common/static-data";
@@ -31,7 +31,7 @@ export const MainLayout: React.FC = observer(() => {
 
   const menu = (
     <Menu>
-      <Menu.Item key="head" disabled>
+      <Menu.Item key="goback" disabled>
         <Button type="primary" onClick={() => setActiveIndex(-1)}>
           Về trang hướng dẫn
         </Button>
@@ -113,18 +113,24 @@ export const MainLayout: React.FC = observer(() => {
 
           <div className="footer">
             <div className="left-side" />
-            <Button
-              onClick={() => {
-                if (activeIndex >= 0) {
-                  EventBus.emit("NEXT_CLICK");
-                  return;
-                }
-                setActiveIndex(activeIndex + 1);
-              }}
-              icon={<RightCircleFilled style={{ color: Colors.GREEN }} />}
-            >
-              {activeIndex <= sample.quizzes.length ? "Tiếp theo" : "Kết thúc"}
-            </Button>
+
+            <Space direction="horizontal">
+              <div className="clock">
+                <ClockCircleFilled style={{ color: Colors.PALE_RED }} /> <span>3:33</span>
+              </div>
+              <Button
+                onClick={() => {
+                  if (activeIndex >= 0) {
+                    EventBus.emit("NEXT_CLICK");
+                    return;
+                  }
+                  setActiveIndex(activeIndex + 1);
+                }}
+                icon={<RightCircleFilled style={{ color: Colors.GREEN }} />}
+              >
+                {activeIndex <= sample.quizzes.length ? "Tiếp theo" : "Kết thúc"}
+              </Button>
+            </Space>
           </div>
         </>
       </div>

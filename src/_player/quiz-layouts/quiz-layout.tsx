@@ -5,7 +5,6 @@ import "~/_player/quiz-layouts/quiz-layout.scss";
 
 interface Props {
   content: React.ReactElement | JSX.Element;
-  onNext?: () => void | undefined;
 }
 
 export const QuizLayout: React.FC<Props> = ({ content }) => {

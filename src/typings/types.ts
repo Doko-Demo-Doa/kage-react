@@ -106,9 +106,9 @@ export type QuizAssetType = {
   extension: string;
 };
 
-type QResult = "correct" | "incorrect" | "mixed" | "undetermined";
+export type QResult = "correct" | "incorrect" | "mixed" | "undetermined";
 export type QuizResultType = {
-  result: QResult;
+  judge: QResult;
   acquired: number;
   incorrectIds: string[];
 };

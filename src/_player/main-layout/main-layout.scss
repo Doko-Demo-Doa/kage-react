@@ -49,6 +49,16 @@ html {
           color: $color-light-red;
         }
       }
+
+      .clock {
+        display: flex;
+        align-items: center;
+
+        span {
+          margin-left: 6px;
+          color: $color-red;
+        }
+      }
     }
   }
 }

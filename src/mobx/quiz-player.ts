@@ -1,13 +1,20 @@
 import React from "react";
 import { makeAutoObservable, computed } from "mobx";
-import { QuizResultType } from "~/typings/types";
+import { QuizResultType, QResult } from "~/typings/types";
 
 /**
  * Chứa cả store cho quiz player lẫn context của nó.
  */
 export class QuizPlayerStore {
-  accumulatedPoints = 0;
+  id = "";
+  level = "";
+  syllabus = "";
+  instruction = "";
+  studentId = "";
+  passingScore = 0;
+  autoAudit = false;
 
+  accumulatedPoints = 0;
   results: QuizResultType[] = [];
 
   constructor(numberOfQuizzes: number) {
@@ -15,7 +22,7 @@ export class QuizPlayerStore {
       return {
         acquired: 0,
         incorrectIds: [],
-        result: "undetermined",
+        judge: "undetermined",
       };
     });
     makeAutoObservable(
@@ -28,7 +35,16 @@ export class QuizPlayerStore {
   }
 
   get isFinished() {
-    return this.results.every((n) => n.result !== "undetermined");
+    return this.results.every((n) => n.judge !== "undetermined");
+  }
+
+  setQuizResultFor(idx: number, points: number, incorrects: string[], finalJudge: QResult) {
+    const newR = this.results.slice();
+    newR[idx].acquired = points;
+    newR[idx].incorrectIds = incorrects;
+    newR[idx].judge = finalJudge;
+
+    this.results = newR;
   }
 }
 
