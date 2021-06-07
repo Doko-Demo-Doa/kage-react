@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Dropdown, Menu, Modal, Space } from "antd";
 import { MenuOutlined, RightCircleFilled, ClockCircleFilled } from "@ant-design/icons";
 import { observer } from "mobx-react-lite";
@@ -6,6 +6,7 @@ import { Colors } from "~/common/colors";
 import { QuizType } from "~/common/static-data";
 import { dataUtils } from "~/utils/utils-data";
 import { formattingUtils } from "~/utils/utils-formatting";
+import { useInterval } from "~/hooks/use-interval";
 import { EventBus } from "~/services/events-helper";
 import { ResultNotification } from "~/_player/result-notification/result-notification";
 import { QuizListItem } from "~/_player/main-layout/quiz-list-item/quiz-list-item";
@@ -26,8 +27,32 @@ const sample = require("~/_player/assets/quiz-sample.json");
 
 import "~/_player/main-layout/main-layout.scss";
 
+// let interv: ReturnType<typeof setInterval>;
+
 export const MainLayout: React.FC = observer(() => {
+  let showingModal = false;
   const [activeIndex, setActiveIndex] = useState(-2);
+  const [clock, setClock] = useState(0);
+  const [clockRunning, setClockRunning] = useState(false);
+
+  useInterval(() => {
+    if (activeIndex < 0) return;
+    if (clock <= 0) {
+      !showingModal && showModal();
+      return;
+    }
+    setClock(clock - 1);
+  }, 1000);
+
+  useEffect(() => {
+    if (activeIndex < 0) {
+      setClockRunning(false);
+      return;
+    } else {
+      setClockRunning(true);
+    }
+    setClock(10);
+  }, [activeIndex >= 0]);
 
   const menu = (
     <Menu>
@@ -83,6 +108,7 @@ export const MainLayout: React.FC = observer(() => {
     return <div />;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function showModal() {
     Modal.confirm({
       title: "",
@@ -94,6 +120,7 @@ export const MainLayout: React.FC = observer(() => {
       onCancel: undefined,
       cancelButtonProps: { style: { display: "none" } },
     });
+    showingModal = true;
   }
 
   return (
@@ -115,10 +142,12 @@ export const MainLayout: React.FC = observer(() => {
             <div className="left-side" />
 
             <Space direction="horizontal">
-              <div className="clock">
-                <ClockCircleFilled style={{ color: Colors.PALE_RED }} />{" "}
-                <span>{formattingUtils.secondsToMinsAndSeconds(222)}</span>
-              </div>
+              {clockRunning && (
+                <div className="clock">
+                  <ClockCircleFilled style={{ color: Colors.PALE_RED }} />{" "}
+                  <span>{formattingUtils.secondsToMinsAndSeconds(clock)}</span>
+                </div>
+              )}
               <Button
                 onClick={() => {
                   if (activeIndex >= 0) {
