@@ -102,7 +102,13 @@ export class QuizPlayerStore {
   }
 
   onSubmit(result: QResult, detail?: any) {
-    this.showModal(result ? "correct" : "incorrect");
+    if (result === "correct") {
+      this.showModal("correct");
+    } else if (result === "incorrect") {
+      this.showModal("incorrect");
+    } else if (result === "mixed") {
+      this.showModal("mixed");
+    }
     this.stopClock();
     // TODO: Ghi lại kết quả
     const thisQ = this.quizzes[this.activeIndex];

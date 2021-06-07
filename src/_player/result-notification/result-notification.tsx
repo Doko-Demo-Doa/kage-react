@@ -4,6 +4,7 @@ import { AnswerResultType } from "~/typings/types";
 import maru from "~/_player/assets/img/animal_quiz_neko_maru.png";
 import batsu from "~/_player/assets/img/animal_quiz_neko_batsu.png";
 import tsunami from "~/_player/assets/img/business_syakai_aranami.png";
+import mole from "~/_player/assets/img/animal_chara_mogura_hakase.png";
 
 import "~/_player/result-notification/result-notification.scss";
 
@@ -15,6 +16,7 @@ export const ResultNotification: React.FC<Props> = ({ type }) => {
   function getImg() {
     if (type === "correct") return maru;
     if (type === "incorrect") return batsu;
+    if (type === "mixed") return mole;
     return tsunami;
   }
 
@@ -22,6 +24,7 @@ export const ResultNotification: React.FC<Props> = ({ type }) => {
     if (type === "correct") return "Chính xác!";
     if (type === "incorrect") return "Chưa chính xác";
     if (type === "timeout") return "Hết thời gian!";
+    if (type === "mixed") return "Chưa đúng hoàn toàn";
     return "";
   }
 
