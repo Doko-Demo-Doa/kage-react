@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
 import { Button, Dropdown, Menu, Modal, Space } from "antd";
 import { MenuOutlined, RightCircleFilled, ClockCircleFilled } from "@ant-design/icons";
 import { observer } from "mobx-react-lite";
@@ -6,11 +6,12 @@ import { Colors } from "~/common/colors";
 import { QuizType } from "~/common/static-data";
 import { dataUtils } from "~/utils/utils-data";
 import { formattingUtils } from "~/utils/utils-formatting";
-import { useInterval } from "~/hooks/use-interval";
 import { EventBus } from "~/services/events-helper";
 import { AnswerResultType } from "~/typings/types";
 import { ResultNotification } from "~/_player/result-notification/result-notification";
 import { QuizListItem } from "~/_player/main-layout/quiz-list-item/quiz-list-item";
+
+import { QuizPlayerContext } from "~/mobx/quiz-player";
 
 import QuizSingleChoiceModel from "~/mobx/models/quiz-single-choice";
 import QuizMultipleChoicesModel from "~/mobx/models/quiz-multiple-choices";
@@ -31,34 +32,14 @@ import "~/_player/main-layout/main-layout.scss";
 // let interv: ReturnType<typeof setInterval>;
 
 export const MainLayout: React.FC = observer(() => {
-  let showingModal = false;
-  const [activeIndex, setActiveIndex] = useState(-2);
-  const [clock, setClock] = useState(0);
-  const [clockRunning, setClockRunning] = useState(false);
+  const qp = useContext(QuizPlayerContext);
 
-  useInterval(() => {
-    if (activeIndex < 0) return;
-    if (clock <= 0) {
-      !showingModal && showModal("timeout");
-      return;
-    }
-    setClock(clock - 1);
-  }, 1000);
-
-  useEffect(() => {
-    if (activeIndex < 0) {
-      setClockRunning(false);
-      return;
-    } else {
-      setClockRunning(true);
-    }
-    setClock(10);
-  }, [activeIndex >= 0]);
+  const { activeIndex, nextPage, toPage, clock, clockRunning } = qp;
 
   const menu = (
     <Menu>
       <Menu.Item key="goback" disabled>
-        <Button type="primary" onClick={() => setActiveIndex(-1)}>
+        <Button type="primary" onClick={() => toPage(-1)}>
           Về trang hướng dẫn
         </Button>
       </Menu.Item>
@@ -68,13 +49,18 @@ export const MainLayout: React.FC = observer(() => {
       {sample.quizzes.map((n: QuizModel, idx: number) => {
         const qType = n.type as QuizType;
         return (
-          <Menu.Item key={n.id} onClick={() => setActiveIndex(idx)}>
+          <Menu.Item key={n.id} onClick={() => toPage(idx)}>
             <QuizListItem type={qType} score={23} tagline={dataUtils.mapQuizLabel(qType)} />
           </Menu.Item>
         );
       })}
     </Menu>
   );
+
+  // function onSubmit(isOk: boolean) {
+  //   setClockRunning(false);
+  //   setClock(0);
+  // }
 
   /**
    * Quy ước: Index -2 là mở đầu, index -1 là hướng dẫn làm bài.
@@ -94,7 +80,6 @@ export const MainLayout: React.FC = observer(() => {
     }
 
     const target = sample.quizzes[activeIndex];
-    if (!target) return <div />;
     if (target.type === QuizType.SINGLE_CHOICE) {
       const t = target as QuizSingleChoiceModel;
       return <QuizLayoutSingleChoice data={t} />;
@@ -121,7 +106,6 @@ export const MainLayout: React.FC = observer(() => {
       onCancel: undefined,
       cancelButtonProps: { style: { display: "none" } },
     });
-    showingModal = true;
   }
 
   return (
@@ -155,7 +139,7 @@ export const MainLayout: React.FC = observer(() => {
                     EventBus.emit("NEXT_CLICK");
                     return;
                   }
-                  setActiveIndex(activeIndex + 1);
+                  nextPage();
                 }}
                 icon={<RightCircleFilled style={{ color: Colors.GREEN }} />}
               >

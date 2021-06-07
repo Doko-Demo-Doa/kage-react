@@ -12,6 +12,7 @@ import QuizSingleChoiceModel from "~/mobx/models/quiz-single-choice";
 interface Props {
   data: QuizSingleChoiceModel;
   showResult?: boolean;
+  onSubmit?: (isOk: boolean) => void | undefined;
 }
 
 let selected = -1;

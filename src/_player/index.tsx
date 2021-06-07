@@ -1,15 +1,11 @@
 import React, { useEffect } from "react";
 import { MainLayout } from "~/_player/main-layout/main-layout";
 import { apiQuiz } from "~/datasource/remote/rest/rest-quiz";
-import { QuizPlayerContext, QuizPlayerStore } from "~/mobx/quiz-player";
-
-const sample = require("~/_player/assets/quiz-sample.json");
+import { QuizPlayerContext, qpStore } from "~/mobx/quiz-player";
 
 import "react-h5-audio-player/lib/styles.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import "antd/dist/antd.css";
-
-const qps = new QuizPlayerStore(sample.quizzes.length);
 
 const PlayerRoot: React.FC = () => {
   useEffect(() => {
@@ -24,7 +20,7 @@ const PlayerRoot: React.FC = () => {
   }
 
   return (
-    <QuizPlayerContext.Provider value={qps}>
+    <QuizPlayerContext.Provider value={qpStore}>
       <MainLayout />
     </QuizPlayerContext.Provider>
   );
