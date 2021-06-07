@@ -1,6 +1,9 @@
 import React from "react";
+import { Modal } from "antd";
 import { makeAutoObservable, computed, autorun, configure } from "mobx";
-import { QuizResultType, QResult } from "~/typings/types";
+import { QuizResultType, QResult, AnswerResultType } from "~/typings/types";
+import QuizModel from "~/mobx/models/quiz";
+import { ResultNotification } from "~/_player/result-notification/result-notification";
 
 const sample = require("~/_player/assets/quiz-sample.json");
 
@@ -21,16 +24,17 @@ export class QuizPlayerStore {
   studentId = "";
   passingScore = 0;
   autoAudit = false;
-  accumulatedPoints = 0;
 
   // Index của quiz. Bắt đầu từ 0. -1 là hướng dẫn làm bài, -2 là trang tiêu đề.
   activeIndex = -2;
   clock = 0;
   clockRunning = false;
 
+  quizzes: QuizModel[] = [];
   results: QuizResultType[] = [];
 
   constructor(numberOfQuizzes: number) {
+    this.quizzes = sample.quizzes;
     this.results = Array.from(Array(numberOfQuizzes).keys()).map(() => {
       return {
         acquired: 0,
@@ -42,6 +46,7 @@ export class QuizPlayerStore {
       this,
       {
         isFinished: computed,
+        accumulatedPoints: computed,
       },
       { autoBind: true }
     );
@@ -52,13 +57,22 @@ export class QuizPlayerStore {
 
     this.clockRunning = true;
     interv = setInterval(() => {
+      if (this.clock <= 0) {
+        this.stopClock(false);
+        if (this.results[this.activeIndex].judge === "undetermined") {
+          this.showModal("timeout");
+        }
+        return;
+      }
       this.clock -= 1;
     }, 1000);
   }
 
-  stopClock() {
+  stopClock(dismissClock?: boolean) {
     interv && clearInterval(interv);
-    this.clockRunning = false;
+    if (dismissClock) {
+      this.clockRunning = false;
+    }
   }
 
   nextPage() {
@@ -74,12 +88,48 @@ export class QuizPlayerStore {
     this.activeIndex = page;
   }
 
+  showModal(type: AnswerResultType) {
+    Modal.confirm({
+      title: "",
+      icon: <div />,
+      content: <ResultNotification type={type} />,
+      onOk() {
+        //
+      },
+      onCancel: undefined,
+      cancelButtonProps: { style: { display: "none" } },
+    });
+  }
+
+  onSubmit(result: QResult, detail?: any) {
+    this.showModal(result ? "correct" : "incorrect");
+    this.stopClock();
+    // TODO: Ghi lại kết quả
+    const thisQ = this.quizzes[this.activeIndex];
+    if (result) {
+      const newR = this.results.slice();
+      const r = newR[this.activeIndex];
+      r.acquired = thisQ.score;
+      // TODO: Them incorrectIds
+      r.judge = result ? "correct" : "incorrect";
+
+      this.results = newR;
+    }
+    if (this.activeIndex < this.quizzes.length) {
+      // this.nextPage();
+    }
+  }
+
   get isInQuiz() {
     return this.activeIndex >= 0;
   }
 
   get isFinished() {
     return this.results.every((n) => n.judge !== "undetermined");
+  }
+
+  get accumulatedPoints() {
+    return this.results.map((n) => n.acquired).reduce((a, b) => a + b);
   }
 
   setQuizResultFor(idx: number, points: number, incorrects: string[], finalJudge: QResult) {
@@ -100,7 +150,8 @@ export const QuizPlayerContext = React.createContext<QuizPlayerStore>(qpStore);
 
 // Side effects
 autorun(() => {
-  if (qpStore.activeIndex >= 0 && !qpStore.isFinished) {
+  const currentQuiz: QuizModel = sample.quizzes[qpStore.activeIndex];
+  if (qpStore.activeIndex >= 0 && !qpStore.isFinished && (currentQuiz.countdown || 0) > 0) {
     const countdown = sample.quizzes[qpStore.activeIndex].countdown;
     qpStore.startClock(countdown);
   }

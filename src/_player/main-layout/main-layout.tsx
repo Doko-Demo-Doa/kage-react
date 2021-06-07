@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Button, Dropdown, Menu, Modal, Space } from "antd";
+import { Button, Dropdown, Menu, Space } from "antd";
 import { MenuOutlined, RightCircleFilled, ClockCircleFilled } from "@ant-design/icons";
 import { observer } from "mobx-react-lite";
 import { Colors } from "~/common/colors";
@@ -7,8 +7,6 @@ import { QuizType } from "~/common/static-data";
 import { dataUtils } from "~/utils/utils-data";
 import { formattingUtils } from "~/utils/utils-formatting";
 import { EventBus } from "~/services/events-helper";
-import { AnswerResultType } from "~/typings/types";
-import { ResultNotification } from "~/_player/result-notification/result-notification";
 import { QuizListItem } from "~/_player/main-layout/quiz-list-item/quiz-list-item";
 
 import { QuizPlayerContext } from "~/mobx/quiz-player";
@@ -29,12 +27,10 @@ const sample = require("~/_player/assets/quiz-sample.json");
 
 import "~/_player/main-layout/main-layout.scss";
 
-// let interv: ReturnType<typeof setInterval>;
-
 export const MainLayout: React.FC = observer(() => {
-  const qp = useContext(QuizPlayerContext);
-
-  const { activeIndex, nextPage, toPage, clock, clockRunning } = qp;
+  const { activeIndex, nextPage, toPage, showModal, clock, clockRunning } = useContext(
+    QuizPlayerContext
+  );
 
   const menu = (
     <Menu>
@@ -56,11 +52,6 @@ export const MainLayout: React.FC = observer(() => {
       })}
     </Menu>
   );
-
-  // function onSubmit(isOk: boolean) {
-  //   setClockRunning(false);
-  //   setClock(0);
-  // }
 
   /**
    * Quy ước: Index -2 là mở đầu, index -1 là hướng dẫn làm bài.
@@ -94,27 +85,17 @@ export const MainLayout: React.FC = observer(() => {
     return <div />;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function showModal(type: AnswerResultType) {
-    Modal.confirm({
-      title: "",
-      icon: <div />,
-      content: <ResultNotification type={type} />,
-      onOk() {
-        //
-      },
-      onCancel: undefined,
-      cancelButtonProps: { style: { display: "none" } },
-    });
-  }
-
   return (
     <div className="main-layout ant-row">
       <div className="main-frame ant-col-md-18 ant-col-xs-24 ant-col-md-offset-3">
         <div className="head">
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <Button icon={<MenuOutlined />}>Danh sách câu hỏi</Button>
-          </Dropdown>
+          {activeIndex >= 0 ? (
+            <Dropdown overlay={menu} trigger={["click"]}>
+              <Button icon={<MenuOutlined />}>Danh sách câu hỏi</Button>
+            </Dropdown>
+          ) : (
+            <div />
+          )}
 
           <div className="right-side" onClick={() => showModal("incorrect")}>
             Câu <strong>1</strong> / <strong>13</strong>
@@ -138,8 +119,9 @@ export const MainLayout: React.FC = observer(() => {
                   if (activeIndex >= 0) {
                     EventBus.emit("NEXT_CLICK");
                     return;
+                  } else {
+                    nextPage();
                   }
-                  nextPage();
                 }}
                 icon={<RightCircleFilled style={{ color: Colors.GREEN }} />}
               >

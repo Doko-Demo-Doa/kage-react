@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Space, Radio } from "antd";
 import { CheckCircleFilled } from "@ant-design/icons";
 import { observer } from "mobx-react-lite";
@@ -7,12 +7,14 @@ import { EventBus } from "~/services/events-helper";
 import { QuizLayout } from "~/_player/quiz-layouts/quiz-layout";
 import { formattingUtils } from "~/utils/utils-formatting";
 import { CustomAudioPlayer } from "~/components/audio-player/audio-player";
+import { QuizPlayerContext } from "~/mobx/quiz-player";
+
 import QuizSingleChoiceModel from "~/mobx/models/quiz-single-choice";
+import { uiUtils } from "~/utils/utils-ui";
 
 interface Props {
   data: QuizSingleChoiceModel;
   showResult?: boolean;
-  onSubmit?: (isOk: boolean) => void | undefined;
 }
 
 let selected = -1;
@@ -22,12 +24,21 @@ let selected = -1;
  * thiết bị / browser khác nhau.
  */
 export const QuizLayoutSingleChoice: React.FC<Props> = observer(({ data, showResult }) => {
+  const { onSubmit } = useContext(QuizPlayerContext);
+
   useEffect(() => {
     EventBus.on("NEXT_CLICK", () => {
+      if (selected === -1) {
+        return uiUtils.openNotification(
+          "warn",
+          "Khoan đã!",
+          "Bạn phải hoàn thành câu hỏi này trước."
+        );
+      }
       if (selected === data.correctIndex) {
-        alert("Correct");
+        onSubmit?.("correct");
       } else {
-        alert("Incorrect");
+        onSubmit?.("incorrect");
       }
     });
 
