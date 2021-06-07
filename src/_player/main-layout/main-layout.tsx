@@ -8,6 +8,7 @@ import { dataUtils } from "~/utils/utils-data";
 import { formattingUtils } from "~/utils/utils-formatting";
 import { useInterval } from "~/hooks/use-interval";
 import { EventBus } from "~/services/events-helper";
+import { AnswerResultType } from "~/typings/types";
 import { ResultNotification } from "~/_player/result-notification/result-notification";
 import { QuizListItem } from "~/_player/main-layout/quiz-list-item/quiz-list-item";
 
@@ -38,7 +39,7 @@ export const MainLayout: React.FC = observer(() => {
   useInterval(() => {
     if (activeIndex < 0) return;
     if (clock <= 0) {
-      !showingModal && showModal();
+      !showingModal && showModal("timeout");
       return;
     }
     setClock(clock - 1);
@@ -109,11 +110,11 @@ export const MainLayout: React.FC = observer(() => {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function showModal() {
+  function showModal(type: AnswerResultType) {
     Modal.confirm({
       title: "",
       icon: <div />,
-      content: <ResultNotification isCorrect />,
+      content: <ResultNotification type={type} />,
       onOk() {
         //
       },
@@ -131,7 +132,7 @@ export const MainLayout: React.FC = observer(() => {
             <Button icon={<MenuOutlined />}>Danh sách câu hỏi</Button>
           </Dropdown>
 
-          <div className="right-side">
+          <div className="right-side" onClick={() => showModal("incorrect")}>
             Câu <strong>1</strong> / <strong>13</strong>
           </div>
         </div>

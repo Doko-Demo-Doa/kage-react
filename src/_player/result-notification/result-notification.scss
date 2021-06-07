@@ -1,8 +1,13 @@
 .result-notification {
   background: white;
 
+  h1 {
+    text-align: center;
+    color: $color-midnight;
+  }
+
   .maru-batsu {
-    width: 340px;
+    width: 90%;
     user-select: none;
   }
 }

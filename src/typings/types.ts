@@ -114,3 +114,5 @@ export type QuizResultType = {
 };
 
 export type SettingKey = "auth" | "profile" | "upload" | "general";
+
+export type AnswerResultType = "correct" | "incorrect" | "timeout";
