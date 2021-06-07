@@ -5,6 +5,7 @@ import { observer } from "mobx-react-lite";
 import { Colors } from "~/common/colors";
 import { QuizType } from "~/common/static-data";
 import { dataUtils } from "~/utils/utils-data";
+import { formattingUtils } from "~/utils/utils-formatting";
 import { EventBus } from "~/services/events-helper";
 import { ResultNotification } from "~/_player/result-notification/result-notification";
 import { QuizListItem } from "~/_player/main-layout/quiz-list-item/quiz-list-item";
@@ -23,7 +24,6 @@ import { ResultPreview } from "~/routes/authen/builder/quiz-builder/result-previ
 
 const sample = require("~/_player/assets/quiz-sample.json");
 
-import "react-h5-audio-player/lib/styles.css";
 import "~/_player/main-layout/main-layout.scss";
 
 export const MainLayout: React.FC = observer(() => {
@@ -116,7 +116,8 @@ export const MainLayout: React.FC = observer(() => {
 
             <Space direction="horizontal">
               <div className="clock">
-                <ClockCircleFilled style={{ color: Colors.PALE_RED }} /> <span>3:33</span>
+                <ClockCircleFilled style={{ color: Colors.PALE_RED }} />{" "}
+                <span>{formattingUtils.secondsToMinsAndSeconds(222)}</span>
               </div>
               <Button
                 onClick={() => {

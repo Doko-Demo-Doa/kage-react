@@ -5,6 +5,7 @@ import { QuizPlayerContext, QuizPlayerStore } from "~/mobx/quiz-player";
 
 const sample = require("~/_player/assets/quiz-sample.json");
 
+import "react-h5-audio-player/lib/styles.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import "antd/dist/antd.css";
 

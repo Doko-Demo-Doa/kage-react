@@ -1,6 +1,10 @@
 import React from "react";
+import dayjs from "dayjs";
+import dayjsDuration from "dayjs/plugin/duration";
 import reactStringReplace from "react-string-replace";
 import parse, { HTMLReactParserOptions } from "html-react-parser";
+
+dayjs.extend(dayjsDuration);
 
 function replaceString(str: string, strSub: string, strReplace: string) {
   const result = str.replace(strSub, strReplace);
@@ -56,5 +60,8 @@ export const formattingUtils = {
   furiganaToJSX: (input: string | undefined) => {
     if (!input) return "";
     return formattingUtils.htmlToJSX(formattingUtils.furiganaTemplateToHTML(input));
+  },
+  secondsToMinsAndSeconds: (secs: number) => {
+    return dayjs.duration(secs, "seconds").format("mm:ss");
   },
 };
