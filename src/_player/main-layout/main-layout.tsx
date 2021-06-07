@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Dropdown, Menu, Modal, Space } from "antd";
 import { MenuOutlined, RightCircleFilled, ClockCircleFilled } from "@ant-design/icons";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import { Colors } from "~/common/colors";
 import { QuizType } from "~/common/static-data";
 import { dataUtils } from "~/utils/utils-data";

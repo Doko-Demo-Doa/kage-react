@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Space, Radio } from "antd";
 import { CheckCircleFilled } from "@ant-design/icons";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import { EventBus } from "~/services/events-helper";
 
 import { QuizLayout } from "~/_player/quiz-layouts/quiz-layout";

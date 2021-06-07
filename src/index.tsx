@@ -1,37 +1,27 @@
-import React, { lazy, Suspense } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
-// import App from "./app";
-const App = lazy(() => import("./app"));
-import PlayerRoot from "./_player";
 import reportWebVitals from "./reportWebVitals";
 
 import "./index.scss";
 
-const isPlayer = process.env.REACT_APP_ISPLAYER;
+function importBuildTarget() {
+  if (process.env.REACT_APP_ISPLAYER) {
+    return import("./_player");
+  } else {
+    return import("./app");
+  }
+}
 
-function render() {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// @ts-ignore
+importBuildTarget().then(({ default: Environment }) => {
   ReactDOM.render(
     <React.StrictMode>
-      {isPlayer ? (
-        <PlayerRoot />
-      ) : (
-        <Suspense fallback={null}>
-          <App />
-        </Suspense>
-      )}
+      <Environment />
     </React.StrictMode>,
     document.getElementById("root")
   );
-}
-
-const hot = (module as any).hot;
-if (hot) {
-  hot.accept(() => {
-    render();
-  });
-}
-
-render();
+});
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
