@@ -57,7 +57,7 @@ export const QuizPreview: React.FC = observer(() => {
         <div className="quiz-select-in-blanks-preview">
           <div>
             {formattingUtils
-              .replaceData(thisQuiz.note ?? "")
+              .replaceData(thisQuiz.content ?? "")
               .with((key) => {
                 return <EditableSelectableDropdown key={key} id={key} />;
               })

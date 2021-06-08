@@ -3,10 +3,11 @@ import { QuizLayout } from "~/_player/quiz-layouts/quiz-layout";
 import { formattingUtils } from "~/utils/utils-formatting";
 import { CustomAudioPlayer } from "~/components/audio-player/audio-player";
 import { CustomDropdown } from "~/_player/custom-dropdown/custom-dropdown";
+import QuizSelectInBlanksModel from "~/mobx/models/quiz-select-in-blanks";
 
 interface Props {
   // TODO: Remove "any"
-  data: any;
+  data: QuizSelectInBlanksModel;
 }
 
 /**

@@ -203,11 +203,11 @@ export class QuizListStore {
   }
 
   // - Select in blanks
-  setQuizNote = (quizId: string, newNote: string) => {
+  setQuizContent = (quizId: string, newNote: string) => {
     const qi = this.list.findIndex((n) => n.id === quizId);
     if (qi !== -1) {
       const newList = this.list.slice() as QuizSelectInBlanksModel[];
-      newList[qi].note = newNote;
+      newList[qi].content = newNote;
 
       const rxp = /\[(.*?)\]/g;
       const newMatchers = newNote.match(rxp) || [];
@@ -227,10 +227,10 @@ export class QuizListStore {
     const qi = this.list.findIndex((n) => n.id === quizId);
     if (qi !== -1) {
       const newList = this.list.slice() as QuizSelectInBlanksModel[];
-      newList[qi].note += `[${dayjs().unix()}]`;
+      newList[qi].content += `[${dayjs().unix()}]`;
 
       const rxp = /\[(.*?)\]/g;
-      const newMatchers = newList[qi].note?.match(rxp) || [];
+      const newMatchers = newList[qi].content?.match(rxp) || [];
       newList[qi].matchers = newMatchers.map((subToken) => ({
         id: subToken.replace("[", "").replace("]", ""),
         correctChoice: "",

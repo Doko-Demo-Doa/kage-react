@@ -9,7 +9,7 @@ export default class QuizModel {
   audioLink?: string;
   countdown?: number;
   title?: string;
-  note?: string;
+  content?: string;
   hint?: string;
   score: number;
   autoAudit?: boolean;
@@ -19,7 +19,7 @@ export default class QuizModel {
     this.type = QuizType.SINGLE_CHOICE;
     this.countdown = -1;
     this.title = "";
-    this.note = "";
+    this.content = "";
     this.hint = "";
     this.score = 0;
     this.autoAudit = false;
