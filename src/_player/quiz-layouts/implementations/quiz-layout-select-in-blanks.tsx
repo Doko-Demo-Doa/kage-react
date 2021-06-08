@@ -8,6 +8,7 @@ import { CustomDropdown } from "~/_player/custom-dropdown/custom-dropdown";
 import QuizSelectInBlanksModel from "~/mobx/models/quiz-select-in-blanks";
 import { QuizPlayerContext } from "~/mobx/quiz-player";
 import { EventBus } from "~/services/events-helper";
+import { uiUtils } from "~/utils/utils-ui";
 
 interface Props {
   data: QuizSelectInBlanksModel;
@@ -30,13 +31,19 @@ export const QuizLayoutSelectInBlanks: React.FC<Props> = observer(({ data }) => 
 
   useEffect(() => {
     EventBus.on("NEXT_CLICK", () => {
-      if (selectedIds.length <= 0) {
-        return;
+      if (selectedIds.length <= 0 || selectedIds.length < data.matchers.length) {
+        return uiUtils.openNotification(
+          "warn",
+          "Khoan đã!",
+          "Bạn phải hoàn thành câu hỏi này trước."
+        );
       }
       if (selectedIds.every((n) => n.isCorrect)) {
         onSubmit?.("correct");
-      } else {
+      } else if (selectedIds.every((n) => !n.isCorrect)) {
         onSubmit?.("incorrect");
+      } else {
+        onSubmit?.("mixed");
       }
     });
 
@@ -63,7 +70,6 @@ export const QuizLayoutSelectInBlanks: React.FC<Props> = observer(({ data }) => 
                 .replaceData(data.content ?? "")
                 .with((key) => {
                   const targetMatcher = data.matchers.find((n) => n.id === key)!;
-                  console.log(targetMatcher);
 
                   return (
                     <CustomDropdown

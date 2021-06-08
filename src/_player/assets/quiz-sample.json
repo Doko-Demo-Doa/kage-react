@@ -9,6 +9,35 @@
   "autoAudit": true,
   "quizzes": [
     {
+      "id": "test2",
+      "type": "MULTIPLE_CHOICES",
+      "audioLink": "https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3",
+      "imageLink": "https://1.bp.blogspot.com/-cz4aU7tHXs0/Xrea5FcPFRI/AAAAAAABY08/hteaI-LIrQA2tdsVQlO6SuuT7v6VawICwCNcBGAsYHQ/s450/nimotsu_uketoru_woman.png",
+      "countdown": 0,
+      "title": "",
+      "content": "{彼女(かのじょ)}は、毎日_____アイスクリームがaaaa。",
+      "score": 5,
+      "correctIds": ["1", "3"],
+      "choices": [
+        {
+          "id": "0",
+          "label": "{食(た)}べると"
+        },
+        {
+          "id": "1",
+          "label": "{食(た)}べ始める"
+        },
+        {
+          "id": "2",
+          "label": "{食(た)}べるほど"
+        },
+        {
+          "id": "3",
+          "label": "{食(た)}べるなら"
+        }
+      ]
+    },
+    {
       "id": "test3",
       "type": "SELECT_IN_THE_BLANKS",
       "audioLink": "https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3",
@@ -76,34 +105,6 @@
       "content": "彼女は、毎日_____アイスクリームがすきです。",
       "score": 5,
       "correctIndex": 2,
-      "choices": [
-        {
-          "id": 0,
-          "label": "{食(た)}べると"
-        },
-        {
-          "id": 1,
-          "label": "{食(た)}べ始める"
-        },
-        {
-          "id": 2,
-          "label": "{食(た)}べるほど"
-        },
-        {
-          "id": 3,
-          "label": "{食(た)}べるなら"
-        }
-      ]
-    },
-    {
-      "id": "test2",
-      "type": "MULTIPLE_CHOICES",
-      "audioLink": "https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3",
-      "imageLink": "https://1.bp.blogspot.com/-cz4aU7tHXs0/Xrea5FcPFRI/AAAAAAABY08/hteaI-LIrQA2tdsVQlO6SuuT7v6VawICwCNcBGAsYHQ/s450/nimotsu_uketoru_woman.png",
-      "countdown": 90,
-      "title": "",
-      "content": "{彼女(かのじょ)}は、毎日_____アイスクリームがaaaa。",
-      "score": 5,
       "choices": [
         {
           "id": 0,
