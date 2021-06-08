@@ -1,20 +1,48 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import { observer } from "mobx-react-lite";
+import { uniqWith } from "rambdax";
 import { QuizLayout } from "~/_player/quiz-layouts/quiz-layout";
 import { formattingUtils } from "~/utils/utils-formatting";
 import { CustomAudioPlayer } from "~/components/audio-player/audio-player";
 import { CustomDropdown } from "~/_player/custom-dropdown/custom-dropdown";
 import QuizSelectInBlanksModel from "~/mobx/models/quiz-select-in-blanks";
+import { QuizPlayerContext } from "~/mobx/quiz-player";
+import { EventBus } from "~/services/events-helper";
 
 interface Props {
-  // TODO: Remove "any"
   data: QuizSelectInBlanksModel;
 }
+
+type SelectedItemType = {
+  matcherId: string;
+  choiceId: string;
+  isCorrect?: boolean;
+};
+
+let selectedIds: SelectedItemType[] = [];
 
 /**
  * Chỉ dùng đúng 1 loại component AudioPlayer để đảm bảo hiển thị tốt trên tất cả các
  * thiết bị / browser khác nhau.
  */
-export const QuizLayoutSelectInBlanks: React.FC<Props> = ({ data }) => {
+export const QuizLayoutSelectInBlanks: React.FC<Props> = observer(({ data }) => {
+  const { onSubmit } = useContext(QuizPlayerContext);
+
+  useEffect(() => {
+    EventBus.on("NEXT_CLICK", () => {
+      if (selectedIds.length <= 0) {
+        return;
+      }
+      if (selectedIds.every((n) => n.isCorrect)) {
+        onSubmit?.("correct");
+      } else {
+        onSubmit?.("incorrect");
+      }
+    });
+
+    return () => EventBus.off("NEXT_CLICK", () => undefined);
+  }, []);
+
   return (
     <QuizLayout
       content={
@@ -34,7 +62,30 @@ export const QuizLayoutSelectInBlanks: React.FC<Props> = ({ data }) => {
               {formattingUtils
                 .replaceData(data.content ?? "")
                 .with((key) => {
-                  return <CustomDropdown key={key} id={key} matchers={data.matchers} />;
+                  const targetMatcher = data.matchers.find((n) => n.id === key)!;
+                  console.log(targetMatcher);
+
+                  return (
+                    <CustomDropdown
+                      key={key}
+                      id={key}
+                      matchers={data.matchers}
+                      onSelect={(rKey) => {
+                        const item: SelectedItemType = {
+                          matcherId: key,
+                          choiceId: rKey,
+                          isCorrect: targetMatcher.correctChoice === rKey,
+                        };
+                        selectedIds = [
+                          ...uniqWith((he, she) => he.matcherId === she.matcherId, [
+                            item,
+                            ...selectedIds,
+                          ]),
+                        ];
+                        console.log(selectedIds);
+                      }}
+                    />
+                  );
                 })
                 .map((elem: string | React.ReactNode) => {
                   if (React.isValidElement(elem)) {
@@ -50,4 +101,4 @@ export const QuizLayoutSelectInBlanks: React.FC<Props> = ({ data }) => {
       }
     />
   );
-};
+});
