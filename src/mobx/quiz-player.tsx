@@ -101,7 +101,13 @@ export class QuizPlayerStore {
     });
   }
 
-  onSubmit(result: QResult, detail?: any) {
+  onSubmit(result: QResult, incorrects?: string[]) {
+    const thisQ = this.quizzes[this.activeIndex];
+    const thisR = this.results[this.activeIndex];
+    if (thisR.judge !== "undetermined" && this.activeIndex < this.quizzes.length) {
+      return this.nextPage();
+    }
+
     if (result === "correct") {
       this.showModal("correct");
     } else if (result === "incorrect") {
@@ -110,19 +116,16 @@ export class QuizPlayerStore {
       this.showModal("mixed");
     }
     this.stopClock();
-    // TODO: Ghi lại kết quả
-    const thisQ = this.quizzes[this.activeIndex];
     if (result) {
       const newR = this.results.slice();
       const r = newR[this.activeIndex];
+
+      // Gán kết quả
       r.acquired = thisQ.score;
-      // TODO: Them incorrectIds
+      r.incorrectIds = incorrects || [];
       r.judge = result ? "correct" : "incorrect";
 
       this.results = newR;
-    }
-    if (this.activeIndex < this.quizzes.length) {
-      // this.nextPage();
     }
   }
 
