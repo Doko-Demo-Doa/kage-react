@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal } from "antd";
 import { makeAutoObservable, autorun, configure } from "mobx";
-import { QuizResultType, QResult, AnswerResultType } from "~/typings/types";
+import { QuizResultType, QResult, AnswerResultType, SelectedQuizId } from "~/typings/types";
 import QuizModel from "~/mobx/models/quiz";
 import { ResultNotification } from "~/_player/result-notification/result-notification";
 
@@ -81,25 +81,29 @@ export class QuizPlayerStore {
     this.activeIndex = page;
   }
 
-  showModal(type: AnswerResultType) {
+  showModal(type: AnswerResultType, onOk?: () => void | undefined) {
     Modal.confirm({
       title: "",
       icon: <div />,
       content: <ResultNotification type={type} />,
       onOk() {
-        //
+        onOk?.();
       },
       onCancel: undefined,
       cancelButtonProps: { style: { display: "none" } },
     });
   }
 
-  onSubmit(result: QResult, selectedIds?: string[]) {
+  onSubmit(result: QResult, selectedIds?: SelectedQuizId[]) {
     const thisQ = this.quizzes[this.activeIndex];
     const thisR = this.results[this.activeIndex];
-    if (thisR.judge !== "undetermined" && this.activeIndex < this.quizzes.length) {
-      return this.nextPage();
-    }
+    const toNext = () => {
+      if (thisR.judge !== "undetermined" && this.activeIndex < this.quizzes.length) {
+        return this.nextPage();
+      }
+    };
+
+    toNext();
 
     if (result === "correct") {
       this.showModal("correct");
@@ -108,6 +112,7 @@ export class QuizPlayerStore {
     } else if (result === "mixed") {
       this.showModal("mixed");
     }
+
     this.stopClock();
     if (result) {
       const newR = this.results.slice();

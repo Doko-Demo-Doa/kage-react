@@ -38,7 +38,7 @@ export const QuizLayoutSingleChoice: React.FC<Props> = observer(({ data, showRes
       if (selected === data.correctId) {
         onSubmit?.("correct", [selected]);
       } else {
-        onSubmit?.("incorrect");
+        onSubmit?.("incorrect", [selected]);
       }
     });
 

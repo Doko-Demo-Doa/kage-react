@@ -107,10 +107,18 @@ export type QuizAssetType = {
 };
 
 export type QResult = "correct" | "incorrect" | "mixed" | "undetermined";
+
+export type SelectedQuizId =
+  | string
+  | {
+      matcherId: string;
+      choiceId: string;
+    };
+
 export type QuizResultType = {
   judge: QResult;
   acquired: number;
-  selectedIds: string[];
+  selectedIds: SelectedQuizId[];
 };
 
 export type SettingKey = "auth" | "profile" | "upload" | "general";

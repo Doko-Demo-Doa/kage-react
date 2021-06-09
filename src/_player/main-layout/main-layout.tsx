@@ -85,6 +85,11 @@ export const MainLayout: React.FC = observer(() => {
     return <div />;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function nextButtonLabel() {
+    // if ()
+  }
+
   return (
     <div className="main-layout ant-row">
       <div className="main-frame ant-col-md-18 ant-col-xs-24 ant-col-md-offset-3">
