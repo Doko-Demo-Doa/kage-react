@@ -1,58 +1,18 @@
 import React, { useContext } from "react";
 import { observer } from "mobx-react-lite";
-import { Result, Button, Table } from "antd";
-import { formattingUtils } from "~/utils/utils-formatting";
+import { Result } from "antd";
+import { CheckCircleFilled, CloseCircleFilled, ExclamationCircleFilled } from "@ant-design/icons";
 import { QuizPlayerContext } from "~/mobx/quiz-player";
 
-import { ColumnsType } from "antd/lib/table";
-
 import "~/routes/authen/builder/quiz-builder/result-preview/result-preview.scss";
-
-type ColumnMold = {
-  key: string;
-  no: string;
-  question: string;
-  result: string;
-};
-
-const columns: ColumnsType<ColumnMold> = [
-  {
-    title: "Câu số",
-    dataIndex: "no",
-    key: "no",
-  },
-  {
-    title: "Câu hỏi",
-    dataIndex: "question",
-    key: "question",
-    render: (value) => {
-      return <h3>{formattingUtils.furiganaToJSX(value)}</h3>;
-    },
-  },
-  {
-    title: "Kết quả",
-    dataIndex: "result",
-    key: "result",
-  },
-];
+import { QResult } from "~/typings/types";
+import { dataUtils } from "~/utils/utils-data";
+import { Colors } from "~/common/colors";
 
 export const ResultPreview: React.FC = observer(() => {
-  const { onSubmit } = useContext(QuizPlayerContext);
+  const { results, quizzes } = useContext(QuizPlayerContext);
 
-  const dataSource = [
-    {
-      key: "1",
-      no: "1",
-      question: "{今日(きょう)}なにを食べる",
-      result: "Đúng",
-    },
-    {
-      key: "2",
-      no: "2",
-      question: "sdfdsfdsfdsfdsfdsfdsfsdf",
-      result: "10 Downing Street",
-    },
-  ];
+  console.log(JSON.parse(JSON.stringify(results)));
 
   return (
     <div className="content result-preview">
@@ -64,16 +24,49 @@ export const ResultPreview: React.FC = observer(() => {
             Điểm số của bạn là <strong>9/10</strong>
           </div>
         }
-        extra={[
-          <Button type="primary" key="console">
-            Xem kết quả chi tiết
-          </Button>,
-        ]}
+        extra={[]}
       />
 
       <div className="result-table">
-        <Table pagination={false} dataSource={dataSource} columns={columns} />
+        {quizzes.map((n, idx) => {
+          return (
+            <ResultItem
+              key={n.id}
+              idx={idx + 1}
+              label={dataUtils.mapQuizLabel(n.type)}
+              result={results[idx].judge}
+            />
+          );
+        })}
       </div>
     </div>
   );
 });
+
+type ItemProps = {
+  idx: number;
+  label: string;
+  result: QResult;
+};
+
+const ResultItem: React.FC<ItemProps> = ({ idx, label, result }) => {
+  function mapIcon() {
+    if (result === "correct") {
+      return <CheckCircleFilled style={{ color: Colors.GREEN }} />;
+    }
+    if (result === "incorrect") {
+      return <CloseCircleFilled style={{ color: Colors.PALE_RED }} />;
+    }
+    if (result === "mixed") {
+      return <ExclamationCircleFilled style={{ color: Colors.BUTTERSCOTCH }} />;
+    }
+  }
+
+  return (
+    <div className="result-item">
+      <div className="col1">{idx}</div>
+      <div className="col2">{label}</div>
+      <div className="col3">{mapIcon()}</div>
+    </div>
+  );
+};

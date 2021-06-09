@@ -5,5 +5,23 @@
   .result-table {
     padding: 0 1rem;
     overflow-y: scroll;
+
+    .result-item {
+      display: flex;
+      background-color: $color-gold-ultralight;
+      padding: 6px;
+
+      .col1 {
+        width: 2rem;
+      }
+
+      .col2 {
+        flex-grow: 2;
+      }
+
+      .col3 {
+        width: 2rem;
+      }
+    }
   }
 }
