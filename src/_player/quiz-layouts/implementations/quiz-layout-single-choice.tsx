@@ -42,7 +42,9 @@ export const QuizLayoutSingleChoice: React.FC<Props> = observer(({ data, showRes
       }
     });
 
-    return () => EventBus.off("NEXT_CLICK", () => undefined);
+    return () => {
+      EventBus.clear();
+    };
   }, []);
 
   return (

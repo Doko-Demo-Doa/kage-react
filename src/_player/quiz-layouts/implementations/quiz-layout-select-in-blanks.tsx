@@ -47,7 +47,7 @@ export const QuizLayoutSelectInBlanks: React.FC<Props> = observer(({ data }) => 
       }
     });
 
-    return () => EventBus.off("NEXT_CLICK", () => undefined);
+    return () => EventBus.clear();
   }, []);
 
   return (

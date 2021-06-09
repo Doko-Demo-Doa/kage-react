@@ -124,9 +124,8 @@ export const MainLayout: React.FC = observer(() => {
                   if (activeIndex >= 0) {
                     EventBus.emit("NEXT_CLICK");
                     return;
-                  } else {
-                    nextPage();
                   }
+                  nextPage();
                 }}
                 icon={<RightCircleFilled style={{ color: Colors.GREEN }} />}
               >

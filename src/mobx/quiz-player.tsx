@@ -4,6 +4,7 @@ import { makeAutoObservable, autorun, configure } from "mobx";
 import { QuizResultType, QResult, AnswerResultType, SelectedQuizId } from "~/typings/types";
 import QuizModel from "~/mobx/models/quiz";
 import { ResultNotification } from "~/_player/result-notification/result-notification";
+import { uiUtils } from "~/utils/utils-ui";
 
 const sample = require("~/_player/assets/quiz-sample.json");
 
@@ -96,35 +97,36 @@ export class QuizPlayerStore {
 
   onSubmit(result: QResult, selectedIds?: SelectedQuizId[]) {
     const thisQ = this.quizzes[this.activeIndex];
-    const thisR = this.results[this.activeIndex];
-    const toNext = () => {
-      if (thisR.judge !== "undetermined" && this.activeIndex < this.quizzes.length) {
-        return this.nextPage();
-      }
-    };
 
-    toNext();
-
-    if (result === "correct") {
-      this.showModal("correct");
-    } else if (result === "incorrect") {
-      this.showModal("incorrect");
-    } else if (result === "mixed") {
-      this.showModal("mixed");
-    }
-
-    this.stopClock();
-    if (result) {
+    // Check: Nếu kết quả ok thì gán vào mảng kết quả.
+    if (result && result !== "undetermined") {
       const newR = this.results.slice();
       const r = newR[this.activeIndex];
 
       // Gán kết quả
       r.acquired = thisQ.score;
       r.selectedIds = selectedIds || [];
-      r.judge = result ? "correct" : "incorrect";
+      r.judge = result;
 
       this.results = newR;
     }
+
+    // Hiển thị thông báo tương ứng.
+    if (result === "correct") {
+      uiUtils.showMessage("Chính xác", "success");
+    } else if (result === "incorrect") {
+      uiUtils.showMessage("Sai rồi", "error");
+    } else if (result === "mixed") {
+      uiUtils.showMessage("Chưa đúng hoàn toàn", "warn");
+    }
+
+    // Nếu đã submit đáp án đủ thì cho next.
+    if (result !== "undetermined" && this.activeIndex < this.quizzes.length) {
+      return this.nextPage();
+    }
+
+    // Dừng đồng hồ đếm ngược
+    this.stopClock();
   }
 
   get isInQuiz() {

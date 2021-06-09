@@ -1,7 +1,7 @@
 import mitt, { Handler } from "mitt";
 import { AppEventType } from "~/typings/types";
 
-export const emitter = mitt();
+const emitter = mitt();
 
 export const EventBus = {
   emit: (type: AppEventType, data?: any) => {
@@ -14,5 +14,9 @@ export const EventBus = {
 
   off: (type: AppEventType, handler: Handler<any>) => {
     return emitter.off(type, handler);
+  },
+
+  clear: () => {
+    emitter.all.clear();
   },
 };
