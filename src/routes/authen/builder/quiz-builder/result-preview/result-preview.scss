@@ -1,7 +1,9 @@
 .result-preview {
   height: 100%;
+  overflow-y: scroll;
 
   .result-table {
     padding: 0 1rem;
+    overflow-y: scroll;
   }
 }

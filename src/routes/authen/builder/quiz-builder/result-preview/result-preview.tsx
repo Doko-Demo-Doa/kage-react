@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
+import { observer } from "mobx-react-lite";
 import { Result, Button, Table } from "antd";
+import { formattingUtils } from "~/utils/utils-formatting";
+import { QuizPlayerContext } from "~/mobx/quiz-player";
+
+import { ColumnsType } from "antd/lib/table";
 
 import "~/routes/authen/builder/quiz-builder/result-preview/result-preview.scss";
-import { ColumnsType } from "antd/lib/table";
-import { formattingUtils } from "~/utils/utils-formatting";
 
 type ColumnMold = {
   key: string;
@@ -11,21 +14,6 @@ type ColumnMold = {
   question: string;
   result: string;
 };
-
-const dataSource = [
-  {
-    key: "1",
-    no: "1",
-    question: "{今日(きょう)}なにを食べる",
-    result: "Đúng",
-  },
-  {
-    key: "2",
-    no: "2",
-    question: "sdfdsfdsfdsfdsfdsfdsfsdf",
-    result: "10 Downing Street",
-  },
-];
 
 const columns: ColumnsType<ColumnMold> = [
   {
@@ -48,9 +36,26 @@ const columns: ColumnsType<ColumnMold> = [
   },
 ];
 
-export const ResultPreview: React.FC = () => {
+export const ResultPreview: React.FC = observer(() => {
+  const { onSubmit } = useContext(QuizPlayerContext);
+
+  const dataSource = [
+    {
+      key: "1",
+      no: "1",
+      question: "{今日(きょう)}なにを食べる",
+      result: "Đúng",
+    },
+    {
+      key: "2",
+      no: "2",
+      question: "sdfdsfdsfdsfdsfdsfdsfsdf",
+      result: "10 Downing Street",
+    },
+  ];
+
   return (
-    <div className="result-preview">
+    <div className="content result-preview">
       <Result
         status="success"
         title="Chúc mừng, bạn đã làm tương đối tốt!"
@@ -71,4 +76,4 @@ export const ResultPreview: React.FC = () => {
       </div>
     </div>
   );
-};
+});
