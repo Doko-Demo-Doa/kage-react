@@ -5,7 +5,7 @@ import { v4 } from "uuid";
 import shortUid from "short-uuid";
 import { DropResult } from "smooth-dnd";
 import { AnimationType, MediaType, MinimumCanvasSize, QuizType } from "~/common/static-data";
-import { SlideType } from "~/typings/types";
+import { QResult, SlideType } from "~/typings/types";
 import { formattingUtils } from "~/utils/utils-formatting";
 import { quillUtils } from "~/utils/utils-quill";
 
@@ -246,6 +246,18 @@ export const dataUtils = {
       return "Chọn từ điền chỗ trống";
     }
     return "";
+  },
+  mapQuizResultLabel: (type: QResult) => {
+    if (type === "correct") {
+      return "Chính xác";
+    }
+    if (type === "incorrect") {
+      return "Sai";
+    }
+    if (type === "mixed") {
+      return "Đúng một phần";
+    }
+    return "Không xác định";
   },
   createSortedList: (arr: Array<any>, dropResult: DropResult) => {
     const { removedIndex, addedIndex, payload } = dropResult;

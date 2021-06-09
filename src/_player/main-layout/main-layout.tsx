@@ -31,6 +31,7 @@ export const MainLayout: React.FC = observer(() => {
     activeIndex,
     nextPage,
     showModal,
+    toPage,
     quizzes,
     instruction,
     id,
@@ -40,11 +41,11 @@ export const MainLayout: React.FC = observer(() => {
 
   const menu = (
     <Menu>
-      {/* <Menu.Item key="goback" disabled>
+      <Menu.Item key="goback" disabled>
         <Button type="primary" onClick={() => toPage(-1)}>
           Về trang hướng dẫn
         </Button>
-      </Menu.Item> */}
+      </Menu.Item>
       <Menu.Item key="head" disabled>
         <QuizListItem isHead />
       </Menu.Item>
@@ -101,7 +102,8 @@ export const MainLayout: React.FC = observer(() => {
     <div className="main-layout ant-row">
       <div className="main-frame ant-col-md-18 ant-col-xs-24 ant-col-md-offset-3">
         <div className="head">
-          {activeIndex >= 0 ? (
+          {/* Index từ 0 và không có đồng hồ thì mới hiển thị */}
+          {activeIndex >= 0 && !clockRunning ? (
             <Dropdown overlay={menu} trigger={["click"]}>
               <Button icon={<MenuOutlined />}>Danh sách câu hỏi</Button>
             </Dropdown>
