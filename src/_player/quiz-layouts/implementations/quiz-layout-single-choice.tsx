@@ -14,7 +14,6 @@ import { uiUtils } from "~/utils/utils-ui";
 
 interface Props {
   data: QuizSingleChoiceModel;
-  showResult?: boolean;
 }
 
 let selected = "";
@@ -23,8 +22,10 @@ let selected = "";
  * Chỉ dùng đúng 1 loại component AudioPlayer để đảm bảo hiển thị tốt trên tất cả các
  * thiết bị / browser khác nhau.
  */
-export const QuizLayoutSingleChoice: React.FC<Props> = observer(({ data, showResult }) => {
-  const { onSubmit } = useContext(QuizPlayerContext);
+export const QuizLayoutSingleChoice: React.FC<Props> = observer(({ data }) => {
+  const { onSubmit, isFinished, results, activeIndex } = useContext(QuizPlayerContext);
+
+  const thisR = results[activeIndex];
 
   useEffect(() => {
     EventBus.on("NEXT_CLICK", () => {
@@ -65,6 +66,8 @@ export const QuizLayoutSingleChoice: React.FC<Props> = observer(({ data, showRes
             <h2 className="title">{formattingUtils.furiganaToJSX(data.title)}</h2>
             <Radio.Group
               className="selections"
+              disabled={isFinished}
+              defaultValue={thisR.selectedIds[0]}
               onChange={(e) => {
                 selected = e.target.value;
               }}
@@ -74,7 +77,10 @@ export const QuizLayoutSingleChoice: React.FC<Props> = observer(({ data, showRes
                   <div key={n.id} className="inner">
                     <CheckCircleFilled
                       className="ticker"
-                      style={{ fontSize: "1rem", visibility: showResult ? "visible" : "hidden" }}
+                      style={{
+                        fontSize: "1rem",
+                        visibility: thisR.judge === "correct" ? "visible" : "hidden",
+                      }}
                     />
 
                     <Radio key={n.id} value={n.id}>

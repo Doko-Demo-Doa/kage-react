@@ -3,11 +3,11 @@ import { observer } from "mobx-react-lite";
 import { Result } from "antd";
 import { CheckCircleFilled, CloseCircleFilled, ExclamationCircleFilled } from "@ant-design/icons";
 import { QuizPlayerContext } from "~/mobx/quiz-player";
-
-import "~/routes/authen/builder/quiz-builder/result-preview/result-preview.scss";
 import { QResult } from "~/typings/types";
 import { dataUtils } from "~/utils/utils-data";
 import { Colors } from "~/common/colors";
+
+import "~/routes/authen/builder/quiz-builder/result-preview/result-preview.scss";
 
 export const ResultPreview: React.FC = observer(() => {
   const { results, quizzes } = useContext(QuizPlayerContext);

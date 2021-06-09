@@ -49,10 +49,10 @@ export const MainLayout: React.FC = observer(() => {
       <Menu.Item key="head" disabled>
         <QuizListItem isHead />
       </Menu.Item>
-      {quizzes.map((n: QuizModel) => {
+      {quizzes.map((n: QuizModel, idx) => {
         const qType = n.type as QuizType;
         return (
-          <Menu.Item key={n.id} onClick={() => undefined}>
+          <Menu.Item key={n.id} onClick={() => toPage(idx)}>
             <QuizListItem type={qType} score={23} tagline={dataUtils.mapQuizLabel(qType)} />
           </Menu.Item>
         );
