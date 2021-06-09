@@ -28,6 +28,9 @@ export class QuizPlayerStore {
 
   // Index của quiz. Bắt đầu từ 0. -1 là hướng dẫn làm bài, -2 là trang tiêu đề.
   activeIndex = -2;
+  // Index đang xử lý. Mặc định thì giống activeIndex nhưng activeIndex chỉ dùng để hiển thị.
+  // Cái này thì đánh dấu index đang thực hiện.
+  inProcessIndex = -2;
   clock = 0;
   clockRunning = false;
 
@@ -53,8 +56,22 @@ export class QuizPlayerStore {
     interv = setInterval(() => {
       if (this.clock <= 0) {
         this.stopClock(false);
+        // Nếu quiz đó chưa có kết quả thì đánh kết quả là fail và chuyển câu kế.
         if (this.results[this.activeIndex].judge === "undetermined") {
-          this.showModal("timeout");
+          const thisQ = this.quizzes[this.activeIndex];
+          const newR = this.results.slice();
+          const r = newR[this.activeIndex];
+
+          // Gán kết quả
+          r.acquired = thisQ.score;
+          r.selectedIds = [];
+          r.judge = "incorrect";
+
+          this.results = newR;
+
+          this.showModal("timeout", () => {
+            this.nextPage();
+          });
         }
         return;
       }
@@ -120,13 +137,13 @@ export class QuizPlayerStore {
       uiUtils.showMessage("Chưa đúng hoàn toàn", "warn");
     }
 
+    // Dừng đồng hồ đếm ngược
+    this.stopClock(true);
+
     // Nếu đã submit đáp án đủ thì cho next.
     if (result !== "undetermined" && this.activeIndex < this.quizzes.length) {
       return this.nextPage();
     }
-
-    // Dừng đồng hồ đếm ngược
-    this.stopClock();
   }
 
   get isInQuiz() {
@@ -160,8 +177,17 @@ export const QuizPlayerContext = React.createContext<QuizPlayerStore>(qpStore);
 // Side effects
 autorun(() => {
   const currentQuiz: QuizModel = sample.quizzes[qpStore.activeIndex];
+  /**
+   * Nếu:
+   * - Index quiz bắt đầu
+   * - Quiz chưa hết
+   * - Countdown lớn hơn 0
+   * thì chạy đồng hồ
+   */
   if (qpStore.activeIndex >= 0 && !qpStore.isFinished && (currentQuiz.countdown || 0) > 0) {
     const countdown = sample.quizzes[qpStore.activeIndex].countdown;
     qpStore.startClock(countdown);
+  } else {
+    qpStore.stopClock(true);
   }
 });

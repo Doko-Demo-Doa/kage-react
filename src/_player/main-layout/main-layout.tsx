@@ -13,6 +13,7 @@ import { QuizPlayerContext } from "~/mobx/quiz-player";
 
 import QuizSingleChoiceModel from "~/mobx/models/quiz-single-choice";
 import QuizMultipleChoicesModel from "~/mobx/models/quiz-multiple-choices";
+import QuizSelectInBlanksModel from "~/mobx/models/quiz-select-in-blanks";
 import QuizModel from "~/mobx/models/quiz";
 
 import { QuizIntro } from "~/_player/quiz-intro/quiz-intro";
@@ -24,13 +25,11 @@ import { QuizLayoutSelectInBlanks } from "~/_player/quiz-layouts/implementations
 import { ResultPreview } from "~/routes/authen/builder/quiz-builder/result-preview/result-preview";
 
 import "~/_player/main-layout/main-layout.scss";
-import QuizSelectInBlanksModel from "~/mobx/models/quiz-select-in-blanks";
 
 export const MainLayout: React.FC = observer(() => {
   const {
     activeIndex,
     nextPage,
-    toPage,
     showModal,
     quizzes,
     instruction,
@@ -41,18 +40,18 @@ export const MainLayout: React.FC = observer(() => {
 
   const menu = (
     <Menu>
-      <Menu.Item key="goback" disabled>
+      {/* <Menu.Item key="goback" disabled>
         <Button type="primary" onClick={() => toPage(-1)}>
           Về trang hướng dẫn
         </Button>
-      </Menu.Item>
+      </Menu.Item> */}
       <Menu.Item key="head" disabled>
         <QuizListItem isHead />
       </Menu.Item>
-      {quizzes.map((n: QuizModel, idx: number) => {
+      {quizzes.map((n: QuizModel) => {
         const qType = n.type as QuizType;
         return (
-          <Menu.Item key={n.id} onClick={() => toPage(idx)}>
+          <Menu.Item key={n.id} onClick={() => undefined}>
             <QuizListItem type={qType} score={23} tagline={dataUtils.mapQuizLabel(qType)} />
           </Menu.Item>
         );

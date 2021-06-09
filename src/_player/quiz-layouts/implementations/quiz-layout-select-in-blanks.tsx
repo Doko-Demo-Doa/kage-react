@@ -39,11 +39,11 @@ export const QuizLayoutSelectInBlanks: React.FC<Props> = observer(({ data }) => 
         );
       }
       if (selectedIds.every((n) => n.isCorrect)) {
-        onSubmit?.("correct");
+        onSubmit?.("correct", selectedIds);
       } else if (selectedIds.every((n) => !n.isCorrect)) {
-        onSubmit?.("incorrect");
+        onSubmit?.("incorrect", selectedIds);
       } else {
-        onSubmit?.("mixed");
+        onSubmit?.("mixed", selectedIds);
       }
     });
 
