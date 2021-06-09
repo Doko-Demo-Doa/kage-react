@@ -21,7 +21,7 @@ export const QuizListItem: React.FC<Props> = ({ isHead, tagline, score, result }
       <div className="score">{isHead ? "Điểm" : score || 0}</div>
       <div className="result">
         {isHead ? (
-          "Kết quả"
+          ""
         ) : result ? (
           <CheckCircleFilled style={{ color: Colors.GREEN }} />
         ) : (

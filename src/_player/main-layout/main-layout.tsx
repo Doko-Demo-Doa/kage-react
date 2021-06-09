@@ -23,14 +23,21 @@ import { QuizLayoutSelectInBlanks } from "~/_player/quiz-layouts/implementations
 
 import { ResultPreview } from "~/routes/authen/builder/quiz-builder/result-preview/result-preview";
 
-const sample = require("~/_player/assets/quiz-sample.json");
-
 import "~/_player/main-layout/main-layout.scss";
+import QuizSelectInBlanksModel from "~/mobx/models/quiz-select-in-blanks";
 
 export const MainLayout: React.FC = observer(() => {
-  const { activeIndex, nextPage, toPage, showModal, clock, clockRunning } = useContext(
-    QuizPlayerContext
-  );
+  const {
+    activeIndex,
+    nextPage,
+    toPage,
+    showModal,
+    quizzes,
+    instruction,
+    id,
+    clock,
+    clockRunning,
+  } = useContext(QuizPlayerContext);
 
   const menu = (
     <Menu>
@@ -42,7 +49,7 @@ export const MainLayout: React.FC = observer(() => {
       <Menu.Item key="head" disabled>
         <QuizListItem isHead />
       </Menu.Item>
-      {sample.quizzes.map((n: QuizModel, idx: number) => {
+      {quizzes.map((n: QuizModel, idx: number) => {
         const qType = n.type as QuizType;
         return (
           <Menu.Item key={n.id} onClick={() => toPage(idx)}>
@@ -60,17 +67,17 @@ export const MainLayout: React.FC = observer(() => {
    */
   function getProperQuizLayout() {
     if (activeIndex === -2) {
-      return <QuizIntro id={sample.id} />;
+      return <QuizIntro id={id} />;
     }
     if (activeIndex === -1) {
-      return <QuizInstruction instruction={sample.instruction} example={sample.example} />;
+      return <QuizInstruction instruction={instruction} />;
     }
 
-    if (activeIndex === sample.quizzes.length) {
+    if (activeIndex === quizzes.length) {
       return <ResultPreview />;
     }
 
-    const target = sample.quizzes[activeIndex];
+    const target = quizzes[activeIndex];
     if (target.type === QuizType.SINGLE_CHOICE) {
       const t = target as QuizSingleChoiceModel;
       return <QuizLayoutSingleChoice data={t} />;
@@ -80,7 +87,8 @@ export const MainLayout: React.FC = observer(() => {
       return <QuizLayoutMultipleChoices data={t} />;
     }
     if (target.type === QuizType.SELECT_IN_THE_BLANKS) {
-      return <QuizLayoutSelectInBlanks data={target} />;
+      const mTarget = target as QuizSelectInBlanksModel;
+      return <QuizLayoutSelectInBlanks data={mTarget} />;
     }
     return <div />;
   }
@@ -119,18 +127,20 @@ export const MainLayout: React.FC = observer(() => {
                   <span>{formattingUtils.secondsToMinsAndSeconds(clock)}</span>
                 </div>
               )}
-              <Button
-                onClick={() => {
-                  if (activeIndex >= 0) {
-                    EventBus.emit("NEXT_CLICK");
-                    return;
-                  }
-                  nextPage();
-                }}
-                icon={<RightCircleFilled style={{ color: Colors.GREEN }} />}
-              >
-                {activeIndex <= sample.quizzes.length ? "Tiếp theo" : "Kết thúc"}
-              </Button>
+              {activeIndex < quizzes.length && (
+                <Button
+                  onClick={() => {
+                    if (activeIndex >= 0) {
+                      EventBus.emit("NEXT_CLICK");
+                      return;
+                    }
+                    nextPage();
+                  }}
+                  icon={<RightCircleFilled style={{ color: Colors.GREEN }} />}
+                >
+                  {activeIndex <= quizzes.length ? "Tiếp theo" : "Kết thúc"}
+                </Button>
+              )}
             </Space>
           </div>
         </>
