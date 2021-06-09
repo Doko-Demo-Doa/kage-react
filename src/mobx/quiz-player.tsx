@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal } from "antd";
-import { makeAutoObservable, computed, autorun, configure } from "mobx";
+import { makeAutoObservable, autorun, configure } from "mobx";
 import { QuizResultType, QResult, AnswerResultType } from "~/typings/types";
 import QuizModel from "~/mobx/models/quiz";
 import { ResultNotification } from "~/_player/result-notification/result-notification";
@@ -42,14 +42,7 @@ export class QuizPlayerStore {
         judge: "undetermined",
       };
     });
-    makeAutoObservable(
-      this,
-      {
-        isFinished: computed,
-        accumulatedPoints: computed,
-      },
-      { autoBind: true }
-    );
+    makeAutoObservable(this, {}, { autoBind: true });
   }
 
   startClock(initCeil: number) {

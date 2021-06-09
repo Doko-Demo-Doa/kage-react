@@ -7,6 +7,7 @@ import { CustomAudioPlayer } from "~/components/audio-player/audio-player";
 import QuizMultipleChoicesModel from "~/mobx/models/quiz-multiple-choices";
 import { QuizPlayerContext } from "~/mobx/quiz-player";
 import { EventBus } from "~/services/events-helper";
+import { uiUtils } from "~/utils/utils-ui";
 
 interface Props {
   data: QuizMultipleChoicesModel;
@@ -23,6 +24,13 @@ export const QuizLayoutMultipleChoices: React.FC<Props> = observer(({ data }) =>
 
   useEffect(() => {
     EventBus.on("NEXT_CLICK", () => {
+      if (selectedIds.length <= 0) {
+        return uiUtils.openNotification(
+          "warn",
+          "Khoan đã!",
+          "Bạn phải hoàn thành câu hỏi này trước."
+        );
+      }
       if (selectedIds.every((n) => data.correctIds.includes(n))) {
         return onSubmit?.("correct");
       } else if (selectedIds.some((n) => data.correctIds.includes(n))) {
