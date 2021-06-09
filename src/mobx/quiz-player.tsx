@@ -38,7 +38,7 @@ export class QuizPlayerStore {
     this.results = Array.from(Array(numberOfQuizzes).keys()).map(() => {
       return {
         acquired: 0,
-        incorrectIds: [],
+        selectedIds: [],
         judge: "undetermined",
       };
     });
@@ -94,7 +94,7 @@ export class QuizPlayerStore {
     });
   }
 
-  onSubmit(result: QResult, incorrects?: string[]) {
+  onSubmit(result: QResult, selectedIds?: string[]) {
     const thisQ = this.quizzes[this.activeIndex];
     const thisR = this.results[this.activeIndex];
     if (thisR.judge !== "undetermined" && this.activeIndex < this.quizzes.length) {
@@ -115,7 +115,7 @@ export class QuizPlayerStore {
 
       // Gán kết quả
       r.acquired = thisQ.score;
-      r.incorrectIds = incorrects || [];
+      r.selectedIds = selectedIds || [];
       r.judge = result ? "correct" : "incorrect";
 
       this.results = newR;
@@ -134,10 +134,10 @@ export class QuizPlayerStore {
     return this.results.map((n) => n.acquired).reduce((a, b) => a + b);
   }
 
-  setQuizResultFor(idx: number, points: number, incorrects: string[], finalJudge: QResult) {
+  setQuizResultFor(idx: number, points: number, selectedIds: string[], finalJudge: QResult) {
     const newR = this.results.slice();
     newR[idx].acquired = points;
-    newR[idx].incorrectIds = incorrects;
+    newR[idx].selectedIds = selectedIds;
     newR[idx].judge = finalJudge;
 
     this.results = newR;

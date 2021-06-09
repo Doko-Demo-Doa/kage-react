@@ -26,7 +26,7 @@ export const QuizPreview: React.FC = observer(() => {
       const q = thisQuiz as QuizSingleChoiceModel;
       return (
         <div className="radio-selections">
-          <Radio.Group value={q.correctIndex}>
+          <Radio.Group value={q.correctId}>
             <Space direction="vertical">
               {q.choices.map((n, idx) => (
                 <Radio key={idx} value={idx}>

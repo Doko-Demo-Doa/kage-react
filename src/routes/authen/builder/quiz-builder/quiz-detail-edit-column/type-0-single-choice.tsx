@@ -40,8 +40,8 @@ export const SingleChoiceForm: React.FC = observer(() => {
           <Form.Item key={n.id}>
             <div className="single-choice">
               <Radio
-                checked={thisQuiz.correctIndex === idx}
-                onChange={() => setSingleCorrectChoice(thisQuiz.id, idx)}
+                checked={thisQuiz.correctId === n.id}
+                onChange={() => setSingleCorrectChoice(thisQuiz.id, n.id)}
               />
               <div className="separator" />
               <Input

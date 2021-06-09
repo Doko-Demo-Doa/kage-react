@@ -131,13 +131,13 @@ export class QuizListStore {
   /**
    * Single choice
    */
-  setSingleCorrectChoice(quizId: string, correctChoiceIndex: number) {
+  setSingleCorrectChoice(quizId: string, correctChoiceId: string) {
     const qi = this.list.findIndex((n) => n.id === quizId);
     if (qi !== -1) {
       const newList = this.list.slice();
       if (newList[qi].type !== QuizType.SINGLE_CHOICE) return;
       const target = newList[qi] as QuizSingleChoiceModel;
-      target.correctIndex = correctChoiceIndex;
+      target.correctId = correctChoiceId;
       newList[qi] = target;
       this.list = newList;
     }

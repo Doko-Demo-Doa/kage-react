@@ -110,7 +110,7 @@ export type QResult = "correct" | "incorrect" | "mixed" | "undetermined";
 export type QuizResultType = {
   judge: QResult;
   acquired: number;
-  incorrectIds: string[];
+  selectedIds: string[];
 };
 
 export type SettingKey = "auth" | "profile" | "upload" | "general";

@@ -5,13 +5,13 @@ import { dataUtils } from "~/utils/utils-data";
 
 // Single quiz object.
 export default class QuizSingleChoiceModel extends QuizModel {
-  correctIndex: number;
+  correctId: string;
   choices: Choice[];
 
   constructor() {
     super();
     this.type = QuizType.SINGLE_CHOICE;
-    this.correctIndex = 0;
+    this.correctId = "";
     this.choices = [
       { id: dataUtils.generateUid(), label: "Lựa chọn 1" },
       { id: dataUtils.generateUid(), label: "Lựa chọn 2" },

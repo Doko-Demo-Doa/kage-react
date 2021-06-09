@@ -17,7 +17,7 @@ interface Props {
   showResult?: boolean;
 }
 
-let selected = -1;
+let selected = "";
 
 /**
  * Chỉ dùng đúng 1 loại component AudioPlayer để đảm bảo hiển thị tốt trên tất cả các
@@ -28,15 +28,15 @@ export const QuizLayoutSingleChoice: React.FC<Props> = observer(({ data, showRes
 
   useEffect(() => {
     EventBus.on("NEXT_CLICK", () => {
-      if (selected === -1) {
+      if (!selected) {
         return uiUtils.openNotification(
           "warn",
           "Khoan đã!",
           "Bạn phải hoàn thành câu hỏi này trước."
         );
       }
-      if (selected === data.correctIndex) {
-        onSubmit?.("correct");
+      if (selected === data.correctId) {
+        onSubmit?.("correct", [selected]);
       } else {
         onSubmit?.("incorrect");
       }
@@ -68,14 +68,14 @@ export const QuizLayoutSingleChoice: React.FC<Props> = observer(({ data, showRes
               }}
             >
               <Space direction="vertical">
-                {data.choices.map((n, idx) => (
+                {data.choices.map((n) => (
                   <div key={n.id} className="inner">
                     <CheckCircleFilled
                       className="ticker"
                       style={{ fontSize: "1rem", visibility: showResult ? "visible" : "hidden" }}
                     />
 
-                    <Radio key={n.id} value={idx}>
+                    <Radio key={n.id} value={n.id}>
                       {formattingUtils.furiganaToJSX(n.label)}
                     </Radio>
                   </div>
