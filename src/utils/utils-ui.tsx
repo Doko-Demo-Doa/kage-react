@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { notification, message, Modal } from "antd";
 import { Delta } from "quill";
 import ReactQuill from "react-quill";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { BlockSizeType, PositionType } from "~/typings/types";
 
 // Alternative: react-quill/dist/quill.bubble.css
 import "react-quill/dist/quill.snow.css";
@@ -93,6 +95,39 @@ export const uiUtils = {
         callback(data);
       },
     });
+  },
+
+  getAnchorLegData: (
+    blockPos: PositionType,
+    blockSize: BlockSizeType,
+    anchorHead: PositionType
+  ) => {
+    const blockTopLeft = blockPos;
+    const blockTopRight: PositionType = {
+      x: blockPos.x + blockSize.w,
+      y: blockPos.y,
+    };
+    const blockBottomLeft: PositionType = {
+      x: blockPos.x,
+      y: blockPos.y,
+    };
+    const blockBottomRight: PositionType = {
+      x: blockPos.x + blockSize.w,
+      y: blockPos.y + blockSize.h,
+    };
+
+    const THRESHOLD_PIXEL = 10;
+    const FLOOR_THRESHOLD = 0.35;
+    const CEIL_THRESHOLD = 0.75;
+
+    let leg1: PositionType, leg2: PositionType;
+
+    // Nằm trên:
+    if (anchorHead.y < blockTopLeft.y) {
+      if (anchorHead.x < blockTopLeft.y - 10) {
+        leg1 = { x: blockTopLeft.x, y: blockTopLeft.y };
+      }
+    }
   },
 };
 

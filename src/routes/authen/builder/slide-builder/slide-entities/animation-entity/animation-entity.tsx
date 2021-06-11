@@ -7,6 +7,7 @@ import {
   FontSizeOutlined,
   HeartTwoTone,
 } from "@ant-design/icons";
+import { Menu, Dropdown } from "antd";
 import clsx from "clsx";
 import { AnimationType, MediaType } from "~/common/static-data";
 import { SlideBlockType } from "~/typings/types";
@@ -22,6 +23,7 @@ type AnimationEntityProps = {
   blocks: Partial<SlideBlockType>[];
   selected?: boolean;
   onClick?: (animId: string, blockId: string) => void | undefined;
+  onDeleteAnimation?: (blockId: string) => void | undefined;
 };
 
 export const AnimationEntity: React.FC<AnimationEntityProps> = ({
@@ -31,7 +33,20 @@ export const AnimationEntity: React.FC<AnimationEntityProps> = ({
   blockId,
   selected,
   onClick,
+  onDeleteAnimation,
 }) => {
+  const menu = (
+    <Menu>
+      <Menu.Item
+        style={{ color: Colors.PALE_RED }}
+        key="2"
+        onClick={() => onDeleteAnimation?.(blockId)}
+      >
+        Xoá animation
+      </Menu.Item>
+    </Menu>
+  );
+
   const name = `Hiệu ứng ${(idx || 0) + 1}`;
 
   function getIcon() {
@@ -52,15 +67,17 @@ export const AnimationEntity: React.FC<AnimationEntityProps> = ({
   }
 
   return (
-    <div
-      className={clsx("animation-entity", selected ? "animation-entity-selected" : "")}
-      onClick={() => onClick?.(id, blockId)}
-    >
-      <FunctionOutlined style={{ color: Colors.BARBIE_PINK }} />
-      <div className="separator" />
-      {getIcon()}
-      <div className="separator" />
-      <div className="fx-name">{name}</div>
-    </div>
+    <Dropdown overlay={menu} trigger={["contextMenu"]}>
+      <div
+        className={clsx("animation-entity", selected ? "animation-entity-selected" : "")}
+        onClick={() => onClick?.(id, blockId)}
+      >
+        <FunctionOutlined style={{ color: Colors.BARBIE_PINK }} />
+        <div className="separator" />
+        {getIcon()}
+        <div className="separator" />
+        <div className="fx-name">{name}</div>
+      </div>
+    </Dropdown>
   );
 };

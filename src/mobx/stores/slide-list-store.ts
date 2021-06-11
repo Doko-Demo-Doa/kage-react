@@ -73,6 +73,16 @@ export class SlideListStore {
     this.list = newL;
   }
 
+  deleteBlock(blockId: string) {
+    const idx = this.rootStore.slideBuilderStore.selectedIndex;
+    const newL = this.list.slice();
+    newL[idx].slideBlocks = newL[idx].slideBlocks.filter((n) => n.id !== blockId);
+    this.list = newL;
+  }
+
+  /**
+   * Kích hoạt animation cho block.
+   */
   toggleAnimation(blockId: string) {
     const idx = this.rootStore.slideBuilderStore.selectedIndex;
     const currentAnims = this.list[idx].animations;
@@ -85,6 +95,10 @@ export class SlideListStore {
         animationType: AnimationType.APPEAR,
         blockId,
       });
+    } else {
+      this.list[idx].animations = this.list[idx].animations.filter(
+        (n) => n.id !== currentAnims[targetAnim].id
+      );
     }
   }
 

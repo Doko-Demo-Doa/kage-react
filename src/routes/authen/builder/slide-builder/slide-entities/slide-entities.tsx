@@ -15,7 +15,14 @@ import "~/routes/authen/builder/slide-builder/slide-entities/slide-entities.scss
 export const SlideEntities: React.FC = observer(() => {
   const [selectedAnim, selectAnim] = useState("");
   const store = useContext(StoreContext);
-  const { list, selectBlock, setTitle, setAnimationList, toggleAnimation } = store.slideListStore;
+  const {
+    list,
+    selectBlock,
+    setTitle,
+    setAnimationList,
+    toggleAnimation,
+    deleteBlock,
+  } = store.slideListStore;
   const { selectedIndex } = store.slideBuilderStore;
 
   const slideTitle = list[selectedIndex]?.title || "";
@@ -46,7 +53,8 @@ export const SlideEntities: React.FC = observer(() => {
               assetName={item.assetName}
               blockId={item.id}
               type={item.type}
-              onDoubleClick={(blockId) => toggleAnimation(blockId)}
+              onClickAnimation={(blockId) => toggleAnimation(blockId)}
+              onDelete={(blockId) => deleteBlock(blockId)}
             />
           );
         })}
@@ -69,6 +77,7 @@ export const SlideEntities: React.FC = observer(() => {
                       selectAnim(id);
                       selectBlock(blockId);
                     }}
+                    onDeleteAnimation={(blockId) => toggleAnimation(blockId)}
                     selected={selectedAnim === item.id}
                     animationType={item.animationType}
                     blockId={item.blockId}

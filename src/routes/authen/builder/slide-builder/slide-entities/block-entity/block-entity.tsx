@@ -20,13 +20,23 @@ type BlockEntityType = {
   blockId: string;
   assetName?: string;
   onDoubleClick?: (blockId: string) => void | undefined;
+  onClickAnimation?: (blockId: string) => void | undefined;
+  onDelete?: (blockId: string) => void | undefined;
 };
 
-export const BlockEntity: React.FC<BlockEntityType> = ({ type, blockId, onDoubleClick }) => {
+export const BlockEntity: React.FC<BlockEntityType> = ({
+  type,
+  blockId,
+  onDoubleClick,
+  onClickAnimation,
+  onDelete,
+}) => {
   const menu = (
     <Menu>
-      <Menu.Item key="1">Tạo animation</Menu.Item>
-      <Menu.Item style={{ color: Colors.PALE_RED }} key="2">
+      <Menu.Item key="1" onClick={() => onClickAnimation?.(blockId)}>
+        Tạo animation
+      </Menu.Item>
+      <Menu.Item style={{ color: Colors.PALE_RED }} key="2" onClick={() => onDelete?.(blockId)}>
         Xoá
       </Menu.Item>
     </Menu>
