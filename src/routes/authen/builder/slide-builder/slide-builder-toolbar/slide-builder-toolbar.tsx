@@ -206,7 +206,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
             onClick={() => onInsertCallout()}
           />
 
-          <Popover
+          {/* <Popover
             arrowContent
             trigger="click"
             destroyTooltipOnHide
@@ -228,7 +228,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
               size="middle"
               onClick={() => onInsertTable()}
             />
-          </Popover>
+          </Popover> */}
 
           <Divider type="vertical" />
           <Button

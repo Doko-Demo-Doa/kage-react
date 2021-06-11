@@ -7,6 +7,7 @@ import {
   FontSizeOutlined,
   WechatFilled,
 } from "@ant-design/icons";
+import { Menu, Dropdown } from "antd";
 
 import { dataUtils } from "~/utils/utils-data";
 import { MediaType } from "~/common/static-data";
@@ -22,6 +23,15 @@ type BlockEntityType = {
 };
 
 export const BlockEntity: React.FC<BlockEntityType> = ({ type, blockId, onDoubleClick }) => {
+  const menu = (
+    <Menu>
+      <Menu.Item key="1">Tạo animation</Menu.Item>
+      <Menu.Item style={{ color: Colors.PALE_RED }} key="2">
+        Xoá
+      </Menu.Item>
+    </Menu>
+  );
+
   function getIcon() {
     if (type === MediaType.AUDIO) {
       return <SoundTwoTone size={35} className="audio" twoToneColor={Colors.DODGER_BLUE} />;
@@ -42,16 +52,18 @@ export const BlockEntity: React.FC<BlockEntityType> = ({ type, blockId, onDouble
   }
 
   return (
-    <div className="entity-cell">
-      <div
-        className="cell-selectable"
-        onDoubleClick={() => {
-          onDoubleClick?.(blockId);
-        }}
-      >
-        {getIcon()}
+    <Dropdown overlay={menu} trigger={["contextMenu"]}>
+      <div className="entity-cell">
+        <div
+          className="cell-selectable"
+          onDoubleClick={() => {
+            onDoubleClick?.(blockId);
+          }}
+        >
+          {getIcon()}
+        </div>
+        <div className="cell-label">{dataUtils.mapMediaTypeName(type)}</div>
       </div>
-      <div className="cell-label">{dataUtils.mapMediaTypeName(type)}</div>
-    </div>
+    </Dropdown>
   );
 };

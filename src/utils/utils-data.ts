@@ -264,6 +264,8 @@ export const dataUtils = {
     if (type === MediaType.CALLOUT) return "Ô hội thoại";
     if (type === MediaType.IMAGE) return "Ảnh";
     if (type === MediaType.VIDEO) return "Video";
+    if (type === MediaType.TEXT_BLOCK) return "Văn bản / chữ";
+    return "";
   },
   createSortedList: (arr: Array<any>, dropResult: DropResult) => {
     const { removedIndex, addedIndex, payload } = dropResult;

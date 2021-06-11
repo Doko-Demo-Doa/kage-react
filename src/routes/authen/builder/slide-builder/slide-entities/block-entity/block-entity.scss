@@ -3,12 +3,18 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  border: 1px dashed transparent;
+  transition: 0.2s ease-in-out;
+
+  &:hover {
+    border: 1px dashed $color-indigo;
+  }
 
   .cell-selectable {
     height: 42px;
     display: flex;
     align-items: center;
-    margin-left: 4px;
+    margin-left: 8px;
     margin-right: 16px;
     margin-top: -2px;
   }
