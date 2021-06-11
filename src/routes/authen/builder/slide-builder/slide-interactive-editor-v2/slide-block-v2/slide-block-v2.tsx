@@ -307,24 +307,23 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
                 width: ANCHOR_SIZE,
                 height: ANCHOR_SIZE,
                 background: "white",
-                border: "1px solid grey",
+                zIndex: 10,
+                border: "1px solid black",
                 transform: "translate(-2px,-2px)",
               }}
             />
           </Rnd>
           <svg
+            width={MinimumCanvasSize.WIDTH}
+            height={MinimumCanvasSize.HEIGHT}
             style={{
-              position: "absolute",
               zIndex: -1,
-              width: MinimumCanvasSize.WIDTH,
-              height: MinimumCanvasSize.HEIGHT,
             }}
           >
             <polyline
               points={`${leg1.x},${leg1.y} ${anchor.x},${anchor.y} ${leg2.x},${leg2.y}`}
-              fill="transparent"
+              fill="white"
               stroke="black"
-              style={{ position: "absolute" }}
             />
             Trình duyệt không hỗ trợ hiển thị
           </svg>
