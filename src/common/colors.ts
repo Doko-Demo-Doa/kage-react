@@ -7,4 +7,6 @@ export const Colors = {
   GREEN: "#21a343",
   WHITE: "#FFF",
   CYAN_HIGH: "#13c2c2",
+  EMERALD: "#34D399",
+  INDIGO: "#6366F1",
 };

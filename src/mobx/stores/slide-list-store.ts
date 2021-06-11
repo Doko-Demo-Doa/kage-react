@@ -88,15 +88,10 @@ export class SlideListStore {
     }
   }
 
-  setAnimationList(blockId: string | undefined, newAnims: SlideAnimationType[]) {
+  setAnimationList(newAnims: SlideAnimationType[]) {
     const idx = this.rootStore.slideBuilderStore.selectedIndex;
-    const currentAnims = this.list[idx].animations;
 
-    const targetAnim = currentAnims.findIndex((n) => n.blockId === blockId);
-
-    if (targetAnim === -1) {
-      this.list[idx].animations = newAnims;
-    }
+    this.list[idx].animations = newAnims;
   }
 
   // Block modificators:

@@ -4,18 +4,19 @@ import {
   SoundTwoTone,
   PictureTwoTone,
   VideoCameraTwoTone,
+  FontSizeOutlined,
   HeartTwoTone,
 } from "@ant-design/icons";
 import clsx from "clsx";
 import { AnimationType, MediaType } from "~/common/static-data";
 import { SlideBlockType } from "~/typings/types";
 import { Colors } from "~/common/colors";
-import { dataUtils } from "~/utils/utils-data";
 
 import "~/routes/authen/builder/slide-builder/slide-entities/animation-entity/animation-entity.scss";
 
 type AnimationEntityProps = {
   id: string;
+  idx?: number;
   animationType: AnimationType;
   blockId: string;
   blocks: Partial<SlideBlockType>[];
@@ -25,13 +26,13 @@ type AnimationEntityProps = {
 
 export const AnimationEntity: React.FC<AnimationEntityProps> = ({
   id,
-  animationType,
+  idx,
   blocks,
   blockId,
   selected,
   onClick,
 }) => {
-  const name = dataUtils.mapAnimationLabel(animationType);
+  const name = `Hiệu ứng ${(idx || 0) + 1}`;
 
   function getIcon() {
     const type = blocks.find((b) => b.id === blockId)?.type;
@@ -44,7 +45,10 @@ export const AnimationEntity: React.FC<AnimationEntityProps> = ({
     if (type === MediaType.VIDEO) {
       return <VideoCameraTwoTone twoToneColor={Colors.PALE_RED} />;
     }
-    return <HeartTwoTone twoToneColor={Colors.WHITE} />;
+    if (type === MediaType.TEXT_BLOCK) {
+      return <FontSizeOutlined style={{ color: Colors.INDIGO }} />;
+    }
+    return <HeartTwoTone twoToneColor={Colors.GOLD_LIGHT} />;
   }
 
   return (

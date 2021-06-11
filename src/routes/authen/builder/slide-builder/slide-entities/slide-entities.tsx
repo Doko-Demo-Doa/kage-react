@@ -23,8 +23,6 @@ export const SlideEntities: React.FC = observer(() => {
   const blocks = list[selectedIndex]?.slideBlocks || [];
   const animations = list[selectedIndex]?.animations || [];
 
-  const selectedBlock = list[selectedIndex]?.selectedBlock;
-
   return (
     <div className="slide-entities">
       <p>Tiêu đề slide:</p>
@@ -38,52 +36,49 @@ export const SlideEntities: React.FC = observer(() => {
         className="slide-title-input"
       />
       <Divider type="horizontal" />
-      <h2>Asset / Hiệu ứng</h2>
 
-      <div className="asset-columns">
-        <div className="column1">
-          {blocks.map((item) => {
-            return (
-              <BlockEntity
-                key={item.id}
-                assetName={item.assetName}
-                blockId={item.id}
-                type={item.type}
-                onDoubleClick={(blockId) => toggleAnimation(blockId)}
-              />
-            );
-          })}
-        </div>
+      <h2>Các thành phần</h2>
+      <div className="column1">
+        {blocks.map((item) => {
+          return (
+            <BlockEntity
+              key={item.id}
+              assetName={item.assetName}
+              blockId={item.id}
+              type={item.type}
+              onDoubleClick={(blockId) => toggleAnimation(blockId)}
+            />
+          );
+        })}
+      </div>
 
-        <div className="separator" />
-
-        <div className="column2">
-          <KeyboardEventHandler>
-            <Container
-              onDrop={(e) => {
-                setAnimationList(selectedBlock, dataUtils.createSortedList(animations, e));
-              }}
-            >
-              {animations.map((item) => {
-                return (
-                  <Draggable key={`${item.id}`}>
-                    <AnimationEntity
-                      id={item.id}
-                      onClick={(id, blockId) => {
-                        selectAnim(id);
-                        selectBlock(blockId);
-                      }}
-                      selected={selectedAnim === item.id}
-                      animationType={item.animationType}
-                      blockId={item.blockId}
-                      blocks={blocks}
-                    />
-                  </Draggable>
-                );
-              })}
-            </Container>
-          </KeyboardEventHandler>
-        </div>
+      <h2>Hiệu ứng</h2>
+      <div className="column2">
+        <KeyboardEventHandler>
+          <Container
+            onDrop={(e) => {
+              setAnimationList(dataUtils.createSortedList(animations, e));
+            }}
+          >
+            {animations.map((item) => {
+              return (
+                <Draggable key={`${item.id}`}>
+                  <AnimationEntity
+                    id={item.id}
+                    onClick={(id, blockId) => {
+                      selectAnim(id);
+                      selectBlock(blockId);
+                    }}
+                    selected={selectedAnim === item.id}
+                    animationType={item.animationType}
+                    blockId={item.blockId}
+                    blocks={blocks}
+                  />
+                </Draggable>
+              );
+            })}
+          </Container>
+        </KeyboardEventHandler>
       </div>
     </div>
   );

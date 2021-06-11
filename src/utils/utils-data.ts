@@ -259,6 +259,12 @@ export const dataUtils = {
     }
     return "Không xác định";
   },
+  mapMediaTypeName: (type: MediaType) => {
+    if (type === MediaType.AUDIO) return "Âm thanh";
+    if (type === MediaType.CALLOUT) return "Ô hội thoại";
+    if (type === MediaType.IMAGE) return "Ảnh";
+    if (type === MediaType.VIDEO) return "Video";
+  },
   createSortedList: (arr: Array<any>, dropResult: DropResult) => {
     const { removedIndex, addedIndex, payload } = dropResult;
     if (removedIndex === null && addedIndex === null) return arr;

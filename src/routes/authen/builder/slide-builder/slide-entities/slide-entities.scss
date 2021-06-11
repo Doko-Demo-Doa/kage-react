@@ -15,17 +15,12 @@ $slide-height: 120px;
     max-width: 100%;
   }
 
-  .asset-columns {
-    display: flex;
-    flex-direction: row;
-    align-items: baseline;
+  .column1 {
+    border-right: 1px solid $color-gray-light;
+  }
 
-    .column1 {
-      border-right: 1px solid $color-gray-light;
-    }
-
-    .column2 {
-      background-color: white;
-    }
+  .column2 {
+    background-color: white;
+    width: 100%;
   }
 }

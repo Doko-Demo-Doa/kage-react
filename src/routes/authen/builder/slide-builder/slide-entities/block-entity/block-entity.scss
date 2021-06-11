@@ -1,14 +1,19 @@
 .entity-cell {
+  height: 42px;
   display: flex;
   align-items: center;
-  height: 42px;
   cursor: pointer;
 
   .cell-selectable {
+    height: 42px;
     display: flex;
     align-items: center;
     margin-left: 4px;
     margin-right: 16px;
     margin-top: -2px;
+  }
+
+  .cell-label {
+    color: $color-midnight;
   }
 }

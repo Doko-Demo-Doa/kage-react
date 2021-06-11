@@ -1,5 +1,4 @@
 import React from "react";
-import { Popover } from "antd";
 import {
   VideoCameraTwoTone,
   HeartTwoTone,
@@ -9,9 +8,9 @@ import {
   WechatFilled,
 } from "@ant-design/icons";
 
+import { dataUtils } from "~/utils/utils-data";
 import { MediaType } from "~/common/static-data";
 import { Colors } from "~/common/colors";
-import { MediaPreviewPopup } from "~/components/media-preview-popup/media-preview-popup";
 
 import "~/routes/authen/builder/slide-builder/slide-entities/block-entity/block-entity.scss";
 
@@ -22,12 +21,7 @@ type BlockEntityType = {
   onDoubleClick?: (blockId: string) => void | undefined;
 };
 
-export const BlockEntity: React.FC<BlockEntityType> = ({
-  type,
-  assetName,
-  blockId,
-  onDoubleClick,
-}) => {
+export const BlockEntity: React.FC<BlockEntityType> = ({ type, blockId, onDoubleClick }) => {
   function getIcon() {
     if (type === MediaType.AUDIO) {
       return <SoundTwoTone size={35} className="audio" twoToneColor={Colors.DODGER_BLUE} />;
@@ -39,7 +33,7 @@ export const BlockEntity: React.FC<BlockEntityType> = ({
       return <VideoCameraTwoTone twoToneColor={Colors.PALE_RED} />;
     }
     if (type === MediaType.TEXT_BLOCK) {
-      return <FontSizeOutlined color={Colors.DODGER_BLUE} />;
+      return <FontSizeOutlined style={{ color: Colors.INDIGO }} />;
     }
     if (type === MediaType.CALLOUT) {
       return <WechatFilled size={35} style={{ color: Colors.GREEN }} />;
@@ -49,21 +43,15 @@ export const BlockEntity: React.FC<BlockEntityType> = ({
 
   return (
     <div className="entity-cell">
-      <Popover
-        arrowContent
-        content={<MediaPreviewPopup assetName={assetName ?? ""} type={type} />}
-        trigger="hover"
-        destroyTooltipOnHide
+      <div
+        className="cell-selectable"
+        onDoubleClick={() => {
+          onDoubleClick?.(blockId);
+        }}
       >
-        <div
-          className="cell-selectable"
-          onDoubleClick={() => {
-            onDoubleClick?.(blockId);
-          }}
-        >
-          {getIcon()}
-        </div>
-      </Popover>
+        {getIcon()}
+      </div>
+      <div className="cell-label">{dataUtils.mapMediaTypeName(type)}</div>
     </div>
   );
 };
