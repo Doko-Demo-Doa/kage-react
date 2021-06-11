@@ -168,6 +168,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
             y: initY,
           }}
           enableResizing={false}
+          className="single-block"
           dragHandleClassName="block-handle"
         >
           <div ref={textBlockRef} onClick={() => onSelect(id)} className="interactive-text-block">

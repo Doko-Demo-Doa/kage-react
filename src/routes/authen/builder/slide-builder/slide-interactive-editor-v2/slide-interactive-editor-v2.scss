@@ -5,54 +5,64 @@
   min-height: $interactive-editor-height;
 }
 
-#slide-interactive-editor {
-  box-sizing: border-box;
-  resize: horizontal;
-  overflow: auto;
-  padding: 0;
-  width: auto;
-  min-width: $interactive-editor-width;
-  height: auto;
-  min-height: $interactive-editor-height;
-  overflow: hidden;
-  // width: calc(100vw - #{$slide-list-width} - #{$entities-width});
-  // height: calc(100vh - #{$header-height});
+.i-editor-wrapper {
+  padding: 12px;
+  background-color: $color-gray-light;
+  flex-grow: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  .slide-title {
-    color: #222;
-    font-family: "Source Sans Pro", Helvetica, sans-serif;
-    font-size: 54px;
-    font-weight: 600;
-    letter-spacing: normal;
-    line-height: 1.2;
-    position: relative;
-    text-align: center;
-    text-shadow: none;
-    top: 8px;
-    max-width: 580px;
-    word-wrap: break-word;
-    margin: 0 auto;
-  }
+  #slide-interactive-editor {
+    margin: auto;
+    background-color: white;
+    box-sizing: border-box;
+    overflow: auto;
+    padding: 0;
+    width: $interactive-editor-width;
+    min-width: $interactive-editor-width;
+    height: $interactive-editor-height;
+    min-height: $interactive-editor-height;
+    overflow: hidden;
+    // width: calc(100vw - #{$slide-list-width} - #{$entities-width});
+    // height: calc(100vh - #{$header-height});
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p,
-  blockquote,
-  strong,
-  pre,
-  a {
-    font-family: "Source Sans Pro", Helvetica, sans-serif;
-  }
+    .slide-title {
+      color: #222;
+      font-family: "Source Sans Pro", Helvetica, sans-serif;
+      font-size: 54px;
+      font-weight: 600;
+      letter-spacing: normal;
+      line-height: 1.2;
+      position: relative;
+      text-align: center;
+      text-shadow: none;
+      top: 8px;
+      max-width: 580px;
+      word-wrap: break-word;
+      margin: 0 auto;
+    }
 
-  .single-block {
-    z-index: 0;
-    background-color: bisque;
-    background-size: contain;
-    object-fit: cover;
-    background-repeat: no-repeat;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    blockquote,
+    strong,
+    pre,
+    a {
+      font-family: "Source Sans Pro", Helvetica, sans-serif;
+    }
+
+    .single-block {
+      z-index: 0;
+      background-color: bisque;
+      background-size: contain;
+      object-fit: cover;
+      background-repeat: no-repeat;
+    }
   }
 }
