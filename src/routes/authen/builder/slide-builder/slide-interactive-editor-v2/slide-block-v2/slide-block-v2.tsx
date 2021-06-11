@@ -212,7 +212,8 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
       return (
         <div className="interactive-callout">
           <Rnd
-            bounds="#slide-interactive-editor"
+            bounds="parent"
+            className="single-block"
             dragHandleClassName="block-handle"
             onDragStop={(e, d) => {
               const topLeftX = d.x;
@@ -289,7 +290,8 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
             </div>
           </Rnd>
           <Rnd
-            bounds="#slide-interactive-editor"
+            className="single-block"
+            bounds="parent"
             disableDragging={false}
             enableResizing={false}
             onDragStop={(e, d) => {

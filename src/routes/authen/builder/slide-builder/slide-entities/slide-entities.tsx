@@ -68,11 +68,12 @@ export const SlideEntities: React.FC = observer(() => {
               setAnimationList(dataUtils.createSortedList(animations, e));
             }}
           >
-            {animations.map((item) => {
+            {animations.map((item, idx) => {
               return (
                 <Draggable key={`${item.id}`}>
                   <AnimationEntity
                     id={item.id}
+                    idx={idx}
                     onClick={(id, blockId) => {
                       selectAnim(id);
                       selectBlock(blockId);
