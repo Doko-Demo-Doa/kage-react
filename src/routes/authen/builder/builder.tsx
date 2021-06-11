@@ -59,7 +59,7 @@ export function Builder() {
           tab={
             <span>
               <SettingOutlined />
-              Settings
+              Điều chỉnh
             </span>
           }
           key="2"

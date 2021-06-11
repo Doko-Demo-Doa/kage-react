@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import dayjs from "dayjs";
-import { BlockSizeType, PositionType, SlideType } from "~/typings/types";
+import { BlockSizeType, PositionType, SlideAnimationType, SlideType } from "~/typings/types";
 import { RootStore } from "~/mobx/root-store";
 import { AnimationType } from "~/common/static-data";
 import { Delta } from "quill";
@@ -85,6 +85,17 @@ export class SlideListStore {
         animationType: AnimationType.APPEAR,
         blockId,
       });
+    }
+  }
+
+  setAnimationList(blockId: string | undefined, newAnims: SlideAnimationType[]) {
+    const idx = this.rootStore.slideBuilderStore.selectedIndex;
+    const currentAnims = this.list[idx].animations;
+
+    const targetAnim = currentAnims.findIndex((n) => n.blockId === blockId);
+
+    if (targetAnim === -1) {
+      this.list[idx].animations = newAnims;
     }
   }
 

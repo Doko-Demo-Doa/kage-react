@@ -52,15 +52,13 @@ export const BlockEntity: React.FC<BlockEntityType> = ({
       <Popover
         arrowContent
         content={<MediaPreviewPopup assetName={assetName ?? ""} type={type} />}
-        trigger="click"
+        trigger="hover"
         destroyTooltipOnHide
       >
         <div
           className="cell-selectable"
           onDoubleClick={() => {
-            if (type === MediaType.AUDIO) {
-              onDoubleClick?.(blockId);
-            }
+            onDoubleClick?.(blockId);
           }}
         >
           {getIcon()}

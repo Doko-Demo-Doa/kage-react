@@ -237,7 +237,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
             type="primary"
             danger
           >
-            Toggle Preview
+            Bật / tắt xem thử
           </Button>
           <Button
             disabled={shouldDisable}
@@ -245,7 +245,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
             icon={<UploadOutlined />}
             type="primary"
           >
-            Publish
+            Xuất ra file
           </Button>
           {isElectron() && (
             <Button onClick={() => onOpenCache()} icon={<FolderOpenFilled />}>

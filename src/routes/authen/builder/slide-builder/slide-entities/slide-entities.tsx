@@ -1,7 +1,10 @@
 import React, { useContext, useState } from "react";
 import { Input, Divider } from "antd";
+import { Container, Draggable } from "react-smooth-dnd";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 import { observer } from "mobx-react";
+
+import { dataUtils } from "~/utils/utils-data";
 
 import { AnimationEntity } from "~/routes/authen/builder/slide-builder/slide-entities/animation-entity/animation-entity";
 import { BlockEntity } from "~/routes/authen/builder/slide-builder/slide-entities/block-entity/block-entity";
@@ -12,13 +15,15 @@ import "~/routes/authen/builder/slide-builder/slide-entities/slide-entities.scss
 export const SlideEntities: React.FC = observer(() => {
   const [selectedAnim, selectAnim] = useState("");
   const store = useContext(StoreContext);
-  const { list, selectBlock, setTitle, toggleAnimation } = store.slideListStore;
+  const { list, selectBlock, setTitle, setAnimationList, toggleAnimation } = store.slideListStore;
   const { selectedIndex } = store.slideBuilderStore;
 
   const slideTitle = list[selectedIndex]?.title || "";
 
   const blocks = list[selectedIndex]?.slideBlocks || [];
   const animations = list[selectedIndex]?.animations || [];
+
+  const selectedBlock = list[selectedIndex]?.selectedBlock;
 
   return (
     <div className="slide-entities">
@@ -53,30 +58,30 @@ export const SlideEntities: React.FC = observer(() => {
         <div className="separator" />
 
         <div className="column2">
-          <KeyboardEventHandler
-            handleKeys={["del"]}
-            onKeyEvent={(key) => {
-              if (key === "del") {
-                // Code...
-              }
-            }}
-          >
-            {animations.map((item) => {
-              return (
-                <AnimationEntity
-                  id={item.id}
-                  key={item.id}
-                  onClick={(id, blockId) => {
-                    selectAnim(id);
-                    selectBlock(blockId);
-                  }}
-                  selected={selectedAnim === item.id}
-                  animationType={item.animationType}
-                  blockId={item.blockId}
-                  blocks={blocks}
-                />
-              );
-            })}
+          <KeyboardEventHandler>
+            <Container
+              onDrop={(e) => {
+                setAnimationList(selectedBlock, dataUtils.createSortedList(animations, e));
+              }}
+            >
+              {animations.map((item) => {
+                return (
+                  <Draggable key={`${item.id}`}>
+                    <AnimationEntity
+                      id={item.id}
+                      onClick={(id, blockId) => {
+                        selectAnim(id);
+                        selectBlock(blockId);
+                      }}
+                      selected={selectedAnim === item.id}
+                      animationType={item.animationType}
+                      blockId={item.blockId}
+                      blocks={blocks}
+                    />
+                  </Draggable>
+                );
+              })}
+            </Container>
           </KeyboardEventHandler>
         </div>
       </div>
