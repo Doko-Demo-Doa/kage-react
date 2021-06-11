@@ -179,7 +179,8 @@ export const fileUtils = {
       resourcePath = path.join(path.resolve("./"), "extra", "vendor");
     } else {
       // Nếu là release thì nó nằm ở dora-extra. Tham khảo file electron-builder.yml
-      resourcePath = path.dirname(__dirname, "dora-extra");
+      fs.readdirSync(path.join(process.resourcesPath, "dora-extra"));
+      resourcePath = path.join(process.resourcesPath, "dora-extra");
     }
 
     const destVendor = path.join(vendorDir);
