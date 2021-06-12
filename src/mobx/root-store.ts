@@ -1,7 +1,12 @@
+import { autorun, configure } from "mobx";
 import { SlideListStore } from "~/mobx/stores/slide-list-store";
 import { QuizDeckStore } from "~/mobx/stores/quiz-deck-store";
 import { SlideBuilderStore } from "~/mobx/stores/slide-builder-store";
 import { QuizListStore } from "~/mobx/stores/quiz-list-store";
+
+configure({
+  enforceActions: "never",
+});
 
 export class RootStore {
   slideBuilderStore: SlideBuilderStore;
@@ -19,3 +24,7 @@ export class RootStore {
 }
 
 export const rootStore = new RootStore();
+
+autorun(() => {
+  console.log("Changed");
+});

@@ -38,6 +38,9 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
 
   const onNewSlide = () => {
     newSlide();
+    if (list.length) {
+      slideBuilderMeta.setIndex(0);
+    }
   };
 
   const onInsertMedia = async () => {
