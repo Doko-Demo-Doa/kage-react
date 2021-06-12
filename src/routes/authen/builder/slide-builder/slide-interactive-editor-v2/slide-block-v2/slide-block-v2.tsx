@@ -3,7 +3,7 @@ import { Rnd } from "react-rnd";
 import { Delta } from "quill";
 import { PlusOutlined, DragOutlined } from "@ant-design/icons";
 import ReactQuill, { Quill } from "react-quill";
-import { MediaType, MinimumCanvasSize, RESOURCE_PROTOCOL } from "~/common/static-data";
+import { MediaType, MinimumCanvasSize } from "~/common/static-data";
 import { SlideAnimationType, SlideBlockType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
 import { defaultQuillToolbar } from "~/utils/utils-ui";
@@ -49,7 +49,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
   const textBlockRef = useRef<HTMLDivElement>(null);
   const quillRef = useRef<ReactQuill>(null);
 
-  const assetUrl = `${RESOURCE_PROTOCOL}${fileUtils.getCacheDirectory("assets")}/${assetName}`;
+  const assetUrl = fileUtils.getUsableAssetUrl(assetName);
   const animIndex = animations?.findIndex((n) => n.blockId === id);
 
   let initW = 0;

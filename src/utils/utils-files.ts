@@ -197,7 +197,7 @@ export const fileUtils = {
     const cachePath = getCacheDirectory();
     return path.join(cachePath, filename);
   },
-  getUsableAssetUrl: (assetName: string) => {
+  getUsableAssetUrl: (assetName: string | undefined) => {
     return `${RESOURCE_PROTOCOL}${getCacheDirectory("assets")}/${assetName}`;
   },
   // Quiz related
