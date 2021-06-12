@@ -43,7 +43,8 @@ function createWindow() {
   });
 
   win.once("ready-to-show", () => {
-    autoUpdater.checkForUpdatesAndNotify();
+    // https://nklayman.github.io/vue-cli-plugin-electron-builder/guide/recipes.html#auto-update
+    autoUpdater.checkForUpdates().then((result) => console.log("Auto-updating result:", result));
     win.show();
   });
 

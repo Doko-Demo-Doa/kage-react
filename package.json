@@ -1,5 +1,6 @@
 {
   "name": "dora-kage",
+  "description": "Slide and quiz creation tool",
   "version": "1.0.3",
   "author": "WabiSabi",
   "license": "Commercial",
@@ -25,7 +26,8 @@
     "electron:build-win": "cross-env WEBPACK_TARGET=electron npm run build && tsc -p electron && electron-builder -w",
     "electron:build-mac": "cross-env WEBPACK_TARGET=electron npm run build && tsc -p electron && electron-builder -m",
     "electron:build-linux": "cross-env WEBPACK_TARGET=electron npm run build && tsc -p electron && electron-builder -l",
-    "electron:deploy-mac": "npm run electron:build-mac --publish always",
+    "electron:deploy-win": "cross-env WEBPACK_TARGET=electron npm run build && tsc -p electron && electron-builder build --win --publish always",
+    "electron:deploy-mac": "cross-env WEBPACK_TARGET=electron npm run build && tsc -p electron && electron-builder build --mac --publish always",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
   },

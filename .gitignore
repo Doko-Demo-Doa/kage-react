@@ -41,3 +41,5 @@ storybook-static/
 
 docs/
 deploy.sh
+dev.sh
+dev-app-update.yml
