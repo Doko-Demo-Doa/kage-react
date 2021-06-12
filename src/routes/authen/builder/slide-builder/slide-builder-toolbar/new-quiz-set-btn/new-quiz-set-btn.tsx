@@ -13,6 +13,7 @@ export const NewQuizSetBtn: React.FC = observer(() => {
 
   const store = useContext(StoreContext);
   const { list, newQuizSet } = store.slideListStore;
+  const { setIndex, selectedIndex } = store.slideBuilderStore;
 
   const content = (
     <div className="new-quiz-set-popover">
@@ -35,6 +36,10 @@ export const NewQuizSetBtn: React.FC = observer(() => {
                 newQuizSet(newQuizId);
                 setNewQuizId("");
                 setPopVisible(false);
+
+                if (selectedIndex === -1) {
+                  setIndex(0);
+                }
               }
             }}
           >

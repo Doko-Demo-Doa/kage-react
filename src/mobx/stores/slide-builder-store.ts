@@ -3,7 +3,7 @@ import { RootStore } from "~/mobx/root-store";
 
 export class SlideBuilderStore {
   rootStore: RootStore;
-  selectedIndex = 0;
+  selectedIndex = -1;
 
   constructor(rs: RootStore) {
     this.rootStore = rs;
