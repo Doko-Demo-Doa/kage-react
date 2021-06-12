@@ -63,6 +63,7 @@
     "electron-devtools-installer": "3.2.0",
     "electron-is-dev": "2.0.0",
     "electron-updater": "4.3.9",
+    "ffmpeg-static": "4.3.0",
     "fs-extra": "10.0.0",
     "sharp": "0.28.3"
   },
@@ -84,6 +85,7 @@
     "@types/crc": "3.4.0",
     "@types/dom-mediacapture-record": "1.0.7",
     "@types/electron-devtools-installer": "2.2.0",
+    "@types/ffmpeg-static": "3.0.0",
     "@types/fluent-ffmpeg": "2.1.17",
     "@types/jest": "26.0.23",
     "@types/node": "14.17.1",

@@ -1,6 +1,9 @@
 import { Metadata } from "sharp";
+import { remote } from "electron";
+import path from "path";
 import dayjs from "dayjs";
-import fs from "fs";
+import fs from "fs-extra";
+import ffmpeg from "ffmpeg-static";
 import { FFProbeMetaType, MediaReturnType, MediaStreamType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
 import { MediaType } from "~/common/static-data";
@@ -9,6 +12,16 @@ const OptimalImageSize = {
   width: 1000,
   height: 725,
 };
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function getFfmpegPath() {
+  const p = path.join(
+    remote.app.getAppPath().replace("app.asar", "app.asar.unpacked"),
+    "node_modules/ffmpeg-static",
+    ffmpeg
+  );
+  return p;
+}
 
 export const audioUtils = {
   checkAudioMetadata: (filePath: string): Promise<MediaStreamType> => {
