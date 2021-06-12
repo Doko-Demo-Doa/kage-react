@@ -82,7 +82,7 @@ export const fileUtils = {
     return data.filePaths[0];
   },
   // Chuyển file từ vendor + cache vào thư mục đích
-  copyFromCacheToDest: async (dest: string) => {
+  copyFromCacheToDest: async (dest: string, onlyFiles?: string[]) => {
     if (fsNotAvailable()) return;
     const remote = require("electron").remote;
     const fs = remote.require("fs-extra");
@@ -90,6 +90,11 @@ export const fileUtils = {
 
     const cacheDir: string = getCacheDirectory();
     const destF = path.join(dest, EXPORT_DIR_NAME);
+
+    // Nếu có onlyFiles thì chỉ copy các file asset này.
+    if (onlyFiles) {
+      // Code...
+    }
     fs.copySync(cacheDir, destF);
   },
   // Copy các file vendor vào thư mục chỉ định.
@@ -200,16 +205,17 @@ export const fileUtils = {
   getUsableAssetUrl: (assetName: string | undefined) => {
     return `${RESOURCE_PROTOCOL}${getCacheDirectory("assets")}/${assetName}`;
   },
+
   // Quiz related
+  getUsableQuizAssetUrl: (assetName: string) => {
+    return `${RESOURCE_PROTOCOL}${getQuizCacheDirectory("assets")}/${assetName}`;
+  },
   /**
    * Export quiz into file. Should be named *.drq, which is actually a zip file.
    * @param quizMeta Meta data
    * @param quizArray The quiz array
    * @returns void
    */
-  getUsableQuizAssetUrl: (assetName: string) => {
-    return `${RESOURCE_PROTOCOL}${getQuizCacheDirectory("assets")}/${assetName}`;
-  },
   exportQuizToFile: async (quizMeta: QuizDeckModel, quizArray: any[]) => {
     if (fsNotAvailable()) return;
     const data = await require("electron").remote.dialog.showSaveDialog({
