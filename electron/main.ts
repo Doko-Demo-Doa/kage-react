@@ -44,6 +44,7 @@ function createWindow() {
 
   win.once("ready-to-show", () => {
     autoUpdater.checkForUpdatesAndNotify();
+    win.show();
   });
 
   app.whenReady().then(() => {
@@ -68,7 +69,7 @@ function createWindow() {
   });
 
   win.webContents.on("did-frame-finish-load", () => {
-    if (!isDev) {
+    if (isDev) {
       win.webContents.openDevTools({ mode: "detach" });
     }
   });
