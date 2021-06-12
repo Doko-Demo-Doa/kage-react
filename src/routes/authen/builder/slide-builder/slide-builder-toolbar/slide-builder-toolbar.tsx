@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import { Button, Divider, Tooltip, notification, Popover, Space } from "antd";
+import React, { useContext } from "react";
+import { Button, Divider, Tooltip, notification, Space } from "antd";
 import {
   FontSizeOutlined,
   PlusOutlined,
@@ -8,13 +8,11 @@ import {
   FolderOpenFilled,
   PictureFilled,
   MessageOutlined,
-  TableOutlined,
 } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { Delta } from "quill";
 import { observer } from "mobx-react";
 
-import { TableConstructor } from "~/components/table-constructor/table-constructor";
 import { NewQuizSetBtn } from "~/routes/authen/builder/slide-builder/slide-builder-toolbar/new-quiz-set-btn/new-quiz-set-btn";
 import { fileUtils } from "~/utils/utils-files";
 import { audioUtils, ffmpegUtils, imageUtils } from "~/utils/utils-conversions";
@@ -29,8 +27,6 @@ import { StoreContext } from "~/mobx/store-context";
 import "~/routes/authen/builder/slide-builder/slide-builder-toolbar/slide-builder-toolbar.scss";
 
 export const SlideBuilderToolbar: React.FC = observer(() => {
-  const [tableConstructorVisible, setTableConstructorVisible] = useState(false);
-
   const store = useContext(StoreContext);
   const { list, setList, newSlide } = store.slideListStore;
   const slideBuilderMeta = store.slideBuilderStore;
@@ -93,10 +89,6 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
         });
       }
     }
-  };
-
-  const onInsertTable = () => {
-    insertBlock(MediaType.TABLE, "", "", { width: 0, height: 0 });
   };
 
   const onNewRichText = (deltaQuill: Delta | string) => {
