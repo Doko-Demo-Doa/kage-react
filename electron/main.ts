@@ -44,6 +44,15 @@ function createWindow() {
 
   win.once("ready-to-show", () => {
     // https://nklayman.github.io/vue-cli-plugin-electron-builder/guide/recipes.html#auto-update
+    // https://github.com/electron-userland/electron-builder/issues/4599#issuecomment-575885067
+    // Override when needed
+    // autoUpdater.setFeedURL({
+    //   provider: "github",
+    //   repo: "repo",
+    //   owner: "owner",
+    //   private: true,
+    //   token: "<personal-access-token>",
+    // });
     autoUpdater.checkForUpdates().then((result) => console.log("Auto-updating result:", result));
     win.show();
   });

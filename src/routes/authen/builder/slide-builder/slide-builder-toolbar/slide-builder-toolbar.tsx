@@ -22,6 +22,7 @@ import { AppDefaults, InitialBlockCoordinate, MediaType } from "~/common/static-
 import { dataUtils } from "~/utils/utils-data";
 import { isElectron } from "~/utils/utils-platform";
 import { uiUtils } from "~/utils/utils-ui";
+import { commonHelper } from "~/common/helper";
 import { SlideBlockType } from "~/typings/types";
 import { StoreContext } from "~/mobx/store-context";
 
@@ -109,7 +110,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
   };
 
   const onPublish = async () => {
-    fileUtils.saveSlideJsonToCache(JSON.stringify(list, null, 2));
+    fileUtils.saveSlideJsonToCache(commonHelper.prepareExportData(list));
     const convertedStr = dataUtils.convertToHtmlSlideData(list);
     fileUtils.writeToHtml(convertedStr);
 
