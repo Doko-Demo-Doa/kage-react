@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Input, Divider } from "antd";
+import { Input, Divider, Empty } from "antd";
 import { Container, Draggable } from "react-smooth-dnd";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 import { observer } from "mobx-react";
@@ -30,66 +30,74 @@ export const SlideEntities: React.FC = observer(() => {
   const blocks = list[selectedIndex]?.slideBlocks || [];
   const animations = list[selectedIndex]?.animations || [];
 
+  const isQuiz = Boolean(list[selectedIndex]?.linkedQuizId);
+
   return (
     <div className="slide-entities">
-      <p>Tiêu đề slide:</p>
-      <Input
-        placeholder="Tiêu đề slide"
-        onChange={(e) => setTitle(e.target.value)}
-        disabled={list.length <= 0}
-        value={slideTitle}
-        multiple
-        maxLength={46}
-        className="slide-title-input"
-      />
-      <Divider type="horizontal" />
+      {selectedIndex < 0 || isQuiz ? (
+        <Empty description="" />
+      ) : (
+        <>
+          <p>Tiêu đề slide:</p>
+          <Input
+            placeholder="Tiêu đề slide"
+            onChange={(e) => setTitle(e.target.value)}
+            disabled={list.length <= 0}
+            value={slideTitle}
+            multiple
+            maxLength={46}
+            className="slide-title-input"
+          />
+          <Divider type="horizontal" />
 
-      <h2>Các thành phần</h2>
-      <div className="column1">
-        {blocks.map((item) => {
-          return (
-            <BlockEntity
-              key={item.id}
-              assetName={item.assetName}
-              blockId={item.id}
-              type={item.type}
-              onClickAnimation={(blockId) => toggleAnimation(blockId)}
-              onDelete={(blockId) => deleteBlock(blockId)}
-            />
-          );
-        })}
-      </div>
-
-      <h2>Hiệu ứng</h2>
-      <div className="column2">
-        <KeyboardEventHandler>
-          <Container
-            onDrop={(e) => {
-              setAnimationList(dataUtils.createSortedList(animations, e));
-            }}
-          >
-            {animations.map((item, idx) => {
+          <h2>Các thành phần</h2>
+          <div className="column1">
+            {blocks.map((item) => {
               return (
-                <Draggable key={`${item.id}`}>
-                  <AnimationEntity
-                    id={item.id}
-                    idx={idx}
-                    onClick={(id, blockId) => {
-                      selectAnim(id);
-                      selectBlock(blockId);
-                    }}
-                    onDeleteAnimation={(blockId) => toggleAnimation(blockId)}
-                    selected={selectedAnim === item.id}
-                    animationType={item.animationType}
-                    blockId={item.blockId}
-                    blocks={blocks}
-                  />
-                </Draggable>
+                <BlockEntity
+                  key={item.id}
+                  assetName={item.assetName}
+                  blockId={item.id}
+                  type={item.type}
+                  onClickAnimation={(blockId) => toggleAnimation(blockId)}
+                  onDelete={(blockId) => deleteBlock(blockId)}
+                />
               );
             })}
-          </Container>
-        </KeyboardEventHandler>
-      </div>
+          </div>
+
+          <h2>Hiệu ứng</h2>
+          <div className="column2">
+            <KeyboardEventHandler>
+              <Container
+                onDrop={(e) => {
+                  setAnimationList(dataUtils.createSortedList(animations, e));
+                }}
+              >
+                {animations.map((item, idx) => {
+                  return (
+                    <Draggable key={`${item.id}`}>
+                      <AnimationEntity
+                        id={item.id}
+                        idx={idx}
+                        onClick={(id, blockId) => {
+                          selectAnim(id);
+                          selectBlock(blockId);
+                        }}
+                        onDeleteAnimation={(blockId) => toggleAnimation(blockId)}
+                        selected={selectedAnim === item.id}
+                        animationType={item.animationType}
+                        blockId={item.blockId}
+                        blocks={blocks}
+                      />
+                    </Draggable>
+                  );
+                })}
+              </Container>
+            </KeyboardEventHandler>
+          </div>
+        </>
+      )}
     </div>
   );
 });

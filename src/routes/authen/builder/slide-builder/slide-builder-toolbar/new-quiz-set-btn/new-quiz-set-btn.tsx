@@ -59,7 +59,12 @@ export const NewQuizSetBtn: React.FC = observer(() => {
       content={content}
       title="Đặt tên định danh cho bộ quiz"
     >
-      <Button icon={<FileAddFilled />} type="primary" ghost onClick={() => setPopVisible(true)}>
+      <Button
+        icon={<FileAddFilled />}
+        type="primary"
+        ghost
+        onClick={() => setPopVisible(!popVisible)}
+      >
         Thêm trang Quiz mới
       </Button>
     </Popover>
