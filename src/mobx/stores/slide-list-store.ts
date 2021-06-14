@@ -75,7 +75,8 @@ export class SlideListStore {
 
   deleteBlock(blockId: string) {
     const idx = this.rootStore.slideBuilderStore.selectedIndex;
-    const newL = this.list.slice();
+    const newL = [...this.list];
+
     newL[idx].slideBlocks = newL[idx].slideBlocks.filter((n) => n.id !== blockId);
     this.list = newL;
   }

@@ -55,10 +55,10 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
             {formattingUtils.htmlToJSX(formattingUtils.furiganaTemplateToHTML(slideTitle || ""))}
           </h1>
 
-          {blocks.map((n, i) => {
+          {blocks.map((n) => {
             return (
               <SlideBlock
-                key={i}
+                key={n.id}
                 {...n}
                 animations={anims}
                 selected={n.id === list[selectedIndex]?.selectedBlock}
