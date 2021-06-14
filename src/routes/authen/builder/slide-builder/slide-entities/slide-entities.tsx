@@ -14,6 +14,8 @@ import "~/routes/authen/builder/slide-builder/slide-entities/slide-entities.scss
 
 export const SlideEntities: React.FC = observer(() => {
   const [selectedAnim, selectAnim] = useState("");
+  const [previewVisible, setPreviewVisible] = useState(false);
+
   const store = useContext(StoreContext);
   const {
     list,
@@ -59,6 +61,9 @@ export const SlideEntities: React.FC = observer(() => {
                   assetName={item.assetName}
                   blockId={item.id}
                   type={item.type}
+                  onDoubleClick={() => {
+                    setPreviewVisible(!previewVisible);
+                  }}
                   onClickAnimation={(blockId) => toggleAnimation(blockId)}
                   onDelete={(blockId) => deleteBlock(blockId)}
                 />

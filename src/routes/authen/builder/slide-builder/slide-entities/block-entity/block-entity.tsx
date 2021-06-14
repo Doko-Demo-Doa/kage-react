@@ -7,11 +7,13 @@ import {
   FontSizeOutlined,
   WechatFilled,
 } from "@ant-design/icons";
-import { Menu, Dropdown } from "antd";
+import { Menu, Dropdown, Popover } from "antd";
 
 import { dataUtils } from "~/utils/utils-data";
 import { MediaType } from "~/common/static-data";
 import { Colors } from "~/common/colors";
+import { MediaPreviewPopup } from "~/components/media-preview-popup/media-preview-popup";
+
 
 import "~/routes/authen/builder/slide-builder/slide-entities/block-entity/block-entity.scss";
 
@@ -27,6 +29,7 @@ type BlockEntityType = {
 export const BlockEntity: React.FC<BlockEntityType> = ({
   type,
   blockId,
+  assetName,
   onDoubleClick,
   onClickAnimation,
   onDelete,
@@ -62,18 +65,23 @@ export const BlockEntity: React.FC<BlockEntityType> = ({
   }
 
   return (
-    <Dropdown overlay={menu} trigger={["contextMenu"]}>
-      <div className="entity-cell">
-        <div
-          className="cell-selectable"
-          onDoubleClick={() => {
-            onDoubleClick?.(blockId);
-          }}
-        >
-          {getIcon()}
+    <Popover
+      arrowContent
+      content={<MediaPreviewPopup assetName={assetName || ""} type={type} />}
+      destroyTooltipOnHide
+      title="Xem trước nội dung"
+    >
+      <Dropdown overlay={menu} trigger={["contextMenu"]}>
+        <div className="entity-cell" onDoubleClick={() => {
+          onDoubleClick?.(blockId);
+        }}>
+          <div className="cell-selectable">
+            {getIcon()}
+          </div>
+          <div className="cell-label">{dataUtils.mapMediaTypeName(type)}</div>
         </div>
-        <div className="cell-label">{dataUtils.mapMediaTypeName(type)}</div>
-      </div>
-    </Dropdown>
+      </Dropdown>
+
+    </Popover>
   );
 };

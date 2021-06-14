@@ -18,7 +18,9 @@ export const MediaPreviewPopup: React.FC<MediaPreviewPopupProps> = ({ assetName,
           src={fileUtils.getUsableAssetUrl(assetName)}
           style={{ width: "100%" }}
           showJumpControls={false}
+          showFilledVolume={false}
           customAdditionalControls={[]}
+          customVolumeControls={[]}
         />
       );
     }
