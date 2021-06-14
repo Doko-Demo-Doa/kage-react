@@ -11,6 +11,9 @@ function fsNotAvailable() {
 const CACHE_DIR_NAME = "kage-cache";
 const EXPORT_DIR_NAME = "slide_export";
 
+const SLIDE_MANIFEST_FILE = "manifest.json";
+const SLIDE_HTML_ENTRY_FILE = "slide.html";
+
 /**
  * - assets: Chứa các file ảnh, audio, video đã qua xử lý.
  * - quiz: Chứa các file quiz json tạo ra từ quiz builder.
@@ -58,13 +61,13 @@ export const fileUtils = {
     return result;
   },
   detectMediaType: (filePath: string) => {
-    if (/\.(mkv|mp4|wmv|avi|webp)$/i.test(filePath)) {
+    if (/\.(mkv|mp4|wmv|avi|webp|ogv)$/i.test(filePath)) {
       return MediaType.VIDEO;
     }
     if (/\.(jpe?g|jpg|png|gif|heif)$/i.test(filePath)) {
       return MediaType.IMAGE;
     }
-    if (/\.(mp3|ogg|aac|flac)$/i.test(filePath)) {
+    if (/\.(mp3|ogg|aac|flac|m4a)$/i.test(filePath)) {
       return MediaType.AUDIO;
     }
   },
@@ -91,12 +94,22 @@ export const fileUtils = {
     const cacheDir: string = getCacheDirectory();
     const destF = path.join(dest, EXPORT_DIR_NAME);
 
-    console.log("1", cacheDir);
-    console.log("2", destF);
-
     // Nếu có onlyFiles thì chỉ copy các file asset này.
     if (onlyFiles) {
-      // Code...
+      // Copy từng thằng vào một:
+      const cacheVendorDir = getCacheDirectory("vendor");
+      fs.copySync(cacheVendorDir, path.join(destF, "vendor"));
+      const manifestPath = path.join(cacheDir, SLIDE_MANIFEST_FILE);
+      fs.copySync(manifestPath, path.join(destF, SLIDE_MANIFEST_FILE));
+      const htmlEntryPath = path.join(cacheDir, SLIDE_HTML_ENTRY_FILE);
+      fs.copySync(htmlEntryPath, path.join(destF, SLIDE_HTML_ENTRY_FILE));
+
+      // Chỉ copy các file cần thiết:
+      onlyFiles.forEach((n) => {
+        fs.copySync(path.join(getCacheDirectory("assets"), n), path.join(destF, "assets", n));
+      });
+
+      return;
     }
     fs.copySync(cacheDir, destF);
   },
@@ -244,13 +257,13 @@ export const fileUtils = {
     return result;
   },
   saveSlideJsonToCache: (jsonData: string) => {
-    const p = fileUtils.createFilePathAtCacheDir("manifest.json");
+    const p = fileUtils.createFilePathAtCacheDir(SLIDE_MANIFEST_FILE);
     const remote = require("electron").remote;
     const fs = remote.require("fs");
     fs.writeFileSync(p, jsonData);
   },
   writeToHtml: (content: string) => {
-    const path = fileUtils.createFilePathAtCacheDir("slide.html");
+    const path = fileUtils.createFilePathAtCacheDir(SLIDE_HTML_ENTRY_FILE);
     const remote = require("electron").remote;
     const fs = remote.require("fs");
     fs.writeFileSync(path, content);
