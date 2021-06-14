@@ -4,6 +4,8 @@ import { SlideList } from "~/routes/authen/builder/slide-builder/slide-list/slid
 import { SlideInteractiveEditor } from "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-interactive-editor-v2";
 import { SlideEntities } from "~/routes/authen/builder/slide-builder/slide-entities/slide-entities";
 
+import packageMeta from "../../../../../package.json";
+
 import "~/routes/authen/builder/slide-builder/slide-builder.scss";
 
 export const SlideBuilder: React.FC = () => {
@@ -16,7 +18,7 @@ export const SlideBuilder: React.FC = () => {
         <SlideEntities />
       </div>
 
-      <div className="slide-builder-bottom">Status: 1.0.2</div>
+      <div className="slide-builder-bottom">{`Phiên bản: ${packageMeta.version} - ${process.env.NODE_ENV}`}</div>
     </div>
   );
 };
