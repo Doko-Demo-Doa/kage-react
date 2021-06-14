@@ -1,26 +1,7 @@
 # Kage
 
-Electron app for slides creation. Powered by [reveal.js](https://revealjs.com/) and [pandoc](https://pandoc.org/).
+[![pipeline status](https://gitlab.com/dora-dev/kage-react/badges/main/pipeline.svg)](https://gitlab.com/dora-dev/kage-react/-/commits/main)
 
-For Vue prototype, see [kage-vue](https://github.com/Doko-Demo-Doa/kage-vue)
+Ứng dụng chạy trên Desktop (Windows / MacOS) dùng để tạo slide và quiz nội bộ. Hiện đang là bản beta thử nghiệm.
 
-## Installation
-
-1. Clone from Gitlab repository:
-
-```bash
-git clone git@gitlab.com:dora-dev/kage-vue.git
-```
-
-On Windows, if you are going to use PowerShell 7. Create `.npmrc` at the root folder of the project then put this in:
-
-```bat
-script-shell = "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
-
-# Using the CLI
-npm config set script-shell = "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
-```
-
-## Terminology
-
-- Block: Một khối vật thể của slide, có thể là khối chữ, hình ảnh, video hoặc audio.
+Chi tiết và hướng dẫn sử dụng / build / cài đặt, xem tại: [Dora Dev Docs](https://docs.dora.edu.vn/docs/)
