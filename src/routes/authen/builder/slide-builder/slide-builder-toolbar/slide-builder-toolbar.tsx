@@ -102,13 +102,19 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
   };
 
   const onPublish = async () => {
+    let assetList: string[] = [];
+    list.forEach((item) => {
+      const assetItems = item.slideBlocks.map((n) => n.assetName || "");
+      assetList = assetItems.filter(Boolean);
+    });
+
     fileUtils.saveSlideJsonToCache(commonHelper.prepareExportData(list));
     const convertedStr = dataUtils.convertToHtmlSlideData(list);
     fileUtils.writeToHtml(convertedStr);
 
     const folderPath = await fileUtils.openFolderSaveDialog();
     if (folderPath) {
-      fileUtils.copyFromCacheToDest(folderPath);
+      fileUtils.copyFromCacheToDest(folderPath, assetList);
       fileUtils.copyVendorFilesToDest(folderPath);
     }
   };

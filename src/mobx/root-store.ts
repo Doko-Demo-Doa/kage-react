@@ -33,6 +33,9 @@ export const rootStore = new RootStore();
  * Theo chu kì
  */
 autorun(() => {
-  const d = commonHelper.prepareExportData(rootStore.slideListStore.list);
-  fileUtils.saveSlideJsonToCache(d);
+  const l = rootStore.slideListStore.list;
+  if (l.length) {
+    const d = commonHelper.prepareExportData(l);
+    fileUtils.saveSlideJsonToCache(d);
+  }
 });

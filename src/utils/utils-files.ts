@@ -91,6 +91,9 @@ export const fileUtils = {
     const cacheDir: string = getCacheDirectory();
     const destF = path.join(dest, EXPORT_DIR_NAME);
 
+    console.log("1", cacheDir);
+    console.log("2", destF);
+
     // Nếu có onlyFiles thì chỉ copy các file asset này.
     if (onlyFiles) {
       // Code...
