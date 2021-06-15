@@ -49,7 +49,7 @@ function createWindow() {
       repo: "kage-react",
       owner: "Doko-Demo-Doa",
       private: true,
-      token: "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",
+      token: process.env.GH_TOKEN,
     });
     autoUpdater.checkForUpdatesAndNotify().then((r) => console.log(r));
     win.show();
