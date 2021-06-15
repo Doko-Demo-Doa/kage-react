@@ -4,13 +4,7 @@ $left-col-width: 224px;
   height: 100%;
   display: flex;
 
-  .left-col {
-    width: $left-col-width;
-    min-width: $left-col-width;
-    border-right: 1px dashed $color-cyan-light;
-  }
-
-  .right-col {
-    flex-grow: 2;
+  .site-layout-background {
+    background-color: white;
   }
 }
