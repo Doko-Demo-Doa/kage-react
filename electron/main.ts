@@ -53,7 +53,7 @@ function createWindow() {
     //   private: true,
     //   token: "<personal-access-token>",
     // });
-    autoUpdater.checkForUpdatesAndNotify();
+    autoUpdater.checkForUpdates().then((r) => console.log(r));
     win.show();
   });
 
