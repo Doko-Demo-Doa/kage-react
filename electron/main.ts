@@ -46,13 +46,13 @@ function createWindow() {
     // https://nklayman.github.io/vue-cli-plugin-electron-builder/guide/recipes.html#auto-update
     // https://github.com/electron-userland/electron-builder/issues/4599#issuecomment-575885067
     // Override when needed
-    // autoUpdater.setFeedURL({
-    //   provider: "github",
-    //   repo: "kage-react",
-    //   owner: "Doko-Demo-Doa",
-    //   private: true,
-    //   token: "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",
-    // });
+    autoUpdater.setFeedURL({
+      provider: "github",
+      repo: "kage-react",
+      owner: "Doko-Demo-Doa",
+      private: true,
+      token: "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",
+    });
     autoUpdater.checkForUpdates().then((r) => console.log(r));
     win.show();
   });
