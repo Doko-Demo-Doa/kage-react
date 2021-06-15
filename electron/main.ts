@@ -53,7 +53,7 @@ function createWindow() {
     //   private: true,
     //   token: "<personal-access-token>",
     // });
-    autoUpdater.checkForUpdates().then((result) => console.log("Auto-updating result:", result));
+    autoUpdater.checkForUpdatesAndNotify();
     win.show();
   });
 
@@ -79,9 +79,10 @@ function createWindow() {
   });
 
   win.webContents.on("did-frame-finish-load", () => {
-    if (isDev) {
-      win.webContents.openDevTools({ mode: "detach" });
-    }
+    win.webContents.openDevTools({ mode: "detach" });
+    // if (isDev) {
+    //   win.webContents.openDevTools({ mode: "detach" });
+    // }
   });
 }
 
