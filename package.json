@@ -18,7 +18,7 @@
     "test": "craco test --watchAll=false",
     "test:coverage": "craco test --coverage",
     "eject": "react-scripts eject",
-    "clean": "rimraf build release",
+    "clean": "rimraf build release build",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "postinstall": "electron-builder install-app-deps",

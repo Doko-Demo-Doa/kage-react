@@ -3,7 +3,7 @@ import { remote } from "electron";
 import path from "path";
 import dayjs from "dayjs";
 import fs from "fs-extra";
-import ffmpeg from "ffmpeg-static";
+import ffmpegStatic from "ffmpeg-static";
 import { FFProbeMetaType, MediaReturnType, MediaStreamType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
 import { MediaType } from "~/common/static-data";
@@ -13,12 +13,11 @@ const OptimalImageSize = {
   height: 725,
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getFfmpegPath() {
   const p = path.join(
     remote.app.getAppPath().replace("app.asar", "app.asar.unpacked"),
     "node_modules/ffmpeg-static",
-    ffmpeg
+    ffmpegStatic
   );
   return p;
 }
@@ -29,16 +28,17 @@ export const audioUtils = {
     const ffmpeg = remote.require("fluent-ffmpeg");
 
     return new Promise((resolve, reject) => {
-      ffmpeg(filePath).ffprobe(0, function (err: any, data: FFProbeMetaType) {
-        console.dir(data);
-        if (data) {
-          const audioStream = data.streams.find((n) => n.codec_type === "audio");
-          if (audioStream) {
-            return resolve(audioStream);
+      ffmpeg
+        .setFfmpegPath(getFfmpegPath())
+        .input(filePath).ffprobe(0, function (err: any, data: FFProbeMetaType) {
+          if (data) {
+            const audioStream = data.streams.find((n) => n.codec_type === "audio");
+            if (audioStream) {
+              return resolve(audioStream);
+            }
           }
-        }
-        reject(err);
-      });
+          reject(err);
+        });
     });
   },
   /**
@@ -68,6 +68,7 @@ export const audioUtils = {
       const tempName = `${dayjs().unix()}.${NORMALIZED_EXT}`;
       const dest = path.join(outputPath || fileUtils.getCacheDirectory("assets"), tempName);
       const cmd = ffmpeg()
+        .setFfmpegPath(getFfmpegPath())
         .on("progress", function (data: any) {
           // console.log("[ffmpeg]:", data);
           progressCallback?.(data.percent, "", "", "");
@@ -169,16 +170,18 @@ export const ffmpegUtils = {
     const ffmpeg = remote.require("fluent-ffmpeg");
 
     return new Promise((resolve, reject) => {
-      ffmpeg(filePath).ffprobe(0, function (err: any, data: FFProbeMetaType) {
-        console.dir(data);
-        if (data) {
-          const videoStream = data.streams.find((n) => n.codec_type === "video");
-          if (videoStream) {
-            return resolve(videoStream);
+      ffmpeg
+        .setFfmpegPath(getFfmpegPath())
+        .input(filePath).ffprobe(0, function (err: any, data: FFProbeMetaType) {
+          console.dir(data);
+          if (data) {
+            const videoStream = data.streams.find((n) => n.codec_type === "video");
+            if (videoStream) {
+              return resolve(videoStream);
+            }
           }
-        }
-        reject(err);
-      });
+          reject(err);
+        });
     });
   },
 
@@ -198,6 +201,7 @@ export const ffmpegUtils = {
       const tempName = `${dayjs().unix()}.mp4`;
       const dest = path.join(fileUtils.getCacheDirectory("assets"), tempName);
       const cmd = ffmpeg()
+        .setFfmpegPath(getFfmpegPath())
         .on("start", function (ffmpegCommand: string) {
           console.log("[ffmpeg command]:", ffmpegCommand);
         })

@@ -1,6 +1,8 @@
 import { Menu, Dropdown } from "antd";
 import clsx from "clsx";
 import { Colors } from "~/common/colors";
+import { formattingUtils } from "~/utils/utils-formatting";
+
 import "~/routes/authen/builder/slide-builder/slide-list/slide-thumbnail/slide-thumbnail.scss";
 
 type SlideThumbnailProps = {
@@ -35,6 +37,8 @@ export const SlideThumbnail: React.FC<SlideThumbnailProps> = ({
     </Menu>
   );
 
+  const showingTitle = title?.length ?? 0 > 16 ? title?.substring(0, 15) : title;
+
   return (
     <Dropdown overlay={menu} trigger={["contextMenu"]}>
       <div
@@ -48,7 +52,7 @@ export const SlideThumbnail: React.FC<SlideThumbnailProps> = ({
           {!linkedQuizId ? (
             <>
               <div className="title">
-                {title?.length ?? 0 > 16 ? title?.substring(0, 15) : title}
+                {formattingUtils.furiganaToJSX(showingTitle)}
               </div>
               <div className="bord" />
             </>

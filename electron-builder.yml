@@ -22,7 +22,7 @@ mac:
 
 # Windows configuration
 win:
-  icon: "resources/icons/icon.png"
+  icon: "resources/icons/icon.ico"
   target:
     - "nsis"
 
