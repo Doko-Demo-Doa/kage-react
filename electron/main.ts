@@ -56,7 +56,7 @@ function createWindow() {
   });
 
   app.whenReady().then(() => {
-    clearCache();
+    // clearCache();
 
     installExtension(REACT_DEVELOPER_TOOLS)
       .then((name) => console.log(`Added Extension:  ${name}`))

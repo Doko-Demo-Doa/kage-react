@@ -30,7 +30,8 @@ export const audioUtils = {
     return new Promise((resolve, reject) => {
       ffmpeg
         .setFfmpegPath(getFfmpegPath())
-        .input(filePath).ffprobe(0, function (err: any, data: FFProbeMetaType) {
+        .input(filePath)
+        .ffprobe(0, function (err: any, data: FFProbeMetaType) {
           if (data) {
             const audioStream = data.streams.find((n) => n.codec_type === "audio");
             if (audioStream) {
@@ -120,7 +121,8 @@ export const imageUtils = {
     const sharp = remote.require("sharp");
 
     const imageMetadata = await sharp(filePath).metadata();
-    const { width, height } = imageMetadata;
+    console.log("test", imageMetadata);
+    const { width, height, format } = imageMetadata;
 
     const newWidth = Math.min(OptimalImageSize.width, width);
     const newHeight = Math.min(OptimalImageSize.height, height);
@@ -132,14 +134,17 @@ export const imageUtils = {
         fit: sharp.fit.inside,
         withoutEnlargement: true,
       })
-      .jpeg({ quality: 92 });
+      .toFormat(format);
 
     const dataBuf = await data.toBuffer();
     const crc32 = remote.require("crc").crc32;
     const name = crc32(dataBuf).toString(16);
 
-    const EXT = "png";
-    const dest = path.join(customOutput || fileUtils.getCacheDirectory("assets"), `${name}.${EXT}`);
+    // const EXT = "png";
+    const dest = path.join(
+      customOutput || fileUtils.getCacheDirectory("assets"),
+      `${name}.${format}`
+    );
 
     const newMeta = await sharp(dataBuf).metadata();
 
@@ -148,7 +153,7 @@ export const imageUtils = {
     const result = {
       filePath: dest,
       fileName: name,
-      extension: EXT,
+      extension: format,
       extra: {
         width: newMeta.width,
         height: newMeta.height,
@@ -172,7 +177,8 @@ export const ffmpegUtils = {
     return new Promise((resolve, reject) => {
       ffmpeg
         .setFfmpegPath(getFfmpegPath())
-        .input(filePath).ffprobe(0, function (err: any, data: FFProbeMetaType) {
+        .input(filePath)
+        .ffprobe(0, function (err: any, data: FFProbeMetaType) {
           console.dir(data);
           if (data) {
             const videoStream = data.streams.find((n) => n.codec_type === "video");
