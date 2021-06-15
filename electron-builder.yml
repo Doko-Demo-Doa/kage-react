@@ -17,8 +17,10 @@ mac:
   icon: "resources/icons/icon.png"
   target:
     - "dmg"
-  identity: null
   category: "public.app-category.education"
+  extendInfo:
+    NSAppTransportSecurity:
+      NSAllowsArbitraryLoads: true
 
 # Windows configuration
 win:
@@ -42,3 +44,7 @@ directories:
 
 publish:
   provider: github
+  repo: kage-react
+  owner: Doko-Demo-Doa
+  private: true
+  releaseType: release

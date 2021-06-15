@@ -7,6 +7,8 @@ import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-insta
 
 let win: BrowserWindow | null = null;
 
+autoUpdater.autoInstallOnAppQuit = true;
+
 const preDefinedWidth = 1240;
 const predefinedHeight = 730;
 
@@ -38,10 +40,6 @@ function createWindow() {
     win.loadURL(`file://${__dirname}/../index.html`);
   }
 
-  win.on("closed", () => {
-    win = null;
-  });
-
   win.once("ready-to-show", () => {
     // https://nklayman.github.io/vue-cli-plugin-electron-builder/guide/recipes.html#auto-update
     // https://github.com/electron-userland/electron-builder/issues/4599#issuecomment-575885067
@@ -53,12 +51,12 @@ function createWindow() {
       private: true,
       token: "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",
     });
-    autoUpdater.checkForUpdates().then((r) => console.log(r));
+    autoUpdater.checkForUpdatesAndNotify().then((r) => console.log(r));
     win.show();
   });
 
   app.whenReady().then(() => {
-    // clearCache();
+    clearCache();
 
     installExtension(REACT_DEVELOPER_TOOLS)
       .then((name) => console.log(`Added Extension:  ${name}`))
@@ -79,10 +77,9 @@ function createWindow() {
   });
 
   win.webContents.on("did-frame-finish-load", () => {
-    win.webContents.openDevTools({ mode: "detach" });
-    // if (isDev) {
-    //   win.webContents.openDevTools({ mode: "detach" });
-    // }
+    if (isDev) {
+      win.webContents.openDevTools({ mode: "detach" });
+    }
   });
 }
 
@@ -90,14 +87,6 @@ if (process.env.NODE_ENV === "production") {
   require("./menu.ts");
 }
 app.on("ready", createWindow);
-
-app.on("window-all-closed", () => {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== "darwin") {
-    app.quit();
-  }
-});
 
 app.on("activate", () => {
   // On macOS it's common to re-create a window in the app when the
@@ -123,6 +112,6 @@ if (isDev) {
 autoUpdater.on("update-available", () => {
   win.webContents.send("update_available");
 });
-autoUpdater.on("update-downloaded", () => {
-  win.webContents.send("update_downloaded");
+autoUpdater.on("update-downloaded", (data) => {
+  win.webContents.send("update_downloaded", String(data.downloadedFile));
 });

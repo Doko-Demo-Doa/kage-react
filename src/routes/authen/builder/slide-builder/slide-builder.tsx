@@ -15,8 +15,8 @@ export const SlideBuilder: React.FC = () => {
       console.log("A new update is available. Downloading now...");
     });
 
-    ipcRenderer.on("update_downloaded", () => {
-      console.log("Update Downloaded. It will be installed on restart. Restart now?");
+    ipcRenderer.on("update_downloaded", (_, data) => {
+      console.log("Update downloaded", data);
     });
 
     return () => {
