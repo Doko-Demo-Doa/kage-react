@@ -48,10 +48,10 @@ function createWindow() {
     // Override when needed
     // autoUpdater.setFeedURL({
     //   provider: "github",
-    //   repo: "repo",
-    //   owner: "owner",
+    //   repo: "kage-react",
+    //   owner: "Doko-Demo-Doa",
     //   private: true,
-    //   token: "<personal-access-token>",
+    //   token: "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",
     // });
     autoUpdater.checkForUpdates().then((r) => console.log(r));
     win.show();
