@@ -42,6 +42,7 @@ storybook-static/
 docs/
 deploy.sh
 deploy.ps1
+dev.ps1
 dev.sh
 dev-app-update.yml
 *.p12
