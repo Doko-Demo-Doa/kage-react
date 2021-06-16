@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Input, Divider, Empty } from "antd";
 import { Container, Draggable } from "react-smooth-dnd";
+import ScrollBar from "react-perfect-scrollbar";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 import { observer } from "mobx-react";
 
@@ -35,7 +36,7 @@ export const SlideEntities: React.FC = observer(() => {
   const isQuiz = Boolean(currentSlide?.linkedQuizId);
 
   return (
-    <div className="slide-entities">
+    <ScrollBar className="slide-entities">
       {selectedIndex < 0 || isQuiz ? (
         <Empty description="" />
       ) : (
@@ -104,6 +105,6 @@ export const SlideEntities: React.FC = observer(() => {
           </div>
         </>
       )}
-    </div>
+    </ScrollBar>
   );
 });

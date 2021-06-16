@@ -41,7 +41,7 @@ export const BlockEntity: React.FC<BlockEntityType> = ({
   const menu = (
     <Menu>
       <Menu.Item key="1" onClick={() => onClickAnimation?.(blockId)}>
-        Tạo animation
+        Tạo hiệu ứng
       </Menu.Item>
       <Menu.Item style={{ color: Colors.PALE_RED }} key="2" onClick={() => onDelete?.(blockId)}>
         Xoá
