@@ -83,7 +83,7 @@ function singleSlideConstructor(slide: SlideType) {
             const result = pretty(
               stripIndent(`
               <div style="${styleAppend}" ${animAppend}">
-                ${html}
+                ${formattingUtils.furiganaTemplateToHTML(html)}
               </div>
             `)
             );
