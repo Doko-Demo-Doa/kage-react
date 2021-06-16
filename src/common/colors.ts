@@ -9,4 +9,5 @@ export const Colors = {
   CYAN_HIGH: "#13c2c2",
   EMERALD: "#34D399",
   INDIGO: "#6366F1",
+  INDIGO_LIGHT: "#d4d4ff",
 };

@@ -33,6 +33,7 @@ $animation-anchor-size: 24px;
 
 .interactive-text-block {
   position: relative;
+  background-color: white;
   border: 1px dashed $color-aqua-highlighted;
 
   .drag-handle {

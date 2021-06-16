@@ -14,7 +14,6 @@ import "~/routes/authen/builder/slide-builder/slide-entities/slide-entities.scss
 
 export const SlideEntities: React.FC = observer(() => {
   const [selectedAnim, selectAnim] = useState("");
-  const [previewVisible, setPreviewVisible] = useState(false);
 
   const store = useContext(StoreContext);
   const {
@@ -27,12 +26,13 @@ export const SlideEntities: React.FC = observer(() => {
   } = store.slideListStore;
   const { selectedIndex } = store.slideBuilderStore;
 
-  const slideTitle = list[selectedIndex]?.title || "";
+  const currentSlide = list[selectedIndex];
+  const slideTitle = currentSlide?.title || "";
 
-  const blocks = list[selectedIndex]?.slideBlocks || [];
-  const animations = list[selectedIndex]?.animations || [];
+  const blocks = currentSlide?.slideBlocks || [];
+  const animations = currentSlide?.animations || [];
 
-  const isQuiz = Boolean(list[selectedIndex]?.linkedQuizId);
+  const isQuiz = Boolean(currentSlide?.linkedQuizId);
 
   return (
     <div className="slide-entities">
@@ -61,8 +61,9 @@ export const SlideEntities: React.FC = observer(() => {
                   assetName={item.assetName}
                   blockId={item.id}
                   type={item.type}
-                  onDoubleClick={() => {
-                    setPreviewVisible(!previewVisible);
+                  selected={currentSlide.selectedBlock === item.id}
+                  onClick={() => {
+                    selectBlock(item.id);
                   }}
                   onClickAnimation={(blockId) => toggleAnimation(blockId)}
                   onDelete={(blockId) => deleteBlock(blockId)}

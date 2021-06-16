@@ -1,4 +1,5 @@
 import React from "react";
+import clsx from "clsx";
 import {
   VideoCameraTwoTone,
   HeartTwoTone,
@@ -14,13 +15,14 @@ import { MediaType } from "~/common/static-data";
 import { Colors } from "~/common/colors";
 import { MediaPreviewPopup } from "~/components/media-preview-popup/media-preview-popup";
 
-
 import "~/routes/authen/builder/slide-builder/slide-entities/block-entity/block-entity.scss";
 
 type BlockEntityType = {
   type: MediaType;
   blockId: string;
   assetName?: string;
+  selected?: boolean;
+  onClick?: (blockId: string) => void | undefined;
   onDoubleClick?: (blockId: string) => void | undefined;
   onClickAnimation?: (blockId: string) => void | undefined;
   onDelete?: (blockId: string) => void | undefined;
@@ -30,6 +32,8 @@ export const BlockEntity: React.FC<BlockEntityType> = ({
   type,
   blockId,
   assetName,
+  selected,
+  onClick,
   onDoubleClick,
   onClickAnimation,
   onDelete,
@@ -64,6 +68,27 @@ export const BlockEntity: React.FC<BlockEntityType> = ({
     return <HeartTwoTone twoToneColor={Colors.BARBIE_PINK} />;
   }
 
+  function mainItem() {
+    return (
+      <Dropdown overlay={menu} trigger={["contextMenu"]}>
+        <div
+          className={clsx("entity-cell", selected ? "entity-cell-selected" : "")}
+          onClick={() => onClick?.(blockId)}
+          onDoubleClick={() => {
+            onDoubleClick?.(blockId);
+          }}
+        >
+          <div className="cell-selectable">{getIcon()}</div>
+          <div className="cell-label">{dataUtils.mapMediaTypeName(type)}</div>
+        </div>
+      </Dropdown>
+    );
+  }
+
+  if (type === MediaType.TEXT_BLOCK) {
+    return mainItem();
+  }
+
   return (
     <Popover
       arrowContent
@@ -71,17 +96,7 @@ export const BlockEntity: React.FC<BlockEntityType> = ({
       destroyTooltipOnHide
       title="Xem trước nội dung"
     >
-      <Dropdown overlay={menu} trigger={["contextMenu"]}>
-        <div className="entity-cell" onDoubleClick={() => {
-          onDoubleClick?.(blockId);
-        }}>
-          <div className="cell-selectable">
-            {getIcon()}
-          </div>
-          <div className="cell-label">{dataUtils.mapMediaTypeName(type)}</div>
-        </div>
-      </Dropdown>
-
+      {mainItem()}
     </Popover>
   );
 };
