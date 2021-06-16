@@ -121,7 +121,6 @@ export const imageUtils = {
     const sharp = remote.require("sharp");
 
     const imageMetadata = await sharp(filePath).metadata();
-    console.log("test", imageMetadata);
     const { width, height, format } = imageMetadata;
 
     const newWidth = Math.min(OptimalImageSize.width, width);
@@ -140,7 +139,6 @@ export const imageUtils = {
     const crc32 = remote.require("crc").crc32;
     const name = crc32(dataBuf).toString(16);
 
-    // const EXT = "png";
     const dest = path.join(
       customOutput || fileUtils.getCacheDirectory("assets"),
       `${name}.${format}`
