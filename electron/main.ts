@@ -19,6 +19,23 @@ function clearCache() {
   fs.unlinkSync(cPath);
 }
 
+const singleInstanceLock = app.requestSingleInstanceLock();
+
+// Only run single instance
+if (!singleInstanceLock) {
+  app.quit();
+} else {
+  app.on("second-instance", (event, commandLine, wd) => {
+    if (win) {
+      if (win.isMinimized()) {
+        win.restore();
+      } else {
+        win.focus();
+      }
+    }
+  });
+}
+
 function createWindow() {
   win = new BrowserWindow({
     width: preDefinedWidth,
