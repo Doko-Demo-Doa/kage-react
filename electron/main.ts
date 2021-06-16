@@ -7,6 +7,7 @@ import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-insta
 
 let win: BrowserWindow | null = null;
 
+// Alternative: https://www.electronjs.org/docs/tutorial/updates
 autoUpdater.autoInstallOnAppQuit = false;
 
 const preDefinedWidth = 1240;
@@ -69,17 +70,18 @@ function createWindow() {
       token: "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",
     });
     win.webContents.send("update_available", process.env.GH_TOKEN);
-    autoUpdater.checkForUpdates()
+    autoUpdater
+      .checkForUpdates()
       .then((r) => console.log("update_check", r))
-      .catch(e => console.log("update_error", e));
+      .catch((e) => console.log("update_error", e));
 
     win.show();
   });
 
   console.log("Gay", process.env.GH_TOKEN);
 
-  setTimeout(() =>  win.webContents.send("update_available", process.env.REACT_APP_GH_TOKEN), 5000);
-  setTimeout(() =>  win.webContents.send("update_available", process.env.GH_TOKEN), 6000);
+  setTimeout(() => win.webContents.send("update_available", process.env.REACT_APP_GH_TOKEN), 5000);
+  setTimeout(() => win.webContents.send("update_available", process.env.GH_TOKEN), 6000);
 
   app.whenReady().then(() => {
     // clearCache();
