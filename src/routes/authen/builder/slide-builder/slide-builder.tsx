@@ -11,8 +11,12 @@ import "~/routes/authen/builder/slide-builder/slide-builder.scss";
 
 export const SlideBuilder: React.FC = () => {
   useEffect(() => {
-    ipcRenderer.on("update_available", () => {
-      console.log("A new update is available. Downloading now...");
+    ipcRenderer.on("update_check", (_, data) => {
+      console.log("Update check", data);
+    });
+
+    ipcRenderer.on("update_available", (_, data) => {
+      console.log("A new update is available. Downloading now...", data);
     });
 
     ipcRenderer.on("update_downloaded", (_, data) => {

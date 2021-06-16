@@ -46,3 +46,5 @@ dev.ps1
 dev.sh
 dev-app-update.yml
 *.p12
+
+electron-builder.env

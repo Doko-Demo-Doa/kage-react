@@ -7,7 +7,7 @@ import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-insta
 
 let win: BrowserWindow | null = null;
 
-autoUpdater.autoInstallOnAppQuit = true;
+autoUpdater.autoInstallOnAppQuit = false;
 
 const preDefinedWidth = 1240;
 const predefinedHeight = 730;
@@ -57,7 +57,7 @@ function createWindow() {
     win.loadURL(`file://${__dirname}/../index.html`);
   }
 
-  win.once("ready-to-show", () => {
+  win.once("show", () => {
     // https://nklayman.github.io/vue-cli-plugin-electron-builder/guide/recipes.html#auto-update
     // https://github.com/electron-userland/electron-builder/issues/4599#issuecomment-575885067
     // Override when needed
@@ -68,9 +68,18 @@ function createWindow() {
       private: true,
       token: process.env.GH_TOKEN,
     });
-    autoUpdater.checkForUpdatesAndNotify().then((r) => console.log(r));
+    win.webContents.send("update_available", process.env.GH_TOKEN);
+    autoUpdater.checkForUpdates()
+      .then((r) => console.log("update_check", r))
+      .catch(e => console.log("update_error", e));
+
     win.show();
   });
+
+  console.log("Gay", process.env.GH_TOKEN);
+
+  setTimeout(() =>  win.webContents.send("update_available", process.env.REACT_APP_GH_TOKEN), 5000);
+  setTimeout(() =>  win.webContents.send("update_available", process.env.GH_TOKEN), 6000);
 
   app.whenReady().then(() => {
     // clearCache();
