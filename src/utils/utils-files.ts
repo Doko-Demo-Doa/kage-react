@@ -98,7 +98,7 @@ export const fileUtils = {
     if (onlyFiles) {
       // Copy từng thằng vào một:
       const cacheVendorDir = getCacheDirectory("vendor");
-      fs.copySync(cacheVendorDir, path.join(destF, "vendor"));
+      fs.copySync(cacheVendorDir, path.join(destF));
       const manifestPath = path.join(cacheDir, SLIDE_MANIFEST_FILE);
       fs.copySync(manifestPath, path.join(destF, SLIDE_MANIFEST_FILE));
       const htmlEntryPath = path.join(cacheDir, SLIDE_HTML_ENTRY_FILE);

@@ -16,7 +16,7 @@ extraResources:
 mac:
   icon: "resources/icons/icon.png"
   target:
-    - "dmg"
+    - "zip"
   category: "public.app-category.education"
   extendInfo:
     NSAppTransportSecurity:
@@ -49,4 +49,4 @@ publish:
   owner: Doko-Demo-Doa
   private: true
   releaseType: release
-  token: '${env.GH_TOKEN}'
+  token: "${env.GH_TOKEN}"
