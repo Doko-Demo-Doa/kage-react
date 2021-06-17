@@ -24,6 +24,7 @@ export const SlideBuilder: React.FC = () => {
     });
 
     return () => {
+      ipcRenderer.removeAllListeners("update_check");
       ipcRenderer.removeAllListeners("update_available");
       ipcRenderer.removeAllListeners("update_downloaded");
     };

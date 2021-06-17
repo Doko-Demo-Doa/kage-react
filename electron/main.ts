@@ -8,7 +8,7 @@ import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-insta
 let win: BrowserWindow | null = null;
 
 // Alternative: https://www.electronjs.org/docs/tutorial/updates
-autoUpdater.autoInstallOnAppQuit = false;
+autoUpdater.autoInstallOnAppQuit = true;
 
 const preDefinedWidth = 1240;
 const predefinedHeight = 730;
