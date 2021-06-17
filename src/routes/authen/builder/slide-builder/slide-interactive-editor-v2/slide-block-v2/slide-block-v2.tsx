@@ -1,12 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Rnd } from "react-rnd";
+import clsx from "clsx";
 import { Delta } from "quill";
 import { PlusOutlined, DragOutlined } from "@ant-design/icons";
 import ReactQuill, { Quill } from "react-quill";
 import { MediaType, MinimumCanvasSize } from "~/common/static-data";
 import { SlideAnimationType, SlideBlockType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
-import { defaultQuillToolbar } from "~/utils/utils-ui";
+import { quillUtils } from "~/utils/utils-quill";
+import { formattingUtils } from "~/utils/utils-formatting";
+import { defaultQuillToolbar, uiUtils } from "~/utils/utils-ui";
 
 import "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-block-v2/slide-block-v2.scss";
 
@@ -169,32 +172,23 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
           }}
           enableResizing={false}
           className="single-block"
-          dragHandleClassName="block-handle"
         >
-          <div ref={textBlockRef} onClick={() => onSelect(id)} className="interactive-text-block">
-            {selected && (
-              <div
-                className="block-handle animation-anchor"
-                title="Click đôi để thêm animation"
-                onDoubleClick={() => onToggleAnimation?.(id)}
-              >
-                {animIndex !== undefined && animIndex > -1 ? `${animIndex + 1}` : <DragOutlined />}
-              </div>
-            )}
-
-            <ReactQuill
-              ref={quillRef}
-              defaultValue={deltaContent}
-              className="quiller"
-              modules={{
-                toolbar: defaultQuillToolbar,
-              }}
-              onChange={() => {
-                const data = quillRef.current?.getEditor().getContents();
+          <div
+            ref={textBlockRef}
+            onClick={() => onSelect(id)}
+            onDoubleClick={() =>
+              uiUtils.showQuillEditor(deltaContent || "", (data) => {
                 onTextChanged?.(id, data);
-              }}
-              theme="bubble"
-            />
+              })
+            }
+            className={clsx(
+              "interactive-text-block",
+              selected ? "interactive-text-block-selected" : ""
+            )}
+          >
+            <div className="text-block-content">
+              {formattingUtils.htmlToJSX(quillUtils.quillDeltaToHtml(deltaContent?.ops))}
+            </div>
           </div>
         </Rnd>
       );

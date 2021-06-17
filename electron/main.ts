@@ -69,11 +69,13 @@ function createWindow() {
       private: true,
       token: "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",
     });
-    win.webContents.send("update_available", process.env.GH_TOKEN);
-    autoUpdater
-      .checkForUpdates()
-      .then((r) => console.log("update_check", r))
-      .catch((e) => console.log("update_error", e));
+
+    if (!isDev) {
+      autoUpdater
+        .checkForUpdates()
+        .then((r) => console.log("update_check", r))
+        .catch((e) => console.log("update_error", e));
+    }
 
     win.show();
   });

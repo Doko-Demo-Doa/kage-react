@@ -17,7 +17,6 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
     modifyTextBlock,
     dragBlock,
     dragAnchor,
-    toggleAnimation,
   } = store.slideListStore;
   const { selectedIndex } = store.slideBuilderStore;
 
@@ -76,9 +75,6 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
                 }}
                 onTextChanged={(blockId, newText) => {
                   modifyTextBlock(blockId, newText);
-                }}
-                onToggleAnimation={(blockId) => {
-                  toggleAnimation(blockId);
                 }}
               />
             );
