@@ -22,7 +22,7 @@ import { dataUtils } from "~/utils/utils-data";
 import { isElectron } from "~/utils/utils-platform";
 import { uiUtils } from "~/utils/utils-ui";
 import { commonHelper } from "~/common/helper";
-import { SlideBlockType } from "~/typings/types";
+import { SlideBlockType, SlideType } from "~/typings/types";
 import { StoreContext } from "~/mobx/store-context";
 
 import "~/routes/authen/builder/slide-builder/slide-builder-toolbar/slide-builder-toolbar.scss";
@@ -103,10 +103,10 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
   };
 
   const onPublish = async () => {
-    const assetList: string[] = [];
+    let assetList: string[] = [];
     list.forEach((item) => {
       const assetItems = item.slideBlocks.map((n) => n.assetName || "");
-      assetList.concat(assetItems.filter(Boolean));
+      assetList = [...assetList, ...assetItems];
     });
 
     fileUtils.saveSlideJsonToCache(commonHelper.prepareExportData(list));
