@@ -252,7 +252,7 @@ export class QuizListStore {
       const matcherIndex = newList[qi].matchers.findIndex((n) => n.id === matcherId);
       if (matcherIndex !== -1) {
         newList[qi].matchers[matcherIndex].choices.push({
-          id: dayjs().unix().toString(),
+          id: dataUtils.generateShortUid(),
           label: "",
         });
       }

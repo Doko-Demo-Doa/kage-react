@@ -136,7 +136,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
     quillData?: Delta
   ) => {
     const blockData: SlideBlockType = {
-      id: dayjs().unix().toString(),
+      id: dataUtils.generateShortUid(),
       type,
       assetName: `${assetName}.${extension}`,
       autoPlay: true,

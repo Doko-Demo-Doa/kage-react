@@ -48,6 +48,10 @@ export class SlideListStore {
     const sourceSlide = this.list[index];
     if (sourceSlide) {
       const insertedItem = { ...sourceSlide };
+      insertedItem.slideBlocks = insertedItem.slideBlocks.map((n) => ({
+        ...n,
+        id: dataUtils.generateShortUid(),
+      }));
       insertedItem.id = dataUtils.generateShortUid();
       const newL = this.list.slice();
       newL.splice(index, 0, insertedItem);
@@ -92,7 +96,7 @@ export class SlideListStore {
 
     if (targetAnim === -1) {
       this.list[idx].animations.push({
-        id: dayjs().unix().toString(),
+        id: dataUtils.generateShortUid(),
         animationType: AnimationType.APPEAR,
         blockId,
       });
