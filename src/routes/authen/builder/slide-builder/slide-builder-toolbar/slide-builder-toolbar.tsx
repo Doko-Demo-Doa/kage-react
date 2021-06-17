@@ -9,6 +9,7 @@ import {
   PictureFilled,
   MessageOutlined,
 } from "@ant-design/icons";
+import { uniq } from "rambdax";
 import dayjs from "dayjs";
 import { Delta } from "quill";
 import { observer } from "mobx-react";
@@ -102,10 +103,10 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
   };
 
   const onPublish = async () => {
-    let assetList: string[] = [];
+    const assetList: string[] = [];
     list.forEach((item) => {
       const assetItems = item.slideBlocks.map((n) => n.assetName || "");
-      assetList = assetItems.filter(Boolean);
+      assetList.concat(assetItems.filter(Boolean));
     });
 
     fileUtils.saveSlideJsonToCache(commonHelper.prepareExportData(list));
@@ -114,7 +115,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
 
     const folderPath = await fileUtils.openFolderSaveDialog();
     if (folderPath) {
-      fileUtils.copyFromCacheToDest(folderPath, assetList);
+      fileUtils.copyFromCacheToDest(folderPath, [...uniq(assetList)]);
       // fileUtils.copyVendorFilesToDest(folderPath);
     }
   };
