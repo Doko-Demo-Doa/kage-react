@@ -133,10 +133,10 @@ function checkUpdate(args: Typings.CustomPublishOptionType) {
     .checkForUpdates()
     .then((r) => {
       console.log(r);
-      console.log("Echo back", args, r);
-      win.webContents.send(StaticData.ElectronEventType.UPDATE_NOT_AVAILABLE, args);
     })
-    .catch((e) => console.log(e));
+    .catch((e) => {
+      console.log(e);
+    });
 }
 
 autoUpdater.on("update-not-available", () => {
