@@ -181,6 +181,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
                 onTextChanged?.(id, data);
               })
             }
+            onMouseDown={() => onSelect?.(id)}
             className={clsx(
               "interactive-text-block",
               selected ? "interactive-text-block-selected" : ""

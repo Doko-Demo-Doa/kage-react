@@ -1,8 +1,17 @@
 import { Delta } from "quill";
-import { AnimationType, MediaType } from "~/common/static-data";
+// Không dùng short alias "~" vì sẽ conflict với electron build.
+import { AnimationType, MediaType } from "../common/static-data";
 
 export type SlideBuilderState = {
   selectedIndex: number;
+};
+
+export type CustomPublishOptionType = {
+  provider: "github";
+  repo: string;
+  owner: string;
+  private: boolean;
+  token: string;
 };
 
 export type SlideType = {

@@ -1,5 +1,13 @@
 export const RESOURCE_PROTOCOL = "local-resource://";
 
+export enum ElectronEventType {
+  UPDATE_CHECK = "UPDATE_CHECK",
+  UPDATE_ERROR = "UPDATE_ERROR",
+  UPDATE_AVAILABLE = "UPDATE_AVAILABLE",
+  UPDATE_NOT_AVAILABLE = "UPDATE_NOT_AVAILABLE",
+  UPDATE_DOWNLOADED = "UPDATE_DOWNLOADED",
+}
+
 // Size của tờ canvas konva, tính bằng px
 export const MinimumCanvasSize = {
   WIDTH: 740,

@@ -1,9 +1,12 @@
-import { app, protocol, BrowserWindow } from "electron";
+import { app, protocol, ipcMain, BrowserWindow } from "electron";
 import { autoUpdater } from "electron-updater";
 import path from "path";
 import fs from "fs";
 import isDev from "electron-is-dev";
 import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
+
+import * as StaticData from "../src/common/static-data";
+import * as Typings from "../src/typings/types";
 
 let win: BrowserWindow | null = null;
 
@@ -26,7 +29,7 @@ const singleInstanceLock = app.requestSingleInstanceLock();
 if (!singleInstanceLock) {
   app.quit();
 } else {
-  app.on("second-instance", (event, commandLine, wd) => {
+  app.on("second-instance", () => {
     if (win) {
       if (win.isMinimized()) {
         win.restore();
@@ -59,35 +62,11 @@ function createWindow() {
   }
 
   win.once("show", () => {
-    // https://nklayman.github.io/vue-cli-plugin-electron-builder/guide/recipes.html#auto-update
-    // https://github.com/electron-userland/electron-builder/issues/4599#issuecomment-575885067
-    // Override when needed
-    autoUpdater.setFeedURL({
-      provider: "github",
-      repo: "kage-react",
-      owner: "Doko-Demo-Doa",
-      private: true,
-      token: "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",
-    });
-
-    if (!isDev) {
-      autoUpdater
-        .checkForUpdates()
-        .then((r) => console.log("update_check", r))
-        .catch((e) => console.log("update_error", e));
-    }
-
     win.show();
   });
 
-  console.log("Gay", process.env.GH_TOKEN);
-
-  setTimeout(() => win.webContents.send("update_available", process.env.REACT_APP_GH_TOKEN), 5000);
-  setTimeout(() => win.webContents.send("update_available", process.env.GH_TOKEN), 6000);
-
   app.whenReady().then(() => {
     // clearCache();
-
     installExtension(REACT_DEVELOPER_TOOLS)
       .then((name) => console.log(`Added Extension:  ${name}`))
       .catch((err) => console.log("An error occurred: ", err));
@@ -103,6 +82,11 @@ function createWindow() {
       } catch (error) {
         console.error("ERROR: registerLocalResourceProtocol: Could not get file path:", error);
       }
+    });
+
+    ipcMain.on(StaticData.ElectronEventType.UPDATE_CHECK, (event, args) => {
+      console.log("Got app updating signal.", args);
+      checkUpdate(args);
     });
   });
 
@@ -139,9 +123,28 @@ if (isDev) {
   }
 }
 
+function checkUpdate(args: Typings.CustomPublishOptionType) {
+  // https://nklayman.github.io/vue-cli-plugin-electron-builder/guide/recipes.html#auto-update
+  // https://github.com/electron-userland/electron-builder/issues/4599#issuecomment-575885067
+  // Override when needed
+  autoUpdater.setFeedURL(args);
+
+  autoUpdater
+    .checkForUpdates()
+    .then((r) => {
+      console.log(r);
+      console.log("Echo back", args, r);
+      win.webContents.send(StaticData.ElectronEventType.UPDATE_NOT_AVAILABLE, args);
+    })
+    .catch((e) => console.log(e));
+}
+
+autoUpdater.on("update-not-available", () => {
+  win.webContents.send(StaticData.ElectronEventType.UPDATE_NOT_AVAILABLE);
+});
 autoUpdater.on("update-available", () => {
-  win.webContents.send("update_available");
+  win.webContents.send(StaticData.ElectronEventType.UPDATE_AVAILABLE);
 });
 autoUpdater.on("update-downloaded", (data) => {
-  win.webContents.send("update_downloaded", String(data.downloadedFile));
+  win.webContents.send(StaticData.ElectronEventType.UPDATE_DOWNLOADED, String(data.downloadedFile));
 });
