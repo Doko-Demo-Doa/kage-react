@@ -127,6 +127,7 @@ function checkUpdate(args: Typings.CustomPublishOptionType) {
   // https://nklayman.github.io/vue-cli-plugin-electron-builder/guide/recipes.html#auto-update
   // https://github.com/electron-userland/electron-builder/issues/4599#issuecomment-575885067
   // Override when needed
+  if (isDev) return;
   autoUpdater.setFeedURL(args);
 
   autoUpdater

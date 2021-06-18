@@ -3,15 +3,15 @@ import { Dropdown } from "antd";
 import { Rnd } from "react-rnd";
 import clsx from "clsx";
 import { Delta } from "quill";
-import { PlusOutlined, DragOutlined, BgColorsOutlined } from "@ant-design/icons";
-import ReactQuill, { Quill } from "react-quill";
-import { CirclePicker, TwitterPicker } from "react-color";
+import { PlusOutlined, BgColorsOutlined } from "@ant-design/icons";
+import { Quill } from "react-quill";
+import { TwitterPicker } from "react-color";
 import { MediaType, MinimumCanvasSize } from "~/common/static-data";
 import { SlideAnimationType, SlideBlockType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
 import { quillUtils } from "~/utils/utils-quill";
 import { formattingUtils } from "~/utils/utils-formatting";
-import { defaultQuillToolbar, uiUtils } from "~/utils/utils-ui";
+import { uiUtils } from "~/utils/utils-ui";
 
 import "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-block-v2/slide-block-v2.scss";
 
@@ -55,7 +55,6 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
   onToggleAnimation,
 }) => {
   const textBlockRef = useRef<HTMLDivElement>(null);
-  const quillRef = useRef<ReactQuill>(null);
 
   const assetUrl = fileUtils.getUsableAssetUrl(assetName);
   const animIndex = animations?.findIndex((n) => n.blockId === id);
