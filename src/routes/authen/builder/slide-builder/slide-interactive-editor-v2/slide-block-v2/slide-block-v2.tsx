@@ -209,6 +209,8 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
       const leg1 = { x: position.x + shiftLeg1, y: position.y + size.h };
       const leg2 = { x: position.x + shiftLeg2, y: position.y + size.h };
 
+      console.log(size.w, size.h);
+
       return (
         <div className="interactive-callout">
           <Rnd
@@ -258,6 +260,11 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
               className="callout-inside"
               style={{ backgroundColor: bgColor }}
               onClick={() => onSelect?.(id)}
+              onDoubleClick={() =>
+                uiUtils.showQuillEditor(deltaContent || "", (data) => {
+                  onTextChanged?.(id, data);
+                })
+              }
             >
               {selected && (
                 <Dropdown
@@ -286,11 +293,6 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
               <div
                 ref={textBlockRef}
                 onClick={() => onSelect(id)}
-                onDoubleClick={() =>
-                  uiUtils.showQuillEditor(deltaContent || "", (data) => {
-                    onTextChanged?.(id, data);
-                  })
-                }
                 className="callout-text-block"
                 onMouseDown={() => onSelect?.(id)}
               >

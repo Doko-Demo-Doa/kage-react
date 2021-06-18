@@ -13,10 +13,12 @@
   font-weight: 600;
   letter-spacing: normal;
   line-height: 1.2;
-  position: relative;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 8px;
   text-align: center;
   text-shadow: none;
-  top: 8px;
   max-width: 580px;
   word-wrap: break-word;
   margin: 0 auto;
