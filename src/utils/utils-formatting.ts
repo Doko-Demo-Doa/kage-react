@@ -11,7 +11,8 @@ function replaceString(str: string, strSub: string, strReplace: string) {
   return result;
 }
 
-function furiganaTemplateToHTML(inputStr: string) {
+function furiganaTemplateToHTML(inputStr?: string) {
+  if (!inputStr) return "";
   const rxp = /{([^}]+)}/g;
   const matched = rxp.exec(inputStr);
   if (matched?.[1]) {

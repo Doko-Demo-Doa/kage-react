@@ -31,11 +31,7 @@ $animation-anchor-size: 24px;
   position: relative;
 }
 
-.interactive-text-block {
-  position: relative;
-  background-color: white;
-  border: 1px dashed $color-cyan-light;
-
+.text-block {
   padding: 10px;
   line-height: 1.2;
   letter-spacing: normal;
@@ -50,6 +46,12 @@ $animation-anchor-size: 24px;
   p {
     font-size: 22px;
   }
+}
+
+.interactive-text-block {
+  position: relative;
+  background-color: white;
+  border: 1px dashed $color-cyan-light;
 
   .drag-handle {
     width: 24px;
@@ -78,11 +80,5 @@ $animation-anchor-size: 24px;
     border-radius: 6px;
     position: relative;
     height: 100%;
-
-    .callout-text-block {
-      padding: 10px;
-      line-height: 1.2;
-      letter-spacing: normal;
-    }
   }
 }

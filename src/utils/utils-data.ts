@@ -67,7 +67,7 @@ function singleSlideConstructor(slide: SlideType) {
             // Last line is to remove line breaks.
             const styleAppend = `
               position: absolute;
-              padding: 12px 15px;
+              padding: 10px;
               user-select: auto;
               width: auto;
               height: auto;
@@ -129,10 +129,12 @@ function singleSlideConstructor(slide: SlideType) {
               top: 0;
             `;
 
+            // Tham khảo class .callout-inside
             const styleAppend = `
               position: absolute;
               padding: 10px;
-              border: 1px solid black;
+              border-radius: 6px;
+              background-color: ${block.bgColor};
               width: ${block.size?.w || 1}px;
               height: ${block.size?.h || 1}px;
               top: ${block.position?.y}px;
@@ -143,10 +145,10 @@ function singleSlideConstructor(slide: SlideType) {
             return `
             <div style="${wrapperStyleAppend}" ${animAppend}">
               <article class="interactive-callout" style="${styleAppend}">
-                ${html}
+                ${formattingUtils.furiganaTemplateToHTML(html)}
               </article>
-              <svg style="position: absolute; width: ${MinimumCanvasSize.WIDTH}px; height: ${MinimumCanvasSize.HEIGHT}px; top: 0; left: 0;">
-                <polyline points="${leg1.x},${leg1.y} ${anchor.x},${anchor.y} ${leg2.x},${leg2.y}" fill="transparent" stroke="black"
+              <svg style="position: absolute; z-index: -1; width: ${MinimumCanvasSize.WIDTH}px; height: ${MinimumCanvasSize.HEIGHT}px; top: 0; left: 0;">
+                <polyline points="${leg1.x},${leg1.y} ${anchor.x},${anchor.y} ${leg2.x},${leg2.y}" fill="${block.bgColor}" stroke="${block.bgColor}"
                   style="position: absolute;"
                 />
                 Trình duyệt không hỗ trợ hiển thị

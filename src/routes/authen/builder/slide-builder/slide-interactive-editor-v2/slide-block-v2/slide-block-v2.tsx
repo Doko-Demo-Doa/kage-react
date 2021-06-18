@@ -99,11 +99,11 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
           resizeHandleClasses={
             selected
               ? {
-                  bottomLeft: "c-handle",
-                  topLeft: "c-handle",
-                  topRight: "c-handle",
-                  bottomRight: "c-handle",
-                }
+                bottomLeft: "c-handle",
+                topLeft: "c-handle",
+                topRight: "c-handle",
+                bottomRight: "c-handle",
+              }
               : undefined
           }
           onDragStart={() => onSelect(id)}
@@ -186,8 +186,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
               })
             }
             onMouseDown={() => onSelect?.(id)}
-            className={clsx(
-              "interactive-text-block",
+            className={clsx("text-block", "interactive-text-block",
               selected ? "interactive-text-block-selected" : ""
             )}
           >
@@ -205,8 +204,8 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
       const shiftLeg1 = size.w * 0.35;
       const shiftLeg2 = Math.min(size.w * 0.75, size.w * 0.35 + 120);
 
-      const leg1 = { x: position.x + shiftLeg1, y: position.y + size.h };
-      const leg2 = { x: position.x + shiftLeg2, y: position.y + size.h };
+      const leg1 = { x: position.x + shiftLeg1, y: position.y + size.h - 1 };
+      const leg2 = { x: position.x + shiftLeg2, y: position.y + size.h - 1 };
 
       console.log(size.w, size.h);
 
@@ -292,7 +291,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
               <div
                 ref={textBlockRef}
                 onClick={() => onSelect(id)}
-                className="callout-text-block"
+                className="text-block"
                 onMouseDown={() => onSelect?.(id)}
               >
                 <div className="text-block-content">
