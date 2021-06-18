@@ -133,6 +133,17 @@ export class SlideListStore {
     }
   }
 
+  setBlockBgColor(blockId: string, newColor?: string) {
+    const idx = this.rootStore.slideBuilderStore.selectedIndex;
+    const targetBlock = this.list[idx].slideBlocks.find((n) => n.id === blockId);
+
+    if (targetBlock) {
+      targetBlock.bgColor = newColor;
+
+      console.log(targetBlock.bgColor);
+    }
+  }
+
   dragBlock(blockId: string, newPosition: PositionType) {
     const idx = this.rootStore.slideBuilderStore.selectedIndex;
     const targetBlock = this.list[idx].slideBlocks.find((n) => n.id === blockId);

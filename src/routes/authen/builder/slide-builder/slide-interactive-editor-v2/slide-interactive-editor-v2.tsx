@@ -15,6 +15,7 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
     selectBlock,
     resizeBlock,
     modifyTextBlock,
+    setBlockBgColor,
     dragBlock,
     dragAnchor,
   } = store.slideListStore;
@@ -75,6 +76,9 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
                 }}
                 onTextChanged={(blockId, newText) => {
                   modifyTextBlock(blockId, newText);
+                }}
+                onChangeBgColor={(blockId, newColor) => {
+                  setBlockBgColor(blockId, newColor);
                 }}
               />
             );

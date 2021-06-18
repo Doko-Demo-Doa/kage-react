@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
+import { Dropdown } from "antd";
 import { Rnd } from "react-rnd";
 import clsx from "clsx";
 import { Delta } from "quill";
-import { PlusOutlined, DragOutlined } from "@ant-design/icons";
+import { PlusOutlined, DragOutlined, BgColorsOutlined } from "@ant-design/icons";
 import ReactQuill, { Quill } from "react-quill";
+import { CirclePicker, TwitterPicker } from "react-color";
 import { MediaType, MinimumCanvasSize } from "~/common/static-data";
 import { SlideAnimationType, SlideBlockType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
@@ -21,6 +23,7 @@ type SlideBlockComponentType = SlideBlockType & {
   selected?: boolean;
   animations?: SlideAnimationType[];
   onSelect: (id: string) => void | undefined;
+  onChangeBgColor?: (blockId: string, hexColor: string) => void | undefined;
   onDrag?: (blockId: string, pos: { x: number; y: number }) => void | undefined;
   onDragAnchor?: (blockId: string, pos: { x: number; y: number }) => void | undefined;
   onResized?: (
@@ -39,10 +42,12 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
   size,
   position,
   anchor,
+  bgColor,
   deltaContent,
   selected,
   animations,
   onSelect,
+  onChangeBgColor,
   onDrag,
   onDragAnchor,
   onResized,
@@ -253,19 +258,34 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
               topLeft: true,
             }}
           >
-            <div className="callout-inside" onClick={() => onSelect?.(id)}>
+            <div
+              className="callout-inside"
+              style={{ backgroundColor: bgColor }}
+              onClick={() => onSelect?.(id)}
+            >
               {selected && (
-                <div
-                  className="block-handle animation-anchor"
-                  title="Click đôi để thêm animation"
-                  onDoubleClick={() => onToggleAnimation?.(id)}
+                <Dropdown
+                  overlay={
+                    <TwitterPicker
+                      onChangeComplete={(col) => {
+                        onChangeBgColor?.(id, col.hex);
+                      }}
+                    />
+                  }
+                  trigger={["click"]}
                 >
-                  {animIndex !== undefined && animIndex > -1 ? (
-                    `${animIndex + 1}`
-                  ) : (
-                    <DragOutlined />
-                  )}
-                </div>
+                  <div
+                    className="block-handle animation-anchor"
+                    title="Click đôi để thêm animation"
+                    onDoubleClick={() => onToggleAnimation?.(id)}
+                  >
+                    {animIndex !== undefined && animIndex > -1 ? (
+                      `${animIndex + 1}`
+                    ) : (
+                      <BgColorsOutlined />
+                    )}
+                  </div>
+                </Dropdown>
               )}
               <ReactQuill
                 ref={quillRef}

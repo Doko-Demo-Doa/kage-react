@@ -31,6 +31,7 @@ export interface SlideBlockType {
   deltaContent?: Delta;
   assetName?: string;
   autoPlay?: boolean;
+  bgColor?: string; // Must be in hex, e.g: #FFF
   position?: PositionType;
   anchor?: PositionType; // Dùng cho block Callout
   size?: BlockSizeType;

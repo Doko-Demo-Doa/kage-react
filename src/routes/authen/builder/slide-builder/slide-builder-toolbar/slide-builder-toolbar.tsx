@@ -140,6 +140,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
       assetName: `${assetName}.${extension}`,
       autoPlay: true,
       content: "",
+      bgColor: "#fff",
       position: {
         x: InitialBlockCoordinate.x,
         y: InitialBlockCoordinate.y,
