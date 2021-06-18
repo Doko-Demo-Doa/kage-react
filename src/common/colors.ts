@@ -6,6 +6,7 @@ export const Colors = {
   GOLD_LIGHT: "#fff1b8",
   GREEN: "#21a343",
   WHITE: "#FFF",
+  LIGHT_GREY: "#dcdcdc",
   CYAN_HIGH: "#13c2c2",
   EMERALD: "#34D399",
   INDIGO: "#6366F1",

@@ -21,6 +21,7 @@ import { dataUtils } from "~/utils/utils-data";
 import { isElectron } from "~/utils/utils-platform";
 import { uiUtils } from "~/utils/utils-ui";
 import { commonHelper } from "~/common/helper";
+import { Colors } from "~/common/colors";
 import { SlideBlockType } from "~/typings/types";
 import { StoreContext } from "~/mobx/store-context";
 
@@ -140,7 +141,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
       assetName: `${assetName}.${extension}`,
       autoPlay: true,
       content: "",
-      bgColor: "#fff",
+      bgColor: Colors.LIGHT_GREY,
       position: {
         x: InitialBlockCoordinate.x,
         y: InitialBlockCoordinate.y,

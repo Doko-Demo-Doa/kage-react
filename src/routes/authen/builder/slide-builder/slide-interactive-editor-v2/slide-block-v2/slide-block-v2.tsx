@@ -214,7 +214,6 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
           <Rnd
             bounds="parent"
             className="single-block"
-            dragHandleClassName="block-handle"
             onDragStop={(e, d) => {
               const topLeftX = d.x;
               const topLeftY = d.y;
@@ -244,9 +243,6 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
               height: initH,
             }}
             cancel=".quiller"
-            style={{
-              border: "1px solid black",
-            }}
             enableResizing={{
               top: false,
               right: false,
@@ -287,21 +283,21 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
                   </div>
                 </Dropdown>
               )}
-              <ReactQuill
-                ref={quillRef}
-                defaultValue={deltaContent}
-                className="quiller"
-                modules={{
-                  toolbar: defaultQuillToolbar,
-                }}
-                onChange={() => {
-                  const data = quillRef.current?.getEditor().getContents();
-                  onTextChanged?.(id, data);
-                }}
-                bounds="#root"
-                style={{ maxHeight: "100%" }}
-                theme="bubble"
-              />
+              <div
+                ref={textBlockRef}
+                onClick={() => onSelect(id)}
+                onDoubleClick={() =>
+                  uiUtils.showQuillEditor(deltaContent || "", (data) => {
+                    onTextChanged?.(id, data);
+                  })
+                }
+                className="callout-text-block"
+                onMouseDown={() => onSelect?.(id)}
+              >
+                <div className="text-block-content">
+                  {formattingUtils.htmlToJSX(quillUtils.quillDeltaToHtml(deltaContent?.ops))}
+                </div>
+              </div>
             </div>
           </Rnd>
           <Rnd
@@ -335,13 +331,13 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
             width={MinimumCanvasSize.WIDTH}
             height={MinimumCanvasSize.HEIGHT}
             style={{
-              zIndex: -1,
+              zIndex: 2,
             }}
           >
             <polyline
               points={`${leg1.x},${leg1.y} ${anchor.x},${anchor.y} ${leg2.x},${leg2.y}`}
-              fill="white"
-              stroke="black"
+              fill={bgColor}
+              stroke={bgColor}
             />
             Trình duyệt không hỗ trợ hiển thị
           </svg>
