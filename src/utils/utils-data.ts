@@ -28,36 +28,45 @@ function singleSlideConstructor(slide: SlideType) {
 
           if (block.type === MediaType.VIDEO) {
             const sizeAppend = `${
-              block.size ? `width="${block.size.w}" height="${block.size.h}"` : ""
-            }`;
-            const positionAppend = `${
-              block.position ? `style="left: ${block.position.x}; top: ${block.position.y}"` : ""
-            }`;
-            return stripIndent(`
-            <video class="r-stack" src="${subfolderPath}/${block.assetName}"
-              ${animAppend}
-              ${sizeAppend}
-              ${positionAppend}
-              ${block.autoPlay ? "data-autoplay" : ""}
-            />
-            `);
-          }
-
-          if (block.type === MediaType.IMAGE) {
-            const sizeAppend = `${
-              block.size ? `width: ${block.size.w}px; height: ${block.size.h}px; ` : ""
+              block.size
+                ? `width: ${Math.ceil(block.size.w)}px; height: ${Math.ceil(block.size.h)}px; `
+                : ""
             }`;
             const positionAppend = `${
               block.position
                 ? `position: absolute; left: ${block.position.x}px; top: ${block.position.y}px;`
                 : ""
             }`;
-            const styleAppend = (dataIn: string) => `style="${dataIn}"`;
+
+            const styleAppender = (dataIn: string) => `style="${dataIn}"`;
+            return stripIndent(`
+            <div
+              ${animAppend}
+              ${styleAppender(sizeAppend + positionAppend)}>
+              <video class="r-stack" src="${subfolderPath}/${block.assetName}" style="width: 100%;"
+                ${block.autoPlay ? "data-autoplay" : ""}
+              />
+            </div>
+            `);
+          }
+
+          if (block.type === MediaType.IMAGE) {
+            const sizeAppend = `${
+              block.size
+                ? `width: ${Math.ceil(block.size.w)}px; height: ${Math.ceil(block.size.h)}px; `
+                : ""
+            }`;
+            const positionAppend = `${
+              block.position
+                ? `position: absolute; left: ${block.position.x}px; top: ${block.position.y}px;`
+                : ""
+            }`;
+
+            const styleAppender = (dataIn: string) => `style="${dataIn}"`;
             return stripIndent(`
             <img src="${subfolderPath}/${block.assetName}"
               ${animAppend}
-              ${styleAppend(sizeAppend + positionAppend)}
-              ${block.autoPlay ? "data-autoplay" : ""}
+              ${styleAppender(sizeAppend + positionAppend)}
             />`);
           }
 
@@ -147,8 +156,12 @@ function singleSlideConstructor(slide: SlideType) {
               <article class="interactive-callout" style="${styleAppend}">
                 ${formattingUtils.furiganaTemplateToHTML(html)}
               </article>
-              <svg style="position: absolute; z-index: -1; width: ${MinimumCanvasSize.WIDTH}px; height: ${MinimumCanvasSize.HEIGHT}px; top: 0; left: 0;">
-                <polyline points="${leg1.x},${leg1.y} ${anchor.x},${anchor.y} ${leg2.x},${leg2.y}" fill="${block.bgColor}" stroke="${block.bgColor}"
+              <svg style="position: absolute; z-index: -1; width: ${
+                MinimumCanvasSize.WIDTH
+              }px; height: ${MinimumCanvasSize.HEIGHT}px; top: 0; left: 0;">
+                <polyline points="${leg1.x},${leg1.y} ${anchor.x},${anchor.y} ${leg2.x},${
+              leg2.y
+            }" fill="${block.bgColor}" stroke="${block.bgColor}"
                   style="position: absolute;"
                 />
                 Trình duyệt không hỗ trợ hiển thị
