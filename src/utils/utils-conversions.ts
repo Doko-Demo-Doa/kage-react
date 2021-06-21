@@ -3,7 +3,7 @@ import { remote } from "electron";
 import path from "path";
 import dayjs from "dayjs";
 import fs from "fs-extra";
-import ffmpegStatic from "ffmpeg-static";
+import { ffmpegPath, ffprobePath } from "ffmpeg-ffprobe-static";
 import { FFProbeMetaType, MediaReturnType, MediaStreamType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
 import { MediaType } from "~/common/static-data";
@@ -13,12 +13,16 @@ const OptimalImageSize = {
   height: 725,
 };
 
-function getFfmpegPath() {
-  const p = path.join(
+function getFfmpegPath(isProbe?: boolean) {
+  const firstPart = path.join(
     remote.app.getAppPath().replace("app.asar", "app.asar.unpacked"),
-    "node_modules/ffmpeg-static",
-    ffmpegStatic
+    "node_modules/ffmpeg-ffprobe-static"
   );
+  if (isProbe) {
+    return path.join(firstPart, ffprobePath || "");
+  }
+
+  const p = path.join(firstPart, ffmpegPath || "");
   return p;
 }
 
@@ -173,7 +177,7 @@ export const ffmpegUtils = {
     const ffmpeg = remote.require("fluent-ffmpeg");
 
     return new Promise((resolve, reject) => {
-      ffmpeg
+      ffmpeg()
         .setFfmpegPath(getFfmpegPath())
         .input(filePath)
         .ffprobe(0, function (err: any, data: FFProbeMetaType) {
@@ -189,10 +193,16 @@ export const ffmpegUtils = {
     });
   },
 
-  convertToMp4: (
+  optimizeVideo: (
     filePath: string,
     inputWidth: number,
-    progressCallback?: (percent: number | string, filePath?: string) => void
+    progressCallback?: (
+      percent: number | string,
+      filePath: string,
+      fileName: string,
+      extension: string,
+      outputRatio: number
+    ) => void
   ) => {
     const remote = require("electron").remote;
     const ffmpeg = remote.require("fluent-ffmpeg");
@@ -211,15 +221,16 @@ export const ffmpegUtils = {
         })
         .on("progress", function (data: any) {
           // console.log("[ffmpeg]:", data);
-          progressCallback?.(data.percent);
+          progressCallback?.(data.percent, "", "", "", 0);
         })
         .on("end", function () {
-          console.log("[ffmpeg end]");
+          const videoExt = "mp4";
+          const videoName = fileUtils.getCRC32(dest);
+          const newName = `${videoName}.${videoExt}`;
 
-          const newName = `${fileUtils.getCRC32(dest)}.mp4`;
           const newDest = path.join(fileUtils.getCacheDirectory("assets"), newName);
           fs.renameSync(dest, newDest);
-          progressCallback?.("end", newDest);
+          progressCallback?.("end", newDest, videoName, videoExt, ratio);
         })
         .on("error", function (error: any) {
           console.log("[ffmpeg error]:", error);

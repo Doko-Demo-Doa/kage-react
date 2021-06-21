@@ -1,5 +1,4 @@
 import { makeAutoObservable } from "mobx";
-import dayjs from "dayjs";
 import { BlockSizeType, PositionType, SlideAnimationType, SlideType } from "~/typings/types";
 import { RootStore } from "~/mobx/root-store";
 import { AnimationType } from "~/common/static-data";

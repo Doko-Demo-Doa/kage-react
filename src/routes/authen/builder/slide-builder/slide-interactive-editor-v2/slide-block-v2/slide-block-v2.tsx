@@ -91,7 +91,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
   }, []);
 
   const getMainComponent = () => {
-    if (type === MediaType.IMAGE) {
+    if (type === MediaType.IMAGE || type === MediaType.VIDEO) {
       return (
         <Rnd
           bounds="parent"
@@ -99,11 +99,11 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
           resizeHandleClasses={
             selected
               ? {
-                bottomLeft: "c-handle",
-                topLeft: "c-handle",
-                topRight: "c-handle",
-                bottomRight: "c-handle",
-              }
+                  bottomLeft: "c-handle",
+                  topLeft: "c-handle",
+                  topRight: "c-handle",
+                  bottomRight: "c-handle",
+                }
               : undefined
           }
           onDragStart={() => onSelect(id)}
@@ -141,9 +141,13 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
             height: size?.h ?? 0,
           }}
           className="single-block"
-          style={{
-            backgroundImage: `url(${assetUrl})`,
-          }}
+          style={
+            type === MediaType.IMAGE
+              ? {
+                  backgroundImage: `url(${assetUrl})`,
+                }
+              : {}
+          }
         >
           <div className="imageblock-holder" onClick={() => onSelect(id)}>
             {selected && (
@@ -155,6 +159,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
                 {animIndex !== undefined && animIndex > -1 ? `${animIndex + 1}` : <PlusOutlined />}
               </div>
             )}
+            <video src={assetUrl} style={{ width: "100%", height: "100%" }} />
           </div>
         </Rnd>
       );
@@ -186,7 +191,9 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
               })
             }
             onMouseDown={() => onSelect?.(id)}
-            className={clsx("text-block", "interactive-text-block",
+            className={clsx(
+              "text-block",
+              "interactive-text-block",
               selected ? "interactive-text-block-selected" : ""
             )}
           >

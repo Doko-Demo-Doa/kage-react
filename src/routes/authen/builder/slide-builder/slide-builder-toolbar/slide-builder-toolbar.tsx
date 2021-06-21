@@ -52,15 +52,13 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
       if (mType === MediaType.VIDEO) {
         // Video
         const resp = await ffmpegUtils.checkVideoMetadata(path);
-        // To quá thì phải resize xuống
-        if (ffmpegUtils.isTooBig(resp.width, resp.height)) {
-          console.log("Too big, converting to smaller size");
-          ffmpegUtils.convertToMp4(path, resp.width, (progress, filePath) => {
-            console.log(progress);
+        console.log(resp);
+        ffmpegUtils.optimizeVideo(
+          path,
+          resp.width,
+          (progress, filePath, fileName, extension, ratio) => {
             if (progress === "end") {
               // Hiển thị message báo convert
-              const videoUrl = `local-resource://${filePath}`;
-              console.log(videoUrl);
               notification.open({
                 message: "Hoàn tất",
                 description:
@@ -69,9 +67,14 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
                   console.log("Notification Clicked");
                 },
               });
+
+              const newW = Math.floor(resp.width * (ratio / 100));
+              const newH = Math.floor(resp.height * (ratio / 100));
+
+              insertBlock(mType, fileName, extension, { width: newW, height: newH });
             }
-          });
-        }
+          }
+        );
       } else if (mType === MediaType.IMAGE) {
         // Image
         const { fileName, extension, extra } = await imageUtils.optimizeImage(path);
@@ -86,9 +89,6 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
             notification.open({
               message: "Hoàn tất",
               description: "Audio đã được chuyển về định dạng chuẩn để có thể đưa vào slide.",
-              onClick: () => {
-                // Code
-              },
             });
           }
         });
