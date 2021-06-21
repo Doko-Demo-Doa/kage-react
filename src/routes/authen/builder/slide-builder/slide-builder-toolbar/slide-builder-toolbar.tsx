@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Divider, Tooltip, notification, Space } from "antd";
 import {
   FontSizeOutlined,
@@ -25,9 +25,13 @@ import { Colors } from "~/common/colors";
 import { SlideBlockType } from "~/typings/types";
 import { StoreContext } from "~/mobx/store-context";
 
+import { NewWindowShell } from "~/components/new-window-shell/new-window-shell";
+
 import "~/routes/authen/builder/slide-builder/slide-builder-toolbar/slide-builder-toolbar.scss";
 
 export const SlideBuilderToolbar: React.FC = observer(() => {
+  const [isPreview, setPreview] = useState(false);
+
   const store = useContext(StoreContext);
   const { list, setList, newSlide } = store.slideListStore;
   const slideBuilderMeta = store.slideBuilderStore;
@@ -103,15 +107,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
   };
 
   const onPublish = async () => {
-    let assetList: string[] = [];
-    list.forEach((item) => {
-      const assetItems = item.slideBlocks.map((n) => n.assetName || "");
-      assetList = [...assetList, ...assetItems];
-    });
-
-    fileUtils.saveSlideJsonToCache(commonHelper.prepareExportData(list));
-    const convertedStr = dataUtils.convertToHtmlSlideData(list);
-    fileUtils.writeToHtml(convertedStr);
+    const assetList = updateDataToCache();
 
     const folderPath = await fileUtils.openFolderSaveDialog();
     if (folderPath) {
@@ -125,7 +121,22 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
   };
 
   const onTogglePreview = () => {
-    console.log(list);
+    updateDataToCache();
+    setPreview(true);
+  };
+
+  const updateDataToCache = () => {
+    let assetList: string[] = [];
+    list.forEach((item) => {
+      const assetItems = item.slideBlocks.map((n) => n.assetName || "");
+      assetList = [...assetList, ...assetItems];
+    });
+
+    fileUtils.saveSlideJsonToCache(commonHelper.prepareExportData(list));
+    const convertedStr = dataUtils.convertToHtmlSlideData(list);
+    fileUtils.writeToHtml(convertedStr);
+
+    return assetList;
   };
 
   const insertBlock = (
@@ -179,6 +190,17 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
 
   return (
     <>
+      {isPreview && (
+        <NewWindowShell onClose={() => setPreview(false)}>
+          <webview
+            autoFocus
+            src={`${fileUtils.getRawCacheUrl()}/slide.html`}
+            style={{ width: "100%", height: "100%" }}
+            allowFullScreen
+          />
+        </NewWindowShell>
+      )}
+
       <div className="slide-builder-toolbar">
         <Space>
           <Button icon={<PlusOutlined />} type="primary" ghost onClick={() => onNewSlide()}>

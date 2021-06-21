@@ -218,7 +218,14 @@ export const fileUtils = {
     const cachePath = getCacheDirectory();
     return path.join(cachePath, filename);
   },
+  getRawCacheUrl: () => {
+    return `file://${getCacheDirectory()}`;
+  },
+  getRootResourceUrl: () => {
+    return `${RESOURCE_PROTOCOL}${getCacheDirectory("")}`;
+  },
   getUsableAssetUrl: (assetName: string | undefined) => {
+    console.log(`${RESOURCE_PROTOCOL}${getCacheDirectory("assets")}/${assetName}`);
     return `${RESOURCE_PROTOCOL}${getCacheDirectory("assets")}/${assetName}`;
   },
 

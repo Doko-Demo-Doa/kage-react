@@ -47,6 +47,8 @@ function createWindow() {
     minWidth: preDefinedWidth,
     minHeight: predefinedHeight,
     webPreferences: {
+      webviewTag: true,
+      nativeWindowOpen: true,
       nodeIntegration: true,
       contextIsolation: false,
       enableRemoteModule: true,
@@ -95,6 +97,38 @@ function createWindow() {
       win.webContents.openDevTools({ mode: "detach" });
     }
   });
+
+  process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
+  win.webContents.on(
+    "new-window",
+    (event, url, frameName, disposition, options, additionalFeatures) => {
+      // This is the name we chose for our window. You can have multiple names for
+      // multiple windows and each have their options
+      if (frameName === "NewWindowShell") {
+        event.preventDefault();
+        event.newGuest = new BrowserWindow({
+          ...options,
+          parent: win,
+          width: 740,
+          height: 560,
+          resizable: false,
+          focusable: true,
+          minimizable: false,
+          acceptFirstMouse: true,
+          tabbingIdentifier: "new-win",
+          webPreferences: {
+            sandbox: true,
+            enableBlinkFeatures: "KeyboardEventKey",
+            webviewTag: true,
+            contextIsolation: false,
+            nodeIntegration: true,
+            worldSafeExecuteJavaScript: true,
+            allowRunningInsecureContent: true,
+          },
+        });
+      }
+    }
+  );
 }
 
 if (process.env.NODE_ENV === "production") {
