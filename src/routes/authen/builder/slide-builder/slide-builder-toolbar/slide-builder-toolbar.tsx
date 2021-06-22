@@ -7,6 +7,7 @@ import {
   UploadOutlined,
   FolderOpenFilled,
   PictureFilled,
+  ImportOutlined,
   FileZipOutlined,
   MessageOutlined,
 } from "@ant-design/icons";
@@ -113,6 +114,18 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
     const folderPath = await fileUtils.openFolderSaveDialog();
     if (folderPath) {
       fileUtils.copyFromCacheToDest(folderPath, assetList);
+    }
+  };
+
+  const onImportZip = async () => {
+    const path = await fileUtils.openFileDialog();
+    if (path) {
+      const zipContent = fileUtils.readZipEntries(path);
+      if (zipContent?.includes("slide.html") && zipContent.includes("manifest.json")) {
+        // TODO: Có thể xem xét cách khác để verify file zip này không.
+        // Hiện chỉ mới check 2 file trên nếu ok thì triển.
+        fileUtils.extractZipToCache(path);
+      }
     }
   };
 
@@ -280,6 +293,13 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
           >
             Xuất ra file
           </Button>
+          <Button
+            onClick={() => onImportZip()}
+            style={{ backgroundColor: Colors.INDIGO, borderColor: Colors.INDIGO }}
+            icon={<ImportOutlined />}
+            type="primary"
+            aria-label="Mở file zip"
+          />
           <Button
             disabled={shouldDisable}
             onClick={() => onExportZip()}

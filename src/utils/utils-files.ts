@@ -77,6 +77,13 @@ export const fileUtils = {
     const shell = require("electron").shell;
     shell.openPath(folderPath);
   },
+  openFileDialog: async () => {
+    if (fsNotAvailable()) return;
+    const data = await require("electron").remote.dialog.showOpenDialog({
+      properties: ["openFile", "dontAddToRecent"],
+    });
+    return data.filePaths[0];
+  },
   // Dùng để chọn folder xuất data ra
   openFolderSaveDialog: async () => {
     if (fsNotAvailable()) return;
@@ -275,11 +282,22 @@ export const fileUtils = {
     const fs = remote.require("fs");
     fs.writeFileSync(path, content);
   },
-  readZipFile: (inputPath: string) => {
+  readZipEntries: (inputPath: string) => {
     try {
-      // Code...
+      const zip = new AdmZip(inputPath);
+      const entries = zip.getEntries();
+      return entries.map((n) => n.entryName);
     } catch (error) {
       console.log(error);
+    }
+  },
+  extractZipToCache: (zipPath: string) => {
+    const cacheDir = getCacheDirectory();
+    try {
+      const zip = new AdmZip(zipPath);
+      zip.extractAllTo(cacheDir, true);
+    } catch (e) {
+      console.log(e);
     }
   },
   zipFilesTo: (dest: string, ...files: string[]) => {
@@ -287,7 +305,7 @@ export const fileUtils = {
     const remote = require("electron").remote;
     const path = remote.require("path");
 
-    const cacheDir: string = getCacheDirectory();
+    const cacheDir = getCacheDirectory();
 
     const newZip = new AdmZip();
 
