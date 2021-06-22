@@ -54,7 +54,6 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
       if (mType === MediaType.VIDEO) {
         // Video
         const resp = await ffmpegUtils.checkVideoMetadata(path);
-        console.log(resp);
         ffmpegUtils.optimizeVideo(
           path,
           resp.width,
@@ -260,30 +259,6 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
             size="middle"
             onClick={() => onInsertCallout()}
           />
-
-          {/* <Popover
-            arrowContent
-            trigger="click"
-            destroyTooltipOnHide
-            visible={tableConstructorVisible && !shouldDisable}
-            onVisibleChange={(visible) => setTableConstructorVisible(visible)}
-            content={
-              <TableConstructor
-                onSelect={(numRows, numCols) => {
-                  console.log(numRows, numCols);
-                  setTableConstructorVisible(false);
-                }}
-              />
-            }
-          >
-            <Button
-              disabled={shouldDisable}
-              type="link"
-              icon={<TableOutlined />}
-              size="middle"
-              onClick={() => onInsertTable()}
-            />
-          </Popover> */}
 
           <Divider type="vertical" />
           <Button
