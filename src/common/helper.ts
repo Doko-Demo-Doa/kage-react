@@ -4,9 +4,9 @@ import { dataUtils } from "~/utils/utils-data";
 
 export const commonHelper = {
   // Chuẩn bị dữ liệu chuẩn cho file manifest.json
-  prepareExportData: (list: SlideType[]) => {
+  prepareExportData: (list: SlideType[], rootId?: string) => {
     const data = {
-      id: dataUtils.generateUid(),
+      id: rootId || dataUtils.generateUid(),
       lastModification: dayjs().unix(),
       alias: "",
       layout: list,

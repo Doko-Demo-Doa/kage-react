@@ -291,11 +291,13 @@ export const fileUtils = {
       console.log(error);
     }
   },
+  // Xả file zip slide và đọc file manifest.
   extractZipToCache: (zipPath: string) => {
     const cacheDir = getCacheDirectory();
     try {
       const zip = new AdmZip(zipPath);
       zip.extractAllTo(cacheDir, true);
+      return zip.readAsText(SLIDE_MANIFEST_FILE);
     } catch (e) {
       console.log(e);
     }

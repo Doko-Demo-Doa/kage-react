@@ -125,6 +125,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
         // TODO: Có thể xem xét cách khác để verify file zip này không.
         // Hiện chỉ mới check 2 file trên nếu ok thì triển.
         fileUtils.extractZipToCache(path);
+        // Sau khi extract thì nạp vào bộ nhớ.
       }
     }
   };

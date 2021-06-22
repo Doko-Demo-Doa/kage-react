@@ -35,7 +35,7 @@ export const rootStore = new RootStore();
 autorun(() => {
   const l = rootStore.slideListStore.list;
   if (l.length) {
-    const d = commonHelper.prepareExportData(l);
+    const d = commonHelper.prepareExportData(l, rootStore.quizDeckStore.id);
     fileUtils.saveSlideJsonToCache(d);
   }
 });
