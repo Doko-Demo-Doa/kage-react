@@ -7,6 +7,7 @@ import {
   UploadOutlined,
   FolderOpenFilled,
   PictureFilled,
+  FileZipOutlined,
   MessageOutlined,
 } from "@ant-design/icons";
 import { uniq } from "rambdax";
@@ -111,8 +112,15 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
 
     const folderPath = await fileUtils.openFolderSaveDialog();
     if (folderPath) {
-      fileUtils.copyFromCacheToDest(folderPath, [...uniq(assetList)]);
-      // fileUtils.copyVendorFilesToDest(folderPath);
+      fileUtils.copyFromCacheToDest(folderPath, assetList);
+    }
+  };
+
+  const onExportZip = async () => {
+    const assetList = updateDataToCache();
+    const path = await fileUtils.openFolderSaveDialog();
+    if (path) {
+      fileUtils.zipFilesTo(path, ...assetList);
     }
   };
 
@@ -136,7 +144,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
     const convertedStr = dataUtils.convertToHtmlSlideData(list);
     fileUtils.writeToHtml(convertedStr);
 
-    return assetList;
+    return [...uniq(assetList)];
   };
 
   const insertBlock = (
@@ -272,6 +280,14 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
           >
             Xuất ra file
           </Button>
+          <Button
+            disabled={shouldDisable}
+            onClick={() => onExportZip()}
+            style={{ backgroundColor: Colors.BUTTERSCOTCH, borderColor: Colors.BUTTERSCOTCH }}
+            icon={<FileZipOutlined />}
+            type="primary"
+            aria-label="Xuất ra file zip"
+          />
           {isElectron() && (
             <Button onClick={() => onOpenCache()} icon={<FolderOpenFilled />}>
               Mở folder cache

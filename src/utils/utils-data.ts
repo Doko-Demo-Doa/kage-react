@@ -233,7 +233,6 @@ export const dataUtils = {
       </html>
       `;
 
-    console.log(pretty(templateStr));
     return pretty(templateStr);
   },
   mapAnimationLabel: (type: AnimationType) => {

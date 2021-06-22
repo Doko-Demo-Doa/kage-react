@@ -3,6 +3,7 @@ import { isEmpty, union } from "rambdax";
 import dayjs from "dayjs";
 import { MediaType, RESOURCE_PROTOCOL } from "~/common/static-data";
 import QuizDeckModel from "~/mobx/models/quiz-deck";
+import AdmZip from "adm-zip";
 
 function fsNotAvailable() {
   return isEmpty(require("fs"));
@@ -273,5 +274,35 @@ export const fileUtils = {
     const remote = require("electron").remote;
     const fs = remote.require("fs");
     fs.writeFileSync(path, content);
+  },
+  readZipFile: (inputPath: string) => {
+    try {
+      // Code...
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  zipFilesTo: (dest: string, ...files: string[]) => {
+    if (fsNotAvailable()) return;
+    const remote = require("electron").remote;
+    const path = remote.require("path");
+
+    const cacheDir: string = getCacheDirectory();
+
+    const newZip = new AdmZip();
+
+    // Add từng file:
+    const vendorDir = getCacheDirectory("vendor");
+    const manifestPath = path.join(cacheDir, SLIDE_MANIFEST_FILE);
+    const htmlEntryPath = path.join(cacheDir, SLIDE_HTML_ENTRY_FILE);
+    newZip.addLocalFolder(vendorDir, "vendor");
+    newZip.addLocalFile(manifestPath);
+    newZip.addLocalFile(htmlEntryPath);
+
+    files.forEach((n) => {
+      newZip.addLocalFile(path.join(getCacheDirectory("assets"), n), "assets");
+    });
+
+    newZip.writeZip(path.join(dest, "slide_export.zip"));
   },
 };
