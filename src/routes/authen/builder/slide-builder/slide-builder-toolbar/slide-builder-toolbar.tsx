@@ -131,6 +131,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
           const data = JSON.parse(manifest);
           slideBuilderMeta.importMeta(data.id);
           importSlideTree(data.layout);
+          slideBuilderMeta.setIndex(0);
         }
       }
     }
