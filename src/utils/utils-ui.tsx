@@ -139,7 +139,7 @@ export const uiUtils = {
 
 // Ref: https://quilljs.com/docs/modules/toolbar/
 export const defaultQuillToolbar = [
-  [{ size: sizes }],
+  [{ header: [1, 2, 3, false] }],
   ["bold", "italic", "underline", "strike"],
   [{ color: [] }, { background: [] }],
   [{ list: "ordered" }, { list: "bullet" }],

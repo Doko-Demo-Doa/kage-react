@@ -74,7 +74,7 @@ function singleSlideConstructor(slide: SlideType) {
             const ops = block.deltaContent?.ops;
             const html = quillUtils.quillDeltaToHtml(ops!);
             // Last line is to remove line breaks.
-            const styleAppend = `
+            const styleAppend = stripIndent(`
               position: absolute;
               padding: 10px;
               user-select: auto;
@@ -85,13 +85,13 @@ function singleSlideConstructor(slide: SlideType) {
               left: ${block.position?.x}px;
               box-sizing: border-box;
               flex-shrink: 0;
-            `
+            `)
               .replace(/(\r\n|\n|\r)/gm, "")
               .replace(" ", "");
 
             const result = pretty(
               stripIndent(`
-              <div style="${styleAppend}" ${animAppend}">
+              <div style="${styleAppend}" ${animAppend}>
                 ${formattingUtils.furiganaTemplateToHTML(html)}
               </div>
             `)
@@ -130,16 +130,16 @@ function singleSlideConstructor(slide: SlideType) {
 
             const anchor = block.anchor!;
 
-            const wrapperStyleAppend = `
+            const wrapperStyleAppend = stripIndent(`
               position: absolute;
               width: 100%;
               height: 100%
               left: 0;
               top: 0;
-            `;
+            `);
 
             // Tham khảo class .callout-inside
-            const styleAppend = `
+            const styleAppend = stripIndent(`
               position: absolute;
               padding: 10px;
               border-radius: 6px;
@@ -149,10 +149,10 @@ function singleSlideConstructor(slide: SlideType) {
               top: ${block.position?.y}px;
               left: ${block.position?.x}px;
               box-sizing: border-box;
-            `;
+            `);
 
-            return `
-            <div style="${wrapperStyleAppend}" ${animAppend}">
+            return stripIndent(`
+            <div style="${wrapperStyleAppend}" ${animAppend}>
               <article class="interactive-callout" style="${styleAppend}">
                 ${formattingUtils.furiganaTemplateToHTML(html)}
               </article>
@@ -167,7 +167,7 @@ function singleSlideConstructor(slide: SlideType) {
                 Trình duyệt không hỗ trợ hiển thị
               </svg>
             </div>
-            `;
+            `);
           }
           return `<div>${block.content}</div>`;
         })
@@ -233,6 +233,7 @@ export const dataUtils = {
       </html>
       `;
 
+    console.log(pretty(templateStr));
     return pretty(templateStr);
   },
   mapAnimationLabel: (type: AnimationType) => {
