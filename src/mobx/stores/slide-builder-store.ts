@@ -13,6 +13,10 @@ export class SlideBuilderStore {
     makeAutoObservable(this, {}, { autoBind: true });
   }
 
+  importMeta(id: string) {
+    this.id = id;
+  }
+
   setIndex(newIndex: number) {
     this.selectedIndex = newIndex;
   }

@@ -35,7 +35,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
   const [isPreview, setPreview] = useState(false);
 
   const store = useContext(StoreContext);
-  const { list, setList, newSlide } = store.slideListStore;
+  const { list, setList, newSlide, importSlideTree } = store.slideListStore;
   const slideBuilderMeta = store.slideBuilderStore;
 
   const shouldDisable = list.length <= 0;
@@ -124,8 +124,14 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
       if (zipContent?.includes("slide.html") && zipContent.includes("manifest.json")) {
         // TODO: Có thể xem xét cách khác để verify file zip này không.
         // Hiện chỉ mới check 2 file trên nếu ok thì triển.
-        fileUtils.extractZipToCache(path);
+        const manifest = fileUtils.extractZipToCache(path);
         // Sau khi extract thì nạp vào bộ nhớ.
+        if (manifest) {
+          // Nạp manifest mới vào.
+          const data = JSON.parse(manifest);
+          slideBuilderMeta.importMeta(data.id);
+          importSlideTree(data.layout);
+        }
       }
     }
   };

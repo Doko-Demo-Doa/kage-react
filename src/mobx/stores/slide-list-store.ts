@@ -15,6 +15,11 @@ export class SlideListStore {
     makeAutoObservable(this, {}, { autoBind: true });
   }
 
+  importSlideTree(l: SlideType[]) {
+    this.list.length = 0;
+    this.list = l;
+  }
+
   newSlide() {
     const newSlide = {
       id: dataUtils.generateShortUid(),
