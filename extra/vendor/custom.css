@@ -7,7 +7,7 @@
 }
 
 .reveal .slide-title {
-  color: #222;
+  color: #0c344b;
   font-family: "Source Sans Pro", Helvetica, sans-serif;
   font-size: 54px;
   font-weight: 600;
@@ -30,6 +30,7 @@
 }
 
 .reveal h1 {
+  color: #0c344b;
   font-size: 42px;
   text-transform: unset;
   font-weight: unset;
@@ -40,7 +41,7 @@
 }
 
 .reveal h2 {
-  color: #222;
+  color: #0c344b;
   line-height: 1.2;
   letter-spacing: normal;
   text-shadow: none;
@@ -52,7 +53,21 @@
   margin: 0;
 }
 
+.reveal h3 {
+  color: #0c344b;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-shadow: none;
+  word-wrap: break-word;
+  font-size: 26px;
+  text-transform: unset;
+  font-weight: unset;
+  text-align: start;
+  margin: 0;
+}
+
 .reveal p {
+  color: #0c344b;
   font-size: 22px;
   margin: 0;
   font-weight: unset;

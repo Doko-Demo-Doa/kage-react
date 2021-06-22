@@ -262,9 +262,8 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
             icon={<PullRequestOutlined />}
             type="primary"
             danger
-          >
-            Bật / tắt xem thử
-          </Button>
+            aria-label="Bật / tắt xem thử"
+          />
           <Button
             disabled={shouldDisable}
             onClick={() => onPublish()}
