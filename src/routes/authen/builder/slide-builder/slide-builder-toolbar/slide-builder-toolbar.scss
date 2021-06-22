@@ -4,3 +4,16 @@
   padding: 0 12px;
   padding-bottom: 12px;
 }
+
+.ql-snow {
+  .ql-picker {
+    &.ql-size {
+      .ql-picker-label,
+      .ql-picker-item {
+        &::before {
+          content: attr(data-value) !important;
+        }
+      }
+    }
+  }
+}

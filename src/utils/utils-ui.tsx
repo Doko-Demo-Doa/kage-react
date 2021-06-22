@@ -1,17 +1,23 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { notification, message, Modal } from "antd";
 import { Delta } from "quill";
-import ReactQuill from "react-quill";
+import ReactQuill, { Quill } from "react-quill";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { BlockSizeType, PositionType } from "~/typings/types";
+import { AVAILABLE_FONT_SIZES } from "~/common/static-data";
 
 // Alternative: react-quill/dist/quill.bubble.css
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
-import "~/routes/authen/builder/slide-builder/slide-builder-toolbar/slide-builder-toolbar.scss";
 
 export type NotificationType = "success" | "error" | "info" | "warning" | "warn" | "open";
 export type MessageType = "success" | "error" | "info" | "warning" | "warn" | "loading";
+
+const SizeStyle = Quill.import("attributors/style/size");
+const sizes = AVAILABLE_FONT_SIZES;
+
+SizeStyle.whitelist = sizes;
+Quill.register(SizeStyle, true);
 
 export const uiUtils = {
   showConfirmation: (
@@ -133,7 +139,7 @@ export const uiUtils = {
 
 // Ref: https://quilljs.com/docs/modules/toolbar/
 export const defaultQuillToolbar = [
-  [{ header: [1, 2, false] }],
+  [{ size: sizes }],
   ["bold", "italic", "underline", "strike"],
   [{ color: [] }, { background: [] }],
   [{ list: "ordered" }, { list: "bullet" }],

@@ -225,7 +225,6 @@ export const fileUtils = {
     return `${RESOURCE_PROTOCOL}${getCacheDirectory("")}`;
   },
   getUsableAssetUrl: (assetName: string | undefined) => {
-    console.log(`${RESOURCE_PROTOCOL}${getCacheDirectory("assets")}/${assetName}`);
     return `${RESOURCE_PROTOCOL}${getCacheDirectory("assets")}/${assetName}`;
   },
 

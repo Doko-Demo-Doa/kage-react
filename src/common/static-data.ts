@@ -8,6 +8,19 @@ export enum ElectronEventType {
   UPDATE_DOWNLOADED = "UPDATE_DOWNLOADED",
 }
 
+export const AVAILABLE_FONT_SIZES = [
+  "10px",
+  "11px",
+  "12px",
+  "14px",
+  "16px",
+  "20px",
+  "24px",
+  "38px",
+  "36px",
+  "48px",
+];
+
 // Size của tờ canvas konva, tính bằng px
 export const MinimumCanvasSize = {
   WIDTH: 740,

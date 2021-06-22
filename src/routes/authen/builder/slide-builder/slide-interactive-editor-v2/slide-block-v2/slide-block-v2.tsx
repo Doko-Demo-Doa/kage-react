@@ -4,7 +4,6 @@ import { Rnd } from "react-rnd";
 import clsx from "clsx";
 import { Delta } from "quill";
 import { PlusOutlined, BgColorsOutlined } from "@ant-design/icons";
-import { Quill } from "react-quill";
 import { TwitterPicker } from "react-color";
 import { MediaType, MinimumCanvasSize } from "~/common/static-data";
 import { SlideAnimationType, SlideBlockType } from "~/typings/types";
@@ -14,10 +13,6 @@ import { formattingUtils } from "~/utils/utils-formatting";
 import { uiUtils } from "~/utils/utils-ui";
 
 import "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-block-v2/slide-block-v2.scss";
-
-const SizeStyle = Quill.import("attributors/style/size");
-SizeStyle.whitelist = ["10px", "15px", "18px", "20px", "32px", "54px"];
-Quill.register(SizeStyle, true);
 
 type SlideBlockComponentType = SlideBlockType & {
   selected?: boolean;
