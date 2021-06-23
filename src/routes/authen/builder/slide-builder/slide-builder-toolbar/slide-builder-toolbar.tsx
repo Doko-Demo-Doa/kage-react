@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Button, Divider, Tooltip, notification, Space } from "antd";
+import { Button, Divider, Tooltip, notification, Space, Spin } from "antd";
 import {
   EyeOutlined,
   FileZipOutlined,
@@ -33,6 +33,7 @@ import "~/routes/authen/builder/slide-builder/slide-builder-toolbar/slide-builde
 
 export const SlideBuilderToolbar: React.FC = observer(() => {
   const [isPreview, setPreview] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   const store = useContext(StoreContext);
   const { list, setList, newSlide, importSlideTree } = store.slideListStore;
@@ -53,6 +54,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
       const mType = fileUtils.detectMediaType(path);
       if (mType === MediaType.VIDEO) {
         // Video
+        setLoading(true);
         const resp = await ffmpegUtils.checkVideoMetadata(path);
         ffmpegUtils.optimizeVideo(
           path,
@@ -60,6 +62,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
           (progress, filePath, fileName, extension, ratio) => {
             if (progress === "end") {
               // Hiển thị message báo convert
+              setLoading(false);
               notification.open({
                 message: "Hoàn tất",
                 description:
@@ -82,9 +85,11 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
         insertBlock(mType, fileName, extension, extra);
         return;
       } else if (mType === MediaType.AUDIO) {
+        setLoading(true);
         audioUtils.optimizeAudio(path, undefined, (progress, filePath, fileName, extension) => {
           if (progress === "end") {
             // Hiển thị message báo convert
+            setLoading(false);
             insertBlock(mType, fileName, extension, { width: 0, height: 0 });
 
             notification.open({
@@ -310,6 +315,8 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
               Mở folder cache
             </Button>
           )}
+
+          {isLoading && <Spin style={{ marginTop: 4 }} />}
         </Space>
       </div>
     </>
