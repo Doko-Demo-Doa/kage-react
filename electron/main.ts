@@ -79,7 +79,6 @@ function createWindow() {
       // Decode URL to prevent errors when loading filenames with UTF-8 chars or chars like "#"
       const decodedUrl = decodeURI(url); // Needed in case URL contains spaces
       try {
-        console.log("Protocol registered");
         return callback(decodedUrl);
       } catch (error) {
         console.error("ERROR: registerLocalResourceProtocol: Could not get file path:", error);
@@ -87,7 +86,6 @@ function createWindow() {
     });
 
     ipcMain.on(StaticData.ElectronEventType.UPDATE_CHECK, (event, args) => {
-      console.log("Got app updating signal.", args);
       checkUpdate(args);
     });
   });
@@ -175,6 +173,9 @@ autoUpdater.on("update-not-available", () => {
 });
 autoUpdater.on("update-available", () => {
   win.webContents.send(StaticData.ElectronEventType.UPDATE_AVAILABLE);
+});
+autoUpdater.on("download-progress", (data) => {
+  console.log("hehe", data);
 });
 autoUpdater.on("update-downloaded", (data) => {
   win.webContents.send(StaticData.ElectronEventType.UPDATE_DOWNLOADED, String(data.downloadedFile));
