@@ -1,15 +1,15 @@
 import React, { useContext, useState } from "react";
 import { Button, Divider, Tooltip, notification, Space } from "antd";
 import {
-  FontSizeOutlined,
-  PlusOutlined,
-  PullRequestOutlined,
-  UploadOutlined,
-  FolderOpenFilled,
-  PictureFilled,
-  ImportOutlined,
+  EyeOutlined,
   FileZipOutlined,
+  FolderOpenFilled,
+  FontSizeOutlined,
+  FundViewOutlined,
+  ImportOutlined,
   MessageOutlined,
+  PlusOutlined,
+  UploadOutlined,
 } from "@ant-design/icons";
 import { uniq } from "rambdax";
 import { Delta } from "quill";
@@ -231,64 +231,80 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
 
       <div className="slide-builder-toolbar">
         <Space>
-          <Button icon={<PlusOutlined />} type="primary" ghost onClick={() => onNewSlide()} />
+          <Tooltip placement="bottom" title="Tạo slide mới">
+            <Button icon={<PlusOutlined />} type="primary" ghost onClick={() => onNewSlide()} />
+          </Tooltip>
           <NewQuizSetBtn />
-          <Button
-            type="link"
-            icon={<FontSizeOutlined />}
-            size="middle"
-            disabled={shouldDisable}
-            onClick={() => onNewRichText("")}
-          />
-          <Tooltip placement="bottom" title="Chèn ảnh / video">
+
+          <Divider type="vertical" />
+
+          <Tooltip placement="bottom" title="Bật / tắt xem thử">
+            <Button
+              onClick={() => onTogglePreview()}
+              icon={<EyeOutlined />}
+              type="primary"
+              aria-label="Bật / tắt xem thử"
+            />
+          </Tooltip>
+          <Tooltip placement="bottom" title="Xuất ra file">
+            <Button
+              disabled={shouldDisable}
+              onClick={() => onPublish()}
+              icon={<UploadOutlined />}
+              type="primary"
+            />
+          </Tooltip>
+          <Tooltip placement="bottom" title="Mở file zip">
+            <Button
+              onClick={() => onImportZip()}
+              icon={<ImportOutlined />}
+              type="primary"
+              ghost
+              aria-label="Mở file zip"
+            />
+          </Tooltip>
+          <Tooltip placement="bottom" title="Xuất ra file zip">
+            <Button
+              disabled={shouldDisable}
+              onClick={() => onExportZip()}
+              icon={<FileZipOutlined />}
+              type="primary"
+              ghost
+            />
+          </Tooltip>
+
+          <Divider type="vertical" />
+
+          <Tooltip placement="bottom" title="Chèn chữ">
             <Button
               type="link"
-              icon={<PictureFilled />}
+              icon={<FontSizeOutlined />}
+              size="middle"
+              disabled={shouldDisable}
+              onClick={() => onNewRichText("")}
+            />
+          </Tooltip>
+          <Tooltip placement="bottom" title="Chèn ảnh / video / audio">
+            <Button
+              type="link"
+              icon={<FundViewOutlined />}
               size="middle"
               disabled={shouldDisable}
               onClick={() => onInsertMedia()}
             />
           </Tooltip>
-
-          <Button
-            disabled={shouldDisable}
-            type="link"
-            icon={<MessageOutlined />}
-            size="middle"
-            onClick={() => onInsertCallout()}
-          />
+          <Tooltip placement="bottom" title="Chèn ô hội thoại">
+            <Button
+              disabled={shouldDisable}
+              type="link"
+              icon={<MessageOutlined />}
+              size="middle"
+              onClick={() => onInsertCallout()}
+            />
+          </Tooltip>
 
           <Divider type="vertical" />
-          <Button
-            onClick={() => onTogglePreview()}
-            icon={<PullRequestOutlined />}
-            type="primary"
-            danger
-            aria-label="Bật / tắt xem thử"
-          />
-          <Button
-            disabled={shouldDisable}
-            onClick={() => onPublish()}
-            icon={<UploadOutlined />}
-            type="primary"
-          >
-            Xuất ra file
-          </Button>
-          <Button
-            onClick={() => onImportZip()}
-            style={{ backgroundColor: Colors.INDIGO, borderColor: Colors.INDIGO }}
-            icon={<ImportOutlined />}
-            type="primary"
-            aria-label="Mở file zip"
-          />
-          <Button
-            disabled={shouldDisable}
-            onClick={() => onExportZip()}
-            style={{ backgroundColor: Colors.BUTTERSCOTCH, borderColor: Colors.BUTTERSCOTCH }}
-            icon={<FileZipOutlined />}
-            type="primary"
-            aria-label="Xuất ra file zip"
-          />
+
           {isElectron() && (
             <Button onClick={() => onOpenCache()} icon={<FolderOpenFilled />}>
               Mở folder cache

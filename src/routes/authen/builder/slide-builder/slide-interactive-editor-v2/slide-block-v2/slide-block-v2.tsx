@@ -212,7 +212,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
       return (
         <div className="interactive-callout">
           <Rnd
-            bounds="parent"
+            bounds="#slide-interactive-editor"
             className="single-block"
             onDragStop={(e, d) => {
               const topLeftX = d.x;
@@ -302,7 +302,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
           </Rnd>
           <Rnd
             className="single-block"
-            bounds="parent"
+            bounds="#slide-interactive-editor"
             disableDragging={false}
             enableResizing={false}
             onDragStop={(e, d) => {
@@ -328,16 +328,17 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
             />
           </Rnd>
           <svg
-            width={MinimumCanvasSize.WIDTH}
-            height={MinimumCanvasSize.HEIGHT}
+            viewBox={`${MinimumCanvasSize.WIDTH} ${MinimumCanvasSize.HEIGHT}`}
             style={{
               zIndex: 2,
+              overflow: "visible",
             }}
           >
             <polyline
               points={`${leg1.x},${leg1.y} ${anchor.x},${anchor.y} ${leg2.x},${leg2.y}`}
               fill={bgColor}
               stroke={bgColor}
+              overflow="visible"
             />
             Trình duyệt không hỗ trợ hiển thị
           </svg>
