@@ -16,5 +16,11 @@
     position: absolute;
     bottom: 0;
     padding: 0 1rem;
+
+    .update-completed {
+      color: $color-blue-primary;
+      text-decoration: underline;
+      cursor: pointer;
+    }
   }
 }

@@ -85,8 +85,14 @@ function createWindow() {
       }
     });
 
+    // Event listeners from renderer
     ipcMain.on(StaticData.ElectronEventType.UPDATE_CHECK, (event, args) => {
       checkUpdate(args);
+    });
+
+    ipcMain.on(StaticData.ElectronEventType.QUIT_TO_INSTALL, () => {
+      console.log("Clicky");
+      autoUpdater.quitAndInstall();
     });
   });
 
@@ -155,7 +161,7 @@ function checkUpdate(args: Typings.CustomPublishOptionType) {
   // https://nklayman.github.io/vue-cli-plugin-electron-builder/guide/recipes.html#auto-update
   // https://github.com/electron-userland/electron-builder/issues/4599#issuecomment-575885067
   // Override when needed
-  if (isDev) return;
+  // if (isDev) return;
   autoUpdater.setFeedURL(args);
 
   autoUpdater
@@ -175,7 +181,8 @@ autoUpdater.on("update-available", () => {
   win.webContents.send(StaticData.ElectronEventType.UPDATE_AVAILABLE);
 });
 autoUpdater.on("download-progress", (data) => {
-  console.log("hehe", data);
+  // https://www.electron.build/auto-update#event-download-progress
+  win.webContents.send(StaticData.ElectronEventType.DOWNLOAD_PROGRESS, Math.ceil(data.percent));
 });
 autoUpdater.on("update-downloaded", (data) => {
   win.webContents.send(StaticData.ElectronEventType.UPDATE_DOWNLOADED, String(data.downloadedFile));

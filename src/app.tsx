@@ -32,25 +32,16 @@ const App = (): React.ReactElement => {
       token: process.env.REACT_APP_GH_TOKEN,
     });
 
-    ipcRenderer.on(ElectronEventType.UPDATE_NOT_AVAILABLE, (event, data) => {
-      console.log("No update available", data);
-    });
-
-    ipcRenderer.on(ElectronEventType.UPDATE_AVAILABLE, (_, data) => {
-      console.log("A new update is available. Downloading now...", data);
-    });
-
-    ipcRenderer.on(ElectronEventType.UPDATE_DOWNLOADED, (_, data) => {
-      console.log("Update downloaded", data);
+    ipcRenderer.on(ElectronEventType.UPDATE_AVAILABLE, () => {
+      console.log("A new update is available. Downloading now...");
     });
 
     return () => {
       ipcRenderer.removeAllListeners(ElectronEventType.UPDATE_AVAILABLE);
-      ipcRenderer.removeAllListeners(ElectronEventType.UPDATE_DOWNLOADED);
     };
   }, []);
 
-    return (
+  return (
     <StoreContext.Provider value={rootStore}>
       <AppRouter>
         <Switch>
