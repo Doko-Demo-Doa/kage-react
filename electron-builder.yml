@@ -1,4 +1,4 @@
-productName: "dora-kage"
+productName: "Dora Kage"
 artifactName: "dora-kage-${os}-${version}.${ext}"
 appId: "appId"
 copyright: "Copyright @ 2021"
