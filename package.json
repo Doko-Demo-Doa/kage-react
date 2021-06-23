@@ -1,7 +1,7 @@
 {
   "name": "dora-kage",
   "description": "Slide and quiz creation tool",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "author": "WabiSabi",
   "license": "Commercial",
   "homepage": "./",
@@ -23,7 +23,7 @@
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "postinstall": "electron-builder install-app-deps",
     "electron:dev": "concurrently -k \"cross-env BROWSER=none WEBPACK_TARGET=electron npm run start\" \"wait-on http://localhost:3000 && tsc -p electron && electronmon .\"",
-    "electron:build-win": "env-cmd --file .env npm run build && tsc -p electron && electron-builder -w",
+    "electron:build-win": "cross-env WEBPACK_TARGET=electron npm run build && tsc -p electron && electron-builder -w",
     "electron:build-mac": "cross-env WEBPACK_TARGET=electron npm run build && tsc -p electron && electron-builder -m",
     "electron:build-linux": "cross-env WEBPACK_TARGET=electron npm run build && tsc -p electron && electron-builder -l",
     "electron:deploy-win": "cross-env WEBPACK_TARGET=electron npm run build && tsc -p electron && electron-builder build --win --publish always",
