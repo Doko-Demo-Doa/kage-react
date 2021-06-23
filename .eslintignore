@@ -9,3 +9,5 @@ vendor
 resources/vendor
 .coverage/
 coverage/
+declaration.d.ts
+global.d.ts

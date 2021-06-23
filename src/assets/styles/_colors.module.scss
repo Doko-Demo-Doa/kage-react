@@ -1,0 +1,36 @@
+@import "./_colors.scss";
+
+:export {
+  colorBlackPrimary: $color-black-primary;
+  colorBlackHeader: $color-black-header;
+  colorBlackSecondary: $color-black-secondary;
+  colorBlackTransparent: $color-black-transparent;
+
+  colorMidnight: $color-midnight;
+
+  colorRed: $color-red;
+  colorLightRed: $color-light-red;
+  colorBarbiePink: $color-barbie-pink;
+  colorOrange: $color-orange;
+  colorGoldLight: $color-gold-light;
+  colorGoldUltralight: $color-gold-ultralight;
+
+  colorBluePrimary: $color-blue-primary;
+  colorBlueLight: $color-blue-light;
+
+  colorGreen: $color-green;
+  colorAqua: $color-aqua;
+  colorAquaHighlighted: $color-aqua-highlighted;
+  colorCyanHigh: $color-cyan-high;
+  colorCyanLight: $color-cyan-light;
+
+  colorWhite: $color-white;
+  colorGrayHigh: $color-gray-high;
+  colorGrayLight: $color-gray-light;
+  colorGrayMedium: $color-gray-medium;
+  colorGraySemihigh: $color-gray-semihigh;
+  colorTungsten: $color-tungsten;
+
+  colorIndigo: $color-indigo;
+  colorIndigoLight: $color-indigo-light;
+}
