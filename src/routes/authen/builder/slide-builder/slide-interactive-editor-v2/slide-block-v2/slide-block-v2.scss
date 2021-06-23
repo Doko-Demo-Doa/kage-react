@@ -86,7 +86,7 @@ $animation-anchor-size: 24px;
 }
 
 .interactive-callout {
-  position: relative;
+  position: absolute;
   top: 0;
 
   .callout-inside {

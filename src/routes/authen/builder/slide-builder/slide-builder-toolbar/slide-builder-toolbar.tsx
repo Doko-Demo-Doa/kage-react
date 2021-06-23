@@ -231,9 +231,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
 
       <div className="slide-builder-toolbar">
         <Space>
-          <Button icon={<PlusOutlined />} type="primary" ghost onClick={() => onNewSlide()}>
-            Tạo Slide mới
-          </Button>
+          <Button icon={<PlusOutlined />} type="primary" ghost onClick={() => onNewSlide()} />
           <NewQuizSetBtn />
           <Button
             type="link"

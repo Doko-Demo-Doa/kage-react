@@ -209,8 +209,6 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
       const leg1 = { x: position.x + shiftLeg1, y: position.y + size.h - 1 };
       const leg2 = { x: position.x + shiftLeg2, y: position.y + size.h - 1 };
 
-      console.log(size.w, size.h);
-
       return (
         <div className="interactive-callout">
           <Rnd

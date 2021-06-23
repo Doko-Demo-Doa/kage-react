@@ -64,9 +64,7 @@ export const NewQuizSetBtn: React.FC = observer(() => {
         type="primary"
         ghost
         onClick={() => setPopVisible(!popVisible)}
-      >
-        Thêm trang Quiz mới
-      </Button>
+      />
     </Popover>
   );
 });
