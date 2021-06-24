@@ -1,38 +1,31 @@
-image: node:14.16.1-alpine
-
-.shared_windows_runners:
-  tags:
-    - shared-windows
-    - windows
-    - windows-1809
+variables:
+  GIT_CLEAN_FLAGS: none
+  GIT_CLONE_PATH: $CI_BUILDS_DIR/kage-react
 
 stages:
   - prepare
   - test
-  - build
+  - build-win
+  - build-mac
 
 before_script:
   - Set-Variable -Name "time" -Value (date -Format "%H:%m")
   - echo ${time}
   - echo "started by ${GITLAB_USER_NAME}"
-  - npm install
+  - yarn install
+  - echo ${CI_RUNNER_EXECUTABLE_ARCH}
+# test:
+#   stage: test
+#   script:
+#     - npm run lint:fix
+#     - npm run test
 
-test:
-  extends:
-    - .shared_windows_runners
-  stage: test
-  script:
-    - npm run test
+# build:
+#   tags:
+#     - windows-server
+#   stage: build-win
+#   script:
+#     - npm run electron:build-win
 
-build:
-  extends:
-    - .shared_windows_runners
-  stage: build
-  script:
-    - npm run electron:build-win
-
-  # artifacts:
-  #   paths:
-  #     - public
-  only:
-    - main
+#   only:
+#     - release
