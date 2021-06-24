@@ -8,9 +8,6 @@ stages:
   - build
 
 setup:
-  tags:
-    - windows-server
-    - dora-mac-mini
   stage: prepare
   script:
     - echo ${time}
