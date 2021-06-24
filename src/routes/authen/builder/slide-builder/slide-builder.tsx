@@ -42,9 +42,9 @@ export const SlideBuilder: React.FC = () => {
       <div className="slide-builder-bottom">
         {`Phiên bản: ${packageMeta.version} - ${process.env.NODE_ENV}`}
         {" - "}
-        {!updateDownloaded ? (
+        {!updateDownloaded && updateProgress > 0 ? (
           <span>{`Đang tải bản cập nhật: ${updateProgress}%`}</span>
-        ) : (
+        ) : updateDownloaded ? (
           <span
             className="update-completed"
             onClick={() => {
@@ -53,7 +53,7 @@ export const SlideBuilder: React.FC = () => {
           >
             Cập nhật hoàn tất, click vào đây để khởi động lại app
           </span>
-        )}
+        ) : null}
       </div>
     </div>
   );

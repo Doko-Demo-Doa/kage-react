@@ -13,7 +13,7 @@ function singleSlideConstructor(slide: SlideType) {
   const subfolderPath = "assets"; // "data";
 
   return stripIndent(`
-    <section>
+    <section data-background-image="./vendor/themes/sakura/bg-1.png">
       <h1 class="slide-title">${formattingUtils.furiganaTemplateToHTML(slide.title ?? "")}</h1>
       ${slide.slideBlocks
         .map((block) => {
