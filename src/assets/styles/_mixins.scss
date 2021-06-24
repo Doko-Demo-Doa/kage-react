@@ -1,0 +1,7 @@
+@mixin shadow-light {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 4px 8px;
+}
+
+@mixin shadow-left-light {
+  box-shadow: -3px 0px 5px 0px rgba(184, 184, 184, 0.2);
+}

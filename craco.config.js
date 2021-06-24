@@ -52,7 +52,11 @@ module.exports = {
     {
       plugin: sassResourcesLoader,
       options: {
-        resources: ["./src/assets/styles/_colors.scss", "./src/assets/styles/_common.scss"],
+        resources: [
+          "./src/assets/styles/_colors.scss",
+          "./src/assets/styles/_common.scss",
+          "./src/assets/styles/_mixins.scss",
+        ],
       },
     },
   ],

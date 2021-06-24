@@ -235,6 +235,14 @@ export const fileUtils = {
   getUsableAssetUrl: (assetName: string | undefined) => {
     return `${RESOURCE_PROTOCOL}${getCacheDirectory("assets")}/${assetName}`;
   },
+  getUsableThemeThumb: (themeName: string) => {
+    if (fsNotAvailable()) return;
+    const remote = require("electron").remote;
+    const path = remote.require("path");
+    const cachePath = getCacheDirectory("vendor");
+
+    return `${RESOURCE_PROTOCOL}${path.join(cachePath, "themes", themeName, "theme-thumb.png")}`;
+  },
 
   // Quiz related
   getUsableQuizAssetUrl: (assetName: string) => {

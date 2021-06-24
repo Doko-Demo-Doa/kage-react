@@ -8,7 +8,7 @@ $slide-height: 120px;
   width: 300px;
   background-color: white;
   overflow-y: auto;
-  box-shadow: $light-left-shadow;
+  @include shadow-left-light;
 
   .slide-title-input {
     width: 100%;
