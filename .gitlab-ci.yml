@@ -8,9 +8,11 @@ stages:
   - build
 
 setup:
+  tags:
+    - windows-server
+    - dora-mac-mini
   stage: prepare
   script:
-    - Set-Variable -Name "time" -Value (date -Format "%H:%m")
     - echo ${time}
     - echo "started by ${GITLAB_USER_NAME}"
     - yarn install
@@ -20,6 +22,7 @@ setup:
 test:
   tags:
     - windows-server
+    - dora-mac-mini
   stage: test
   script:
     - npm run lint:fix
