@@ -235,13 +235,21 @@ export const fileUtils = {
   getUsableAssetUrl: (assetName: string | undefined) => {
     return `${RESOURCE_PROTOCOL}${getCacheDirectory("assets")}/${assetName}`;
   },
-  getUsableThemeThumb: (themeName: string) => {
+  getUsableThemeBg: (themeId: string) => {
     if (fsNotAvailable()) return;
     const remote = require("electron").remote;
     const path = remote.require("path");
     const cachePath = getCacheDirectory("vendor");
 
-    return `${RESOURCE_PROTOCOL}${path.join(cachePath, "themes", themeName, "theme-thumb.png")}`;
+    return `${RESOURCE_PROTOCOL}${path.join(cachePath, "themes", themeId, "bg-1.png")}`;
+  },
+  getUsableThemeThumb: (themeId: string) => {
+    if (fsNotAvailable()) return;
+    const remote = require("electron").remote;
+    const path = remote.require("path");
+    const cachePath = getCacheDirectory("vendor");
+
+    return `${RESOURCE_PROTOCOL}${path.join(cachePath, "themes", themeId, "theme-thumb.png")}`;
   },
 
   // Quiz related

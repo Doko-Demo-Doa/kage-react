@@ -3,6 +3,7 @@ import { Result, Button } from "antd";
 import { FileUnknownOutlined } from "@ant-design/icons";
 import { observer } from "mobx-react";
 import { formattingUtils } from "~/utils/utils-formatting";
+import { fileUtils } from "~/utils/utils-files";
 import { StoreContext } from "~/mobx/store-context";
 import { SlideBlock } from "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-block-v2/slide-block-v2";
 
@@ -50,7 +51,13 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
   return (
     <div className="i-editor-wrapper">
       {!quizId ? (
-        <div id="slide-interactive-editor" ref={cRef}>
+        <div
+          id="slide-interactive-editor"
+          ref={cRef}
+          style={{
+            backgroundImage: `url(${fileUtils.getUsableThemeBg("sakura")})`,
+          }}
+        >
           <h1 className="slide-title">
             {formattingUtils.htmlToJSX(formattingUtils.furiganaTemplateToHTML(slideTitle || ""))}
           </h1>
