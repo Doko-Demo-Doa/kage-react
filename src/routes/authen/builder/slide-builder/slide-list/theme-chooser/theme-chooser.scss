@@ -1,0 +1,19 @@
+.theme-chooser {
+  background-color: transparent;
+  width: 360px;
+  height: 240px;
+  display: flex;
+
+  .col1 {
+    width: 120px;
+    border-right: 1px solid $color-gray-light;
+    padding-right: 12px;
+
+    .theme-item {
+      width: 100%;
+      height: 80px;
+      border: 1px dashed $color-indigo-light;
+      margin-bottom: 10px;
+    }
+  }
+}
