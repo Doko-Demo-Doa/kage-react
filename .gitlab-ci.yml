@@ -25,6 +25,7 @@ test:
 build-win:
   tags:
     - windows-server
+  stage: build-win
   resource_group: build-machines
   script:
     - npm run electron:build-win
@@ -34,6 +35,7 @@ build-win:
 build-mac:
   tags:
     - dora-mac-mini
+  stage: build-mac
   resource_group: build-machines
   script:
     - npm run electron:build-mac
