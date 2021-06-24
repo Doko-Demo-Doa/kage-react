@@ -14,12 +14,11 @@ before_script:
   - echo "started by ${GITLAB_USER_NAME}"
   - yarn install
   - echo ${CI_RUNNER_EXECUTABLE_ARCH}
-# test:
-#   stage: test
-#   script:
-#     - npm run lint:fix
-#     - npm run test
-
+test:
+  stage: test
+  script:
+    - npm run lint:fix
+    - npm run test
 # build:
 #   tags:
 #     - windows-server
