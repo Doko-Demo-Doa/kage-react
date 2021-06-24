@@ -29,7 +29,7 @@ build-win:
   tags:
     - windows-server
   stage: build
-  resource_group: build-machines
+  resource_group: windows-machines
   script:
     - npm run electron:build-win
   only:
@@ -39,7 +39,7 @@ build-mac:
   tags:
     - dora-mac-mini
   stage: build
-  resource_group: build-machines
+  resource_group: mac-machines
   script:
     - npm run electron:build-mac
   only:
