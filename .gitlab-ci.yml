@@ -21,12 +21,21 @@ test:
   script:
     - npm run lint:fix
     - npm run test
-# build:
-#   tags:
-#     - windows-server
-#   stage: build-win
-#   script:
-#     - npm run electron:build-win
 
-#   only:
-#     - release
+build-win:
+  tags:
+    - windows-server
+  resource_group: build-machines
+  script:
+    - npm run electron:build-win
+  only:
+    - release
+
+build-mac:
+  tags:
+    - dora-mac-mini
+  resource_group: build-machines
+  script:
+    - npm run electron:build-mac
+  only:
+    - release
