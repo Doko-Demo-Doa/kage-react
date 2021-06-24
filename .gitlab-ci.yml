@@ -12,6 +12,7 @@ before_script:
   - echo "started by ${GITLAB_USER_NAME}"
   - yarn install
   - echo ${CI_RUNNER_EXECUTABLE_ARCH}
+  - echo ${REACT_APP_GH_TOKEN}
 
 test:
   tags:
