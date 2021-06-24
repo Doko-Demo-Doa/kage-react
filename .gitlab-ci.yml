@@ -3,16 +3,19 @@ variables:
   GIT_CLONE_PATH: $CI_BUILDS_DIR/kage-react
 
 stages:
+  - prepare
   - test
   - build
 
-before_script:
-  - Set-Variable -Name "time" -Value (date -Format "%H:%m")
-  - echo ${time}
-  - echo "started by ${GITLAB_USER_NAME}"
-  - yarn install
-  - echo ${CI_RUNNER_EXECUTABLE_ARCH}
-  - echo ${REACT_APP_GH_TOKEN}
+setup:
+  stage: prepare
+  script:
+    - Set-Variable -Name "time" -Value (date -Format "%H:%m")
+    - echo ${time}
+    - echo "started by ${GITLAB_USER_NAME}"
+    - yarn install
+    - echo ${CI_RUNNER_EXECUTABLE_ARCH}
+    - echo ${REACT_APP_GH_TOKEN}
 
 test:
   tags:
