@@ -5,8 +5,8 @@ variables:
 stages:
   - prepare
   - test
-  - build-win
-  - build-mac
+  - build
+  - build
 
 before_script:
   - Set-Variable -Name "time" -Value (date -Format "%H:%m")
@@ -25,7 +25,7 @@ test:
 build-win:
   tags:
     - windows-server
-  stage: build-win
+  stage: build
   resource_group: build-machines
   script:
     - npm run electron:build-win
@@ -35,7 +35,7 @@ build-win:
 build-mac:
   tags:
     - dora-mac-mini
-  stage: build-mac
+  stage: build
   resource_group: build-machines
   script:
     - npm run electron:build-mac
