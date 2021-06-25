@@ -40,6 +40,7 @@ build-mac:
   stage: build
   resource_group: mac-machines
   script:
+    - source ~/.bashrc
     - npm run electron:build-mac
   only:
     - release
