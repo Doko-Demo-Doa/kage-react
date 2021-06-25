@@ -161,7 +161,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
   const updateDataToCache = () => {
     let assetList: string[] = [];
     list.forEach((item) => {
-      const assetItems = item.slideBlocks.map((n) => n.assetName || "");
+      const assetItems = item.slideBlocks.map((n) => n.assetName || "").filter((n) => n !== ".");
       assetList = [...assetList, ...assetItems];
     });
 

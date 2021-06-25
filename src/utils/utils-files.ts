@@ -335,6 +335,8 @@ export const fileUtils = {
     newZip.addLocalFile(manifestPath);
     newZip.addLocalFile(htmlEntryPath);
 
+    console.log(files);
+
     files.forEach((n) => {
       newZip.addLocalFile(path.join(getCacheDirectory("assets"), n), "assets");
     });
