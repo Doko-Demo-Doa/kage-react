@@ -17,14 +17,16 @@ setup:
     - echo ${REACT_APP_GH_TOKEN}
 
 test:
-  tags: windows-server
+  tags:
+    - windows-server
   stage: test
   script:
     - npm run lint:fix
     - npm run test
 
 build-win:
-  tags: windows-server
+  tags:
+    - windows-server
   stage: build
   resource_group: windows-machines
   script:
@@ -33,7 +35,8 @@ build-win:
     - release
 
 build-mac:
-  tags: dora-mac-mini
+  tags:
+    - dora-mac-mini
   stage: build
   resource_group: mac-machines
   script:
