@@ -131,8 +131,8 @@ function createWindow() {
   });
 }
 
-if (process.env.NODE_ENV === "production") {
-  require("./menu.ts");
+if (app.isPackaged) {
+  require("./menu");
 }
 app.on("ready", createWindow);
 
