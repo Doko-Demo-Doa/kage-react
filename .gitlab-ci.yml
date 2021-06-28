@@ -14,15 +14,14 @@ setup:
     - echo "started by ${GITLAB_USER_NAME}"
     - yarn install
     - echo ${CI_RUNNER_EXECUTABLE_ARCH}
-    - echo ${REACT_APP_GH_TOKEN}
 
 test:
   tags:
     - windows-server
   stage: test
   script:
-    - npm run lint:fix
-    - npm run test
+    - yarn lint:fix
+    - yarn test
 
 build-win:
   tags:
@@ -30,7 +29,7 @@ build-win:
   stage: build
   resource_group: windows-machines
   script:
-    - npm run electron:build-win
+    - yarn electron:build-win
   only:
     - release
 
@@ -41,6 +40,6 @@ build-mac:
   resource_group: mac-machines
   script:
     - source ~/.bashrc
-    - npm run electron:build-mac
+    - yarn electron:build-mac
   only:
     - release
