@@ -237,11 +237,9 @@ export const fileUtils = {
   },
   getUsableThemeBg: (themeId: string) => {
     if (fsNotAvailable()) return;
-    const remote = require("electron").remote;
-    const path = remote.require("path");
     const cachePath = getCacheDirectory("vendor");
 
-    return `${RESOURCE_PROTOCOL}${path.join(cachePath, "themes", themeId, "bg-1.png")}`;
+    return `${RESOURCE_PROTOCOL}${cachePath}/themes/${themeId}/bg-1.png`;
   },
   getUsableThemeThumb: (themeId: string) => {
     if (fsNotAvailable()) return;
@@ -249,7 +247,7 @@ export const fileUtils = {
     const path = remote.require("path");
     const cachePath = getCacheDirectory("vendor");
 
-    return `${RESOURCE_PROTOCOL}${path.join(cachePath, "themes", themeId, "theme-thumb.png")}`;
+    return `${RESOURCE_PROTOCOL}${cachePath}/themes/${themeId}/theme-thumb.png`;
   },
 
   // Quiz related

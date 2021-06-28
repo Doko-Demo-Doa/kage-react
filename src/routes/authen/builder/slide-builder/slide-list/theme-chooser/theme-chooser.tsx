@@ -22,6 +22,7 @@ const PREBUILT_THEMES = [
 ];
 
 export const ThemeChooser: React.FC = () => {
+  console.log(fileUtils.getUsableThemeThumb("sakura"));
   return (
     <div className="theme-chooser">
       <ScrollBar>
