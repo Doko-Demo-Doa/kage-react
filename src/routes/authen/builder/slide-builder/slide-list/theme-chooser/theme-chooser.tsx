@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import ScrollBar from "react-perfect-scrollbar";
+import { observer } from "mobx-react-lite";
+import { fileUtils } from "~/utils/utils-files";
+import { StoreContext } from "~/mobx/store-context";
 
 import "~/routes/authen/builder/slide-builder/slide-list/theme-chooser/theme-chooser.scss";
-import { fileUtils } from "~/utils/utils-files";
 
 // Prebuilt themes: sakura, bamboo, sky
 
@@ -21,7 +23,10 @@ const PREBUILT_THEMES = [
   },
 ];
 
-export const ThemeChooser: React.FC = () => {
+export const ThemeChooser: React.FC = observer(() => {
+  const store = useContext(StoreContext);
+  const { theme, setTheme } = store.slideBuilderStore;
+
   return (
     <div className="theme-chooser">
       <ScrollBar>
@@ -30,6 +35,7 @@ export const ThemeChooser: React.FC = () => {
             <div
               key={n.id}
               className="theme-item"
+              onClick={() => setTheme(n.id)}
               style={{
                 backgroundImage: `url(${fileUtils.getUsableThemeThumb(n.id)})`,
                 backgroundSize: "contain",
@@ -41,7 +47,14 @@ export const ThemeChooser: React.FC = () => {
         </div>
       </ScrollBar>
 
-      <div className="col2">Chức năng đang hoàn thiện</div>
+      <div className="col2">
+        <div
+          style={{
+            backgroundImage: `url(${fileUtils.getUsableThemeBg(theme)})`,
+            backgroundSize: "contain",
+          }}
+        />
+      </div>
     </div>
   );
-};
+});

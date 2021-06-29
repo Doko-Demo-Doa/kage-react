@@ -243,8 +243,6 @@ export const fileUtils = {
   },
   getUsableThemeThumb: (themeId: string) => {
     if (fsNotAvailable()) return;
-    const remote = require("electron").remote;
-    const path = remote.require("path");
     const cachePath = getCacheDirectory("vendor");
 
     return `${RESOURCE_PROTOCOL}${cachePath}/themes/${themeId}/theme-thumb.png`;

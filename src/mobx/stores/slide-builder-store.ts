@@ -5,6 +5,7 @@ import { dataUtils } from "~/utils/utils-data";
 export class SlideBuilderStore {
   rootStore: RootStore;
   id = "";
+  theme = "sakura";
   selectedIndex = -1;
 
   constructor(rs: RootStore) {
@@ -19,5 +20,9 @@ export class SlideBuilderStore {
 
   setIndex(newIndex: number) {
     this.selectedIndex = newIndex;
+  }
+
+  setTheme(newTheme: string) {
+    this.theme = newTheme;
   }
 }

@@ -20,7 +20,7 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
     dragBlock,
     dragAnchor,
   } = store.slideListStore;
-  const { selectedIndex } = store.slideBuilderStore;
+  const { selectedIndex, theme } = store.slideBuilderStore;
 
   const slideTitle = list[selectedIndex]?.title || "";
 
@@ -55,7 +55,8 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
           id="slide-interactive-editor"
           ref={cRef}
           style={{
-            backgroundImage: `url(${fileUtils.getUsableThemeBg("sakura")})`,
+            backgroundImage: `url(${fileUtils.getUsableThemeBg(theme)})`,
+            backgroundSize: "cover",
           }}
         >
           <h1 className="slide-title">
