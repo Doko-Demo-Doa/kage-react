@@ -26,11 +26,11 @@ const PREBUILT_THEMES = [
 ];
 
 export const ThemeChooser: React.FC = observer(() => {
-  const [previewing, setPreviewing] = useState("sakura");
-  const [previewText, setPreviewText] = useState("");
-
   const store = useContext(StoreContext);
-  const { setTheme } = store.slideBuilderStore;
+  const { theme, setTheme } = store.slideBuilderStore;
+
+  const [previewing, setPreviewing] = useState(theme);
+  const [previewText, setPreviewText] = useState("");
 
   return (
     <div className="theme-chooser">
