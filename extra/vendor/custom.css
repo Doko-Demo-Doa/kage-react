@@ -24,6 +24,17 @@
   margin: 0 auto;
 }
 
+.reveal ruby {
+  display: inline-flex;
+  flex-direction: column-reverse;
+}
+
+.reveal rt {
+  display: inline;
+  line-height: 0.8;
+  font-weight: bold;
+}
+
 .reveal img {
   margin: 0;
   max-height: unset;

@@ -1,7 +1,7 @@
 {
   "name": "dora-kage",
   "description": "Slide and quiz creation tool",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "author": "WabiSabi",
   "license": "Commercial",
   "homepage": "./",
@@ -22,7 +22,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "postinstall": "electron-builder install-app-deps",
-    "electron:dev": "concurrently -k \"cross-env BROWSER=none WEBPACK_TARGET=electron npm run start\" \"wait-on http://localhost:3000 && tsc -p electron && electronmon .\"",
+    "electron:dev": "concurrently -k \"cross-env BROWSER=none WEBPACK_TARGET=electron npm run start\" \"wait-on http://localhost:3000 && tsc -p electron && electron .\"",
     "electron:build-win": "cross-env WEBPACK_TARGET=electron npm run build && tsc -p electron && electron-builder -w",
     "electron:build-mac": "cross-env WEBPACK_TARGET=electron npm run build && tsc -p electron && electron-builder -m",
     "electron:build-linux": "cross-env WEBPACK_TARGET=electron npm run build && tsc -p electron && electron-builder -l",
@@ -178,11 +178,5 @@
     "wait-on": "6.0.0",
     "web-vitals": "1.1.2",
     "yup": "0.32.9"
-  },
-  "electronmon": {
-    "patterns": [
-      "electron/*.ts",
-      "!src/**"
-    ]
   }
 }
