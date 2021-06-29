@@ -1,7 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
+import { Input } from "antd";
 import ScrollBar from "react-perfect-scrollbar";
 import { observer } from "mobx-react-lite";
 import { fileUtils } from "~/utils/utils-files";
+import { formattingUtils } from "~/utils/utils-formatting";
 import { StoreContext } from "~/mobx/store-context";
 
 import "~/routes/authen/builder/slide-builder/slide-list/theme-chooser/theme-chooser.scss";
@@ -24,8 +26,11 @@ const PREBUILT_THEMES = [
 ];
 
 export const ThemeChooser: React.FC = observer(() => {
+  const [previewing, setPreviewing] = useState("sakura");
+  const [previewText, setPreviewText] = useState("");
+
   const store = useContext(StoreContext);
-  const { theme, setTheme } = store.slideBuilderStore;
+  const { setTheme } = store.slideBuilderStore;
 
   return (
     <div className="theme-chooser">
@@ -36,6 +41,7 @@ export const ThemeChooser: React.FC = observer(() => {
               key={n.id}
               className="theme-item"
               onClick={() => setTheme(n.id)}
+              onMouseEnter={() => setPreviewing(n.id)}
               style={{
                 backgroundImage: `url(${fileUtils.getUsableThemeThumb(n.id)})`,
                 backgroundSize: "contain",
@@ -49,10 +55,19 @@ export const ThemeChooser: React.FC = observer(() => {
 
       <div className="col2">
         <div
+          className="preview"
           style={{
-            backgroundImage: `url(${fileUtils.getUsableThemeBg(theme)})`,
-            backgroundSize: "contain",
+            backgroundImage: `url(${fileUtils.getUsableThemeBg(previewing)})`,
           }}
+        >
+          <div className="preview-text">{formattingUtils.htmlToJSX(previewText)}</div>
+        </div>
+        <br />
+        <Input
+          placeholder="Gõ để xem thử"
+          maxLength={20}
+          value={previewText}
+          onChange={(e) => setPreviewText(e.target.value)}
         />
       </div>
     </div>
