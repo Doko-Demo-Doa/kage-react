@@ -12,12 +12,12 @@ const PREBUILT_THEMES = [
     id: "sakura",
   },
   {
-    name: "Bamboo",
-    id: "bamboo",
+    name: "Orange",
+    id: "orange",
   },
   {
-    name: "Skylake",
-    id: "sky",
+    name: "Bamboo",
+    id: "bamboo",
   },
 ];
 
@@ -31,7 +31,8 @@ export const ThemeChooser: React.FC = () => {
               key={n.id}
               className="theme-item"
               style={{
-                backgroundImage: `url(${fileUtils.getUsableThemeThumb("sakura")})`,
+                backgroundImage: `url(${fileUtils.getUsableThemeThumb(n.id)})`,
+                backgroundSize: "contain",
               }}
             >
               {n.name}
