@@ -13,6 +13,14 @@
 
 !macro customInstall
   # !system "echo '' > ${BUILD_RESOURCES_DIR}/customInstall"
+  SetRegView 64
+  # Code
+  SetRegView 32
+  # Code
+!macroend
+
+!macro customUnInstall
+  !system "echo 'Hehe'"
 !macroend
 
 !macro customInstallMode

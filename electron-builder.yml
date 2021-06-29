@@ -25,6 +25,7 @@ mac:
 # Windows configuration
 win:
   icon: "resources/icons/icon.ico"
+  requestExecutionLevel: "admin",
   target:
     - "nsis"
 
