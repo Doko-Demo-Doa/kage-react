@@ -81,6 +81,13 @@ export class SlideListStore {
     this.list = newL;
   }
 
+  setHidden(isHidden: boolean) {
+    const idx = this.rootStore.slideBuilderStore.selectedIndex;
+    const newL = this.list.slice();
+    newL[idx].isHidden = isHidden;
+    this.list = newL;
+  }
+
   deleteBlock(blockId: string) {
     const idx = this.rootStore.slideBuilderStore.selectedIndex;
     const newL = [...this.list];

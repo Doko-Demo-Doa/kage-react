@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Input, Divider, Empty } from "antd";
+import { Input, Divider, Empty, Checkbox } from "antd";
 import { Container, Draggable } from "react-smooth-dnd";
 import ScrollBar from "react-perfect-scrollbar";
 import KeyboardEventHandler from "react-keyboard-event-handler";
@@ -21,6 +21,7 @@ export const SlideEntities: React.FC = observer(() => {
     list,
     selectBlock,
     setTitle,
+    setHidden,
     setAnimationList,
     toggleAnimation,
     deleteBlock,
@@ -51,6 +52,14 @@ export const SlideEntities: React.FC = observer(() => {
             maxLength={46}
             className="slide-title-input"
           />
+          <br />
+          <br />
+          <Checkbox
+            checked={Boolean(currentSlide.isHidden)}
+            onChange={() => setHidden(!currentSlide.isHidden)}
+          >
+            Ẩn slide này khi tự học
+          </Checkbox>
           <Divider type="horizontal" />
 
           <h2>Các thành phần</h2>
