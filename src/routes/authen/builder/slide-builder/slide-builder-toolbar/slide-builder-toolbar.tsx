@@ -168,6 +168,8 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
     fileUtils.saveSlideJsonToCache(commonHelper.prepareExportData(list));
     const convertedStr = dataUtils.convertToHtmlSlideData(list);
     fileUtils.writeToHtml(convertedStr);
+    const convertedStrHidden = dataUtils.convertToHtmlSlideData(list, true);
+    fileUtils.writeToHtml(convertedStrHidden, true);
 
     return [...uniq(assetList)];
   };

@@ -9,11 +9,13 @@ import { QResult, SlideType } from "~/typings/types";
 import { formattingUtils } from "~/utils/utils-formatting";
 import { quillUtils } from "~/utils/utils-quill";
 
-function singleSlideConstructor(slide: SlideType) {
+function singleSlideConstructor(slide: SlideType, markHiddenSlides?: boolean) {
   const subfolderPath = "assets"; // "data";
 
   return stripIndent(`
-    <section data-background-image="./vendor/themes/sakura/bg-1.png">
+    <section data-background-image="./vendor/themes/sakura/bg-1.png" ${
+      markHiddenSlides ? 'data-visibility="hidden"' : ""
+    }>
       <h1 class="slide-title">${formattingUtils.furiganaTemplateToHTML(slide.title ?? "")}</h1>
       ${slide.slideBlocks
         .map((block) => {
@@ -180,10 +182,7 @@ function generateShortUid() {
 }
 
 export const dataUtils = {
-  convertToMutableData: (inputData: Record<string, any> | Array<any>) => {
-    return JSON.parse(JSON.stringify(inputData));
-  },
-  convertToHtmlSlideData: (slides: SlideType[]) => {
+  convertToHtmlSlideData: (slides: SlideType[], markHiddenSlides?: boolean) => {
     // Convert từng slide vào template HTML
     // Xem file template.ts để biết khuôn dạng.
     const templateStr = `

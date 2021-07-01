@@ -14,6 +14,7 @@ const EXPORT_DIR_NAME = "slide_export";
 
 const SLIDE_MANIFEST_FILE = "manifest.json";
 const SLIDE_HTML_ENTRY_FILE = "slide.html";
+const SLIDE_HTML_HIDDEN_ENTRY_FILE = "slide-hidden.html";
 
 /**
  * - assets: Chứa các file ảnh, audio, video đã qua xử lý.
@@ -288,11 +289,15 @@ export const fileUtils = {
     const fs = remote.require("fs");
     fs.writeFileSync(p, jsonData);
   },
-  writeToHtml: (content: string) => {
+  writeToHtml: (content: string, isSecondary?: boolean) => {
     const path = fileUtils.createFilePathAtCacheDir(SLIDE_HTML_ENTRY_FILE);
     const remote = require("electron").remote;
     const fs = remote.require("fs");
     fs.writeFileSync(path, content);
+    if (isSecondary) {
+      const path2 = fileUtils.createFilePathAtCacheDir(SLIDE_HTML_HIDDEN_ENTRY_FILE);
+      fs.writeFileSync(path2, content);
+    }
   },
   readZipEntries: (inputPath: string) => {
     try {
