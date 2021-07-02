@@ -91,7 +91,6 @@ function createWindow() {
     });
 
     ipcMain.on(StaticData.ElectronEventType.QUIT_TO_INSTALL, () => {
-      console.log("Clicky");
       autoUpdater.quitAndInstall();
     });
   });
