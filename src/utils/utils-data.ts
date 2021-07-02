@@ -182,7 +182,7 @@ function generateShortUid() {
 }
 
 export const dataUtils = {
-  convertToHtmlSlideData: (slides: SlideType[], markHiddenSlides?: boolean) => {
+  convertToHtmlSlideData: (slides: SlideType[], shouldMarkHidden?: boolean) => {
     // Convert từng slide vào template HTML
     // Xem file template.ts để biết khuôn dạng.
     const templateStr = `
@@ -204,7 +204,9 @@ export const dataUtils = {
       <body>
         <div class="reveal">
           <div class="slides">
-            ${slides.map((slide) => singleSlideConstructor(slide)).join("\n")}
+            ${slides
+              .map((slide) => singleSlideConstructor(slide, shouldMarkHidden && slide.isHidden))
+              .join("\n")}
           </div>
         </div>
 

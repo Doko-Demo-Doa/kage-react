@@ -293,11 +293,12 @@ export const fileUtils = {
     const path = fileUtils.createFilePathAtCacheDir(SLIDE_HTML_ENTRY_FILE);
     const remote = require("electron").remote;
     const fs = remote.require("fs");
-    fs.writeFileSync(path, content);
     if (isSecondary) {
       const path2 = fileUtils.createFilePathAtCacheDir(SLIDE_HTML_HIDDEN_ENTRY_FILE);
       fs.writeFileSync(path2, content);
+      return;
     }
+    fs.writeFileSync(path, content);
   },
   readZipEntries: (inputPath: string) => {
     try {
