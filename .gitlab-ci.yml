@@ -29,6 +29,7 @@ build-win:
   stage: build
   resource_group: windows-machines
   script:
+    - yarn install
     - yarn electron:build-win
   only:
     - release
@@ -40,6 +41,7 @@ build-mac:
   resource_group: mac-machines
   script:
     - source ~/.bashrc
+    - yarn install
     - yarn electron:build-mac
   only:
     - release
