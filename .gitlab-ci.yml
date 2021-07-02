@@ -7,9 +7,6 @@ stages:
   - test
   - build
 
-before_script:
- - Set-Variable -Name "CI" -Value true
-
 setup:
   stage: prepare
   script:
