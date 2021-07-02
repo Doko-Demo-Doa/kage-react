@@ -92,8 +92,15 @@ export class SlideListStore {
     const idx = this.rootStore.slideBuilderStore.selectedIndex;
     const newL = [...this.list];
 
-    newL[idx].slideBlocks = newL[idx].slideBlocks.filter((n) => n.id !== blockId);
-    this.list = newL;
+    const targetBlock = newL[idx].slideBlocks.find((n) => n.id === blockId);
+    if (targetBlock) {
+      // Xoá tất cả animation liên quan
+      const currentSlide = newL[idx];
+      currentSlide.animations = currentSlide.animations.filter((n) => n.blockId !== blockId);
+
+      newL[idx].slideBlocks = newL[idx].slideBlocks.filter((n) => n.id !== blockId);
+      this.list = newL;
+    }
   }
 
   /**
