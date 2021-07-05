@@ -24,6 +24,7 @@ export const SlideEntities: React.FC = observer(() => {
     setHidden,
     setAnimationList,
     toggleAnimation,
+    toggleBlockVisibility,
     deleteBlock,
   } = store.slideListStore;
   const { selectedIndex } = store.slideBuilderStore;
@@ -71,10 +72,12 @@ export const SlideEntities: React.FC = observer(() => {
                   assetName={item.assetName}
                   blockId={item.id}
                   type={item.type}
+                  isHidden={item.isHidden}
                   selected={currentSlide.selectedBlock === item.id}
                   onClick={() => {
                     selectBlock(item.id);
                   }}
+                  onDoubleClick={(blockId) => toggleBlockVisibility(blockId)}
                   onClickAnimation={(blockId) => toggleAnimation(blockId)}
                   onDelete={(blockId) => deleteBlock(blockId)}
                 />

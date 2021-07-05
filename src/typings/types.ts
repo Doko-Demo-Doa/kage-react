@@ -28,6 +28,7 @@ export type SlideType = {
 export interface SlideBlockType {
   id: string;
   type: MediaType;
+  isHidden?: boolean;
   content?: string; // Chỉ có nếu type là text
   deltaContent?: Delta;
   assetName?: string;

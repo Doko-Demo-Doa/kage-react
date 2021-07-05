@@ -125,6 +125,15 @@ export class SlideListStore {
     }
   }
 
+  toggleBlockVisibility(blockId: string) {
+    const idx = this.rootStore.slideBuilderStore.selectedIndex;
+    const targetBlock = this.list[idx].slideBlocks.find((n) => n.id === blockId);
+
+    if (targetBlock) {
+      targetBlock.isHidden = !targetBlock.isHidden;
+    }
+  }
+
   setAnimationList(newAnims: SlideAnimationType[]) {
     const idx = this.rootStore.slideBuilderStore.selectedIndex;
 
@@ -157,8 +166,6 @@ export class SlideListStore {
 
     if (targetBlock) {
       targetBlock.bgColor = newColor;
-
-      console.log(targetBlock.bgColor);
     }
   }
 

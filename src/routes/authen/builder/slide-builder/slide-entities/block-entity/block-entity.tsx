@@ -7,6 +7,8 @@ import {
   PictureTwoTone,
   FontSizeOutlined,
   WechatFilled,
+  EyeInvisibleOutlined,
+  EyeOutlined,
 } from "@ant-design/icons";
 import { Menu, Dropdown, Popover } from "antd";
 
@@ -14,6 +16,7 @@ import { dataUtils } from "~/utils/utils-data";
 import { MediaType } from "~/common/static-data";
 import { Colors } from "~/common/colors";
 import { MediaPreviewPopup } from "~/components/media-preview-popup/media-preview-popup";
+import CssColors from "~/assets/styles/_colors.module.scss";
 
 import "~/routes/authen/builder/slide-builder/slide-entities/block-entity/block-entity.scss";
 
@@ -22,6 +25,7 @@ type BlockEntityType = {
   blockId: string;
   assetName?: string;
   selected?: boolean;
+  isHidden?: boolean;
   onClick?: (blockId: string) => void | undefined;
   onDoubleClick?: (blockId: string) => void | undefined;
   onClickAnimation?: (blockId: string) => void | undefined;
@@ -33,6 +37,7 @@ export const BlockEntity: React.FC<BlockEntityType> = ({
   blockId,
   assetName,
   selected,
+  isHidden,
   onClick,
   onDoubleClick,
   onClickAnimation,
@@ -80,6 +85,11 @@ export const BlockEntity: React.FC<BlockEntityType> = ({
         >
           <div className="cell-selectable">{getIcon()}</div>
           <div className="cell-label">{dataUtils.mapMediaTypeName(type)}</div>
+          {isHidden ? (
+            <EyeInvisibleOutlined style={{ color: CssColors.colorRed, fontSize: "1.3em" }} />
+          ) : (
+            <EyeOutlined style={{ color: CssColors.colorBlueLight, fontSize: "1.3em" }} />
+          )}
         </div>
       </Dropdown>
     );

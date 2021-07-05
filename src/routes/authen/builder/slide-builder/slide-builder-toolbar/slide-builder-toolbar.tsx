@@ -184,6 +184,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
     const blockData: SlideBlockType = {
       id: dataUtils.generateShortUid(),
       type,
+      isHidden: false,
       assetName: `${assetName}.${extension}`,
       autoPlay: true,
       content: "",

@@ -5,6 +5,7 @@
   cursor: pointer;
   border: 1px dashed transparent;
   transition: 0.2s ease-in-out;
+  padding-right: 10px;
 
   &:hover {
     border: 1px dashed $color-indigo;
@@ -21,6 +22,8 @@
 
   .cell-label {
     color: $color-midnight;
+    flex-grow: 2;
+    margin-right: 1rem;
   }
 }
 
