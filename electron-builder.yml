@@ -1,5 +1,5 @@
 productName: "Dora Kage"
-artifactName: "dora-kage-${os}-${version}.${ext}"
+artifactName: "dora-kage-${os}.${ext}"
 appId: "vn.edu.dora.kage"
 copyright: "Copyright @ 2021"
 extends: null
