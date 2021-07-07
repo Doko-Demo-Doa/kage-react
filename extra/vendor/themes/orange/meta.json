@@ -1,0 +1,9 @@
+{
+  "id": "orange",
+  "name": "Orange",
+  "thumbnail": "theme-thumb.png",
+  "primaryBackground": "bg-1.png",
+  "secondaryBackground": "bg-1.png",
+  "endcard": "endcard.png",
+  "prerendered": []
+}
