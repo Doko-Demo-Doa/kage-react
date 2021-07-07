@@ -8,7 +8,6 @@ import { AnimationType, MediaType, MinimumCanvasSize, QuizType } from "~/common/
 import { QResult, SlideType } from "~/typings/types";
 import { formattingUtils } from "~/utils/utils-formatting";
 import { quillUtils } from "~/utils/utils-quill";
-import { DEFAULT_THEME } from "~/common/config";
 
 type ThemeParamsType = {
   themeId: string;
