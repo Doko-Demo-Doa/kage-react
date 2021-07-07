@@ -13,9 +13,9 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides?: boolean) {
   const subfolderPath = "assets"; // "data";
 
   return stripIndent(`
-    <section data-background-image="./vendor/themes/sakura/bg-1.png" ${
-      markHiddenSlides ? 'data-visibility="hidden"' : ""
-    }>
+    <section data-background-image="./vendor/themes/${slide.theme}/bg-1.png" ${
+    markHiddenSlides ? 'data-visibility="hidden"' : ""
+  }>
       <h1 class="slide-title">${formattingUtils.furiganaTemplateToHTML(slide.title ?? "")}</h1>
       ${slide.slideBlocks
         .map((block) => {
