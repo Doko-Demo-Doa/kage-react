@@ -14,6 +14,14 @@ export type CustomPublishOptionType = {
   token: string;
 };
 
+export type SlideThemeMetaType = {
+  id: string;
+  name: string;
+  thumbnail: string;
+  primaryBackground: string;
+  secondaryBackground: string;
+};
+
 export type SlideType = {
   id: string;
   title?: string;

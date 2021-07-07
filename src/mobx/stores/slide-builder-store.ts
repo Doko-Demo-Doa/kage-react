@@ -1,11 +1,12 @@
 import { makeAutoObservable } from "mobx";
+import { DEFAULT_THEME } from "~/common/config";
 import { RootStore } from "~/mobx/root-store";
 import { dataUtils } from "~/utils/utils-data";
 
 export class SlideBuilderStore {
   rootStore: RootStore;
   id = "";
-  theme = "sakura";
+  theme = DEFAULT_THEME;
   selectedIndex = -1;
 
   constructor(rs: RootStore) {

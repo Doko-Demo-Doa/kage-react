@@ -5,6 +5,7 @@ import { observer } from "mobx-react-lite";
 import { fileUtils } from "~/utils/utils-files";
 import { formattingUtils } from "~/utils/utils-formatting";
 import { StoreContext } from "~/mobx/store-context";
+import { DEFAULT_THEME } from "~/common/config";
 
 import "~/routes/authen/builder/slide-builder/slide-list/theme-chooser/theme-chooser.scss";
 
@@ -29,7 +30,7 @@ export const ThemeChooser: React.FC = observer(() => {
   const store = useContext(StoreContext);
   const { setTheme } = store.slideBuilderStore;
 
-  const [previewing, setPreviewing] = useState("sakura");
+  const [previewing, setPreviewing] = useState(DEFAULT_THEME);
   const [previewText, setPreviewText] = useState("");
 
   return (

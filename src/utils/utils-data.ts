@@ -8,6 +8,7 @@ import { AnimationType, MediaType, MinimumCanvasSize, QuizType } from "~/common/
 import { QResult, SlideType } from "~/typings/types";
 import { formattingUtils } from "~/utils/utils-formatting";
 import { quillUtils } from "~/utils/utils-quill";
+import { DEFAULT_THEME } from "~/common/config";
 
 function singleSlideConstructor(slide: SlideType, markHiddenSlides?: boolean) {
   const subfolderPath = "assets"; // "data";
@@ -182,7 +183,11 @@ function generateShortUid() {
 }
 
 export const dataUtils = {
-  convertToHtmlSlideData: (slides: SlideType[], shouldMarkHidden?: boolean) => {
+  convertToHtmlSlideData: (
+    slides: SlideType[],
+    shouldMarkHidden?: boolean,
+    theme = DEFAULT_THEME
+  ) => {
     // Convert từng slide vào template HTML
     // Xem file template.ts để biết khuôn dạng.
     const templateStr = `
@@ -196,9 +201,10 @@ export const dataUtils = {
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
         <link rel="stylesheet" href="./vendor/reveal.css" />
-        <link rel="stylesheet" href="./vendor/themes/white.css" id="theme" />
+        <link rel="stylesheet" href="./vendor/default.css" id="theme" />
         <link rel="stylesheet" href="./vendor/reset.css" />
         <link rel="stylesheet" href="./vendor/custom.css" />
+        <link rel="stylesheet" href="./vendor/${theme}/modified.css" />
       </head>
 
       <body>

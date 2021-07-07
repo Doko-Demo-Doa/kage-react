@@ -47,6 +47,14 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
     cRef.current?.dispatchEvent(clickEvent);
   };
 
+  const getBg = () => {
+    if (list.length >= 2) {
+      if (selectedIndex <= 0) {
+        return `url(${fileUtils.getUsableThemeBg(theme)})`;
+      }
+    }
+  };
+
   // Nếu lỗi thì bỏ hết những children trong Layer.
   return (
     <div className="i-editor-wrapper">

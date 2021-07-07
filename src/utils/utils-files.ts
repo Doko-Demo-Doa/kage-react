@@ -1,9 +1,10 @@
 import fs from "fs-extra";
 import { isEmpty, union } from "rambdax";
 import dayjs from "dayjs";
+import AdmZip from "adm-zip";
 import { MediaType, RESOURCE_PROTOCOL } from "~/common/static-data";
 import QuizDeckModel from "~/mobx/models/quiz-deck";
-import AdmZip from "adm-zip";
+import { SlideThemeMetaType } from "~/typings/types";
 
 function fsNotAvailable() {
   return isEmpty(require("fs"));
@@ -29,7 +30,7 @@ function getCacheDirectory(type?: "assets" | "quiz" | "vendor" | ""): string {
 
   const subdir = type !== undefined ? type : "";
 
-  const remote = require("electron").remote;
+  const remote = require("@electron/remote");
   const path = remote.require("path");
   const cPath = path.join(remote.app.getPath("cache"), CACHE_DIR_NAME, subdir);
   return cPath.replace(/\\/g, "/");
@@ -45,7 +46,7 @@ function getQuizCacheDirectory(type?: "assets" | "vendor") {
 
   const subdir = type !== undefined ? type : "";
 
-  const remote = require("electron").remote;
+  const remote = require("@electron/remote");
   const path = remote.require("path");
   const cPath = path.join(getCacheDirectory("quiz"), subdir);
 
@@ -55,7 +56,7 @@ function getQuizCacheDirectory(type?: "assets" | "vendor") {
 export const fileUtils = {
   getCRC32: (filePath: string): string => {
     if (fsNotAvailable()) return "";
-    const remote = require("electron").remote;
+    const remote = require("@electron/remote");
     const crc32 = remote.require("crc").crc32;
     const fs = remote.require("fs");
 
@@ -96,7 +97,7 @@ export const fileUtils = {
   // Chuyển file từ vendor + cache vào thư mục đích
   copyFromCacheToDest: async (dest: string, onlyFiles?: string[]) => {
     if (fsNotAvailable()) return;
-    const remote = require("electron").remote;
+    const remote = require("@electron/remote");
     const fs = remote.require("fs-extra");
     const path = remote.require("path");
 
@@ -125,7 +126,7 @@ export const fileUtils = {
   // Copy các file vendor vào thư mục chỉ định.
   copyVendorFilesToDest: async (dest: string) => {
     if (fsNotAvailable()) return;
-    const remote = require("electron").remote;
+    const remote = require("@electron/remote");
     const fs = remote.require("fs-extra");
     const path = remote.require("path");
 
@@ -173,12 +174,12 @@ export const fileUtils = {
   },
   getWorkingDirectory: () => {
     if (fsNotAvailable()) return;
-    const remote = require("electron").remote;
+    const remote = require("@electron/remote");
     return remote.app.getPath("cache");
   },
   createCacheDir: () => {
     if (fsNotAvailable()) return;
-    const remote = require("electron").remote;
+    const remote = require("@electron/remote");
     const path = require("path");
     const fs = remote.require("fs-extra");
 
@@ -222,7 +223,7 @@ export const fileUtils = {
   getQuizCacheDirectory,
   createFilePathAtCacheDir: (filename: string) => {
     if (fsNotAvailable()) return;
-    const remote = require("electron").remote;
+    const remote = require("@electron/remote");
     const path = remote.require("path");
     const cachePath = getCacheDirectory();
     return path.join(cachePath, filename);
@@ -236,11 +237,15 @@ export const fileUtils = {
   getUsableAssetUrl: (assetName: string | undefined) => {
     return `${RESOURCE_PROTOCOL}${getCacheDirectory("assets")}/${assetName}`;
   },
-  getUsableThemeBg: (themeId: string) => {
+  getUsableThemeBg: (themeId: string, isSecondary?: boolean) => {
     if (fsNotAvailable()) return;
     const cachePath = getCacheDirectory("vendor");
 
-    return `${RESOURCE_PROTOCOL}${cachePath}/themes/${themeId}/bg-1.png`;
+    const meta: SlideThemeMetaType = fs.readJsonSync(`${cachePath}/themes/${themeId}/meta.json`);
+
+    return `${RESOURCE_PROTOCOL}${cachePath}/themes/${themeId}/${
+      isSecondary ? meta.secondaryBackground : meta.primaryBackground
+    }`;
   },
   getUsableThemeThumb: (themeId: string) => {
     if (fsNotAvailable()) return;
@@ -285,13 +290,13 @@ export const fileUtils = {
   },
   saveSlideJsonToCache: (jsonData: string) => {
     const p = fileUtils.createFilePathAtCacheDir(SLIDE_MANIFEST_FILE);
-    const remote = require("electron").remote;
+    const remote = require("@electron/remote");
     const fs = remote.require("fs");
     fs.writeFileSync(p, jsonData);
   },
   writeToHtml: (content: string, isSecondary?: boolean) => {
     const path = fileUtils.createFilePathAtCacheDir(SLIDE_HTML_ENTRY_FILE);
-    const remote = require("electron").remote;
+    const remote = require("@electron/remote");
     const fs = remote.require("fs");
     if (isSecondary) {
       const path2 = fileUtils.createFilePathAtCacheDir(SLIDE_HTML_HIDDEN_ENTRY_FILE);
@@ -322,7 +327,7 @@ export const fileUtils = {
   },
   zipFilesTo: (dest: string, ...files: string[]) => {
     if (fsNotAvailable()) return;
-    const remote = require("electron").remote;
+    const remote = require("@electron/remote");
     const path = remote.require("path");
 
     const cacheDir = getCacheDirectory();

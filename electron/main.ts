@@ -5,6 +5,8 @@ import fs from "fs";
 import isDev from "electron-is-dev";
 import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
 
+require("@electron/remote/main").initialize();
+
 import * as StaticData from "../src/common/static-data";
 import * as Typings from "../src/typings/types";
 
