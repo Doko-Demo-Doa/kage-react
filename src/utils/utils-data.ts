@@ -10,11 +10,21 @@ import { formattingUtils } from "~/utils/utils-formatting";
 import { quillUtils } from "~/utils/utils-quill";
 import { DEFAULT_THEME } from "~/common/config";
 
-function singleSlideConstructor(slide: SlideType, markHiddenSlides?: boolean) {
+type ThemeParamsType = {
+  themeId: string;
+  primaryBg: string;
+  secondaryBg: string;
+};
+
+function singleSlideConstructor(
+  slide: SlideType,
+  markHiddenSlides: boolean,
+  themeData: ThemeParamsType
+) {
   const subfolderPath = "assets"; // "data";
 
   return stripIndent(`
-    <section data-background-image="./vendor/themes/${slide.theme}/bg-1.png" ${
+    <section data-background-image="./vendor/themes/${themeData.themeId}/${themeData.primaryBg}" ${
     markHiddenSlides ? 'data-visibility="hidden"' : ""
   }>
       <h1 class="slide-title">${formattingUtils.furiganaTemplateToHTML(slide.title ?? "")}</h1>
@@ -185,8 +195,8 @@ function generateShortUid() {
 export const dataUtils = {
   convertToHtmlSlideData: (
     slides: SlideType[],
-    shouldMarkHidden?: boolean,
-    theme = DEFAULT_THEME
+    shouldMarkHidden: boolean,
+    themeData: ThemeParamsType
   ) => {
     // Convert từng slide vào template HTML
     // Xem file template.ts để biết khuôn dạng.
@@ -204,14 +214,16 @@ export const dataUtils = {
         <link rel="stylesheet" href="./vendor/default.css" id="theme" />
         <link rel="stylesheet" href="./vendor/reset.css" />
         <link rel="stylesheet" href="./vendor/custom.css" />
-        <link rel="stylesheet" href="./vendor/${theme}/modified.css" />
+        <link rel="stylesheet" href="./vendor/themes/${themeData.themeId}/modified.css" />
       </head>
 
       <body>
         <div class="reveal">
           <div class="slides">
             ${slides
-              .map((slide) => singleSlideConstructor(slide, shouldMarkHidden && slide.isHidden))
+              .map((slide) =>
+                singleSlideConstructor(slide, shouldMarkHidden && !!slide.isHidden, themeData)
+              )
               .join("\n")}
           </div>
         </div>

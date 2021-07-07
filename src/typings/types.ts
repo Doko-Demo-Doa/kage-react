@@ -25,7 +25,6 @@ export type SlideThemeMetaType = {
 export type SlideType = {
   id: string;
   title?: string;
-  theme?: string;
   isHidden?: boolean;
   linkedQuizId?: string;
   selectedBlock?: string;

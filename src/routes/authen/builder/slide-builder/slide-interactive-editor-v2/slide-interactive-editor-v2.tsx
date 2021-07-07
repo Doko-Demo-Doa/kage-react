@@ -50,7 +50,7 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
   const getBg = () => {
     if (list.length >= 2) {
       if (selectedIndex <= 0) {
-        return `url(${fileUtils.getUsableThemeBg(theme)})`;
+        return `url(${fileUtils.getUsableThemeBgUrl(theme)})`;
       }
     }
   };
@@ -63,7 +63,7 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
           id="slide-interactive-editor"
           ref={cRef}
           style={{
-            backgroundImage: `url(${fileUtils.getUsableThemeBg(theme)})`,
+            backgroundImage: `url(${fileUtils.getUsableThemeBgUrl(theme)})`,
             backgroundSize: "cover",
           }}
         >

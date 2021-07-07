@@ -17,6 +17,14 @@ const SLIDE_MANIFEST_FILE = "manifest.json";
 const SLIDE_HTML_ENTRY_FILE = "slide.html";
 const SLIDE_HTML_HIDDEN_ENTRY_FILE = "slide-hidden.html";
 
+function getThemeMeta(themeId: string): SlideThemeMetaType {
+  const cachePath = getCacheDirectory("vendor");
+
+  const meta: SlideThemeMetaType = fs.readJsonSync(`${cachePath}/themes/${themeId}/meta.json`);
+
+  return meta;
+}
+
 /**
  * - assets: Chứa các file ảnh, audio, video đã qua xử lý.
  * - quiz: Chứa các file quiz json tạo ra từ quiz builder.
@@ -234,14 +242,15 @@ export const fileUtils = {
   getRootResourceUrl: () => {
     return `${RESOURCE_PROTOCOL}${getCacheDirectory("")}`;
   },
+  getThemeMeta,
   getUsableAssetUrl: (assetName: string | undefined) => {
     return `${RESOURCE_PROTOCOL}${getCacheDirectory("assets")}/${assetName}`;
   },
-  getUsableThemeBg: (themeId: string, isSecondary?: boolean) => {
-    if (fsNotAvailable()) return;
+  getUsableThemeBgUrl: (themeId: string, isSecondary?: boolean) => {
+    if (fsNotAvailable()) return "";
     const cachePath = getCacheDirectory("vendor");
 
-    const meta: SlideThemeMetaType = fs.readJsonSync(`${cachePath}/themes/${themeId}/meta.json`);
+    const meta: SlideThemeMetaType = getThemeMeta(themeId);
 
     return `${RESOURCE_PROTOCOL}${cachePath}/themes/${themeId}/${
       isSecondary ? meta.secondaryBackground : meta.primaryBackground

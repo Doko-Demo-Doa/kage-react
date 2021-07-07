@@ -166,9 +166,15 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
     });
 
     fileUtils.saveSlideJsonToCache(commonHelper.prepareExportData(list));
-    const convertedStr = dataUtils.convertToHtmlSlideData(list, false, slideBuilderMeta.theme);
+    const themeData = {
+      themeId: slideBuilderMeta.theme,
+      primaryBg: fileUtils.getThemeMeta(slideBuilderMeta.theme).primaryBackground,
+      secondaryBg: fileUtils.getThemeMeta(slideBuilderMeta.theme).secondaryBackground,
+    };
+
+    const convertedStr = dataUtils.convertToHtmlSlideData(list, false, themeData);
     fileUtils.writeToHtml(convertedStr);
-    const convertedStrHidden = dataUtils.convertToHtmlSlideData(list, true, slideBuilderMeta.theme);
+    const convertedStrHidden = dataUtils.convertToHtmlSlideData(list, true, themeData);
     fileUtils.writeToHtml(convertedStrHidden, true);
 
     return [...uniq(assetList)];

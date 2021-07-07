@@ -58,7 +58,7 @@ export const ThemeChooser: React.FC = observer(() => {
         <div
           className="preview"
           style={{
-            backgroundImage: `url(${fileUtils.getUsableThemeBg(previewing)})`,
+            backgroundImage: `url(${fileUtils.getUsableThemeBgUrl(previewing)})`,
           }}
         >
           <div className="preview-text">{formattingUtils.htmlToJSX(previewText)}</div>
