@@ -48,6 +48,7 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
   };
 
   const getBg = () => {
+    if (list.length === 0) return "unset";
     if (list.length >= 2) {
       if (selectedIndex <= 0) {
         return `url(${fileUtils.getUsableThemeBgUrl(theme, true)})`;
