@@ -36,7 +36,6 @@ import { StoreContext } from "~/mobx/store-context";
 import "~/routes/authen/builder/slide-builder/slide-builder-toolbar/slide-builder-toolbar.scss";
 
 export const SlideBuilderToolbar: React.FC = observer(() => {
-  const [isPreview, setPreview] = useState(false);
   const [isLoading, setLoading] = useState(false);
 
   const store = useContext(StoreContext);

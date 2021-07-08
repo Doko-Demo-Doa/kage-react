@@ -123,7 +123,9 @@ function showPreviewWindow() {
     resizable: false,
     focusable: true,
     minimizable: false,
+    acceptFirstMouse: true,
     webPreferences: {
+      webSecurity: false,
       webviewTag: true,
       contextIsolation: false,
       nodeIntegration: true,
