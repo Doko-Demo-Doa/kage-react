@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { ipcRenderer } from "electron";
 import { Button, Divider, Tooltip, notification, Space, Spin } from "antd";
 import {
   EyeOutlined,
@@ -18,7 +19,12 @@ import { observer } from "mobx-react";
 import { NewQuizSetBtn } from "~/routes/authen/builder/slide-builder/slide-builder-toolbar/new-quiz-set-btn/new-quiz-set-btn";
 import { fileUtils } from "~/utils/utils-files";
 import { audioUtils, ffmpegUtils, imageUtils } from "~/utils/utils-conversions";
-import { AppDefaults, InitialBlockCoordinate, MediaType } from "~/common/static-data";
+import {
+  AppDefaults,
+  ElectronEventType,
+  InitialBlockCoordinate,
+  MediaType,
+} from "~/common/static-data";
 import { dataUtils } from "~/utils/utils-data";
 import { isElectron } from "~/utils/utils-platform";
 import { uiUtils } from "~/utils/utils-ui";
@@ -26,8 +32,6 @@ import { commonHelper } from "~/common/helper";
 import { Colors } from "~/common/colors";
 import { SlideBlockType } from "~/typings/types";
 import { StoreContext } from "~/mobx/store-context";
-
-import { NewWindowShell } from "~/components/new-window-shell/new-window-shell";
 
 import "~/routes/authen/builder/slide-builder/slide-builder-toolbar/slide-builder-toolbar.scss";
 
@@ -155,7 +159,8 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
 
   const onTogglePreview = () => {
     updateDataToCache();
-    setPreview(true);
+    // setPreview(true);
+    ipcRenderer.send(ElectronEventType.OPEN_PREVIEW);
   };
 
   const updateDataToCache = () => {
@@ -232,17 +237,6 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
 
   return (
     <>
-      {isPreview && (
-        <NewWindowShell onClose={() => setPreview(false)}>
-          <webview
-            autoFocus
-            src={`${fileUtils.getRawCacheUrl()}/slide.html`}
-            style={{ width: "100%", height: "100%" }}
-            allowFullScreen
-          />
-        </NewWindowShell>
-      )}
-
       <div className="slide-builder-toolbar">
         <Space>
           <Tooltip placement="bottom" title="Tạo slide mới">
