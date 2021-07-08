@@ -1,0 +1,11 @@
+.preview-route {
+  width: $interactive-editor-width !important;
+  height: $interactive-editor-height !important;
+  overflow: hidden;
+  position: fixed;
+
+  iframe {
+    height: 100%;
+    width: 100%;
+  }
+}
