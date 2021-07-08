@@ -11,6 +11,7 @@ import * as StaticData from "../src/common/static-data";
 import * as Typings from "../src/typings/types";
 
 let win: BrowserWindow | null = null;
+let previewWin: BrowserWindow | null = null;
 
 // Alternative: https://www.electronjs.org/docs/tutorial/updates
 autoUpdater.autoInstallOnAppQuit = true;
@@ -69,6 +70,10 @@ function createWindow() {
     win.show();
   });
 
+  win.on("closed", () => {
+    win = null;
+  });
+
   app.whenReady().then(() => {
     // clearCache();
     installExtension(REACT_DEVELOPER_TOOLS)
@@ -95,6 +100,10 @@ function createWindow() {
     ipcMain.on(StaticData.ElectronEventType.QUIT_TO_INSTALL, () => {
       autoUpdater.quitAndInstall();
     });
+
+    ipcMain.on(StaticData.ElectronEventType.OPEN_PREVIEW, (event, args) => {
+      showPreviewWindow();
+    });
   });
 
   win.webContents.on("did-frame-finish-load", () => {
@@ -104,31 +113,37 @@ function createWindow() {
   });
 
   process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
-  win.webContents.on("new-window", (event, url, frameName, disposition, options) => {
-    // This is the name we chose for our window. You can have multiple names for
-    // multiple windows and each have their options
-    if (frameName === "NewWindowShell") {
-      event.preventDefault();
-      event.newGuest = new BrowserWindow({
-        ...options,
-        width: 740,
-        height: 560,
-        resizable: false,
-        focusable: true,
-        minimizable: false,
-        acceptFirstMouse: true,
-        tabbingIdentifier: "new-win",
-        webPreferences: {
-          sandbox: true,
-          enableBlinkFeatures: "KeyboardEventKey",
-          webviewTag: true,
-          contextIsolation: false,
-          nodeIntegration: true,
-          worldSafeExecuteJavaScript: true,
-          allowRunningInsecureContent: true,
-        },
-      });
-    }
+}
+
+function showPreviewWindow() {
+  if (previewWin) return;
+  previewWin = new BrowserWindow({
+    width: 740,
+    height: 560,
+    resizable: false,
+    focusable: true,
+    minimizable: false,
+    acceptFirstMouse: true,
+    webPreferences: {
+      webSecurity: false,
+      webviewTag: true,
+      contextIsolation: false,
+      nodeIntegration: true,
+      enableRemoteModule: true,
+    },
+  });
+
+  if (isDev) {
+    previewWin.loadURL("http://localhost:3000/#/preview");
+  } else {
+    // 'build/index.html'
+    previewWin.loadURL(`file://${__dirname}/../index.html/#/preview`);
+  }
+
+  previewWin.show();
+
+  previewWin.on("closed", () => {
+    previewWin = null;
   });
 }
 

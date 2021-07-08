@@ -3,13 +3,16 @@ import { ipcRenderer } from "electron";
 
 import { ElectronEventType } from "~/common/static-data";
 import { BrowserRouter, HashRouter, Switch, Route } from "react-router-dom";
-import { LoginRoute } from "~/routes/guest/login/login-route";
-import { Builder } from "~/routes/authen/builder/builder";
+
 import { isElectron } from "~/utils/utils-platform";
 import { initializeApp } from "~/services/initializer";
 
 import { StoreContext } from "~/mobx/store-context";
 import { rootStore } from "~/mobx/root-store";
+
+import { LoginRoute } from "~/routes/guest/login/login-route";
+import { Builder } from "~/routes/authen/builder/builder";
+import { PreviewRoute } from "~/routes/authen/preview/preview-route";
 
 import "react-h5-audio-player/lib/styles.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
@@ -46,6 +49,7 @@ const App = (): React.ReactElement => {
       <AppRouter>
         <Switch>
           <Route exact path="/" component={Builder} />
+          <Route exact path="/preview" component={PreviewRoute} />
           <Route exact path="/login" component={LoginRoute} />
         </Switch>
       </AppRouter>
