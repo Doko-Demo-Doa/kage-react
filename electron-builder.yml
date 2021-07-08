@@ -42,3 +42,7 @@ nsis:
 directories:
   buildResources: "resources"
   output: "release"
+
+publish:
+  provider: github
+  releaseType: release
