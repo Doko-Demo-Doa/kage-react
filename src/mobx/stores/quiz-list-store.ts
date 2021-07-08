@@ -301,7 +301,6 @@ export class QuizListStore {
       }
 
       this.list = newList;
-      console.log(this.list);
     }
   }
 }

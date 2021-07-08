@@ -39,7 +39,6 @@ export const QuizBuilderToolbar: React.FC = observer(() => {
           if (progress === "end") {
             // Hiển thị message báo convert
             setQuizAudio(thisQuiz.id, `${fileName}.${extension}`);
-            console.log(filePath, fileName, extension);
             setLoading(false);
           }
         }

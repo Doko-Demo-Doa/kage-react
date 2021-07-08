@@ -33,7 +33,6 @@ export const QuizLayoutMultipleChoices: React.FC<Props> = observer(({ data }) =>
         );
       }
       if (data.correctIds.every((n) => selectedIds.includes(n))) {
-        console.log("why", data.correctIds, selectedIds);
         return onSubmit?.("correct", selectedIds);
       } else if (selectedIds.some((n) => data.correctIds.includes(n))) {
         return onSubmit?.("mixed", selectedIds);

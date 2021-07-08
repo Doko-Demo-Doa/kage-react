@@ -12,8 +12,6 @@ import "~/routes/authen/builder/quiz-builder/result-preview/result-preview.scss"
 export const ResultPreview: React.FC = observer(() => {
   const { results, quizzes } = useContext(QuizPlayerContext);
 
-  console.log(JSON.parse(JSON.stringify(results)));
-
   return (
     <div className="content result-preview">
       <Result
