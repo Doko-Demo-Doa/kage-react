@@ -18,14 +18,15 @@ type ThemeParamsType = {
 function singleSlideConstructor(
   slide: SlideType,
   markHiddenSlides: boolean,
-  themeData: ThemeParamsType
+  themeData: ThemeParamsType,
+  isLast?: boolean
 ) {
   const subfolderPath = "assets"; // "data";
 
   return stripIndent(`
-    <section data-background-image="./vendor/themes/${themeData.themeId}/${themeData.primaryBg}" ${
-    markHiddenSlides ? 'data-visibility="hidden"' : ""
-  }>
+    <section data-background-image="./vendor/themes/${themeData.themeId}/${
+    isLast ? themeData.secondaryBg : themeData.primaryBg
+  }" ${markHiddenSlides ? 'data-visibility="hidden"' : ""}>
       <h1 class="slide-title">${formattingUtils.furiganaTemplateToHTML(slide.title ?? "")}</h1>
       ${slide.slideBlocks
         .map((block) => {
@@ -220,9 +221,14 @@ export const dataUtils = {
         <div class="reveal">
           <div class="slides">
             ${slides
-              .map((slide) =>
-                singleSlideConstructor(slide, shouldMarkHidden && !!slide.isHidden, themeData)
-              )
+              .map((slide, idx) => {
+                return singleSlideConstructor(
+                  slide,
+                  shouldMarkHidden && !!slide.isHidden,
+                  themeData,
+                  idx === slides.length - 1
+                );
+              })
               .join("\n")}
           </div>
         </div>

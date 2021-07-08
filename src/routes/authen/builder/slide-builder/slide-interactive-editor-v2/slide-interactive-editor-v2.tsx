@@ -51,11 +51,11 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
     if (list.length === 0) return "unset";
     if (list.length >= 2) {
       if (selectedIndex <= 0) {
-        return `url(${fileUtils.getUsableThemeBgUrl(theme, true)})`;
+        return `url(${fileUtils.getUsableThemeBgUrl(theme, false)})`;
       }
     }
 
-    return `url(${fileUtils.getUsableThemeBgUrl(theme, false)})`;
+    return `url(${fileUtils.getUsableThemeBgUrl(theme, true)})`;
   };
 
   // Nếu lỗi thì bỏ hết những children trong Layer.
