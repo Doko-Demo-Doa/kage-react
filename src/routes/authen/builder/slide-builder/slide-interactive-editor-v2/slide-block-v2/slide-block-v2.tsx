@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { Delta } from "quill";
 import { PlusOutlined, BgColorsOutlined } from "@ant-design/icons";
 import { TwitterPicker } from "react-color";
-import { MediaType, MinimumCanvasSize } from "~/common/static-data";
+import { MediaType } from "~/common/static-data";
 import { SlideAnimationType, SlideBlockType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
 import { quillUtils } from "~/utils/utils-quill";
@@ -328,7 +328,6 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
             />
           </Rnd>
           <svg
-            viewBox={`${MinimumCanvasSize.WIDTH} ${MinimumCanvasSize.HEIGHT}`}
             style={{
               zIndex: 2,
               overflow: "visible",

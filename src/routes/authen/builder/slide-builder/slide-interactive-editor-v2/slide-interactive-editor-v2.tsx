@@ -50,9 +50,11 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
   const getBg = () => {
     if (list.length >= 2) {
       if (selectedIndex <= 0) {
-        return `url(${fileUtils.getUsableThemeBgUrl(theme)})`;
+        return `url(${fileUtils.getUsableThemeBgUrl(theme, true)})`;
       }
     }
+
+    return `url(${fileUtils.getUsableThemeBgUrl(theme, false)})`;
   };
 
   // Nếu lỗi thì bỏ hết những children trong Layer.
@@ -63,7 +65,7 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
           id="slide-interactive-editor"
           ref={cRef}
           style={{
-            backgroundImage: `url(${fileUtils.getUsableThemeBgUrl(theme)})`,
+            backgroundImage: getBg(),
             backgroundSize: "cover",
           }}
         >
