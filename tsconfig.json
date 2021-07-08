@@ -2,11 +2,7 @@
   "extends": "./tsconfig.custom.json",
   "compilerOptions": {
     "target": "es6",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -17,14 +13,11 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "isolatedModules": true
   },
-  "types": [
-    "node",
-    "jest"
-  ],
+  "types": ["node", "jest"],
   "include": [
     "src",
     "electron",
@@ -35,6 +28,8 @@
     "tests/**/*.tsx",
     "__tests__/**/*.ts",
     "__tests__/**/*.tsx",
+    "src/__tests__/**/*.ts",
+    "src/__tests__/**/*.tsx",
     "reveal.d.ts"
   ]
 }

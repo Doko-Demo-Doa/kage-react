@@ -47,6 +47,9 @@
       }
     ]
   },
+  "ts-jest": {
+    "isolatedModules": false
+  },
   "browserslist": {
     "production": [
       ">0.2%",
