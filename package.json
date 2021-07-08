@@ -16,7 +16,7 @@
     "build": "cross-env CI=false craco build",
     "build:player": "cross-env CI=false cross-env REACT_APP_ISPLAYER=1 craco build",
     "test": "cross-env CI=false craco test --watchAll=false",
-    "test:coverage": "cross-env CI=false craco test --coverage",
+    "test:coverage": "cross-env CI=false craco test --watchAll=false --coverage",
     "eject": "react-scripts eject",
     "clean": "rimraf build release build",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
@@ -27,9 +27,7 @@
     "electron:build-mac": "cross-env WEBPACK_TARGET=electron npm run build && tsc -p electron && electron-builder -m",
     "electron:build-linux": "cross-env WEBPACK_TARGET=electron npm run build && tsc -p electron && electron-builder -l",
     "electron:deploy-win": "cross-env WEBPACK_TARGET=electron npm run build && tsc -p electron && electron-builder build --win --publish always",
-    "electron:deploy-mac": "cross-env WEBPACK_TARGET=electron npm run build && tsc -p electron && electron-builder build --mac --publish always",
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "electron:deploy-mac": "cross-env WEBPACK_TARGET=electron npm run build && tsc -p electron && electron-builder build --mac --publish always"
   },
   "eslintConfig": {
     "extends": [
@@ -77,13 +75,6 @@
     "@ant-design/icons": "4.6.2",
     "@craco/craco": "6.2.0",
     "@electron/remote": "1.2.0",
-    "@storybook/addon-actions": "6.3.2",
-    "@storybook/addon-essentials": "6.3.2",
-    "@storybook/addon-links": "6.3.2",
-    "@storybook/node-logger": "6.3.2",
-    "@storybook/preset-create-react-app": "3.1.7",
-    "@storybook/preset-scss": "1.0.3",
-    "@storybook/react": "6.3.2",
     "@testing-library/jest-dom": "5.14.1",
     "@testing-library/react": "12.0.0",
     "@testing-library/user-event": "13.1.9",

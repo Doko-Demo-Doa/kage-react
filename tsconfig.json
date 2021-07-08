@@ -2,7 +2,11 @@
   "extends": "./tsconfig.custom.json",
   "compilerOptions": {
     "target": "es6",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -17,7 +21,10 @@
     "jsx": "react-jsx",
     "isolatedModules": true
   },
-  "types": ["node", "jest"],
+  "types": [
+    "node",
+    "jest"
+  ],
   "include": [
     "src",
     "electron",
