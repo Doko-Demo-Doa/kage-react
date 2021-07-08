@@ -103,27 +103,47 @@ export const fileUtils = {
     return data.filePaths[0];
   },
   // Chuyển file từ vendor + cache vào thư mục đích
-  copyFromCacheToDest: async (dest: string, onlyFiles?: string[]) => {
+  copyFromCacheToDest: async (dest: string, onlyAssets?: string[], theme?: string) => {
     if (fsNotAvailable()) return;
     const remote = require("@electron/remote");
-    const fs = remote.require("fs-extra");
+    // const fs = remote.require("fs-extra");
     const path = remote.require("path");
 
     const cacheDir: string = getCacheDirectory();
     const destF = path.join(dest, EXPORT_DIR_NAME);
 
-    // Nếu có onlyFiles thì chỉ copy các file asset này.
-    if (onlyFiles) {
+    // Nếu có onlyAssets thì chỉ copy các file asset này.
+    if (onlyAssets) {
       // Copy từng thằng vào một:
       const cacheVendorDir = getCacheDirectory("vendor");
-      fs.copySync(cacheVendorDir, path.join(destF, "vendor"));
+
+      fs.copySync(cacheVendorDir, path.join(destF, "vendor"), {
+        filter: function (name: string) {
+          if (name.includes(".DS_Store") || name.includes("thumb.db")) return false;
+          if (name.includes("themes")) return false;
+          return true;
+        },
+      });
+      // Chỉ copy theme đang dùng:
+      const cachedThemeDir = path.join(cacheVendorDir, "themes");
+      fs.readdir(cachedThemeDir, (err, files) => {
+        files.forEach((filename) => {
+          if (filename === theme) {
+            fs.copySync(
+              path.join(cachedThemeDir, filename),
+              path.join(destF, "vendor", "themes", theme)
+            );
+          }
+        });
+      });
+
       const manifestPath = path.join(cacheDir, SLIDE_MANIFEST_FILE);
       fs.copySync(manifestPath, path.join(destF, SLIDE_MANIFEST_FILE));
       const htmlEntryPath = path.join(cacheDir, SLIDE_HTML_ENTRY_FILE);
       fs.copySync(htmlEntryPath, path.join(destF, SLIDE_HTML_ENTRY_FILE));
 
       // Chỉ copy các file cần thiết:
-      onlyFiles.forEach((n) => {
+      onlyAssets.forEach((n) => {
         fs.copySync(path.join(getCacheDirectory("assets"), n), path.join(destF, "assets", n));
       });
 
@@ -350,8 +370,6 @@ export const fileUtils = {
     newZip.addLocalFolder(vendorDir, "vendor");
     newZip.addLocalFile(manifestPath);
     newZip.addLocalFile(htmlEntryPath);
-
-    console.log(files);
 
     files.forEach((n) => {
       newZip.addLocalFile(path.join(getCacheDirectory("assets"), n), "assets");
