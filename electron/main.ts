@@ -133,6 +133,10 @@ function showPreviewWindow() {
     },
   });
 
+  if (app.isPackaged) {
+    previewWin.removeMenu();
+  }
+
   if (isDev) {
     previewWin.loadURL("http://localhost:3000/#/preview");
   } else {
