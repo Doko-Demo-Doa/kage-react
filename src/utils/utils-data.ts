@@ -242,6 +242,7 @@ export const dataUtils = {
               defaultAudios: false,
               playerOpacity: 0,
               startAtFragment: true,
+              advance: -1,
               autoplay: true,
             },
             hash: true,
