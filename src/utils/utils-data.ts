@@ -251,6 +251,9 @@ export const dataUtils = {
             width: ${MinimumCanvasSize.WIDTH},
             height: ${MinimumCanvasSize.HEIGHT},
             center: false,
+            overview: false,
+            postMessage: true,
+            postMessageEvents: true,
           });
         </script>
       </body>
