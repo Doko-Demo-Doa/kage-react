@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { SLIDE_HTML_ENTRY_FILE } from "~/common/static-data";
 import "~/routes/authen/preview/preview-route.scss";
 import { fileUtils } from "~/utils/utils-files";
 
@@ -17,7 +18,7 @@ export const PreviewRoute: React.FC = () => {
 
   return (
     <div className="preview-route" ref={divRef}>
-      <iframe src={`file:///${fileUtils.getCacheDirectory()}/slide.html`} />
+      <iframe src={`file:///${fileUtils.getCacheDirectory()}/${SLIDE_HTML_ENTRY_FILE}`} />
     </div>
   );
 };

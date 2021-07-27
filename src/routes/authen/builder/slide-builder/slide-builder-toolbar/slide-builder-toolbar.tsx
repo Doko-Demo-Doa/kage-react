@@ -24,6 +24,7 @@ import {
   ElectronEventType,
   InitialBlockCoordinate,
   MediaType,
+  SLIDE_HTML_ENTRY_FILE,
 } from "~/common/static-data";
 import { dataUtils } from "~/utils/utils-data";
 import { isElectron } from "~/utils/utils-platform";
@@ -128,7 +129,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
     const path = await fileUtils.openFileDialog();
     if (path) {
       const zipContent = fileUtils.readZipEntries(path);
-      if (zipContent?.includes("slide.html") && zipContent.includes("manifest.json")) {
+      if (zipContent?.includes(SLIDE_HTML_ENTRY_FILE) && zipContent.includes("manifest.json")) {
         // TODO: Có thể xem xét cách khác để verify file zip này không.
         // Hiện chỉ mới check 2 file trên nếu ok thì triển.
         const manifest = fileUtils.extractZipToCache(path);

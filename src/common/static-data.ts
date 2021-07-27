@@ -1,4 +1,6 @@
 export const RESOURCE_PROTOCOL = "local-resource://";
+export const SLIDE_HTML_ENTRY_FILE = "index.html";
+export const SLIDE_HTML_HIDDEN_ENTRY_FILE = "index-hidden.html";
 
 export enum ElectronEventType {
   UPDATE_CHECK = "UPDATE_CHECK",

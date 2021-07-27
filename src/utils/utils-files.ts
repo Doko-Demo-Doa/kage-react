@@ -2,7 +2,12 @@ import fs from "fs-extra";
 import { isEmpty, union } from "rambdax";
 import dayjs from "dayjs";
 import AdmZip from "adm-zip";
-import { MediaType, RESOURCE_PROTOCOL } from "~/common/static-data";
+import {
+  MediaType,
+  RESOURCE_PROTOCOL,
+  SLIDE_HTML_ENTRY_FILE,
+  SLIDE_HTML_HIDDEN_ENTRY_FILE,
+} from "~/common/static-data";
 import QuizDeckModel from "~/mobx/models/quiz-deck";
 import { SlideThemeMetaType } from "~/typings/types";
 
@@ -14,8 +19,6 @@ const CACHE_DIR_NAME = "kage-cache";
 const EXPORT_DIR_NAME = "slide_export";
 
 const SLIDE_MANIFEST_FILE = "manifest.json";
-const SLIDE_HTML_ENTRY_FILE = "slide.html";
-const SLIDE_HTML_HIDDEN_ENTRY_FILE = "slide-hidden.html";
 
 function getThemeMeta(themeId: string): SlideThemeMetaType {
   const cachePath = getCacheDirectory("vendor");
