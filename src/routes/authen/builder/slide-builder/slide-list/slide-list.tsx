@@ -14,42 +14,34 @@ import "~/routes/authen/builder/slide-builder/slide-list/slide-list.scss";
 export const SlideList: React.FC = observer(() => {
   const store = useContext(StoreContext);
 
-  const { list, duplicateSlideAt } = store.slideListStore;
-  const slideBuilderMeta = store.slideBuilderStore;
+  const { list, duplicateSlideAt, deleteSlideAt } = store.slideListStore;
+  const { setIndex, selectedIndex } = store.slideBuilderStore;
 
   const onClickSlide = (index: number) => {
-    slideBuilderMeta.setIndex(index);
+    setIndex(index);
   };
 
-  const onDeleteCurrentSlide = () => {
-    const currentIndex = slideBuilderMeta.selectedIndex;
-
-    if (list.length > 1 && currentIndex !== 0) {
-      slideBuilderMeta.setIndex(currentIndex - 1);
-    }
-    const newSlides = [...list.slice(0, currentIndex), ...list.slice(currentIndex + 1)];
-
-    store.slideListStore.setList(newSlides);
-  };
-
-  const onDuplicateSlide = (index: number) => {
-    duplicateSlideAt(index);
-  };
+  console.log("eeee", selectedIndex);
 
   return (
     <KeyboardEventHandler
       handleKeys={["up", "down", "del", "backspace", "clear"]} // Up and down
       onKeyEvent={(key) => {
-        let newIndex = slideBuilderMeta.selectedIndex;
-        if (key === "up" && slideBuilderMeta.selectedIndex > 0) {
-          newIndex = slideBuilderMeta.selectedIndex - 1;
-        } else if (key === "down" && slideBuilderMeta.selectedIndex < list.length - 1) {
-          newIndex = slideBuilderMeta.selectedIndex + 1;
+        let newIndex = selectedIndex;
+        if (key === "up" && selectedIndex > 0) {
+          newIndex = selectedIndex - 1;
+        } else if (key === "down" && selectedIndex < list.length - 1) {
+          newIndex = selectedIndex + 1;
         } else if (key === "del" || key === "backspace") {
-          onDeleteCurrentSlide();
-        }
+          if (selectedIndex > 0) {
+            setIndex(selectedIndex - 1);
+          }
+          deleteSlideAt(selectedIndex);
 
-        slideBuilderMeta.setIndex(newIndex);
+          if (selectedIndex <= 0) {
+            setIndex(-1);
+          }
+        }
 
         const elmnt = document.getElementById(`slide-thumb-${newIndex}`);
         elmnt?.scrollIntoView({
@@ -74,10 +66,16 @@ export const SlideList: React.FC = observer(() => {
                 id={n.id}
                 linkedQuizId={n.linkedQuizId}
                 onClick={(index) => onClickSlide(index)}
-                onClickDuplicate={(idx) => onDuplicateSlide(idx)}
+                onClickDuplicate={(idx) => duplicateSlideAt(idx)}
+                onClickDelete={(idx) => {
+                  if (selectedIndex > 0) {
+                    setIndex(selectedIndex - 1);
+                  }
+                  deleteSlideAt(idx);
+                }}
                 title={n?.title}
                 index={idx}
-                inactive={slideBuilderMeta.selectedIndex !== idx}
+                inactive={selectedIndex !== idx}
                 key={idx}
               />
             </Draggable>

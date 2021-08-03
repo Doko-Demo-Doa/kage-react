@@ -19,6 +19,10 @@ export class SlideBuilderStore {
     this.id = id;
   }
 
+  /**
+   * Đặt số đầu vào làm index của slide hiện thời.
+   * @param newIndex Số đầu vào
+   */
   setIndex(newIndex: number) {
     this.selectedIndex = newIndex;
   }

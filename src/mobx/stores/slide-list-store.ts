@@ -63,6 +63,12 @@ export class SlideListStore {
     }
   }
 
+  deleteSlideAt(index: number) {
+    const slides = [...this.list];
+    const filtered = slides.filter((n, idx) => idx !== index);
+    this.list = filtered;
+  }
+
   setList(newList: SlideType[]) {
     this.list = newList;
   }

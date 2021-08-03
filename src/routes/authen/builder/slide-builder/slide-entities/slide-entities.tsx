@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Input, Divider, Empty, Checkbox } from "antd";
+import { Input, Divider, Empty, Checkbox, Button } from "antd";
 import { Container, Draggable } from "react-smooth-dnd";
 import ScrollBar from "react-perfect-scrollbar";
 import KeyboardEventHandler from "react-keyboard-event-handler";
@@ -56,11 +56,16 @@ export const SlideEntities: React.FC = observer(() => {
           <br />
           <br />
           <Checkbox
-            checked={Boolean(currentSlide.isHidden)}
-            onChange={() => setHidden(!currentSlide.isHidden)}
+            checked={Boolean(currentSlide?.isHidden)}
+            onChange={() => setHidden(!currentSlide?.isHidden)}
           >
             Ẩn slide này khi tự học
           </Checkbox>
+
+          <br />
+          <br />
+
+          <Button>Thay đổi hình nền slide</Button>
           <Divider type="horizontal" />
 
           <h2>Các thành phần</h2>

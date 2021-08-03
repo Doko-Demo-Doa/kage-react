@@ -1,4 +1,4 @@
-import pretty from "pretty";
+import htmlFormat from "html-format";
 import dayjs from "dayjs";
 import { stripIndent } from "common-tags";
 import { v4 } from "uuid";
@@ -102,7 +102,7 @@ function singleSlideConstructor(
               .replace(/(\r\n|\n|\r)/gm, "")
               .replace(" ", "");
 
-            const result = pretty(
+            const result = htmlFormat(
               stripIndent(`
               <div style="${styleAppend}" ${animAppend}>
                 ${formattingUtils.furiganaTemplateToHTML(html)}
@@ -261,7 +261,7 @@ export const dataUtils = {
       </html>
       `;
 
-    return pretty(templateStr);
+    return htmlFormat(templateStr);
   },
   mapAnimationLabel: (type: AnimationType) => {
     if (type === AnimationType.APPEAR) return "Mờ dần";
