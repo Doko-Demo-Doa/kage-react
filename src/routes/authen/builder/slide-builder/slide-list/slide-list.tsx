@@ -21,7 +21,14 @@ export const SlideList: React.FC = observer(() => {
     setIndex(index);
   };
 
-  console.log("eeee", selectedIndex);
+  const onDeleteSlide = (index: number) => {
+    if (selectedIndex > 0) {
+      setIndex(selectedIndex - 1);
+    } else if (selectedIndex <= 0) {
+      setIndex(-1);
+    }
+    deleteSlideAt(index);
+  };
 
   return (
     <KeyboardEventHandler
@@ -33,14 +40,7 @@ export const SlideList: React.FC = observer(() => {
         } else if (key === "down" && selectedIndex < list.length - 1) {
           newIndex = selectedIndex + 1;
         } else if (key === "del" || key === "backspace") {
-          if (selectedIndex > 0) {
-            setIndex(selectedIndex - 1);
-          }
-          deleteSlideAt(selectedIndex);
-
-          if (selectedIndex <= 0) {
-            setIndex(-1);
-          }
+          onDeleteSlide(newIndex);
         }
 
         const elmnt = document.getElementById(`slide-thumb-${newIndex}`);
@@ -67,12 +67,7 @@ export const SlideList: React.FC = observer(() => {
                 linkedQuizId={n.linkedQuizId}
                 onClick={(index) => onClickSlide(index)}
                 onClickDuplicate={(idx) => duplicateSlideAt(idx)}
-                onClickDelete={(idx) => {
-                  if (selectedIndex > 0) {
-                    setIndex(selectedIndex - 1);
-                  }
-                  deleteSlideAt(idx);
-                }}
+                onClickDelete={(idx) => onDeleteSlide(idx)}
                 title={n?.title}
                 index={idx}
                 inactive={selectedIndex !== idx}
