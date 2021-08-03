@@ -17,8 +17,8 @@ function fsNotAvailable() {
 
 const CACHE_DIR_NAME = "kage-cache";
 const EXPORT_DIR_NAME = "slide_export";
-
 const SLIDE_MANIFEST_FILE = "manifest.json";
+const ALLOWED_IMPORT_EXTENSIONS = ["zip", "dsa", "dst"];
 
 function getThemeMeta(themeId: string): SlideThemeMetaType {
   const cachePath = getCacheDirectory("vendor");
@@ -94,16 +94,32 @@ export const fileUtils = {
     if (fsNotAvailable()) return;
     const data = await require("electron").remote.dialog.showOpenDialog({
       properties: ["openFile", "dontAddToRecent"],
+      filters: [
+        {
+          name: "Dora Slide Archive",
+          extensions: ALLOWED_IMPORT_EXTENSIONS,
+        },
+      ],
     });
     return data.filePaths[0];
   },
   // Dùng để chọn folder xuất data ra
   openFolderSaveDialog: async () => {
     if (fsNotAvailable()) return;
-    const data = await require("electron").remote.dialog.showOpenDialog({
-      properties: ["openDirectory", "dontAddToRecent"],
+
+    const data = await require("electron").remote.dialog.showSaveDialog({
+      defaultPath: `quiz-${dayjs().format("YYYYMMDD.HHmmss")}.zip`,
+      properties: ["dontAddToRecent", "createDirectory"],
+      message: "Chọn thư mục xuất file",
     });
-    return data.filePaths[0];
+    const dest = data.filePath;
+    if (!dest) return;
+    return dest;
+
+    // const data = await require("electron").remote.dialog.showOpenDialog({
+    //   properties: ["openDirectory", "dontAddToRecent"],
+    // });
+    // return data.filePaths[0];
   },
   // Chuyển file từ vendor + cache vào thư mục đích
   copyFromCacheToDest: async (dest: string, onlyAssets?: string[], theme?: string) => {

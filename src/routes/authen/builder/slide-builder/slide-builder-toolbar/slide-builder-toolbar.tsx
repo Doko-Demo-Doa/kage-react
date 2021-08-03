@@ -149,7 +149,9 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
     const assetList = updateDataToCache();
     const path = await fileUtils.openFolderSaveDialog();
     if (path) {
-      fileUtils.zipFilesTo(path, ...assetList);
+      console.log(path);
+      return;
+      // fileUtils.zipFilesTo(path, ...assetList);
     }
   };
 
@@ -254,7 +256,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
               aria-label="Bật / tắt xem thử"
             />
           </Tooltip>
-          <Tooltip placement="bottom" title="Xuất ra file">
+          <Tooltip placement="bottom" title="Xuất ra thư mục">
             <Button
               disabled={shouldDisable}
               onClick={() => onPublish()}
