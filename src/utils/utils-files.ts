@@ -394,6 +394,6 @@ export const fileUtils = {
       newZip.addLocalFile(path.join(getCacheDirectory("assets"), n), "assets");
     });
 
-    newZip.writeZip(path.join(dest, "slide_export.zip"));
+    newZip.writeZip(path.join(dest));
   },
 };

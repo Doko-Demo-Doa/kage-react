@@ -149,9 +149,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
     const assetList = updateDataToCache();
     const path = await fileUtils.openFolderSaveDialog();
     if (path) {
-      console.log(path);
-      return;
-      // fileUtils.zipFilesTo(path, ...assetList);
+      fileUtils.zipFilesTo(path, ...assetList);
     }
   };
 

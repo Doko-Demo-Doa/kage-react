@@ -127,6 +127,7 @@
     "fetch-retry": "4.1.1",
     "formik": "2.2.9",
     "history": "5.0.0",
+    "html-format": "1.0.1",
     "html-react-parser": "1.2.7",
     "i18next": "20.3.5",
     "i18next-browser-languagedetector": "6.1.2",
