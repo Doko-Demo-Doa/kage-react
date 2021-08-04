@@ -22,6 +22,15 @@ export type SlideThemeMetaType = {
   secondaryBackground: string;
 };
 
+export type SlideStockBackgroundMetaType = {
+  name: string;
+  description: string;
+  list: Array<{
+    label: string;
+    file: string;
+  }>;
+};
+
 export type SlideType = {
   id: string;
   title?: string;
@@ -30,6 +39,7 @@ export type SlideType = {
   selectedBlock?: string;
   slideBlocks: SlideBlockType[];
   animations: SlideAnimationType[];
+  background?: string;
 };
 
 export interface SlideBlockType {

@@ -9,7 +9,7 @@ import {
   SLIDE_HTML_HIDDEN_ENTRY_FILE,
 } from "~/common/static-data";
 import QuizDeckModel from "~/mobx/models/quiz-deck";
-import { SlideThemeMetaType } from "~/typings/types";
+import { SlideStockBackgroundMetaType, SlideThemeMetaType } from "~/typings/types";
 
 function fsNotAvailable() {
   return isEmpty(require("fs"));
@@ -24,6 +24,14 @@ function getThemeMeta(themeId: string): SlideThemeMetaType {
   const cachePath = getCacheDirectory("vendor");
 
   const meta: SlideThemeMetaType = fs.readJsonSync(`${cachePath}/themes/${themeId}/meta.json`);
+
+  return meta;
+}
+
+function getStockBackgroundsMeta(): SlideStockBackgroundMetaType {
+  const cachePath = getCacheDirectory("vendor");
+
+  const meta: SlideStockBackgroundMetaType = fs.readJsonSync(`${cachePath}/backgrounds/stock.json`);
 
   return meta;
 }
@@ -281,6 +289,17 @@ export const fileUtils = {
   getRootResourceUrl: () => {
     return `${RESOURCE_PROTOCOL}${getCacheDirectory("")}`;
   },
+  getStockBackgroundsMeta,
+  /**
+   * @param assetName Tên file background, có liệt kê trong file stock.json
+   * @returns URL đến file background, kích thước khoảng 2000x1500, JPG
+   */
+  getSlideBackgroundUrl: (assetName: string) => {
+    if (fsNotAvailable()) return;
+    const cachePath = getCacheDirectory("vendor");
+
+    return `${RESOURCE_PROTOCOL}${cachePath}/backgrounds/${assetName}`;
+  },
   getThemeMeta,
   getUsableAssetUrl: (assetName: string | undefined) => {
     return `${RESOURCE_PROTOCOL}${getCacheDirectory("assets")}/${assetName}`;
@@ -295,6 +314,11 @@ export const fileUtils = {
       isSecondary ? meta.secondaryBackground : meta.primaryBackground
     }`;
   },
+  /**
+   * @deprecated Sẽ không dùng hàm này nữa vì không sử dụng theme, thay vào đó hãy dùng getSlideBackgroundUrl
+   * @param themeId id của theme, viết thường.
+   * @returns
+   */
   getUsableThemeThumb: (themeId: string) => {
     if (fsNotAvailable()) return;
     const cachePath = getCacheDirectory("vendor");

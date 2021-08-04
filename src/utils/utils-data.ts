@@ -15,18 +15,11 @@ type ThemeParamsType = {
   secondaryBg: string;
 };
 
-function singleSlideConstructor(
-  slide: SlideType,
-  markHiddenSlides: boolean,
-  themeData: ThemeParamsType,
-  isLast?: boolean
-) {
+function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean) {
   const subfolderPath = "assets"; // "data";
 
   return stripIndent(`
-    <section data-background-image="./vendor/themes/${themeData.themeId}/${
-    isLast ? themeData.secondaryBg : themeData.primaryBg
-  }" ${markHiddenSlides ? 'data-visibility="hidden"' : ""}>
+    <section ${markHiddenSlides ? 'data-visibility="hidden"' : ""}>
       <h1 class="slide-title">${formattingUtils.furiganaTemplateToHTML(slide.title ?? "")}</h1>
       ${slide.slideBlocks
         .map((block) => {
@@ -193,11 +186,7 @@ function generateShortUid() {
 }
 
 export const dataUtils = {
-  convertToHtmlSlideData: (
-    slides: SlideType[],
-    shouldMarkHidden: boolean,
-    themeData: ThemeParamsType
-  ) => {
+  convertToHtmlSlideData: (slides: SlideType[], shouldMarkHidden: boolean) => {
     // Convert từng slide vào template HTML
     // Xem file template.ts để biết khuôn dạng.
     const templateStr = `
@@ -214,20 +203,14 @@ export const dataUtils = {
         <link rel="stylesheet" href="./vendor/default.css" id="theme" />
         <link rel="stylesheet" href="./vendor/reset.css" />
         <link rel="stylesheet" href="./vendor/custom.css" />
-        <link rel="stylesheet" href="./vendor/themes/${themeData.themeId}/modified.css" />
       </head>
 
       <body>
         <div class="reveal">
           <div class="slides">
             ${slides
-              .map((slide, idx) => {
-                return singleSlideConstructor(
-                  slide,
-                  shouldMarkHidden && !!slide.isHidden,
-                  themeData,
-                  idx === slides.length - 1
-                );
+              .map((slide) => {
+                return singleSlideConstructor(slide, shouldMarkHidden && !!slide.isHidden);
               })
               .join("\n")}
           </div>
