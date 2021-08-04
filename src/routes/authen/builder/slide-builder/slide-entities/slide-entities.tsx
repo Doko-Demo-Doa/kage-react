@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Input, Divider, Empty, Checkbox, Button } from "antd";
+import { Input, Divider, Empty, Checkbox } from "antd";
 import { Container, Draggable } from "react-smooth-dnd";
 import ScrollBar from "react-perfect-scrollbar";
 import KeyboardEventHandler from "react-keyboard-event-handler";
@@ -7,6 +7,7 @@ import { observer } from "mobx-react";
 
 import { dataUtils } from "~/utils/utils-data";
 
+import { BackgroundPicker } from "~/routes/authen/builder/slide-builder/slide-entities/background-picker/background-picker";
 import { AnimationEntity } from "~/routes/authen/builder/slide-builder/slide-entities/animation-entity/animation-entity";
 import { BlockEntity } from "~/routes/authen/builder/slide-builder/slide-entities/block-entity/block-entity";
 import { StoreContext } from "~/mobx/store-context";
@@ -65,7 +66,7 @@ export const SlideEntities: React.FC = observer(() => {
           <br />
           <br />
 
-          <Button>Thay đổi hình nền slide</Button>
+          <BackgroundPicker />
           <Divider type="horizontal" />
 
           <h2>Các thành phần</h2>

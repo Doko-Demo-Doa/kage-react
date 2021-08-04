@@ -1,3 +1,22 @@
 .background-picker {
+  height: 110px;
   border: 1px dashed $color-gray-medium;
+  border-radius: 6px;
+  background-color: $color-gray-light;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+  transition: 0.2s linear all;
+
+  &:hover {
+    border: 1px dashed $color-tungsten;
+  }
+
+  p {
+    margin-top: 1rem;
+    margin-bottom: 0;
+    font-size: 12px;
+  }
 }
