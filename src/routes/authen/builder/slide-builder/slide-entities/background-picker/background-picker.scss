@@ -25,10 +25,11 @@ $bg-item-w: 200px;
 $bg-item-h: 150px;
 
 .background-gallery {
-  width: 600px;
-  height: 440px;
+  width: 610px;
+  height: 440px !important;
   display: flex;
   flex-wrap: wrap;
+  overflow-y: hidden;
   align-content: baseline;
 
   .background-item {
@@ -38,7 +39,6 @@ $bg-item-h: 150px;
     margin-bottom: 12px;
 
     .inner {
-      background-color: $color-indigo-light;
       border: 1px solid $color-gray-medium;
       width: 100%;
       height: 140px;
@@ -54,6 +54,7 @@ $bg-item-h: 150px;
 
     p {
       font-size: 0.9em;
+      user-select: none;
     }
   }
 }

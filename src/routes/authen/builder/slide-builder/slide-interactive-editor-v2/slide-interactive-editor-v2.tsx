@@ -7,6 +7,7 @@ import { StoreContext } from "~/mobx/store-context";
 import { SlideBlock } from "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-block-v2/slide-block-v2";
 
 import "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-interactive-editor-v2.scss";
+import { fileUtils } from "~/utils/utils-files";
 
 export const SlideInteractiveEditor: React.FC = observer(() => {
   const store = useContext(StoreContext);
@@ -27,6 +28,7 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
   const anims = list[selectedIndex]?.animations ?? [];
 
   const quizId = list[selectedIndex]?.linkedQuizId;
+  const bg = list[selectedIndex]?.background;
 
   const cRef = useRef<HTMLDivElement>(null);
 
@@ -54,7 +56,7 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
           id="slide-interactive-editor"
           ref={cRef}
           style={{
-            backgroundSize: "cover",
+            backgroundImage: bg ? `url(${fileUtils.getSlideBackgroundUrl(bg)})` : undefined,
           }}
         >
           <h1 className="slide-title">
