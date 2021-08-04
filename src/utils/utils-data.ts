@@ -9,12 +9,6 @@ import { QResult, SlideType } from "~/typings/types";
 import { formattingUtils } from "~/utils/utils-formatting";
 import { quillUtils } from "~/utils/utils-quill";
 
-type ThemeParamsType = {
-  themeId: string;
-  primaryBg: string;
-  secondaryBg: string;
-};
-
 function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean) {
   const subfolderPath = "assets"; // "data";
 

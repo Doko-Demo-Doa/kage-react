@@ -9,7 +9,7 @@ import {
   SLIDE_HTML_HIDDEN_ENTRY_FILE,
 } from "~/common/static-data";
 import QuizDeckModel from "~/mobx/models/quiz-deck";
-import { SlideStockBackgroundMetaType, SlideThemeMetaType } from "~/typings/types";
+import { SlideStockBackgroundMetaType } from "~/typings/types";
 
 function fsNotAvailable() {
   return isEmpty(require("fs"));
@@ -19,14 +19,6 @@ const CACHE_DIR_NAME = "kage-cache";
 const EXPORT_DIR_NAME = "slide_export";
 const SLIDE_MANIFEST_FILE = "manifest.json";
 const ALLOWED_IMPORT_EXTENSIONS = ["zip", "dsa", "dst"];
-
-function getThemeMeta(themeId: string): SlideThemeMetaType {
-  const cachePath = getCacheDirectory("vendor");
-
-  const meta: SlideThemeMetaType = fs.readJsonSync(`${cachePath}/themes/${themeId}/meta.json`);
-
-  return meta;
-}
 
 function getStockBackgroundsMeta(): SlideStockBackgroundMetaType {
   const cachePath = getCacheDirectory("vendor");
@@ -130,7 +122,7 @@ export const fileUtils = {
     // return data.filePaths[0];
   },
   // Chuyển file từ vendor + cache vào thư mục đích
-  copyFromCacheToDest: async (dest: string, onlyAssets?: string[], theme?: string) => {
+  copyFromCacheToDest: async (dest: string, onlyAssets?: string[]) => {
     if (fsNotAvailable()) return;
     const remote = require("@electron/remote");
     // const fs = remote.require("fs-extra");
@@ -150,18 +142,6 @@ export const fileUtils = {
           if (name.includes("themes")) return false;
           return true;
         },
-      });
-      // Chỉ copy theme đang dùng:
-      const cachedThemeDir = path.join(cacheVendorDir, "themes");
-      fs.readdir(cachedThemeDir, (err, files) => {
-        files.forEach((filename) => {
-          if (filename === theme) {
-            fs.copySync(
-              path.join(cachedThemeDir, filename),
-              path.join(destF, "vendor", "themes", theme)
-            );
-          }
-        });
       });
 
       const manifestPath = path.join(cacheDir, SLIDE_MANIFEST_FILE);
@@ -300,30 +280,8 @@ export const fileUtils = {
 
     return `${RESOURCE_PROTOCOL}${cachePath}/backgrounds/${assetName}`;
   },
-  getThemeMeta,
   getUsableAssetUrl: (assetName: string | undefined) => {
     return `${RESOURCE_PROTOCOL}${getCacheDirectory("assets")}/${assetName}`;
-  },
-  getUsableThemeBgUrl: (themeId: string, isSecondary?: boolean) => {
-    if (fsNotAvailable()) return "";
-    const cachePath = getCacheDirectory("vendor");
-
-    const meta: SlideThemeMetaType = getThemeMeta(themeId);
-
-    return `${RESOURCE_PROTOCOL}${cachePath}/themes/${themeId}/${
-      isSecondary ? meta.secondaryBackground : meta.primaryBackground
-    }`;
-  },
-  /**
-   * @deprecated Sẽ không dùng hàm này nữa vì không sử dụng theme, thay vào đó hãy dùng getSlideBackgroundUrl
-   * @param themeId id của theme, viết thường.
-   * @returns
-   */
-  getUsableThemeThumb: (themeId: string) => {
-    if (fsNotAvailable()) return;
-    const cachePath = getCacheDirectory("vendor");
-
-    return `${RESOURCE_PROTOCOL}${cachePath}/themes/${themeId}/theme-thumb.png`;
   },
 
   // Quiz related

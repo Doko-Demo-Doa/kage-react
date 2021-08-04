@@ -121,7 +121,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
 
     const folderPath = await fileUtils.openFolderSaveDialog();
     if (folderPath) {
-      fileUtils.copyFromCacheToDest(folderPath, assetList, slideBuilderMeta.theme);
+      fileUtils.copyFromCacheToDest(folderPath, assetList);
     }
   };
 
