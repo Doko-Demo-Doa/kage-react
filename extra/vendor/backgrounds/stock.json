@@ -3,43 +3,67 @@
   "description": "",
   "list": [
     {
-      "label": "Mẫu slide bunpou trống",
+      "label": "Bunpou trống",
       "file": "c94fdca0.jpg"
     },
     {
-      "label": "Mẫu slide choukai trống",
+      "label": "Bunpou gạch chân",
+      "file": "6649a746.jpg"
+    },
+    {
+      "label": "Choukai trống",
       "file": "216c4780.jpg"
     },
     {
-      "label": "Mẫu slide mojigoi trống",
+      "label": "Mojigoi trống",
       "file": "1b58f5e1.jpg"
     },
     {
-      "label": "Mẫu slide dokkai trống",
+      "label": "Mojigoi có tiêu đề nổi",
+      "file": "60e87584.jpg"
+    },
+    {
+      "label": "Mojigoi có ghi chú",
+      "file": "c236b1ee.jpg"
+    },
+    {
+      "label": "Mojigoi có ghi chú nhỏ",
+      "file": "0d9f694b.jpg"
+    },
+    {
+      "label": "Mojigoi ghi chú nhỏ + gạch chân",
+      "file": "cd3a1f26.jpg"
+    },
+    {
+      "label": "Mojigoi gạch chân",
+      "file": "5e598ab4.jpg"
+    },
+    {
+      "label": "Dokkai trống",
       "file": "58aa8ee6.jpg"
     },
     {
-      "label": "Mẫu slide kaiwa trống",
+      "label": "Kaiwa trống",
       "file": "8875101c.jpg"
     },
     {
-      "label": "Mẫu slide kanji trống",
+      "label": "Kanji trống",
       "file": "dc1f06d0.jpg"
     },
     {
-      "label": "Ảnh nền rừng trúc",
+      "label": "Rừng trúc",
       "file": "539d5be3.png"
     },
     {
-      "label": "Ảnh nền Dora truyền thống",
+      "label": "Truyền thống",
       "file": "1793bb45.png"
     },
     {
-      "label": "Ảnh nền hoa anh đào 1",
+      "label": "Hoa anh đào 1",
       "file": "175dd50b.png"
     },
     {
-      "label": "Ảnh nền hoa anh đào 2",
+      "label": "Hoa anh đào 2",
       "file": "9cd5b6f1.png"
     }
   ]
