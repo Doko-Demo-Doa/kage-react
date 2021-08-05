@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Tabs } from "antd";
 import { HomeOutlined, FileOutlined, SettingOutlined } from "@ant-design/icons";
+import { fileUtils } from "~/utils/utils-files";
 import { SlideBuilder } from "~/routes/authen/builder/slide-builder/slide-builder";
 import { QuizBuilder } from "~/routes/authen/builder/quiz-builder/quiz-builder";
 import { SettingsRoute } from "~/routes/authen/settings/settings-route";
@@ -15,6 +16,8 @@ export function Builder() {
   const [tabKey, setTabKey] = useState("0");
 
   useEffect(() => {
+    fileUtils.clearCacheDir();
+    fileUtils.createCacheDir();
     EventBus.on("SWITCH_TAB", (nk: string) => {
       setTabKey(nk);
     });

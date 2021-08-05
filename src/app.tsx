@@ -5,7 +5,6 @@ import { ElectronEventType } from "~/common/static-data";
 import { BrowserRouter, HashRouter, Switch, Route } from "react-router-dom";
 
 import { isElectron } from "~/utils/utils-platform";
-import { initializeApp } from "~/services/initializer";
 
 import { StoreContext } from "~/mobx/store-context";
 import { rootStore } from "~/mobx/root-store";
@@ -22,8 +21,6 @@ import "~/app.scss";
 
 const AppRouter = ({ children }: { children: React.ReactElement }): React.ReactElement =>
   isElectron() ? <HashRouter>{children}</HashRouter> : <BrowserRouter>{children}</BrowserRouter>;
-
-initializeApp();
 
 const App = (): React.ReactElement => {
   useEffect(() => {
