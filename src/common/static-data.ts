@@ -27,7 +27,7 @@ export const AVAILABLE_FONT_SIZES = [
 // Size của tờ canvas konva, tính bằng px
 export const MinimumCanvasSize = {
   WIDTH: 740,
-  HEIGHT: 540,
+  HEIGHT: 555,
 };
 
 // Gốc toạ độ là góc trên bên trái

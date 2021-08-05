@@ -10,7 +10,7 @@ export const PreviewRoute: React.FC = () => {
     const rootHtml = document.getElementsByTagName("html");
     if (rootHtml[0]) {
       const rHtml = rootHtml[0];
-      rHtml.setAttribute("style", "width: 740px; height: 540px; overflow: hidden;");
+      rHtml.setAttribute("style", "width: 740px; height: 555px; overflow: hidden;");
     }
 
     divRef?.current?.focus();

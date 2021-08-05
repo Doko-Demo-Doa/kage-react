@@ -1,12 +1,13 @@
 import { makeAutoObservable } from "mobx";
-import { DEFAULT_THEME } from "~/common/config";
 import { RootStore } from "~/mobx/root-store";
 import { dataUtils } from "~/utils/utils-data";
 
+/**
+ * Store này chứa thông tin linh tinh của slide, như ID, index đang chọn hiện thời.
+ */
 export class SlideBuilderStore {
   rootStore: RootStore;
   id = "";
-  theme = DEFAULT_THEME;
   selectedIndex = -1;
 
   constructor(rs: RootStore) {
@@ -25,9 +26,5 @@ export class SlideBuilderStore {
    */
   setIndex(newIndex: number) {
     this.selectedIndex = newIndex;
-  }
-
-  setTheme(newTheme: string) {
-    this.theme = newTheme;
   }
 }

@@ -5,6 +5,14 @@ import { AnimationType } from "~/common/static-data";
 import { Delta } from "quill";
 import { dataUtils } from "~/utils/utils-data";
 
+/**
+ * Store này đảm nhiệm chính đến xử lý logic của các trang slide.
+ *   // Use async:
+  // *flow() {
+  //   const response = yield fetch("http://example.com/value")
+  //   this.value = yield response.json()
+  // }
+ */
 export class SlideListStore {
   rootStore: RootStore;
   list: SlideType[] = [];
@@ -41,12 +49,6 @@ export class SlideListStore {
 
     this.list.push(newSlide);
   }
-
-  // Use async:
-  // *flow() {
-  //   const response = yield fetch("http://example.com/value")
-  //   this.value = yield response.json()
-  // }
 
   duplicateSlideAt(index: number) {
     const sourceSlide = this.list[index];
@@ -91,6 +93,13 @@ export class SlideListStore {
     const idx = this.rootStore.slideBuilderStore.selectedIndex;
     const newL = this.list.slice();
     newL[idx].isHidden = isHidden;
+    this.list = newL;
+  }
+
+  setBackgroundForCurrentSlide(bgFilename: string) {
+    const idx = this.rootStore.slideBuilderStore.selectedIndex;
+    const newL = this.list.slice();
+    newL[idx].background = bgFilename;
     this.list = newL;
   }
 

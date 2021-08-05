@@ -20,3 +20,41 @@
     font-size: 12px;
   }
 }
+
+$bg-item-w: 200px;
+$bg-item-h: 150px;
+
+.background-gallery {
+  width: 610px;
+  height: 440px !important;
+  display: flex;
+  flex-wrap: wrap;
+  overflow-y: hidden;
+  align-content: baseline;
+
+  .background-item {
+    width: $bg-item-w;
+    height: 170px;
+    padding: 0.5rem;
+    margin-bottom: 12px;
+
+    .inner {
+      border: 1px solid $color-gray-medium;
+      width: 100%;
+      height: 140px;
+      background-size: cover;
+      background-position: center;
+      transition: 0.2s linear;
+      cursor: pointer;
+
+      &:hover {
+        border: 1px solid $color-midnight;
+      }
+    }
+
+    p {
+      font-size: 0.8em;
+      user-select: none;
+    }
+  }
+}

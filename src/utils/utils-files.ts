@@ -9,7 +9,7 @@ import {
   SLIDE_HTML_HIDDEN_ENTRY_FILE,
 } from "~/common/static-data";
 import QuizDeckModel from "~/mobx/models/quiz-deck";
-import { SlideThemeMetaType } from "~/typings/types";
+import { SlideStockBackgroundMetaType } from "~/typings/types";
 
 function fsNotAvailable() {
   return isEmpty(require("fs"));
@@ -20,10 +20,10 @@ const EXPORT_DIR_NAME = "slide_export";
 const SLIDE_MANIFEST_FILE = "manifest.json";
 const ALLOWED_IMPORT_EXTENSIONS = ["zip", "dsa", "dst"];
 
-function getThemeMeta(themeId: string): SlideThemeMetaType {
+function getStockBackgroundsMeta(): SlideStockBackgroundMetaType {
   const cachePath = getCacheDirectory("vendor");
 
-  const meta: SlideThemeMetaType = fs.readJsonSync(`${cachePath}/themes/${themeId}/meta.json`);
+  const meta: SlideStockBackgroundMetaType = fs.readJsonSync(`${cachePath}/backgrounds/stock.json`);
 
   return meta;
 }
@@ -92,7 +92,8 @@ export const fileUtils = {
   },
   openFileDialog: async () => {
     if (fsNotAvailable()) return;
-    const data = await require("electron").remote.dialog.showOpenDialog({
+    const remote = require("@electron/remote");
+    const data = await remote.dialog.showOpenDialog({
       properties: ["openFile", "dontAddToRecent"],
       filters: [
         {
@@ -104,11 +105,22 @@ export const fileUtils = {
     return data.filePaths[0];
   },
   // Dùng để chọn folder xuất data ra
-  openFolderSaveDialog: async () => {
+  launchFolderOpenDialog: async () => {
     if (fsNotAvailable()) return;
 
-    const data = await require("electron").remote.dialog.showSaveDialog({
-      defaultPath: `quiz-${dayjs().format("YYYYMMDD.HHmmss")}.zip`,
+    const data = await require("electron").remote.dialog.showOpenDialog({
+      properties: ["dontAddToRecent", "dontAddToRecent"],
+      message: "Chọn thư mục xuất",
+    });
+    const dest = data.filePaths;
+    if (!dest) return;
+    return dest[0];
+  },
+  launchFileSaveDialog: async () => {
+    if (fsNotAvailable()) return;
+    const remote = require("@electron/remote");
+    const data = await remote.dialog.showSaveDialog({
+      defaultPath: `slide-${dayjs().format("YYYYMMDD.HHmmss")}.zip`,
       properties: ["dontAddToRecent", "createDirectory"],
       message: "Chọn thư mục xuất file",
     });
@@ -121,15 +133,31 @@ export const fileUtils = {
     // });
     // return data.filePaths[0];
   },
+  launchFolderSaveDialog: async () => {
+    if (fsNotAvailable()) return;
+    const remote = require("@electron/remote");
+    const data = await remote.dialog.showSaveDialog({
+      defaultPath: `slide-${dayjs().format("YYYYMMDD.HHmmss")}`,
+      properties: ["dontAddToRecent", "createDirectory"],
+      message: "Chọn thư mục xuất file",
+    });
+    const dest = data.filePath;
+    if (!dest) return;
+    return dest;
+  },
   // Chuyển file từ vendor + cache vào thư mục đích
-  copyFromCacheToDest: async (dest: string, onlyAssets?: string[], theme?: string) => {
+  copyFromCacheToDest: async (
+    dest: string,
+    onlyAssets?: string[],
+    backgroundFilenames?: string[]
+  ) => {
     if (fsNotAvailable()) return;
     const remote = require("@electron/remote");
     // const fs = remote.require("fs-extra");
     const path = remote.require("path");
 
     const cacheDir: string = getCacheDirectory();
-    const destF = path.join(dest, EXPORT_DIR_NAME);
+    const destF = path.join(dest);
 
     // Nếu có onlyAssets thì chỉ copy các file asset này.
     if (onlyAssets) {
@@ -140,21 +168,26 @@ export const fileUtils = {
         filter: function (name: string) {
           if (name.includes(".DS_Store") || name.includes("thumb.db")) return false;
           if (name.includes("themes")) return false;
+          if (name.includes("backgrounds")) return false;
           return true;
         },
       });
-      // Chỉ copy theme đang dùng:
-      const cachedThemeDir = path.join(cacheVendorDir, "themes");
-      fs.readdir(cachedThemeDir, (err, files) => {
-        files.forEach((filename) => {
-          if (filename === theme) {
-            fs.copySync(
-              path.join(cachedThemeDir, filename),
-              path.join(destF, "vendor", "themes", theme)
-            );
-          }
+
+      // Chỉ copy background đang dùng:
+      if (backgroundFilenames) {
+        const cachedBackgroundDir = path.join(cacheVendorDir, "backgrounds");
+        fs.readdir(cachedBackgroundDir, (err, files) => {
+          files.forEach((filename) => {
+            if (backgroundFilenames.includes(filename)) {
+              console.log("ff", filename);
+              fs.copySync(
+                path.join(cachedBackgroundDir, filename),
+                path.join(destF, "vendor", "backgrounds", filename)
+              );
+            }
+          });
         });
-      });
+      }
 
       const manifestPath = path.join(cacheDir, SLIDE_MANIFEST_FILE);
       fs.copySync(manifestPath, path.join(destF, SLIDE_MANIFEST_FILE));
@@ -192,7 +225,8 @@ export const fileUtils = {
   },
   selectMultipleFiles: () => {
     if (fsNotAvailable()) return;
-    return require("electron").remote.dialog.showOpenDialog({
+    const remote = require("@electron/remote");
+    return remote.dialog.showOpenDialog({
       properties: ["openFile", "multiSelections", "dontAddToRecent"],
       filters: [{ name: "Ảnh", extensions: ["jpg", "png", "gif"] }],
     });
@@ -213,7 +247,8 @@ export const fileUtils = {
       filterz = union(filterz, audioTypes).slice();
     }
 
-    const resp = await require("electron").remote.dialog.showOpenDialog({
+    const remote = require("@electron/remote");
+    const resp = await remote.dialog.showOpenDialog({
       properties: ["openFile", "dontAddToRecent"],
       filters: [{ name: "Media", extensions: filterz }],
     });
@@ -223,6 +258,16 @@ export const fileUtils = {
     if (fsNotAvailable()) return;
     const remote = require("@electron/remote");
     return remote.app.getPath("cache");
+  },
+  clearCacheDir: () => {
+    if (fsNotAvailable()) return;
+    const remote = require("@electron/remote");
+    const fs = remote.require("fs-extra");
+    const cPath = getCacheDirectory();
+
+    if (fs.existsSync(cPath)) {
+      fs.rmdirSync(cPath, { recursive: true });
+    }
   },
   createCacheDir: () => {
     if (fsNotAvailable()) return;
@@ -281,25 +326,19 @@ export const fileUtils = {
   getRootResourceUrl: () => {
     return `${RESOURCE_PROTOCOL}${getCacheDirectory("")}`;
   },
-  getThemeMeta,
-  getUsableAssetUrl: (assetName: string | undefined) => {
-    return `${RESOURCE_PROTOCOL}${getCacheDirectory("assets")}/${assetName}`;
-  },
-  getUsableThemeBgUrl: (themeId: string, isSecondary?: boolean) => {
-    if (fsNotAvailable()) return "";
-    const cachePath = getCacheDirectory("vendor");
-
-    const meta: SlideThemeMetaType = getThemeMeta(themeId);
-
-    return `${RESOURCE_PROTOCOL}${cachePath}/themes/${themeId}/${
-      isSecondary ? meta.secondaryBackground : meta.primaryBackground
-    }`;
-  },
-  getUsableThemeThumb: (themeId: string) => {
+  getStockBackgroundsMeta,
+  /**
+   * @param assetName Tên file background, có liệt kê trong file stock.json
+   * @returns URL đến file background, kích thước khoảng 2000x1500, JPG
+   */
+  getSlideBackgroundUrl: (assetName: string) => {
     if (fsNotAvailable()) return;
     const cachePath = getCacheDirectory("vendor");
 
-    return `${RESOURCE_PROTOCOL}${cachePath}/themes/${themeId}/theme-thumb.png`;
+    return `${RESOURCE_PROTOCOL}${cachePath}/backgrounds/${assetName}`;
+  },
+  getUsableAssetUrl: (assetName: string | undefined) => {
+    return `${RESOURCE_PROTOCOL}${getCacheDirectory("assets")}/${assetName}`;
   },
 
   // Quiz related
@@ -314,7 +353,8 @@ export const fileUtils = {
    */
   exportQuizToFile: async (quizMeta: QuizDeckModel, quizArray: any[]) => {
     if (fsNotAvailable()) return;
-    const data = await require("electron").remote.dialog.showSaveDialog({
+    const remote = require("@electron/remote");
+    const data = await remote.dialog.showSaveDialog({
       defaultPath: `quiz-${dayjs().format("YYYYMMDD.HHmmss")}.json`,
       properties: ["dontAddToRecent", "createDirectory"],
       message: "Chọn thư mục xuất file quiz",
@@ -373,7 +413,7 @@ export const fileUtils = {
       console.log(e);
     }
   },
-  zipFilesTo: (dest: string, ...files: string[]) => {
+  zipFilesTo: (dest: string, assets: string[], backgrounds: string[]) => {
     if (fsNotAvailable()) return;
     const remote = require("@electron/remote");
     const path = remote.require("path");
@@ -387,12 +427,24 @@ export const fileUtils = {
     const manifestPath = path.join(cacheDir, SLIDE_MANIFEST_FILE);
     const htmlEntryPath = path.join(cacheDir, SLIDE_HTML_ENTRY_FILE);
     newZip.addLocalFolder(vendorDir, "vendor");
+    // Loại thư mục background không ra tạm:
+    newZip.deleteFile("vendor/backgrounds/");
+
     newZip.addLocalFile(manifestPath);
     newZip.addLocalFile(htmlEntryPath);
 
-    files.forEach((n) => {
+    assets.forEach((n) => {
       newZip.addLocalFile(path.join(getCacheDirectory("assets"), n), "assets");
     });
+
+    backgrounds.forEach((n) => {
+      newZip.addLocalFile(
+        path.join(getCacheDirectory("vendor"), "backgrounds", n),
+        "vendor/backgrounds"
+      );
+    });
+
+    console.log(newZip.getEntries().map((n) => n.entryName));
 
     newZip.writeZip(path.join(dest));
   },

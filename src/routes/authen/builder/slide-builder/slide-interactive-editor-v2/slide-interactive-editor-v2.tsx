@@ -3,11 +3,11 @@ import { Result, Button } from "antd";
 import { FileUnknownOutlined } from "@ant-design/icons";
 import { observer } from "mobx-react";
 import { formattingUtils } from "~/utils/utils-formatting";
-import { fileUtils } from "~/utils/utils-files";
 import { StoreContext } from "~/mobx/store-context";
 import { SlideBlock } from "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-block-v2/slide-block-v2";
 
 import "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-interactive-editor-v2.scss";
+import { fileUtils } from "~/utils/utils-files";
 
 export const SlideInteractiveEditor: React.FC = observer(() => {
   const store = useContext(StoreContext);
@@ -20,7 +20,7 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
     dragBlock,
     dragAnchor,
   } = store.slideListStore;
-  const { selectedIndex, theme } = store.slideBuilderStore;
+  const { selectedIndex } = store.slideBuilderStore;
 
   const slideTitle = list[selectedIndex]?.title || "";
 
@@ -28,6 +28,7 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
   const anims = list[selectedIndex]?.animations ?? [];
 
   const quizId = list[selectedIndex]?.linkedQuizId;
+  const bg = list[selectedIndex]?.background;
 
   const cRef = useRef<HTMLDivElement>(null);
 
@@ -47,17 +48,6 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
     cRef.current?.dispatchEvent(clickEvent);
   };
 
-  const getBg = () => {
-    if (list.length === 0) return "unset";
-    if (list.length >= 2) {
-      if (selectedIndex <= 0) {
-        return `url(${fileUtils.getUsableThemeBgUrl(theme, false)})`;
-      }
-    }
-
-    return `url(${fileUtils.getUsableThemeBgUrl(theme, true)})`;
-  };
-
   // Nếu lỗi thì bỏ hết những children trong Layer.
   return (
     <div className="i-editor-wrapper">
@@ -66,8 +56,7 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
           id="slide-interactive-editor"
           ref={cRef}
           style={{
-            backgroundImage: getBg(),
-            backgroundSize: "cover",
+            backgroundImage: bg ? `url(${fileUtils.getSlideBackgroundUrl(bg)})` : undefined,
           }}
         >
           <h1 className="slide-title">

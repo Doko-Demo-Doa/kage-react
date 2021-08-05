@@ -14,12 +14,13 @@ export type CustomPublishOptionType = {
   token: string;
 };
 
-export type SlideThemeMetaType = {
-  id: string;
+export type SlideStockBackgroundMetaType = {
   name: string;
-  thumbnail: string;
-  primaryBackground: string;
-  secondaryBackground: string;
+  description: string;
+  list: Array<{
+    label: string;
+    file: string;
+  }>;
 };
 
 export type SlideType = {
@@ -30,6 +31,7 @@ export type SlideType = {
   selectedBlock?: string;
   slideBlocks: SlideBlockType[];
   animations: SlideAnimationType[];
+  background?: string;
 };
 
 export interface SlideBlockType {

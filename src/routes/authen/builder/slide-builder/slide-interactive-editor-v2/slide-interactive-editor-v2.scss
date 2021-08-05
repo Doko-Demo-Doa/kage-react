@@ -22,7 +22,8 @@
     min-height: $interactive-editor-height;
     overflow: hidden;
     position: relative;
-    background-size: contain;
+    background-size: cover;
+    background-repeat: no-repeat;
     // width: calc(100vw - #{$slide-list-width} - #{$entities-width});
     // height: calc(100vh - #{$header-height});
 
