@@ -48,7 +48,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
   const onNewSlide = () => {
     newSlide();
     if (list.length) {
-      slideBuilderMeta.setIndex(0);
+      slideBuilderMeta.setIndex(list.length - 1);
     }
   };
 
