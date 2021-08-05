@@ -92,7 +92,8 @@ export const fileUtils = {
   },
   openFileDialog: async () => {
     if (fsNotAvailable()) return;
-    const data = await require("electron").remote.dialog.showOpenDialog({
+    const remote = require("@electron/remote");
+    const data = await remote.dialog.showOpenDialog({
       properties: ["openFile", "dontAddToRecent"],
       filters: [
         {
@@ -117,8 +118,8 @@ export const fileUtils = {
   },
   launchFileSaveDialog: async () => {
     if (fsNotAvailable()) return;
-
-    const data = await require("electron").remote.dialog.showSaveDialog({
+    const remote = require("@electron/remote");
+    const data = await remote.dialog.showSaveDialog({
       defaultPath: `slide-${dayjs().format("YYYYMMDD.HHmmss")}.zip`,
       properties: ["dontAddToRecent", "createDirectory"],
       message: "Chọn thư mục xuất file",
@@ -134,8 +135,8 @@ export const fileUtils = {
   },
   launchFolderSaveDialog: async () => {
     if (fsNotAvailable()) return;
-
-    const data = await require("electron").remote.dialog.showSaveDialog({
+    const remote = require("@electron/remote");
+    const data = await remote.dialog.showSaveDialog({
       defaultPath: `slide-${dayjs().format("YYYYMMDD.HHmmss")}`,
       properties: ["dontAddToRecent", "createDirectory"],
       message: "Chọn thư mục xuất file",
@@ -224,7 +225,8 @@ export const fileUtils = {
   },
   selectMultipleFiles: () => {
     if (fsNotAvailable()) return;
-    return require("electron").remote.dialog.showOpenDialog({
+    const remote = require("@electron/remote");
+    return remote.dialog.showOpenDialog({
       properties: ["openFile", "multiSelections", "dontAddToRecent"],
       filters: [{ name: "Ảnh", extensions: ["jpg", "png", "gif"] }],
     });
@@ -245,7 +247,8 @@ export const fileUtils = {
       filterz = union(filterz, audioTypes).slice();
     }
 
-    const resp = await require("electron").remote.dialog.showOpenDialog({
+    const remote = require("@electron/remote");
+    const resp = await remote.dialog.showOpenDialog({
       properties: ["openFile", "dontAddToRecent"],
       filters: [{ name: "Media", extensions: filterz }],
     });
@@ -255,6 +258,16 @@ export const fileUtils = {
     if (fsNotAvailable()) return;
     const remote = require("@electron/remote");
     return remote.app.getPath("cache");
+  },
+  clearCacheDir: () => {
+    if (fsNotAvailable()) return;
+    const remote = require("@electron/remote");
+    const fs = remote.require("fs-extra");
+    const cPath = getCacheDirectory();
+
+    if (fs.existsSync(cPath)) {
+      fs.rmdirSync(cPath, { recursive: true });
+    }
   },
   createCacheDir: () => {
     if (fsNotAvailable()) return;
@@ -340,7 +353,8 @@ export const fileUtils = {
    */
   exportQuizToFile: async (quizMeta: QuizDeckModel, quizArray: any[]) => {
     if (fsNotAvailable()) return;
-    const data = await require("electron").remote.dialog.showSaveDialog({
+    const remote = require("@electron/remote");
+    const data = await remote.dialog.showSaveDialog({
       defaultPath: `quiz-${dayjs().format("YYYYMMDD.HHmmss")}.json`,
       properties: ["dontAddToRecent", "createDirectory"],
       message: "Chọn thư mục xuất file quiz",

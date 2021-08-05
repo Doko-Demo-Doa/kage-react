@@ -1,7 +1,6 @@
 import { app, protocol, ipcMain, BrowserWindow } from "electron";
 import { autoUpdater } from "electron-updater";
 import path from "path";
-import fs from "fs";
 import isDev from "electron-is-dev";
 import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
 
@@ -18,13 +17,6 @@ autoUpdater.autoInstallOnAppQuit = true;
 
 const preDefinedWidth = 1240;
 const predefinedHeight = 730;
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function clearCache() {
-  const CACHE_DIR_NAME = "kage-cache";
-  const cPath = path.join(app.getPath("cache"), CACHE_DIR_NAME);
-  fs.unlinkSync(cPath);
-}
 
 const singleInstanceLock = app.requestSingleInstanceLock();
 
