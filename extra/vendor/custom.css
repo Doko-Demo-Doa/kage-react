@@ -6,6 +6,10 @@
   text-align: start;
 }
 
+.reveal .slide-number {
+  font-size: 24px;
+}
+
 .reveal .slide-title {
   color: #0c344b;
   font-family: "Source Sans Pro", Helvetica, sans-serif;
