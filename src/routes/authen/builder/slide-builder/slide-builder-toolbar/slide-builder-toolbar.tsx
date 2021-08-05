@@ -116,12 +116,13 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
     insertBlock(MediaType.CALLOUT, "", "", { width: 200, height: 102 });
   };
 
-  const onPublish = async () => {
+  const onExportToFolder = async () => {
     const assetList = updateDataToCache();
 
-    const folderPath = await fileUtils.openFolderSaveDialog();
+    const folderPath = await fileUtils.launchFolderSaveDialog();
     if (folderPath) {
-      fileUtils.copyFromCacheToDest(folderPath, assetList);
+      const backgroundAssetList = list.map((n) => n.background || "").filter(Boolean);
+      fileUtils.copyFromCacheToDest(folderPath, assetList, backgroundAssetList);
     }
   };
 
@@ -147,9 +148,10 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
 
   const onExportZip = async () => {
     const assetList = updateDataToCache();
-    const path = await fileUtils.openFolderSaveDialog();
+    const path = await fileUtils.launchFileSaveDialog();
     if (path) {
-      fileUtils.zipFilesTo(path, ...assetList);
+      const backgroundAssetList = list.map((n) => n.background || "").filter(Boolean);
+      fileUtils.zipFilesTo(path, assetList, backgroundAssetList);
     }
   };
 
@@ -157,12 +159,18 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
     fileUtils.openFolderBrowser(fileUtils.getCacheDirectory());
   };
 
+  /**
+   * Bật / tắt preview
+   */
   const onTogglePreview = () => {
     updateDataToCache();
-    // setPreview(true);
     ipcRenderer.send(ElectronEventType.OPEN_PREVIEW);
   };
 
+  /**
+   * Ghi dữ liệu từ mobx store thành file HTML hoàn chỉnh, lên danh sách các asset được sử dụng trong các trang slide.
+   * @returns Danh sách asset đã được lọc không trùng lặp.
+   */
   const updateDataToCache = () => {
     let assetList: string[] = [];
     list.forEach((item) => {
@@ -252,7 +260,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
           <Tooltip placement="bottom" title="Xuất ra thư mục">
             <Button
               disabled={shouldDisable}
-              onClick={() => onPublish()}
+              onClick={() => onExportToFolder()}
               icon={<UploadOutlined />}
               type="primary"
             />

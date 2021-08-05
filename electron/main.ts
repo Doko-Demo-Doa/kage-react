@@ -119,7 +119,7 @@ function showPreviewWindow() {
   if (previewWin) return;
   previewWin = new BrowserWindow({
     width: 740,
-    height: 560,
+    height: 580,
     resizable: false,
     focusable: true,
     minimizable: false,

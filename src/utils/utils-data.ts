@@ -12,8 +12,12 @@ import { quillUtils } from "~/utils/utils-quill";
 function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean) {
   const subfolderPath = "assets"; // "data";
 
+  const bgStr = slide.background
+    ? `data-background-image="./vendor/backgrounds/${slide.background}"}`
+    : "";
+
   return stripIndent(`
-    <section ${markHiddenSlides ? 'data-visibility="hidden"' : ""}>
+    <section ${bgStr} ${markHiddenSlides ? 'data-visibility="hidden"' : ""}>
       <h1 class="slide-title">${formattingUtils.furiganaTemplateToHTML(slide.title ?? "")}</h1>
       ${slide.slideBlocks
         .map((block) => {
@@ -223,7 +227,8 @@ export const dataUtils = {
               autoplay: true,
             },
             hash: true,
-            controls: true,
+            controls: false,
+            slideNumber: true,
             disableLayout: false,
             width: ${MinimumCanvasSize.WIDTH},
             height: ${MinimumCanvasSize.HEIGHT},

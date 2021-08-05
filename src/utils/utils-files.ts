@@ -104,11 +104,22 @@ export const fileUtils = {
     return data.filePaths[0];
   },
   // Dùng để chọn folder xuất data ra
-  openFolderSaveDialog: async () => {
+  launchFolderOpenDialog: async () => {
+    if (fsNotAvailable()) return;
+
+    const data = await require("electron").remote.dialog.showOpenDialog({
+      properties: ["dontAddToRecent", "dontAddToRecent"],
+      message: "Chọn thư mục xuất",
+    });
+    const dest = data.filePaths;
+    if (!dest) return;
+    return dest[0];
+  },
+  launchFileSaveDialog: async () => {
     if (fsNotAvailable()) return;
 
     const data = await require("electron").remote.dialog.showSaveDialog({
-      defaultPath: `quiz-${dayjs().format("YYYYMMDD.HHmmss")}.zip`,
+      defaultPath: `slide-${dayjs().format("YYYYMMDD.HHmmss")}.zip`,
       properties: ["dontAddToRecent", "createDirectory"],
       message: "Chọn thư mục xuất file",
     });
@@ -121,15 +132,31 @@ export const fileUtils = {
     // });
     // return data.filePaths[0];
   },
+  launchFolderSaveDialog: async () => {
+    if (fsNotAvailable()) return;
+
+    const data = await require("electron").remote.dialog.showSaveDialog({
+      defaultPath: `slide-${dayjs().format("YYYYMMDD.HHmmss")}`,
+      properties: ["dontAddToRecent", "createDirectory"],
+      message: "Chọn thư mục xuất file",
+    });
+    const dest = data.filePath;
+    if (!dest) return;
+    return dest;
+  },
   // Chuyển file từ vendor + cache vào thư mục đích
-  copyFromCacheToDest: async (dest: string, onlyAssets?: string[]) => {
+  copyFromCacheToDest: async (
+    dest: string,
+    onlyAssets?: string[],
+    backgroundFilenames?: string[]
+  ) => {
     if (fsNotAvailable()) return;
     const remote = require("@electron/remote");
     // const fs = remote.require("fs-extra");
     const path = remote.require("path");
 
     const cacheDir: string = getCacheDirectory();
-    const destF = path.join(dest, EXPORT_DIR_NAME);
+    const destF = path.join(dest);
 
     // Nếu có onlyAssets thì chỉ copy các file asset này.
     if (onlyAssets) {
@@ -140,9 +167,26 @@ export const fileUtils = {
         filter: function (name: string) {
           if (name.includes(".DS_Store") || name.includes("thumb.db")) return false;
           if (name.includes("themes")) return false;
+          if (name.includes("backgrounds")) return false;
           return true;
         },
       });
+
+      // Chỉ copy background đang dùng:
+      if (backgroundFilenames) {
+        const cachedBackgroundDir = path.join(cacheVendorDir, "backgrounds");
+        fs.readdir(cachedBackgroundDir, (err, files) => {
+          files.forEach((filename) => {
+            if (backgroundFilenames.includes(filename)) {
+              console.log("ff", filename);
+              fs.copySync(
+                path.join(cachedBackgroundDir, filename),
+                path.join(destF, "vendor", "backgrounds", filename)
+              );
+            }
+          });
+        });
+      }
 
       const manifestPath = path.join(cacheDir, SLIDE_MANIFEST_FILE);
       fs.copySync(manifestPath, path.join(destF, SLIDE_MANIFEST_FILE));
@@ -355,7 +399,7 @@ export const fileUtils = {
       console.log(e);
     }
   },
-  zipFilesTo: (dest: string, ...files: string[]) => {
+  zipFilesTo: (dest: string, assets: string[], backgrounds: string[]) => {
     if (fsNotAvailable()) return;
     const remote = require("@electron/remote");
     const path = remote.require("path");
@@ -369,12 +413,24 @@ export const fileUtils = {
     const manifestPath = path.join(cacheDir, SLIDE_MANIFEST_FILE);
     const htmlEntryPath = path.join(cacheDir, SLIDE_HTML_ENTRY_FILE);
     newZip.addLocalFolder(vendorDir, "vendor");
+    // Loại thư mục background không ra tạm:
+    newZip.deleteFile("vendor/backgrounds/");
+
     newZip.addLocalFile(manifestPath);
     newZip.addLocalFile(htmlEntryPath);
 
-    files.forEach((n) => {
+    assets.forEach((n) => {
       newZip.addLocalFile(path.join(getCacheDirectory("assets"), n), "assets");
     });
+
+    backgrounds.forEach((n) => {
+      newZip.addLocalFile(
+        path.join(getCacheDirectory("vendor"), "backgrounds", n),
+        "vendor/backgrounds"
+      );
+    });
+
+    console.log(newZip.getEntries().map((n) => n.entryName));
 
     newZip.writeZip(path.join(dest));
   },
