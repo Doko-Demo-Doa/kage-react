@@ -7,16 +7,15 @@ import { dataUtils } from "~/utils/utils-data";
 
 /**
  * Store này đảm nhiệm chính đến xử lý logic của các trang slide.
- *   // Use async:
-  // *flow() {
-  //   const response = yield fetch("http://example.com/value")
-  //   this.value = yield response.json()
-  // }
+ * // Use async:
+ * *flow() {
+ *    const response = yield fetch("http://example.com/value")
+ *    this.value = yield response.json()
+ *  }
  */
 export class SlideListStore {
   rootStore: RootStore;
   list: SlideType[] = [];
-  animationCount = 0;
 
   constructor(rs: RootStore) {
     this.rootStore = rs;

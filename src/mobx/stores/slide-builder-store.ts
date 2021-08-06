@@ -9,6 +9,7 @@ export class SlideBuilderStore {
   rootStore: RootStore;
   id = "";
   selectedIndex = -1;
+  currentWorkingFile = ""; // Path đến file zip / dsa / dst đang làm việc, dùng cho chức năng save/autosave.
 
   constructor(rs: RootStore) {
     this.rootStore = rs;
