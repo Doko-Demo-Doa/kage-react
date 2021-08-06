@@ -43,14 +43,14 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
 
   const store = useContext(StoreContext);
   const { list, setList, newSlide, importSlideTree } = store.slideListStore;
-  const slideBuilderMeta = store.slideBuilderStore;
+  const { selectedIndex, setIndex, importMeta, setCurrentWorkingFile } = store.slideBuilderStore;
 
   const shouldDisable = list.length <= 0;
 
   const onNewSlide = () => {
     newSlide();
     if (list.length) {
-      slideBuilderMeta.setIndex(list.length - 1);
+      setIndex(list.length - 1);
     }
   };
 
@@ -140,9 +140,11 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
         if (manifest) {
           // Nạp manifest mới vào.
           const data = JSON.parse(manifest);
-          slideBuilderMeta.importMeta(data.id);
+          importMeta(data.id);
           importSlideTree(data.layout);
-          slideBuilderMeta.setIndex(0);
+          setIndex(0);
+
+          setCurrentWorkingFile(path);
         }
       }
     }
@@ -221,7 +223,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
     };
 
     // Try not to mutate original object / array.
-    const idx = slideBuilderMeta.selectedIndex;
+    const idx = selectedIndex;
     const newSlideArray = [...list];
 
     const activeSlide = { ...newSlideArray[idx] };
@@ -326,6 +328,8 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
               Mở folder cache
             </Button>
           )}
+
+          <div>Lần lưu lại cuối: 12:00</div>
 
           {isLoading && <Spin style={{ marginTop: 4 }} />}
         </Space>

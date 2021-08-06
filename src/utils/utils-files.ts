@@ -444,8 +444,6 @@ export const fileUtils = {
       );
     });
 
-    console.log(newZip.getEntries().map((n) => n.entryName));
-
     newZip.writeZip(path.join(dest));
   },
 };

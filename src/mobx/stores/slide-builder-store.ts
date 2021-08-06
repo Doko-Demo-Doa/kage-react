@@ -10,6 +10,7 @@ export class SlideBuilderStore {
   id = "";
   selectedIndex = -1;
   currentWorkingFile = ""; // Path đến file zip / dsa / dst đang làm việc, dùng cho chức năng save/autosave.
+  lastSavedTimestamp = 0;
 
   constructor(rs: RootStore) {
     this.rootStore = rs;
@@ -27,5 +28,14 @@ export class SlideBuilderStore {
    */
   setIndex(newIndex: number) {
     this.selectedIndex = newIndex;
+  }
+
+  setCurrentWorkingFile(filePath: string) {
+    this.currentWorkingFile = filePath;
+  }
+
+  // Cần có mốc thời gian để biết được lần cuối save là khi nào. Reset lại khi mở file mới.
+  setLastSavedTime(newUnixTimestamp: number) {
+    this.lastSavedTimestamp = newUnixTimestamp;
   }
 }
