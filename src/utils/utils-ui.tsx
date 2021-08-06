@@ -20,6 +20,9 @@ SizeStyle.whitelist = sizes;
 Quill.register(SizeStyle, true);
 
 export const uiUtils = {
+  setBrowserTitle: (newTitle: string) => {
+    document.title = newTitle;
+  },
   showConfirmation: (
     title: string,
     desc: string,

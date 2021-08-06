@@ -5,6 +5,7 @@ import { SlideBuilderStore } from "~/mobx/stores/slide-builder-store";
 import { QuizListStore } from "~/mobx/stores/quiz-list-store";
 import { fileUtils } from "~/utils/utils-files";
 import { commonHelper } from "~/common/helper";
+import { uiUtils } from "~/utils/utils-ui";
 
 configure({
   enforceActions: "never",
@@ -29,7 +30,8 @@ export const rootStore = new RootStore();
 
 /**
  * Lắng nghe thay đổi và ghi vào file manifest khi:
- * - Length của slide list thay đổi
+ * - Length của slide list thay đổi.
+ * - `currentWorkingFile` thay đổi.
  * Theo chu kì
  */
 autorun(() => {
@@ -38,4 +40,7 @@ autorun(() => {
     const d = commonHelper.prepareExportData(l, rootStore.quizDeckStore.id);
     fileUtils.saveSlideJsonToCache(d);
   }
+
+  const currentWorkingFile = rootStore.slideBuilderStore.currentWorkingFile;
+  uiUtils.setBrowserTitle("Dora Slide Builder - " + currentWorkingFile ?? "");
 });

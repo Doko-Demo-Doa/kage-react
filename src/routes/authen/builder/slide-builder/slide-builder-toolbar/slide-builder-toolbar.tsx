@@ -11,6 +11,8 @@ import {
   MessageOutlined,
   PlusOutlined,
   UploadOutlined,
+  FolderOpenOutlined,
+  SaveOutlined,
 } from "@ant-design/icons";
 import { uniq } from "rambdax";
 import { Delta } from "quill";
@@ -249,6 +251,27 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
 
           <Divider type="vertical" />
 
+          <Tooltip placement="bottom" title="Mở file zip / dsa">
+            <Button
+              onClick={() => onImportZip()}
+              icon={<FolderOpenOutlined />}
+              type="primary"
+              ghost
+              aria-label="Mở file zip"
+            />
+          </Tooltip>
+          <Tooltip placement="bottom" title="Lưu lại file">
+            <Button
+              disabled={shouldDisable}
+              onClick={() => onExportZip()}
+              icon={<SaveOutlined />}
+              type="primary"
+              ghost
+            />
+          </Tooltip>
+
+          <Divider type="vertical" />
+
           <Tooltip placement="bottom" title="Bật / tắt xem thử">
             <Button
               onClick={() => onTogglePreview()}
@@ -263,24 +286,6 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
               onClick={() => onExportToFolder()}
               icon={<UploadOutlined />}
               type="primary"
-            />
-          </Tooltip>
-          <Tooltip placement="bottom" title="Mở file zip">
-            <Button
-              onClick={() => onImportZip()}
-              icon={<ImportOutlined />}
-              type="primary"
-              ghost
-              aria-label="Mở file zip"
-            />
-          </Tooltip>
-          <Tooltip placement="bottom" title="Xuất ra file zip">
-            <Button
-              disabled={shouldDisable}
-              onClick={() => onExportZip()}
-              icon={<FileZipOutlined />}
-              type="primary"
-              ghost
             />
           </Tooltip>
 
