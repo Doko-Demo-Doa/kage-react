@@ -1,4 +1,4 @@
-import { app, protocol, ipcMain, BrowserWindow } from "electron";
+import { app, dialog, protocol, ipcMain, BrowserWindow } from "electron";
 import { autoUpdater } from "electron-updater";
 import path from "path";
 import isDev from "electron-is-dev";
@@ -60,6 +60,20 @@ function createWindow() {
 
   win.once("show", () => {
     win.show();
+  });
+
+  win.on("close", function (e) {
+    const choice = dialog.showMessageBoxSync(this, {
+      type: "question",
+      buttons: ["Có", "Không"],
+      title: "Xác nhận",
+      message: "Bạn có muốn đóng ứng dụng?",
+      cancelId: 1,
+    });
+
+    if (choice !== 0) {
+      e.preventDefault();
+    }
   });
 
   win.on("closed", () => {

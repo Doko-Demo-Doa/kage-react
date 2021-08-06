@@ -3,11 +3,9 @@ import { ipcRenderer } from "electron";
 import { Button, Divider, Tooltip, notification, Space, Spin } from "antd";
 import {
   EyeOutlined,
-  FileZipOutlined,
   FolderOpenFilled,
   FontSizeOutlined,
   FundViewOutlined,
-  ImportOutlined,
   MessageOutlined,
   PlusOutlined,
   UploadOutlined,
@@ -15,6 +13,7 @@ import {
   SaveOutlined,
 } from "@ant-design/icons";
 import { uniq } from "rambdax";
+import dayjs from "dayjs";
 import { Delta } from "quill";
 import { observer } from "mobx-react";
 
@@ -43,7 +42,10 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
 
   const store = useContext(StoreContext);
   const { list, setList, newSlide, importSlideTree } = store.slideListStore;
-  const { selectedIndex, setIndex, importMeta, setCurrentWorkingFile } = store.slideBuilderStore;
+  const { selectedIndex, lastSavedTimestamp, setIndex, importMeta, setCurrentWorkingFile } =
+    store.slideBuilderStore;
+
+  console.log("aaa", lastSavedTimestamp);
 
   const shouldDisable = list.length <= 0;
 
@@ -329,7 +331,9 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
             </Button>
           )}
 
-          <div>Lần lưu lại cuối: 12:00</div>
+          {lastSavedTimestamp ? (
+            <div>{`Lần lưu lại cuối: ${dayjs.unix(lastSavedTimestamp).format("hh:mm")}`}</div>
+          ) : null}
 
           {isLoading && <Spin style={{ marginTop: 4 }} />}
         </Space>
