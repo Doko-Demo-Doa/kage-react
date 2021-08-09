@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { ipcRenderer } from "electron";
 import { Button, Divider, Tooltip, notification, Space, Spin } from "antd";
 import {
@@ -37,15 +37,43 @@ import { StoreContext } from "~/mobx/store-context";
 
 import "~/routes/authen/builder/slide-builder/slide-builder-toolbar/slide-builder-toolbar.scss";
 
+const INTERVAL_TIME = 60000;
+
 export const SlideBuilderToolbar: React.FC = observer(() => {
   const [isLoading, setLoading] = useState(false);
 
   const store = useContext(StoreContext);
   const { list, setList, newSlide, importSlideTree } = store.slideListStore;
-  const { selectedIndex, lastSavedTimestamp, setIndex, importMeta, setCurrentWorkingFile } =
-    store.slideBuilderStore;
+  const {
+    selectedIndex,
+    lastSavedTimestamp,
+    currentWorkingFile,
+    setIndex,
+    importMeta,
+    setCurrentWorkingFile,
+  } = store.slideBuilderStore;
 
   const shouldDisable = list.length <= 0;
+
+  useEffect(() => {
+    // Tự động save sau interval.
+    const interv = setInterval(() => {
+      if (currentWorkingFile) {
+        console.info("[Autosave] Auto-saved file to: ", currentWorkingFile);
+        saveZipFile(currentWorkingFile);
+      }
+    }, INTERVAL_TIME);
+
+    return () => {
+      clearInterval(interv);
+    };
+  });
+
+  const saveZipFile = (outputPath: string) => {
+    const assetList = updateDataToCache();
+    const backgroundAssetList = list.map((n) => n.background || "").filter(Boolean);
+    fileUtils.zipFilesTo(outputPath, assetList, backgroundAssetList);
+  };
 
   const onNewSlide = () => {
     newSlide();
@@ -151,11 +179,9 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
   };
 
   const onExportZip = async () => {
-    const assetList = updateDataToCache();
     const path = await fileUtils.launchFileSaveDialog();
     if (path) {
-      const backgroundAssetList = list.map((n) => n.background || "").filter(Boolean);
-      fileUtils.zipFilesTo(path, assetList, backgroundAssetList);
+      saveZipFile(path);
     }
   };
 
