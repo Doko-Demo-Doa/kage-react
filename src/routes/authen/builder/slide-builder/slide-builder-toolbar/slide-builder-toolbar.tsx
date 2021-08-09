@@ -45,8 +45,6 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
   const { selectedIndex, lastSavedTimestamp, setIndex, importMeta, setCurrentWorkingFile } =
     store.slideBuilderStore;
 
-  console.log("aaa", lastSavedTimestamp);
-
   const shouldDisable = list.length <= 0;
 
   const onNewSlide = () => {
