@@ -4,8 +4,8 @@ import { Rnd } from "react-rnd";
 import clsx from "clsx";
 import { Delta } from "quill";
 import { PlusOutlined, BgColorsOutlined } from "@ant-design/icons";
-import { TwitterPicker } from "react-color";
-import { MediaType } from "~/common/static-data";
+import { TwitterPicker, BlockPicker } from "react-color";
+import { DEFAULT_COLOR_PICKER_PALETTE, MediaType } from "~/common/static-data";
 import { SlideAnimationType, SlideBlockType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
 import { quillUtils } from "~/utils/utils-quill";
@@ -162,41 +162,68 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
 
     if (type === MediaType.TEXT_BLOCK) {
       return (
-        <Rnd
-          bounds="parent"
-          onDragStop={(e, d) => {
-            const topLeftX = d.x;
-            const topLeftY = d.y;
+        <>
+          <Rnd
+            bounds="parent"
+            onDragStop={(e, d) => {
+              const topLeftX = d.x;
+              const topLeftY = d.y;
 
-            onDrag?.(id, { x: topLeftX, y: topLeftY });
-          }}
-          position={{
-            x: initX,
-            y: initY,
-          }}
-          enableResizing={false}
-          className="single-block"
-        >
-          <div
-            ref={textBlockRef}
-            onClick={() => onSelect(id)}
-            onDoubleClick={() =>
-              uiUtils.showQuillEditor(deltaContent || "", (data) => {
-                onTextChanged?.(id, data);
-              })
-            }
-            onMouseDown={() => onSelect?.(id)}
-            className={clsx(
-              "text-block",
-              "interactive-text-block",
-              selected ? "interactive-text-block-selected" : ""
-            )}
+              onDrag?.(id, { x: topLeftX, y: topLeftY });
+            }}
+            position={{
+              x: initX,
+              y: initY,
+            }}
+            enableResizing={false}
+            style={{
+              zIndex: 2,
+            }}
+            className="single-block"
           >
-            <div className="text-block-content">
-              {formattingUtils.htmlToJSX(quillUtils.quillDeltaToHtml(deltaContent?.ops))}
+            {selected && (
+              <Dropdown
+                overlay={
+                  <BlockPicker
+                    onChangeComplete={(col) => {
+                      onChangeBgColor?.(id, col.hex);
+                    }}
+                    colors={DEFAULT_COLOR_PICKER_PALETTE}
+                  />
+                }
+                trigger={["click"]}
+              >
+                <div className="block-handle animation-anchor" title="Click để đổi màu nền">
+                  {animIndex !== undefined && animIndex > -1 ? (
+                    `${animIndex + 1}`
+                  ) : (
+                    <BgColorsOutlined />
+                  )}
+                </div>
+              </Dropdown>
+            )}
+            <div
+              ref={textBlockRef}
+              onClick={() => onSelect(id)}
+              onDoubleClick={() =>
+                uiUtils.showQuillEditor(deltaContent || "", (data) => {
+                  onTextChanged?.(id, data);
+                })
+              }
+              style={{ backgroundColor: bgColor }}
+              onMouseDown={() => onSelect?.(id)}
+              className={clsx(
+                "text-block",
+                "interactive-text-block",
+                selected ? "interactive-text-block-selected" : ""
+              )}
+            >
+              <div className="text-block-content">
+                {formattingUtils.htmlToJSX(quillUtils.quillDeltaToHtml(deltaContent?.ops))}
+              </div>
             </div>
-          </div>
-        </Rnd>
+          </Rnd>
+        </>
       );
     }
 
@@ -271,15 +298,12 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
                       onChangeComplete={(col) => {
                         onChangeBgColor?.(id, col.hex);
                       }}
+                      colors={DEFAULT_COLOR_PICKER_PALETTE}
                     />
                   }
                   trigger={["click"]}
                 >
-                  <div
-                    className="block-handle animation-anchor"
-                    title="Click đôi để thêm animation"
-                    onDoubleClick={() => onToggleAnimation?.(id)}
-                  >
+                  <div className="block-handle animation-anchor" title="Click để đổi màu nền">
                     {animIndex !== undefined && animIndex > -1 ? (
                       `${animIndex + 1}`
                     ) : (
@@ -329,7 +353,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
           </Rnd>
           <svg
             style={{
-              zIndex: 2,
+              zIndex: 0,
               overflow: "visible",
             }}
           >

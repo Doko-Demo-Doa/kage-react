@@ -66,7 +66,6 @@ $animation-anchor-size: 24px;
 
 .interactive-text-block {
   position: relative;
-  background-color: white;
   border: 1px dashed $color-cyan-light;
 
   .drag-handle {
@@ -80,7 +79,7 @@ $animation-anchor-size: 24px;
   }
 
   .separated-block {
-    color: green;
+    color: $color-green;
   }
 }
 

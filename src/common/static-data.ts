@@ -24,6 +24,19 @@ export const AVAILABLE_FONT_SIZES = [
   "72px",
 ];
 
+export const DEFAULT_COLOR_PICKER_PALETTE = [
+  "#D9E3F0",
+  "#F47373",
+  "#697689",
+  "#37D67A",
+  "#2CCCE4",
+  "#555555",
+  "#dce775",
+  "#ff8a65",
+  "#ba68c8",
+  "transparent",
+];
+
 // Size của tờ canvas konva, tính bằng px
 export const MinimumCanvasSize = {
   WIDTH: 740,
