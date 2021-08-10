@@ -74,6 +74,8 @@ export const audioUtils = {
       const dest = path.join(outputPath || fileUtils.getCacheDirectory("assets"), tempName);
       const cmd = ffmpeg()
         .setFfmpegPath(getFfmpegPath())
+        .noVideo()
+        .audioCodec("libmp3lame")
         .on("progress", function (data: any) {
           // console.log("[ffmpeg]:", data);
           progressCallback?.(data.percent, "", "", "");
