@@ -188,6 +188,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
     const path = await fileUtils.launchFileSaveDialog();
     if (path) {
       saveZipFile(path);
+      setCurrentWorkingFile(path);
     }
   };
 
