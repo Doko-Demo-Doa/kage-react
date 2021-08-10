@@ -78,6 +78,8 @@ function createWindow() {
 
   win.on("closed", () => {
     win = null;
+    previewWin?.close();
+    previewWin = null;
   });
 
   app.whenReady().then(() => {

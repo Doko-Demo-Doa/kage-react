@@ -8,6 +8,7 @@
 
 .reveal .slide-number {
   font-size: 24px;
+  background-color: transparent;
 }
 
 .reveal .slide-title {
