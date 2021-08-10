@@ -16,7 +16,7 @@ function fsNotAvailable() {
 }
 
 const CACHE_DIR_NAME = "kage-cache";
-const EXPORT_DIR_NAME = "slide_export";
+const BACKUP_FILE_NAME = "backup.zip";
 const SLIDE_MANIFEST_FILE = "manifest.json";
 const ALLOWED_IMPORT_EXTENSIONS = ["zip", "dsa", "dst"];
 
@@ -108,6 +108,13 @@ function getQuizCacheDirectory(type?: "assets" | "vendor") {
   const cPath = path.join(getCacheDirectory("quiz"), subdir);
 
   return cPath.replace(/\\/g, "/");
+}
+
+function checkFileExists(path: string): boolean {
+  if (fsNotAvailable()) return false;
+  const remote = require("@electron/remote");
+  const fs = remote.require("fs-extra");
+  return fs.existsSync(path);
 }
 
 export const fileUtils = {
@@ -249,26 +256,6 @@ export const fileUtils = {
     }
     fs.copySync(cacheDir, destF);
   },
-  // Copy các file vendor vào thư mục chỉ định.
-  copyVendorFilesToDest: async (dest: string) => {
-    if (fsNotAvailable()) return;
-    const remote = require("@electron/remote");
-    const fs = remote.require("fs-extra");
-    const path = remote.require("path");
-
-    let vendorPath = "";
-
-    if (process.env.NODE_ENV !== "production") {
-      // Copy từ folder trong project ra. Nằm ở extra/vendor nếu là dev
-      vendorPath = path.join(path.resolve("./"), "extra", "vendor");
-    } else {
-      // Nếu là release thì nó nằm ở dora-extra. Tham khảo file electron-builder.yml
-      vendorPath = path.dirname(__dirname, "dora-extra");
-    }
-
-    const destVendor = path.join(dest, EXPORT_DIR_NAME, "vendor");
-    fs.copySync(vendorPath, destVendor);
-  },
   selectMultipleFiles: () => {
     if (fsNotAvailable()) return;
     const remote = require("@electron/remote");
@@ -300,10 +287,11 @@ export const fileUtils = {
     });
     return resp?.filePaths[0];
   },
-  getWorkingDirectory: () => {
+  deleteFileAt: (path: string) => {
     if (fsNotAvailable()) return;
     const remote = require("@electron/remote");
-    return remote.app.getPath("cache");
+    const fs = remote.require("fs-extra");
+    fs.unlink(path);
   },
   clearCacheDir: () => {
     if (fsNotAvailable()) return;
@@ -316,7 +304,19 @@ export const fileUtils = {
     }
   },
   createCacheDir,
+  checkFileExists,
   getCacheDirectory,
+  /**
+   * Lấy đường dẫn file slide backup khi người dùng soạn slide nhưng chưa lưu vào file nào.
+   * @returns Đường dẫn đến file backup zip chứa file slide được backup 1 phút / lần.
+   */
+  getBackupFilePath: () => {
+    if (fsNotAvailable()) return;
+    const remote = require("@electron/remote");
+    const path = remote.require("path");
+    const cachePath = getCacheDirectory();
+    return path.join(cachePath, BACKUP_FILE_NAME);
+  },
   getQuizCacheDirectory,
   createFilePathAtCacheDir: (filename: string) => {
     if (fsNotAvailable()) return;

@@ -1,4 +1,4 @@
-import { app, dialog, protocol, ipcMain, BrowserWindow } from "electron";
+import { app, protocol, ipcMain, BrowserWindow } from "electron";
 import { autoUpdater } from "electron-updater";
 import path from "path";
 import isDev from "electron-is-dev";
@@ -19,6 +19,8 @@ const preDefinedWidth = 1240;
 const predefinedHeight = 730;
 
 const singleInstanceLock = app.requestSingleInstanceLock();
+
+let isPrompting = false;
 
 // Only run single instance
 if (!singleInstanceLock) {
@@ -59,20 +61,15 @@ function createWindow() {
   }
 
   win.once("show", () => {
+    isPrompting = false;
     win.show();
   });
 
   win.on("close", function (e) {
-    const choice = dialog.showMessageBoxSync(this, {
-      type: "question",
-      buttons: ["Có", "Không"],
-      title: "Xác nhận",
-      message: "Bạn có muốn đóng ứng dụng?",
-      cancelId: 1,
-    });
-
-    if (choice !== 0) {
+    if (!isPrompting) {
       e.preventDefault();
+      win.webContents.send(StaticData.ElectronEventType.OPEN_APP_CLOSE_PROMPT);
+      isPrompting = true;
     }
   });
 
@@ -111,6 +108,15 @@ function createWindow() {
 
     ipcMain.on(StaticData.ElectronEventType.OPEN_PREVIEW, (event, args) => {
       showPreviewWindow();
+    });
+
+    ipcMain.on(StaticData.ElectronEventType.CLOSE_APP, () => {
+      win.close();
+      app.quit();
+    });
+
+    ipcMain.on(StaticData.ElectronEventType.ON_CANCEL_CLOSE_PROMPT, () => {
+      isPrompting = false;
     });
   });
 

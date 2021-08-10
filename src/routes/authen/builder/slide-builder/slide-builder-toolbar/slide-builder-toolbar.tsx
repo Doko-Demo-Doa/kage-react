@@ -31,7 +31,6 @@ import { dataUtils } from "~/utils/utils-data";
 import { isElectron } from "~/utils/utils-platform";
 import { uiUtils } from "~/utils/utils-ui";
 import { commonHelper } from "~/common/helper";
-import { Colors } from "~/common/colors";
 import { SlideBlockType } from "~/typings/types";
 import { StoreContext } from "~/mobx/store-context";
 
@@ -61,6 +60,13 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
       if (currentWorkingFile) {
         console.info("[Autosave] Auto-saved file to: ", currentWorkingFile);
         saveZipFile(currentWorkingFile);
+      } else {
+        // Nếu currentWorkingFile không được chỉ định nhưng đang có data slide thì vẫn nên save backup vào folder cache.
+        if (list.length > 0) {
+          const backupPath = fileUtils.getBackupFilePath();
+          console.info("[Autosave] Auto-saved backup file to: ", backupPath);
+          saveZipFile(backupPath);
+        }
       }
     }, INTERVAL_TIME);
 
