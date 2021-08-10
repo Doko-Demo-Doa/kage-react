@@ -149,7 +149,7 @@ function showPreviewWindow() {
     previewWin.loadURL("http://localhost:3000/#/preview");
   } else {
     // 'build/index.html'
-    previewWin.loadURL(`file://${__dirname}/../index.html/#/preview`);
+    previewWin.loadURL(`file://${__dirname}/../index.html#/preview`);
   }
 
   previewWin.show();
