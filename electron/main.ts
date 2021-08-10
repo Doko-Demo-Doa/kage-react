@@ -106,7 +106,7 @@ function createWindow() {
       autoUpdater.quitAndInstall();
     });
 
-    ipcMain.on(StaticData.ElectronEventType.OPEN_PREVIEW, (event, args) => {
+    ipcMain.on(StaticData.ElectronEventType.OPEN_PREVIEW, () => {
       showPreviewWindow();
     });
 
