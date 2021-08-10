@@ -48,6 +48,52 @@ function getCacheDirectory(type?: "assets" | "quiz" | "vendor" | ""): string {
 }
 
 /**
+ * Tạo đầy đủ thư mục cache và update các file css custom, vendor mới đè lên vendor của slide cũ.
+ */
+function createCacheDir() {
+  if (fsNotAvailable()) return;
+  const remote = require("@electron/remote");
+  const path = require("path");
+  const fs = remote.require("fs-extra");
+
+  // Tạo cache dir
+  const cacheDir = getCacheDirectory();
+  if (!fs.existsSync(cacheDir)) {
+    fs.mkdirSync(cacheDir);
+  }
+  const assetsDir = getCacheDirectory("assets");
+  if (!fs.existsSync(assetsDir)) {
+    fs.mkdirSync(assetsDir);
+  }
+  const vendorDir = getCacheDirectory("vendor");
+  if (!fs.existsSync(vendorDir)) {
+    fs.mkdirSync(vendorDir);
+  }
+  const quizDir = getCacheDirectory("quiz");
+  if (!fs.existsSync(quizDir)) {
+    fs.mkdirSync(quizDir);
+    fs.mkdirSync(`${quizDir}/assets`);
+  }
+
+  let resourcePath = "";
+
+  // Copy đống file từ extra vào cache
+  if (process.env.NODE_ENV !== "production") {
+    // Copy từ folder trong project ra. Nằm ở extra/vendor nếu là dev
+    resourcePath = path.join(path.resolve("./"), "extra", "vendor");
+  } else {
+    // Nếu là release thì nó nằm ở dora-extra. Tham khảo file electron-builder.yml
+    fs.readdirSync(path.join(process.resourcesPath, "dora-extra", "vendor"));
+    resourcePath = path.join(process.resourcesPath, "dora-extra", "vendor");
+  }
+
+  const destVendor = path.join(vendorDir);
+
+  fs.copySync(resourcePath, destVendor);
+  return remote.app.getPath("cache");
+}
+
+/**
  * Lấy path của folder quiz cache. Nằm ở kage-cache/quiz
  * Nếu có type thì lấy path thư mục con là tên của type.
  * VD: kage-cache/quiz/assets hay kage-cache/quiz/vendor
@@ -269,48 +315,7 @@ export const fileUtils = {
       fs.rmdirSync(cPath, { recursive: true });
     }
   },
-  createCacheDir: () => {
-    if (fsNotAvailable()) return;
-    const remote = require("@electron/remote");
-    const path = require("path");
-    const fs = remote.require("fs-extra");
-
-    // Tạo cache dir
-    const cacheDir = getCacheDirectory();
-    if (!fs.existsSync(cacheDir)) {
-      fs.mkdirSync(cacheDir);
-    }
-    const assetsDir = getCacheDirectory("assets");
-    if (!fs.existsSync(assetsDir)) {
-      fs.mkdirSync(assetsDir);
-    }
-    const vendorDir = getCacheDirectory("vendor");
-    if (!fs.existsSync(vendorDir)) {
-      fs.mkdirSync(vendorDir);
-    }
-    const quizDir = getCacheDirectory("quiz");
-    if (!fs.existsSync(quizDir)) {
-      fs.mkdirSync(quizDir);
-      fs.mkdirSync(`${quizDir}/assets`);
-    }
-
-    let resourcePath = "";
-
-    // Copy đống file từ extra vào cache
-    if (process.env.NODE_ENV !== "production") {
-      // Copy từ folder trong project ra. Nằm ở extra/vendor nếu là dev
-      resourcePath = path.join(path.resolve("./"), "extra", "vendor");
-    } else {
-      // Nếu là release thì nó nằm ở dora-extra. Tham khảo file electron-builder.yml
-      fs.readdirSync(path.join(process.resourcesPath, "dora-extra", "vendor"));
-      resourcePath = path.join(process.resourcesPath, "dora-extra", "vendor");
-    }
-
-    const destVendor = path.join(vendorDir);
-
-    fs.copySync(resourcePath, destVendor);
-    return remote.app.getPath("cache");
-  },
+  createCacheDir,
   getCacheDirectory,
   getQuizCacheDirectory,
   createFilePathAtCacheDir: (filename: string) => {
@@ -408,6 +413,8 @@ export const fileUtils = {
     try {
       const zip = new AdmZip(zipPath);
       zip.extractAllTo(cacheDir, true);
+      // Copy lại đống vendor vào cache để update:
+      fileUtils.createCacheDir();
       return zip.readAsText(SLIDE_MANIFEST_FILE);
     } catch (e) {
       console.log(e);

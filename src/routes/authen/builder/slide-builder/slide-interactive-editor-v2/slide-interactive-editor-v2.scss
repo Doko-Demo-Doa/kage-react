@@ -28,16 +28,16 @@
     // height: calc(100vh - #{$header-height});
 
     .slide-title {
-      color: #222;
+      color: $color-midnight;
       font-family: "Source Sans Pro", Helvetica, sans-serif;
-      font-size: 54px;
+      font-size: 60px;
       font-weight: 600;
       letter-spacing: normal;
       line-height: 1.2;
       position: absolute;
       left: 0;
       right: 0;
-      top: 32px;
+      top: 58px;
       text-align: center;
       text-shadow: none;
       max-width: 580px;
