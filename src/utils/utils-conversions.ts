@@ -9,8 +9,8 @@ import { fileUtils } from "~/utils/utils-files";
 import { MediaType } from "~/common/static-data";
 
 const OptimalImageSize = {
-  width: 1000,
-  height: 725,
+  width: 1800,
+  height: 1200,
 };
 
 function getFfmpegPath(isProbe?: boolean) {
@@ -112,7 +112,7 @@ export const imageUtils = {
 
   isImageOptimized: (width?: number, height?: number) => {
     if (!width || !height) return false;
-    if (width > 1280 || height > 720) return false;
+    if (width > OptimalImageSize.width || height > OptimalImageSize.height) return false;
     return true;
   },
 
