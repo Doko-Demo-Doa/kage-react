@@ -22,12 +22,12 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean) {
       ${slide.slideBlocks
         .map((block) => {
           // Tìm trong danh sách animation mà có blockId trùng thì lấy ra xử lý.
-          const anim = slide.animations.findIndex((n) => n.blockId === block.id);
+          const anim = slide.animations.find((n) => n.blockId === block.id);
           let animAppend = "";
 
-          if (anim !== -1) {
+          if (anim) {
             // Thống nhất dặt fragment-index bắt đầu từ 1
-            animAppend = `class="fragment" data-fragment-index="${anim + 1}" `;
+            animAppend = `class="fragment" data-fragment-index="${anim.animationIndex}" `;
           }
 
           if (block.type === MediaType.VIDEO) {
@@ -107,7 +107,7 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean) {
 
           // Ta chỉ xử lý những audio trong danh sách animation
           // vì nếu không đưa vào danh sách animation, audio sẽ luôn bật ở chế độ nền.
-          if (block.type === MediaType.AUDIO && anim !== -1) {
+          if (block.type === MediaType.AUDIO && anim?.animationIndex !== -1) {
             return `
             <p
               ${animAppend}

@@ -1,13 +1,13 @@
 import React from "react";
 import {
-  FunctionOutlined,
   SoundTwoTone,
   PictureTwoTone,
   VideoCameraTwoTone,
   FontSizeOutlined,
+  WechatFilled,
   HeartTwoTone,
 } from "@ant-design/icons";
-import { Menu, Dropdown } from "antd";
+import { Menu, Dropdown, InputNumber } from "antd";
 import clsx from "clsx";
 import { AnimationType, MediaType } from "~/common/static-data";
 import { SlideBlockType } from "~/typings/types";
@@ -15,25 +15,29 @@ import { Colors } from "~/common/colors";
 
 import "~/routes/authen/builder/slide-builder/slide-entities/animation-entity/animation-entity.scss";
 
-type AnimationEntityProps = {
+type Props = {
   id: string;
   idx?: number;
+  animIdx: number;
   animationType: AnimationType;
   blockId: string;
   blocks: Partial<SlideBlockType>[];
   selected?: boolean;
   onClick?: (animId: string, blockId: string) => void | undefined;
   onDeleteAnimation?: (blockId: string) => void | undefined;
+  onChangeAnimationIndex?: (animId: string, blockId: string, index: number) => void | undefined;
 };
 
-export const AnimationEntity: React.FC<AnimationEntityProps> = ({
+export const AnimationEntity: React.FC<Props> = ({
   id,
   idx,
+  animIdx,
   blocks,
   blockId,
   selected,
   onClick,
   onDeleteAnimation,
+  onChangeAnimationIndex,
 }) => {
   const menu = (
     <Menu>
@@ -47,7 +51,7 @@ export const AnimationEntity: React.FC<AnimationEntityProps> = ({
     </Menu>
   );
 
-  const name = `Hiệu ứng ${(idx || 0) + 1}`;
+  const name = `Ani ${(idx || 0) + 1}`;
 
   function getIcon() {
     const type = blocks.find((b) => b.id === blockId)?.type;
@@ -63,6 +67,9 @@ export const AnimationEntity: React.FC<AnimationEntityProps> = ({
     if (type === MediaType.TEXT_BLOCK) {
       return <FontSizeOutlined style={{ color: Colors.INDIGO }} />;
     }
+    if (type === MediaType.CALLOUT) {
+      return <WechatFilled style={{ color: Colors.GREEN }} />;
+    }
     return <HeartTwoTone twoToneColor={Colors.GOLD_LIGHT} />;
   }
 
@@ -72,7 +79,15 @@ export const AnimationEntity: React.FC<AnimationEntityProps> = ({
         className={clsx("animation-entity", selected ? "animation-entity-selected" : "")}
         onClick={() => onClick?.(id, blockId)}
       >
-        <FunctionOutlined style={{ color: Colors.BARBIE_PINK }} />
+        <InputNumber
+          style={{ width: 70 }}
+          min={0}
+          max={9999}
+          defaultValue={animIdx}
+          onChange={(e: number) => {
+            onChangeAnimationIndex?.(id, blockId, e);
+          }}
+        />
         <div className="separator" />
         {getIcon()}
         <div className="separator" />

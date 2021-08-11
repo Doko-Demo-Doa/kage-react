@@ -131,11 +131,24 @@ export class SlideListStore {
         id: dataUtils.generateShortUid(),
         animationType: AnimationType.APPEAR,
         blockId,
+        animationIndex: 0,
       });
     } else {
       this.list[idx].animations = this.list[idx].animations.filter(
         (n) => n.id !== currentAnims[targetAnim].id
       );
+    }
+  }
+
+  setAnimationIndex(animId: string, blockId: string, animIdx: number) {
+    const idx = this.rootStore.slideBuilderStore.selectedIndex;
+    const currentAnims = [...this.list[idx].animations];
+
+    const targetAnim = currentAnims.findIndex((n) => n.blockId === blockId);
+
+    if (targetAnim !== -1) {
+      currentAnims[targetAnim].animationIndex = animIdx;
+      this.list[idx].animations = currentAnims;
     }
   }
 
