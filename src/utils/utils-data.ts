@@ -82,7 +82,7 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean) {
               position: absolute;
               padding: 10px;
               user-select: auto;
-              width: auto;
+              width: ${block.size?.w ? block.size?.w + "px" : "auto"};
               height: auto;
               display: inline-block;
               background-color: ${block.bgColor};

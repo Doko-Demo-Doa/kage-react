@@ -78,12 +78,22 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
 
   useEffect(() => {
     if (type === MediaType.TEXT_BLOCK) {
+      recalculateWrappingTextBlock();
+    }
+  }, []);
+
+  function recalculateWrappingTextBlock() {
+    // Sử dụng để tính toán lại kích thước của kích thước khổi.
+    if (type === MediaType.TEXT_BLOCK) {
       // Do text block không resize mà phụ thuộc vào nội dung của text
       // Nên ta cần tính toán luôn.
       initW = textBlockRef.current?.clientWidth ?? 0;
       initH = textBlockRef.current?.clientHeight ?? 0;
+
+      setBlockW(initW);
+      setBlockH(initH);
     }
-  }, []);
+  }
 
   const getMainComponent = () => {
     if (type === MediaType.IMAGE || type === MediaType.VIDEO) {
@@ -175,7 +185,38 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
               x: initX,
               y: initY,
             }}
-            enableResizing={false}
+            onResizeStop={(mouseEvent, direction, element, delta, position) => {
+              const newW = blockW + delta.width;
+              const newH = blockH + delta.height;
+
+              setBlockW(newW);
+              setBlockH(newH);
+
+              const newX = position.x;
+              const newY = position.y;
+
+              onResized?.(id, { x: newX, y: newY }, { w: newW, h: newH });
+            }}
+            default={{
+              x: initX,
+              y: initY,
+              width: initW,
+              height: initH,
+            }}
+            size={{
+              width: blockW,
+              height: blockH,
+            }}
+            enableResizing={{
+              top: false,
+              right: true,
+              bottom: false,
+              left: true,
+              topRight: false,
+              bottomRight: false,
+              bottomLeft: false,
+              topLeft: false,
+            }}
             style={{
               zIndex: 2,
             }}
@@ -210,7 +251,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
                   onTextChanged?.(id, data);
                 })
               }
-              style={{ backgroundColor: bgColor }}
+              style={{ backgroundColor: bgColor || "transparent" }}
               onMouseDown={() => onSelect?.(id)}
               className={clsx(
                 "text-block",
@@ -283,7 +324,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
           >
             <div
               className="callout-inside"
-              style={{ backgroundColor: bgColor }}
+              style={{ backgroundColor: bgColor || "transparent" }}
               onClick={() => onSelect?.(id)}
               onDoubleClick={() =>
                 uiUtils.showQuillEditor(deltaContent || "", (data) => {

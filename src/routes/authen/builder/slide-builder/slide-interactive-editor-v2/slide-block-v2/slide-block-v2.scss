@@ -70,6 +70,7 @@ $animation-anchor-size: 24px;
 .interactive-text-block {
   position: relative;
   border: 1px dashed $color-cyan-light;
+  overflow-wrap: break-word;
 
   .drag-handle {
     width: 24px;
