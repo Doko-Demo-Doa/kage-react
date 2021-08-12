@@ -14,6 +14,8 @@ import { uiUtils } from "~/utils/utils-ui";
 
 import "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-block-v2/slide-block-v2.scss";
 
+const MINIMUM_TEXT_BLOCK_WIDTH = 160; // In px
+
 type SlideBlockComponentType = SlideBlockType & {
   selected?: boolean;
   animations?: SlideAnimationType[];
@@ -185,6 +187,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
               x: initX,
               y: initY,
             }}
+            minWidth={5}
             onResizeStop={(mouseEvent, direction, element, delta, position) => {
               const newW = blockW + delta.width;
               const newH = blockH + delta.height;
@@ -204,7 +207,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
               height: initH,
             }}
             size={{
-              width: blockW,
+              width: blockW || MINIMUM_TEXT_BLOCK_WIDTH,
               height: blockH,
             }}
             enableResizing={{
