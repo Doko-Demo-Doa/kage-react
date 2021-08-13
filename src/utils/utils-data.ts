@@ -27,7 +27,7 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean) {
           const anim = slide.animations.find((n) => n.blockId === block.id);
           let animAppend = "";
 
-          if (anim) {
+          if (anim && !anim.mediaAutoplay) {
             // Thống nhất dặt fragment-index bắt đầu từ 1
             animAppend = `class="fragment" data-fragment-index="${anim.animationIndex}" `;
           }
@@ -107,6 +107,15 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean) {
             return result;
           }
 
+          // Append những audio có mediaAutoplay = true
+          // Các audio này luôn chạy khi vào đầu trang.
+          if (block.type === MediaType.AUDIO && anim?.mediaAutoplay) {
+            return `
+            <audio
+              data-autoplay
+              src="${subfolderPath}/${block.assetName}">
+            </p>`;
+          }
           // Ta chỉ xử lý những audio trong danh sách animation
           // vì nếu không đưa vào danh sách animation, audio sẽ luôn bật ở chế độ nền.
           if (block.type === MediaType.AUDIO && anim?.animationIndex !== -1) {
@@ -116,6 +125,7 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean) {
               data-audio-src="${subfolderPath}/${block.assetName}">
             </p>`;
           }
+
           if (block.type === MediaType.CALLOUT) {
             const ops = block.deltaContent?.ops;
             const html = quillUtils.quillDeltaToHtml(ops!);

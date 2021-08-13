@@ -36,6 +36,7 @@ export const AnimationEntity: React.FC<Props> = ({
   blocks,
   blockId,
   selected,
+  mediaAutoplay,
   onClick,
   onDeleteAnimation,
   onChangeAnimationIndex,
@@ -53,8 +54,9 @@ export const AnimationEntity: React.FC<Props> = ({
     </Menu>
   );
 
+  const type = blocks.find((b) => b.id === blockId)?.type;
+
   function getIcon() {
-    const type = blocks.find((b) => b.id === blockId)?.type;
     if (type === MediaType.AUDIO) {
       return <SoundTwoTone size={35} className="audio" twoToneColor={Colors.DODGER_BLUE} />;
     }
@@ -74,11 +76,15 @@ export const AnimationEntity: React.FC<Props> = ({
   }
 
   function getMediaAutoplayToggler() {
-    const type = blocks.find((b) => b.id === blockId)?.type;
     if (type === MediaType.AUDIO) {
       return (
         <Tooltip overlay={<div>Chạy khi vào slide</div>}>
-          <Checkbox onChange={(v) => onChangeAutoplayMedia?.(v.target.value)}>Auto</Checkbox>
+          <Checkbox
+            defaultChecked={Boolean(mediaAutoplay)}
+            onChange={() => onChangeAutoplayMedia?.(blockId)}
+          >
+            Auto
+          </Checkbox>
         </Tooltip>
       );
     }
@@ -99,6 +105,7 @@ export const AnimationEntity: React.FC<Props> = ({
           onChange={(e: number) => {
             onChangeAnimationIndex?.(id, blockId, e);
           }}
+          disabled={mediaAutoplay}
         />
         <div className="separator" />
         {getIcon()}

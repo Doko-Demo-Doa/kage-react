@@ -31,7 +31,12 @@ function htmlToJSX(inputHtml: string, options?: HTMLReactParserOptions) {
   return parse(furiganaTemplateToHTML(inputHtml), options);
 }
 
+function padZero(num: number, digits: number) {
+  return Array(Math.max(digits - String(num).length + 1, 0)).join("0") + num;
+}
+
 export const formattingUtils = {
+  padZero,
   replaceString,
   furiganaTemplateToHTML,
   htmlToJSX,

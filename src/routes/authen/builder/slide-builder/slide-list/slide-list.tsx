@@ -64,6 +64,7 @@ export const SlideList: React.FC = observer(() => {
                 onClickDuplicate={(idx) => duplicateSlideAt(idx)}
                 onClickDelete={(idx) => onDeleteSlide(idx)}
                 title={n?.title}
+                backgroundAsset={n?.background}
                 index={idx}
                 inactive={selectedIndex !== idx}
                 key={idx}

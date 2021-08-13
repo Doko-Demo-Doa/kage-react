@@ -4,6 +4,7 @@ import { Colors } from "~/common/colors";
 import { formattingUtils } from "~/utils/utils-formatting";
 
 import "~/routes/authen/builder/slide-builder/slide-list/slide-thumbnail/slide-thumbnail.scss";
+import { fileUtils } from "~/utils/utils-files";
 
 type SlideThumbnailProps = {
   id?: string;
@@ -11,6 +12,7 @@ type SlideThumbnailProps = {
   linkedQuizId?: string;
   title?: string;
   inactive?: boolean;
+  backgroundAsset?: string;
   onClick: (idx: number) => void | undefined;
   onClickDuplicate?: (idx: number) => void | undefined;
   onClickDelete?: (idx: number) => void | undefined;
@@ -22,6 +24,7 @@ export const SlideThumbnail: React.FC<SlideThumbnailProps> = ({
   index,
   title,
   inactive,
+  backgroundAsset,
   onClick,
   onClickDuplicate,
   onClickDelete,
@@ -46,14 +49,19 @@ export const SlideThumbnail: React.FC<SlideThumbnailProps> = ({
         className={clsx("slide-thumbnail", inactive ? "slide-thumbnail-inactive" : "")}
         onMouseDown={() => onClick(index)}
       >
-        <div className="counter">{index + 1}</div>
+        <div className="counter">{formattingUtils.padZero(index + 1, 2)}</div>
 
-        <div className="block-inside">
+        <div
+          className="block-inside"
+          style={{
+            backgroundImage: backgroundAsset
+              ? `url(${fileUtils.getSlideBackgroundUrl(backgroundAsset)})`
+              : undefined,
+          }}
+        >
           {!linkedQuizId ? (
             <>
-              <div className="title">
-                {formattingUtils.furiganaToJSX(showingTitle)}
-              </div>
+              <div className="title">{formattingUtils.furiganaToJSX(showingTitle)}</div>
               <div className="bord" />
             </>
           ) : (
