@@ -23,6 +23,7 @@ export const SlideEntities: React.FC = observer(() => {
     setAnimationIndex,
     toggleAnimation,
     toggleBlockVisibility,
+    toggleMediaAutoplay,
     deleteBlock,
   } = store.slideListStore;
   const { selectedIndex } = store.slideBuilderStore;
@@ -107,9 +108,11 @@ export const SlideEntities: React.FC = observer(() => {
                       selectBlock(blockId);
                     }}
                     onDeleteAnimation={(blockId) => toggleAnimation(blockId)}
-                    onChangeAnimationIndex={(animId, blockId, animIdx) => {
-                      setAnimationIndex(animId, blockId, animIdx);
-                    }}
+                    onChangeAnimationIndex={(animId, blockId, animIdx) =>
+                      setAnimationIndex(animId, blockId, animIdx)
+                    }
+                    onChangeAutoplayMedia={(blockId) => toggleMediaAutoplay(blockId)}
+                    mediaAutoplay={item.mediaAutoplay}
                     selected={selectedAnim === item.id}
                     animationType={item.animationType}
                     blockId={item.blockId}

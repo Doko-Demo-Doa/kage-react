@@ -152,6 +152,24 @@ export class SlideListStore {
     }
   }
 
+  /**
+   * Dùng để bật / tắt attribute data-autoplay của thẻ video/audio. Hiện chỉ dùng cho 1 case duy nhất.
+   * Là cho audio được phát ngay khi vào trang slide.
+   * Lúc này animationIndex sẽ luôn là 0.
+   * @param blockId Id của block chỉ định.
+   */
+  toggleMediaAutoplay(blockId: string) {
+    const idx = this.rootStore.slideBuilderStore.selectedIndex;
+    const currentAnims = [...this.list[idx].animations];
+
+    const targetAnim = currentAnims.findIndex((n) => n.blockId === blockId);
+
+    if (targetAnim !== -1) {
+      currentAnims[targetAnim].mediaAutoplay = !currentAnims[targetAnim].mediaAutoplay;
+      this.list[idx].animations = currentAnims;
+    }
+  }
+
   toggleBlockVisibility(blockId: string) {
     const idx = this.rootStore.slideBuilderStore.selectedIndex;
     const targetBlock = this.list[idx].slideBlocks.find((n) => n.id === blockId);

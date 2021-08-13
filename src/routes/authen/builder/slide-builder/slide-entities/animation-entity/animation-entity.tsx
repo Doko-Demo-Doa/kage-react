@@ -7,7 +7,7 @@ import {
   WechatFilled,
   HeartTwoTone,
 } from "@ant-design/icons";
-import { Menu, Dropdown, InputNumber } from "antd";
+import { Menu, Dropdown, InputNumber, Checkbox, Tooltip } from "antd";
 import clsx from "clsx";
 import { AnimationType, MediaType } from "~/common/static-data";
 import { SlideBlockType } from "~/typings/types";
@@ -20,17 +20,18 @@ type Props = {
   idx?: number;
   animIdx: number;
   animationType: AnimationType;
+  mediaAutoplay?: boolean;
   blockId: string;
   blocks: Partial<SlideBlockType>[];
   selected?: boolean;
   onClick?: (animId: string, blockId: string) => void | undefined;
   onDeleteAnimation?: (blockId: string) => void | undefined;
   onChangeAnimationIndex?: (animId: string, blockId: string, index: number) => void | undefined;
+  onChangeAutoplayMedia?: (blockId: string) => void | undefined;
 };
 
 export const AnimationEntity: React.FC<Props> = ({
   id,
-  idx,
   animIdx,
   blocks,
   blockId,
@@ -38,6 +39,7 @@ export const AnimationEntity: React.FC<Props> = ({
   onClick,
   onDeleteAnimation,
   onChangeAnimationIndex,
+  onChangeAutoplayMedia,
 }) => {
   const menu = (
     <Menu>
@@ -50,8 +52,6 @@ export const AnimationEntity: React.FC<Props> = ({
       </Menu.Item>
     </Menu>
   );
-
-  const name = `Ani ${(idx || 0) + 1}`;
 
   function getIcon() {
     const type = blocks.find((b) => b.id === blockId)?.type;
@@ -73,6 +73,18 @@ export const AnimationEntity: React.FC<Props> = ({
     return <HeartTwoTone twoToneColor={Colors.GOLD_LIGHT} />;
   }
 
+  function getMediaAutoplayToggler() {
+    const type = blocks.find((b) => b.id === blockId)?.type;
+    if (type === MediaType.AUDIO) {
+      return (
+        <Tooltip overlay={<div>Chạy khi vào slide</div>}>
+          <Checkbox onChange={(v) => onChangeAutoplayMedia?.(v.target.value)}>Auto</Checkbox>
+        </Tooltip>
+      );
+    }
+    return null;
+  }
+
   return (
     <Dropdown overlay={menu} trigger={["contextMenu"]}>
       <div
@@ -91,7 +103,7 @@ export const AnimationEntity: React.FC<Props> = ({
         <div className="separator" />
         {getIcon()}
         <div className="separator" />
-        <div className="fx-name">{name}</div>
+        {getMediaAutoplayToggler()}
       </div>
     </Dropdown>
   );

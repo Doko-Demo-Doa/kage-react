@@ -9,6 +9,8 @@ import { QResult, SlideType } from "~/typings/types";
 import { formattingUtils } from "~/utils/utils-formatting";
 import { quillUtils } from "~/utils/utils-quill";
 
+const ADDITIONAL_WIDTH_PX = 2;
+
 function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean) {
   const subfolderPath = "assets"; // "data";
 
@@ -82,7 +84,7 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean) {
               position: absolute;
               padding: 10px;
               user-select: auto;
-              width: ${block.size?.w ? block.size?.w + "px" : "auto"};
+              width: ${block.size?.w ? block.size?.w + ADDITIONAL_WIDTH_PX + "px" : "auto"};
               height: auto;
               display: inline-block;
               background-color: ${block.bgColor};
@@ -149,7 +151,7 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean) {
               padding: 10px;
               border-radius: 6px;
               background-color: ${block.bgColor};
-              width: ${block.size?.w || 1}px;
+              width: ${(block.size?.w || 1) + ADDITIONAL_WIDTH_PX}px;
               height: ${block.size?.h || 1}px;
               top: ${block.position?.y}px;
               left: ${block.position?.x}px;
@@ -218,6 +220,7 @@ export const dataUtils = {
         <script src="./vendor/reveal.js"></script>
         <script src="./vendor/plugins/audio-plugin.js"></script>
         <script>
+          // https://revealjs.com/markup/
           Reveal.initialize({
             plugins: [ RevealAudioSlideshow ],
             audio: {

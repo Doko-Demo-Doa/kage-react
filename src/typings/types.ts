@@ -57,6 +57,7 @@ export type SlideAnimationType = {
   blockId: string;
   animationType: AnimationType;
   animationIndex: number;
+  mediaAutoplay?: boolean;
 };
 
 export type PositionType = {
