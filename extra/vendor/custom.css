@@ -1,5 +1,4 @@
 .reveal {
-  font-family: "Source Sans Pro", Helvetica, sans-serif;
   font-weight: unset;
   line-height: 1.2;
   letter-spacing: normal;
@@ -13,7 +12,6 @@
 
 .reveal .slide-title {
   color: #0c344b;
-  font-family: "Source Sans Pro", Helvetica, sans-serif;
   font-size: 60px;
   font-weight: 600;
   letter-spacing: normal;

@@ -211,8 +211,8 @@ export const dataUtils = {
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
         <link rel="stylesheet" href="./vendor/reveal.css" />
-        <link rel="stylesheet" href="./vendor/default.css" id="theme" />
         <link rel="stylesheet" href="./vendor/reset.css" />
+        <link rel="stylesheet" href="./vendor/default.css" id="theme" />
         <link rel="stylesheet" href="./vendor/custom.css" />
       </head>
 
