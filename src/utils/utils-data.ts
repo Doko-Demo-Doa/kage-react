@@ -87,7 +87,7 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean) {
               width: ${block.size?.w ? block.size?.w + ADDITIONAL_WIDTH_PX + "px" : "auto"};
               height: auto;
               display: inline-block;
-              background-color: ${block.bgColor};
+              background-color: ${block.bgColor || "unset"};
               top: ${block.position?.y}px;
               left: ${block.position?.x}px;
               box-sizing: border-box;
