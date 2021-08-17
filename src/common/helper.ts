@@ -1,14 +1,14 @@
 import dayjs from "dayjs";
 import { SlideType } from "~/typings/types";
 import { dataUtils } from "~/utils/utils-data";
-import packageMeta from "../../package.json";
+import { platformUtils } from "~/utils/utils-platform";
 
 export const commonHelper = {
   // Chuẩn bị dữ liệu chuẩn cho file manifest.json
   prepareExportData: (list: SlideType[], rootId?: string) => {
     const data = {
       id: rootId || dataUtils.generateUid(),
-      exportedFrom: packageMeta.version,
+      exportedFrom: platformUtils.getAppVersion(),
       lastModification: dayjs().unix(),
       alias: "",
       layout: list,

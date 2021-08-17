@@ -1,8 +1,11 @@
 import React, { useContext, useState } from "react";
 import { Input, Divider, Empty, Checkbox } from "antd";
+import { Container, Draggable } from "react-smooth-dnd";
 import ScrollBar from "react-perfect-scrollbar";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 import { observer } from "mobx-react";
+
+import { dataUtils } from "~/utils/utils-data";
 
 import { BackgroundPicker } from "~/routes/authen/builder/slide-builder/slide-entities/background-picker/background-picker";
 import { AnimationEntity } from "~/routes/authen/builder/slide-builder/slide-entities/animation-entity/animation-entity";
@@ -25,6 +28,7 @@ export const SlideEntities: React.FC = observer(() => {
     toggleBlockVisibility,
     toggleMediaAutoplay,
     deleteBlock,
+    setBlockList,
   } = store.slideListStore;
   const { selectedIndex } = store.slideBuilderStore;
 
@@ -69,24 +73,32 @@ export const SlideEntities: React.FC = observer(() => {
 
           <h2>Các thành phần</h2>
           <div className="column1">
-            {blocks.map((item) => {
-              return (
-                <BlockEntity
-                  key={item.id}
-                  assetName={item.assetName}
-                  blockId={item.id}
-                  type={item.type}
-                  isHidden={item.isHidden}
-                  selected={currentSlide.selectedBlock === item.id}
-                  onClick={() => {
-                    selectBlock(item.id);
-                  }}
-                  onDoubleClick={(blockId) => toggleBlockVisibility(blockId)}
-                  onClickAnimation={(blockId) => toggleAnimation(blockId)}
-                  onDelete={(blockId) => deleteBlock(blockId)}
-                />
-              );
-            })}
+            <Container
+              onDrop={(e) => {
+                setBlockList(dataUtils.createSortedList(blocks, e));
+              }}
+            >
+              {blocks.map((item) => {
+                return (
+                  <Draggable key={item.id}>
+                    <BlockEntity
+                      key={item.id}
+                      assetName={item.assetName}
+                      blockId={item.id}
+                      type={item.type}
+                      isHidden={item.isHidden}
+                      selected={currentSlide.selectedBlock === item.id}
+                      onClick={() => {
+                        selectBlock(item.id);
+                      }}
+                      onDoubleClick={(blockId) => toggleBlockVisibility(blockId)}
+                      onClickAnimation={(blockId) => toggleAnimation(blockId)}
+                      onDelete={(blockId) => deleteBlock(blockId)}
+                    />
+                  </Draggable>
+                );
+              })}
+            </Container>
           </div>
 
           <h2>Hiệu ứng</h2>

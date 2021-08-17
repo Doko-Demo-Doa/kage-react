@@ -22,7 +22,10 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean) {
     <section ${bgStr} ${markHiddenSlides ? 'data-visibility="hidden"' : ""}>
       <h1 class="slide-title">${formattingUtils.furiganaTemplateToHTML(slide.title ?? "")}</h1>
       ${slide.slideBlocks
-        .map((block) => {
+        .map((block, idx) => {
+          // Xử lý layer tương tự bên slide-block-v2
+          const layer = Math.abs(slide.slideBlocks.length - idx);
+
           // Tìm trong danh sách animation mà có blockId trùng thì lấy ra xử lý.
           const anim = slide.animations.find((n) => n.blockId === block.id);
           let animAppend = "";
@@ -44,7 +47,7 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean) {
                 : ""
             }`;
 
-            const styleAppender = (dataIn: string) => `style="${dataIn}"`;
+            const styleAppender = (dataIn: string) => `style="${dataIn} z-index: ${layer};"`;
             return stripIndent(`
             <div
               ${animAppend}
@@ -68,7 +71,7 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean) {
                 : ""
             }`;
 
-            const styleAppender = (dataIn: string) => `style="${dataIn}"`;
+            const styleAppender = (dataIn: string) => `style="${dataIn} z-index: ${layer};"`;
             return stripIndent(`
             <img src="${subfolderPath}/${block.assetName}"
               ${animAppend}
@@ -81,6 +84,7 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean) {
             const html = quillUtils.quillDeltaToHtml(ops!);
             // Last line is to remove line breaks.
             const styleAppend = stripIndent(`
+              z-index: ${layer};
               position: absolute;
               padding: 10px;
               user-select: auto;
@@ -148,6 +152,7 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean) {
             const anchor = block.anchor!;
 
             const wrapperStyleAppend = stripIndent(`
+              z-index: ${layer};
               position: absolute;
               width: 100%;
               height: 100%;

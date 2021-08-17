@@ -2,6 +2,8 @@ export const RESOURCE_PROTOCOL = "local-resource://";
 export const SLIDE_HTML_ENTRY_FILE = "index.html";
 export const SLIDE_HTML_HIDDEN_ENTRY_FILE = "index-hidden.html";
 
+export const BREAKING_CHANGE_VERSIONS = ["0.1.13"];
+
 export enum ElectronEventType {
   UPDATE_CHECK = "UPDATE_CHECK",
   UPDATE_ERROR = "UPDATE_ERROR",

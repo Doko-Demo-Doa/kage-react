@@ -17,6 +17,7 @@ import "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-
 const MINIMUM_TEXT_BLOCK_WIDTH = 160; // In px
 
 type SlideBlockComponentType = SlideBlockType & {
+  idx: number;
   selected?: boolean;
   animations?: SlideAnimationType[];
   onSelect: (id: string) => void | undefined;
@@ -34,6 +35,7 @@ type SlideBlockComponentType = SlideBlockType & {
 
 export const SlideBlock: React.FC<SlideBlockComponentType> = ({
   id,
+  idx,
   type,
   assetName,
   size,
@@ -97,6 +99,9 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
     }
   }
 
+  // Lấy idx chuẩn cho z-index:
+  const layeredIndex = Math.abs(idx);
+
   const getMainComponent = () => {
     if (type === MediaType.IMAGE || type === MediaType.VIDEO) {
       return (
@@ -148,13 +153,14 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
             height: size?.h ?? 0,
           }}
           className="single-block"
-          style={
-            type === MediaType.IMAGE
+          style={{
+            zIndex: layeredIndex,
+            ...(type === MediaType.IMAGE
               ? {
                   backgroundImage: `url(${assetUrl})`,
                 }
-              : {}
-          }
+              : {}),
+          }}
         >
           <div className="imageblock-holder" onClick={() => onSelect(id)}>
             {selected && (
@@ -166,7 +172,11 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
                 {animIndex !== undefined && animIndex > -1 ? `${animIndex + 1}` : <PlusOutlined />}
               </div>
             )}
-            <video src={assetUrl} style={{ width: "100%", height: "100%" }} />
+            {type === MediaType.VIDEO ? (
+              <video src={assetUrl} style={{ width: "100%", height: "100%" }} />
+            ) : (
+              <img alt="" src={assetUrl} style={{ width: "100%", height: "100%" }} />
+            )}
           </div>
         </Rnd>
       );
@@ -221,7 +231,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
               topLeft: false,
             }}
             style={{
-              zIndex: 2,
+              zIndex: layeredIndex,
             }}
             className="single-block"
           >
@@ -281,7 +291,12 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
       const leg2 = { x: position.x + shiftLeg2, y: position.y + size.h - 1 };
 
       return (
-        <div className="interactive-callout">
+        <div
+          className="interactive-callout"
+          style={{
+            zIndex: layeredIndex,
+          }}
+        >
           <Rnd
             bounds="#slide-interactive-editor"
             className="single-block"

@@ -4,7 +4,7 @@ import { ipcRenderer } from "electron";
 import { ElectronEventType } from "~/common/static-data";
 import { BrowserRouter, HashRouter, Switch, Route } from "react-router-dom";
 
-import { isElectron } from "~/utils/utils-platform";
+import { platformUtils } from "~/utils/utils-platform";
 
 import { StoreContext } from "~/mobx/store-context";
 import { rootStore } from "~/mobx/root-store";
@@ -20,7 +20,11 @@ import "antd/dist/antd.css";
 import "~/app.scss";
 
 const AppRouter = ({ children }: { children: React.ReactElement }): React.ReactElement =>
-  isElectron() ? <HashRouter>{children}</HashRouter> : <BrowserRouter>{children}</BrowserRouter>;
+  platformUtils.isElectron() ? (
+    <HashRouter>{children}</HashRouter>
+  ) : (
+    <BrowserRouter>{children}</BrowserRouter>
+  );
 
 const App = (): React.ReactElement => {
   useEffect(() => {

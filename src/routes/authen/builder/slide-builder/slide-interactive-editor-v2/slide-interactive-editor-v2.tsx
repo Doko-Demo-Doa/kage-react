@@ -63,10 +63,11 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
             {formattingUtils.htmlToJSX(formattingUtils.furiganaTemplateToHTML(slideTitle || ""))}
           </h1>
 
-          {blocks.map((n) => {
+          {blocks.map((n, idx) => {
             return (
               <SlideBlock
                 key={n.id}
+                idx={blocks.length - idx}
                 bgColor="transparent"
                 {...n}
                 animations={anims}

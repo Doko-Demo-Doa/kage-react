@@ -99,7 +99,7 @@ export const BlockEntity: React.FC<BlockEntityType> = ({
     return mainItem();
   }
 
-  return (
+  return type === MediaType.AUDIO ? (
     <Popover
       arrowContent
       content={<MediaPreviewPopup assetName={assetName || ""} type={type} />}
@@ -108,5 +108,7 @@ export const BlockEntity: React.FC<BlockEntityType> = ({
     >
       {mainItem()}
     </Popover>
+  ) : (
+    mainItem()
   );
 };

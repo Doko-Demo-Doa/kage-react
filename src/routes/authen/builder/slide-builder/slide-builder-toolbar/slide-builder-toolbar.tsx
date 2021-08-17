@@ -22,14 +22,16 @@ import { fileUtils } from "~/utils/utils-files";
 import { audioUtils, ffmpegUtils, imageUtils } from "~/utils/utils-conversions";
 import {
   AppDefaults,
+  BREAKING_CHANGE_VERSIONS,
   ElectronEventType,
   InitialBlockCoordinate,
   MediaType,
   SLIDE_HTML_ENTRY_FILE,
 } from "~/common/static-data";
 import { dataUtils } from "~/utils/utils-data";
-import { isElectron } from "~/utils/utils-platform";
+import { platformUtils } from "~/utils/utils-platform";
 import { uiUtils } from "~/utils/utils-ui";
+import { validationUtils } from "~/utils/utils-validation";
 import { commonHelper } from "~/common/helper";
 import { SlideBlockType } from "~/typings/types";
 import { StoreContext } from "~/mobx/store-context";
@@ -43,7 +45,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
   const [isLoading, setLoading] = useState(false);
 
   const store = useContext(StoreContext);
-  const { list, setList, newSlide, importSlideTree } = store.slideListStore;
+  const { list, setList, newSlide, importSlideTree, fixBlockLists } = store.slideListStore;
   const {
     selectedIndex,
     lastSavedTimestamp,
@@ -175,9 +177,30 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
         if (manifest) {
           // Nạp manifest mới vào.
           const data = JSON.parse(manifest);
+          const importedVer = data.exportedFrom as string;
+
+          // TODO: Remove hardcode
+          const appVersion = platformUtils.getAppVersion();
+
           importMeta(data.id);
           importSlideTree(data.layout);
           setIndex(0);
+
+          if (
+            BREAKING_CHANGE_VERSIONS.includes(appVersion) &&
+            !validationUtils.compareVersion(importedVer, appVersion)
+          ) {
+            uiUtils.showConfirmation(
+              "Chú ý",
+              "Slide bạn vừa mở là phiên bản cũ, có thể import vào sẽ bị lỗi. Bạn có muốn tự động sửa không?",
+              () => {
+                fixBlockLists();
+              },
+              () => {
+                //
+              }
+            );
+          }
 
           setCurrentWorkingFile(path);
         }
@@ -262,7 +285,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
 
     const activeSlide = { ...newSlideArray[idx] };
 
-    const newBlocks = [...activeSlide.slideBlocks, blockData];
+    const newBlocks = [blockData, ...activeSlide.slideBlocks];
     activeSlide.slideBlocks = [...newBlocks];
     newSlideArray[idx] = activeSlide;
 
@@ -357,7 +380,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
 
           <Divider type="vertical" />
 
-          {isElectron() && (
+          {platformUtils.isElectron() && (
             <Button onClick={() => onOpenCache()} icon={<FolderOpenFilled />}>
               Mở folder cache
             </Button>

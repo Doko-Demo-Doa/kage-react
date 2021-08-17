@@ -1,4 +1,5 @@
 import { has } from "rambdax";
+import cmp from "semver-compare";
 
 export const validationUtils = {
   isValidEmail: (email: string) => {
@@ -15,5 +16,9 @@ export const validationUtils = {
     if (!has("passing_score", inputJson)) return false;
 
     return true;
+  },
+
+  compareVersion: (firstVer: string, secondVer: string) => {
+    return cmp(firstVer, secondVer) >= 0;
   },
 };

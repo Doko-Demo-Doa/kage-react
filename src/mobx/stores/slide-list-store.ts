@@ -1,5 +1,11 @@
 import { makeAutoObservable } from "mobx";
-import { BlockSizeType, PositionType, SlideAnimationType, SlideType } from "~/typings/types";
+import {
+  BlockSizeType,
+  PositionType,
+  SlideAnimationType,
+  SlideBlockType,
+  SlideType,
+} from "~/typings/types";
 import { RootStore } from "~/mobx/root-store";
 import { AnimationType } from "~/common/static-data";
 import { Delta } from "quill";
@@ -177,6 +183,18 @@ export class SlideListStore {
     if (targetBlock) {
       targetBlock.isHidden = !targetBlock.isHidden;
     }
+  }
+
+  setBlockList(newBlocks: SlideBlockType[]) {
+    const idx = this.rootStore.slideBuilderStore.selectedIndex;
+
+    this.list[idx].slideBlocks = newBlocks;
+  }
+
+  fixBlockLists() {
+    this.list.forEach((n, idx) => {
+      this.list[idx].slideBlocks = [...this.list[idx].slideBlocks.reverse()];
+    });
   }
 
   setAnimationList(newAnims: SlideAnimationType[]) {
