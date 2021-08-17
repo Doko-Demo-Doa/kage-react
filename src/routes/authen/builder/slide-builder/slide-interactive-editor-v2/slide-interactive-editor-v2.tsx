@@ -67,6 +67,7 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
             return (
               <SlideBlock
                 key={n.id}
+                bgColor="transparent"
                 {...n}
                 animations={anims}
                 selected={n.id === list[selectedIndex]?.selectedBlock}

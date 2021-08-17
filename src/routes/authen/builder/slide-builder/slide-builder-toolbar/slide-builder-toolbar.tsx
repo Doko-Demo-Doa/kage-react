@@ -33,6 +33,7 @@ import { uiUtils } from "~/utils/utils-ui";
 import { commonHelper } from "~/common/helper";
 import { SlideBlockType } from "~/typings/types";
 import { StoreContext } from "~/mobx/store-context";
+import CssColors from "~/assets/styles/_colors.module.scss";
 
 import "~/routes/authen/builder/slide-builder/slide-builder-toolbar/slide-builder-toolbar.scss";
 
@@ -239,6 +240,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
       assetName: `${assetName}.${extension}`,
       autoPlay: true,
       content: "",
+      bgColor: CssColors.colorCyanLight,
       position: {
         x: InitialBlockCoordinate.x,
         y: InitialBlockCoordinate.y,
