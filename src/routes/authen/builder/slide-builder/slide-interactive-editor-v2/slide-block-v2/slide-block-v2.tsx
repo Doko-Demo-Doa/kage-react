@@ -172,11 +172,7 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
                 {animIndex !== undefined && animIndex > -1 ? `${animIndex + 1}` : <PlusOutlined />}
               </div>
             )}
-            {type === MediaType.VIDEO ? (
-              <video src={assetUrl} style={{ width: "100%", height: "100%" }} />
-            ) : (
-              <img alt="" src={assetUrl} style={{ width: "100%", height: "100%" }} />
-            )}
+            <video src={assetUrl} style={{ width: "100%", height: "100%" }} />
           </div>
         </Rnd>
       );
