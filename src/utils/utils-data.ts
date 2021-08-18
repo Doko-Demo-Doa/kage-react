@@ -118,7 +118,7 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean) {
             <audio
               data-autoplay
               src="${subfolderPath}/${block.assetName}">
-            </p>`;
+            </audio>`;
           }
           // Ta chỉ xử lý những audio trong danh sách animation
           // vì nếu không đưa vào danh sách animation, audio sẽ luôn bật ở chế độ nền.
