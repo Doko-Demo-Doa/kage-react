@@ -26,6 +26,7 @@ export type SlideStockBackgroundMetaType = {
 export type SlideType = {
   id: string;
   title?: string;
+  titleFontSize?: number; // Mặc định là 60px
   isHidden?: boolean;
   linkedQuizId?: string;
   selectedBlock?: string;

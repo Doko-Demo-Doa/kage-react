@@ -3,6 +3,7 @@ import { Result, Button } from "antd";
 import { FileUnknownOutlined } from "@ant-design/icons";
 import { observer } from "mobx-react";
 import { formattingUtils } from "~/utils/utils-formatting";
+import { DEFAULT_TITLE_FONT_SIZE } from "~/common/static-data";
 import { StoreContext } from "~/mobx/store-context";
 import { SlideBlock } from "~/routes/authen/builder/slide-builder/slide-interactive-editor-v2/slide-block-v2/slide-block-v2";
 
@@ -23,6 +24,7 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
   const { selectedIndex } = store.slideBuilderStore;
 
   const slideTitle = list[selectedIndex]?.title || "";
+  const slideTitleFontSize = list[selectedIndex]?.titleFontSize || DEFAULT_TITLE_FONT_SIZE;
 
   const blocks = list[selectedIndex]?.slideBlocks ?? [];
   const anims = list[selectedIndex]?.animations ?? [];
@@ -59,7 +61,7 @@ export const SlideInteractiveEditor: React.FC = observer(() => {
             backgroundImage: bg ? `url(${fileUtils.getSlideBackgroundUrl(bg)})` : undefined,
           }}
         >
-          <h1 className="slide-title">
+          <h1 className="slide-title" style={{ fontSize: slideTitleFontSize }}>
             {formattingUtils.htmlToJSX(formattingUtils.furiganaTemplateToHTML(slideTitle || ""))}
           </h1>
 

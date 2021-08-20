@@ -11,6 +11,10 @@ $slide-height: 120px;
   overflow-y: auto;
   @include shadow-left-light;
 
+  .title-config {
+    display: flex;
+  }
+
   .slide-title-input {
     width: 100%;
     max-width: 100%;

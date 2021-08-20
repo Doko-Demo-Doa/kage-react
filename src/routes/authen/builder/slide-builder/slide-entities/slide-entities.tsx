@@ -1,11 +1,12 @@
 import React, { useContext, useState } from "react";
-import { Input, Divider, Empty, Checkbox } from "antd";
+import { Input, Divider, Empty, Checkbox, InputNumber } from "antd";
 import { Container, Draggable } from "react-smooth-dnd";
 import ScrollBar from "react-perfect-scrollbar";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 import { observer } from "mobx-react";
 
 import { dataUtils } from "~/utils/utils-data";
+import { DEFAULT_TITLE_FONT_SIZE } from "~/common/static-data";
 
 import { BackgroundPicker } from "~/routes/authen/builder/slide-builder/slide-entities/background-picker/background-picker";
 import { AnimationEntity } from "~/routes/authen/builder/slide-builder/slide-entities/animation-entity/animation-entity";
@@ -22,6 +23,7 @@ export const SlideEntities: React.FC = observer(() => {
     list,
     selectBlock,
     setTitle,
+    setTitleFontSize,
     setHidden,
     setAnimationIndex,
     toggleAnimation,
@@ -34,6 +36,7 @@ export const SlideEntities: React.FC = observer(() => {
 
   const currentSlide = list[selectedIndex];
   const slideTitle = currentSlide?.title || "";
+  const slideTitleFontSize = currentSlide?.titleFontSize || DEFAULT_TITLE_FONT_SIZE;
 
   const blocks = currentSlide?.slideBlocks || [];
   const animations = currentSlide?.animations || [];
@@ -47,15 +50,19 @@ export const SlideEntities: React.FC = observer(() => {
       ) : (
         <>
           <p>Tiêu đề slide:</p>
-          <Input
-            placeholder="Tiêu đề slide"
-            onChange={(e) => setTitle(e.target.value)}
-            disabled={list.length <= 0}
-            value={slideTitle}
-            multiple
-            maxLength={46}
-            className="slide-title-input"
-          />
+          <div className="title-config">
+            <Input
+              placeholder="Tiêu đề slide"
+              onChange={(e) => setTitle(e.target.value)}
+              disabled={list.length <= 0}
+              value={slideTitle}
+              multiple
+              maxLength={46}
+              className="slide-title-input"
+            />
+            <div style={{ width: "6px" }} />
+            <InputNumber value={slideTitleFontSize} onChange={(v) => setTitleFontSize(v)} />
+          </div>
           <br />
           <br />
           <Checkbox

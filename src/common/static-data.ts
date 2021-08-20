@@ -29,6 +29,8 @@ export const AVAILABLE_FONT_SIZES = [
   "72px",
 ];
 
+export const DEFAULT_TITLE_FONT_SIZE = 60;
+
 export const DEFAULT_COLOR_PICKER_PALETTE = [
   "#D9E3F0",
   "#F47373",

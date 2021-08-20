@@ -18,9 +18,13 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean) {
     ? `data-background-image="./vendor/backgrounds/${slide.background}"}`
     : "";
 
+  const titleStyleAppend = slide.titleFontSize ? `style="font-size: ${slide.titleFontSize}px"` : "";
+
   return stripIndent(`
     <section ${bgStr} ${markHiddenSlides ? 'data-visibility="hidden"' : ""}>
-      <h1 class="slide-title">${formattingUtils.furiganaTemplateToHTML(slide.title ?? "")}</h1>
+      <h1 class="slide-title" ${titleStyleAppend}>${formattingUtils.furiganaTemplateToHTML(
+    slide.title ?? ""
+  )}</h1>
       ${slide.slideBlocks
         .map((block, idx) => {
           // Xử lý layer tương tự bên slide-block-v2

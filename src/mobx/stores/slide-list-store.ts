@@ -7,7 +7,7 @@ import {
   SlideType,
 } from "~/typings/types";
 import { RootStore } from "~/mobx/root-store";
-import { AnimationType } from "~/common/static-data";
+import { AnimationType, DEFAULT_TITLE_FONT_SIZE } from "~/common/static-data";
 import { Delta } from "quill";
 import { dataUtils } from "~/utils/utils-data";
 
@@ -34,9 +34,10 @@ export class SlideListStore {
   }
 
   newSlide() {
-    const newSlide = {
+    const newSlide: SlideType = {
       id: dataUtils.generateShortUid(),
       title: "",
+      titleFontSize: DEFAULT_TITLE_FONT_SIZE,
       slideBlocks: [],
       animations: [],
     };
@@ -91,6 +92,14 @@ export class SlideListStore {
     const idx = this.rootStore.slideBuilderStore.selectedIndex;
     const newL = this.list.slice();
     newL[idx].title = newTitle;
+    this.list = newL;
+  }
+
+  setTitleFontSize(newSize: number) {
+    if (newSize <= 0) return;
+    const idx = this.rootStore.slideBuilderStore.selectedIndex;
+    const newL = this.list.slice();
+    newL[idx].titleFontSize = newSize;
     this.list = newL;
   }
 
