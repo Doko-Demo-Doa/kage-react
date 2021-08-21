@@ -60,10 +60,34 @@ export class SlideListStore {
     const sourceSlide = this.list[index];
     if (sourceSlide) {
       const insertedItem = { ...sourceSlide };
-      insertedItem.slideBlocks = insertedItem.slideBlocks.map((n) => ({
-        ...n,
-        id: dataUtils.generateShortUid(),
-      }));
+
+      const newBlockList: SlideBlockType[] = [];
+      const newAnimList: SlideAnimationType[] = [];
+
+      insertedItem.slideBlocks.forEach((n) => {
+        const oldBlockId = n.id;
+        const newBlockId = dataUtils.generateShortUid();
+
+        // Khi đúp block thì cũng phải xử lý lại cả các animations:
+        insertedItem.animations.forEach((a) => {
+          if (a.blockId === oldBlockId) {
+            newAnimList.push({
+              ...a,
+              id: dataUtils.generateShortUid(),
+              blockId: newBlockId,
+            });
+          }
+        });
+
+        newBlockList.push({
+          ...n,
+          id: newBlockId,
+        });
+      });
+
+      insertedItem.slideBlocks = newBlockList;
+      insertedItem.animations = newAnimList;
+
       insertedItem.id = dataUtils.generateShortUid();
       const newL = this.list.slice();
       newL.splice(index, 0, insertedItem);
