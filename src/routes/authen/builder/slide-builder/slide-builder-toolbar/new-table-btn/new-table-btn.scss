@@ -1,0 +1,10 @@
+.new-table-popover {
+  .inner {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .warn {
+    color: $color-light-red;
+  }
+}

@@ -18,6 +18,7 @@ import { Delta } from "quill";
 import { observer } from "mobx-react";
 
 import { NewQuizSetBtn } from "~/routes/authen/builder/slide-builder/slide-builder-toolbar/new-quiz-set-btn/new-quiz-set-btn";
+import { NewTableBtn } from "~/routes/authen/builder/slide-builder/slide-builder-toolbar/new-table-btn/new-table-btn";
 import { fileUtils } from "~/utils/utils-files";
 import { audioUtils, ffmpegUtils, imageUtils } from "~/utils/utils-conversions";
 import {
@@ -377,6 +378,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
               onClick={() => onInsertCallout()}
             />
           </Tooltip>
+          <NewTableBtn />
 
           <Divider type="vertical" />
 
