@@ -180,7 +180,6 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
           const data = JSON.parse(manifest);
           const importedVer = data.exportedFrom as string;
 
-          // TODO: Remove hardcode
           const appVersion = platformUtils.getAppVersion();
 
           importMeta(data.id);
