@@ -13,12 +13,7 @@ export const NewTableBtn: React.FC = () => {
       content={<TableConstructor onSelect={(rowNum, colNum) => console.log(rowNum, colNum)} />}
       title="Chèn bảng, bạn vui lòng chọn số hàng / cột:"
     >
-      <Button
-        icon={<TableOutlined />}
-        type="link"
-        ghost
-        onClick={() => setPopVisible(!popVisible)}
-      />
+      <Button icon={<TableOutlined />} type="link" onClick={() => setPopVisible(!popVisible)} />
     </Popover>
   );
 };
