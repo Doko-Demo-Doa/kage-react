@@ -6,8 +6,10 @@
 }
 
 .reveal .slide-number {
-  font-size: 24px;
+  font-size: 18px;
   background-color: transparent;
+  right: 0;
+  bottom: 0;
 }
 
 .reveal .slide-title {
@@ -30,6 +32,7 @@
 .reveal ruby {
   display: inline-flex;
   flex-direction: column-reverse;
+  align-items: center;
 }
 
 .reveal rt {
