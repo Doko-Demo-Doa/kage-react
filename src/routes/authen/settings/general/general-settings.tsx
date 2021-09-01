@@ -36,6 +36,8 @@ export class GeneralSettings extends React.Component<{}, AppState> {
       grid: [
         [{ value: 1 }, { value: -3 }],
         [{ value: -2 }, { value: 4 }],
+        [{ value: 0 }, { value: 24 }],
+        [{ value: 12 }, { value: 1923 }],
       ],
     };
   }
