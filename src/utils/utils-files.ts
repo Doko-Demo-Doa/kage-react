@@ -181,11 +181,6 @@ export const fileUtils = {
     const dest = data.filePath;
     if (!dest) return;
     return dest;
-
-    // const data = await require("electron").remote.dialog.showOpenDialog({
-    //   properties: ["openDirectory", "dontAddToRecent"],
-    // });
-    // return data.filePaths[0];
   },
   launchFolderSaveDialog: async () => {
     if (fsNotAvailable()) return;

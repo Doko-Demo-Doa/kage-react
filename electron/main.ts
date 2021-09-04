@@ -45,6 +45,8 @@ function createWindow() {
     minHeight: predefinedHeight,
     webPreferences: {
       webviewTag: true,
+      // @ts-ignore
+      enableRemoteModule: true,
       nativeWindowOpen: true,
       nodeIntegration: true,
       contextIsolation: false,
@@ -139,6 +141,8 @@ function showPreviewWindow() {
     acceptFirstMouse: true,
     kiosk: true,
     webPreferences: {
+      // @ts-ignore
+      enableRemoteModule: true,
       webSecurity: false,
       webviewTag: true,
       contextIsolation: false,
