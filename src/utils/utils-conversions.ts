@@ -1,5 +1,4 @@
 import { Metadata } from "sharp";
-import { remote } from "electron";
 import path from "path";
 import dayjs from "dayjs";
 import fs from "fs-extra";
@@ -14,6 +13,7 @@ const OptimalImageSize = {
 };
 
 function getFfmpegPath(isProbe?: boolean) {
+  const remote = require("@electron/remote");
   const firstPart = path.join(
     remote.app.getAppPath().replace("app.asar", "app.asar.unpacked"),
     "node_modules/ffmpeg-ffprobe-static"
@@ -28,7 +28,7 @@ function getFfmpegPath(isProbe?: boolean) {
 
 export const audioUtils = {
   checkAudioMetadata: (filePath: string): Promise<MediaStreamType> => {
-    const remote = require("electron").remote;
+    const remote = require("@electron/remote");
     const ffmpeg = remote.require("fluent-ffmpeg");
 
     return new Promise((resolve, reject) => {
@@ -61,7 +61,7 @@ export const audioUtils = {
       extension: string
     ) => void
   ) => {
-    const remote = require("electron").remote;
+    const remote = require("@electron/remote");
     const ffmpeg = remote.require("fluent-ffmpeg");
     const path = remote.require("path");
     const isAudio = fileUtils.detectMediaType(filePath) === MediaType.AUDIO;
@@ -104,7 +104,7 @@ export const audioUtils = {
 
 export const imageUtils = {
   checkImageMetadata: async (filePath: string): Promise<Metadata> => {
-    const remote = require("electron").remote;
+    const remote = require("@electron/remote");
     const sharp = remote.require("sharp");
     const resp = await sharp(filePath).metadata();
     return resp;
@@ -122,7 +122,7 @@ export const imageUtils = {
    * @returns Optimized file path.
    */
   optimizeImage: async (filePath: string, customOutput?: string): Promise<MediaReturnType> => {
-    const remote = require("electron").remote;
+    const remote = require("@electron/remote");
     const path = remote.require("path");
     const sharp = remote.require("sharp");
 
@@ -175,7 +175,7 @@ export const ffmpegUtils = {
   },
 
   checkVideoMetadata: (filePath: string): Promise<MediaStreamType> => {
-    const remote = require("electron").remote;
+    const remote = require("@electron/remote");
     const ffmpeg = remote.require("fluent-ffmpeg");
 
     return new Promise((resolve, reject) => {
@@ -206,7 +206,7 @@ export const ffmpegUtils = {
       outputRatio: number
     ) => void
   ) => {
-    const remote = require("electron").remote;
+    const remote = require("@electron/remote");
     const ffmpeg = remote.require("fluent-ffmpeg");
     const path = remote.require("path");
     const isVideo = /\.(gif|mkv|mp4|wmv|avi|webp)$/i.test(filePath);

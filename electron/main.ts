@@ -48,7 +48,6 @@ function createWindow() {
       nativeWindowOpen: true,
       nodeIntegration: true,
       contextIsolation: false,
-      enableRemoteModule: true,
       preload: path.join("preload.js"),
     },
   });
@@ -144,7 +143,6 @@ function showPreviewWindow() {
       webviewTag: true,
       contextIsolation: false,
       nodeIntegration: true,
-      enableRemoteModule: true,
     },
   });
 

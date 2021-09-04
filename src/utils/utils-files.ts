@@ -161,7 +161,8 @@ export const fileUtils = {
   launchFolderOpenDialog: async () => {
     if (fsNotAvailable()) return;
 
-    const data = await require("electron").remote.dialog.showOpenDialog({
+    const remote = require("@electron/remote");
+    const data = remote.dialog.showOpenDialog({
       properties: ["dontAddToRecent", "dontAddToRecent"],
       message: "Chọn thư mục xuất",
     });
