@@ -120,7 +120,7 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean) {
           if (block.type === MediaType.AUDIO && anim?.mediaAutoplay) {
             return `
             <audio
-              data-autoplay
+              data-audio-index="0"
               src="${subfolderPath}/${block.assetName}">
             </audio>`;
           }
@@ -260,6 +260,32 @@ export const dataUtils = {
             postMessage: true,
             postMessageEvents: true,
           });
+
+          Reveal.on('ready', event => {
+            autoplayFragmentZero();
+          });
+      
+          Reveal.on('slidetransitionend', event => {
+            const state = Reveal.getState();
+            if (state.indexf === -1) {
+              autoplayFragmentZero();
+            }
+          });
+
+          Reveal.on('fragmenthidden', event => {
+            const state = Reveal.getState();
+            if (state.indexf === -1) {
+              autoplayFragmentZero();
+            }
+          });
+
+          // Tìm fragment đầu tiên 
+          function autoplayFragmentZero() {
+            const targetElem = document.querySelector('[data-audio-index="0"]');
+            if (targetElem.play) {
+              targetElem.play();
+            }
+          }
         </script>
       </body>
 
