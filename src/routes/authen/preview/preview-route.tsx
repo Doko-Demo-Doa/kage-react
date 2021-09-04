@@ -18,7 +18,10 @@ export const PreviewRoute: React.FC = () => {
 
   return (
     <div className="preview-route" ref={divRef}>
-      <iframe src={`file:///${fileUtils.getCacheDirectory()}/${SLIDE_HTML_ENTRY_FILE}`} />
+      <iframe
+        allow="autoplay"
+        src={`file:///${fileUtils.getCacheDirectory()}/${SLIDE_HTML_ENTRY_FILE}`}
+      />
     </div>
   );
 };

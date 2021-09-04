@@ -99,7 +99,7 @@ export const AnimationEntity: React.FC<Props> = ({
       >
         <InputNumber
           style={{ width: 70 }}
-          min={0}
+          min={1}
           max={9999}
           defaultValue={animIdx}
           onChange={(e: number) => {
