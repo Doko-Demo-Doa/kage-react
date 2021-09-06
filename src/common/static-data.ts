@@ -4,6 +4,8 @@ export const SLIDE_HTML_HIDDEN_ENTRY_FILE = "index-hidden.html";
 
 export const BREAKING_CHANGE_VERSIONS = ["0.1.14"];
 
+export const ALLOWED_IMPORT_EXTENSIONS = ["zip", "dsa", "dst"];
+
 export enum ElectronEventType {
   UPDATE_CHECK = "UPDATE_CHECK",
   UPDATE_ERROR = "UPDATE_ERROR",

@@ -267,7 +267,7 @@ export const dataUtils = {
       
           Reveal.on('slidetransitionend', event => {
             const state = Reveal.getState();
-            if (state.indexf === -1) {
+            if (state.indexf === -1 || state.indexf === undefined) {
               autoplayFragmentZero();
             }
           });

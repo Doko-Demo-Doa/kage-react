@@ -7,9 +7,10 @@ import {
   RESOURCE_PROTOCOL,
   SLIDE_HTML_ENTRY_FILE,
   SLIDE_HTML_HIDDEN_ENTRY_FILE,
+  ALLOWED_IMPORT_EXTENSIONS,
 } from "~/common/static-data";
 import QuizDeckModel from "~/mobx/models/quiz-deck";
-import { SlideStockBackgroundMetaType } from "~/typings/types";
+import { FileNameWithPathType, SlideStockBackgroundMetaType } from "~/typings/types";
 
 function fsNotAvailable() {
   return isEmpty(require("fs"));
@@ -18,7 +19,6 @@ function fsNotAvailable() {
 const CACHE_DIR_NAME = "kage-cache";
 const BACKUP_FILE_NAME = "backup.zip";
 const SLIDE_MANIFEST_FILE = "manifest.json";
-const ALLOWED_IMPORT_EXTENSIONS = ["zip", "dsa", "dst"];
 
 function getStockBackgroundsMeta(): SlideStockBackgroundMetaType {
   const cachePath = getCacheDirectory("vendor");
@@ -138,11 +138,13 @@ export const fileUtils = {
       return MediaType.AUDIO;
     }
   },
+  // Mở folder chỉ định bằng Explorer hoặc Finder
   openFolderBrowser: (folderPath: string) => {
     if (fsNotAvailable()) return "";
     const shell = require("electron").shell;
     shell.openPath(folderPath);
   },
+  // Mở hộp thoại chọn file, các file đuôi .zip, .dsa và .dst
   openFileDialog: async () => {
     if (fsNotAvailable()) return;
     const remote = require("@electron/remote");
@@ -157,17 +159,17 @@ export const fileUtils = {
     });
     return data.filePaths[0];
   },
-  // Dùng để chọn folder xuất data ra
-  launchFolderOpenDialog: async () => {
-    if (fsNotAvailable()) return;
+  // Dùng để chọn folder
+  launchFolderOpenDialog: async (): Promise<string> => {
+    if (fsNotAvailable()) return Promise.resolve("");
 
     const remote = require("@electron/remote");
-    const data = remote.dialog.showOpenDialog({
-      properties: ["dontAddToRecent", "dontAddToRecent"],
+    const data = await remote.dialog.showOpenDialog({
+      properties: ["dontAddToRecent", "openDirectory"],
       message: "Chọn thư mục",
     });
     const dest = data.filePaths;
-    if (!dest) return;
+    if (!dest) return Promise.resolve("");
     return dest[0];
   },
   launchFileSaveDialog: async () => {
@@ -282,6 +284,34 @@ export const fileUtils = {
       filters: [{ name: "Media", extensions: filterz }],
     });
     return resp?.filePaths[0];
+  },
+  /**
+   * Quét thư mục chỉ định, nếu đọc được và có file slide thì trả về trong mảng, không thì trả về mảng rỗng.
+   * @param folderPath Đường dẫn folder chỉ định.
+   * @returns Mảng string chứa dường dẫn đến các file slide hợp lệ.
+   */
+  scanForSlideArchivesIn: (folderPath: string): FileNameWithPathType[] => {
+    function endsWithAny(suffixes: string[], str: string) {
+      for (const suffix of suffixes) {
+        if (str.endsWith(suffix)) return true;
+      }
+      return false;
+    }
+
+    if (fsNotAvailable()) return [];
+    const remote = require("@electron/remote");
+    const fs = remote.require("fs-extra");
+    const path = remote.require("path");
+    const files: string[] = fs.readdirSync(folderPath);
+
+    const allowedFiles: FileNameWithPathType[] = files
+      .filter((n) => endsWithAny(ALLOWED_IMPORT_EXTENSIONS, n))
+      .map((n) => ({
+        filename: n,
+        path: path.join(folderPath, n),
+      }));
+
+    return allowedFiles;
   },
   deleteFileAt: (path: string) => {
     if (fsNotAvailable()) return;

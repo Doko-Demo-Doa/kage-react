@@ -2,6 +2,11 @@ import { Delta } from "quill";
 // Không dùng short alias "~" vì sẽ conflict với electron build.
 import { AnimationType, MediaType } from "../common/static-data";
 
+export type FileNameWithPathType = {
+  filename: string;
+  path: string;
+};
+
 export type SlideBuilderState = {
   selectedIndex: number;
 };
