@@ -3,21 +3,34 @@ import { Result, Button, List, Typography, Space, Progress } from "antd";
 import { CompressOutlined, FileZipFilled, CheckCircleFilled } from "@ant-design/icons";
 import { FileNameWithPathType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
+import { commonHelper } from "~/common/helper";
+import { SLIDE_MANIFEST_FILE } from "~/common/static-data";
 import CssColors from "~/assets/styles/_colors.module.scss";
 
 import "~/components/mass-fixer/mass-fixer.scss";
 
 export const MassFixerComponent: React.FC = () => {
   const [queue, setQueue] = React.useState<FileNameWithPathType[]>([]);
+  const [progress, setProgress] = React.useState(0);
 
   async function chooseFolder() {
     const path = await fileUtils.launchFolderOpenDialog();
-    console.log("aaa", path);
     if (path) {
       const archives = fileUtils.scanForSlideArchivesIn(path);
-      console.log(archives);
       setQueue(archives);
     }
+  }
+
+  function startFixing() {
+    queue.forEach((n) => {
+      const slideData = fileUtils.readZipEntryManifest(n.path);
+      const newData = commonHelper.prepareExportData(slideData.layout, slideData.id);
+
+      const manifestBuffer = Buffer.from(newData, "utf-8");
+      fileUtils.writeEntryIntoZip(n.path, SLIDE_MANIFEST_FILE, manifestBuffer);
+
+      setProgress(100 / queue.length);
+    });
   }
 
   return (
@@ -58,7 +71,10 @@ export const MassFixerComponent: React.FC = () => {
             )}
           />
 
-          <Progress percent={70} />
+          <br />
+          <br />
+
+          <Progress percent={progress} />
 
           <br />
           <br />
@@ -68,7 +84,7 @@ export const MassFixerComponent: React.FC = () => {
             <Button type="ghost" onClick={() => chooseFolder()}>
               Chọn thư mục khác
             </Button>
-            <Button type="primary" onClick={() => chooseFolder()}>
+            <Button type="primary" onClick={() => startFixing()}>
               Bắt đầu sửa
             </Button>
           </Space>

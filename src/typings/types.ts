@@ -5,6 +5,7 @@ import { AnimationType, MediaType } from "../common/static-data";
 export type FileNameWithPathType = {
   filename: string;
   path: string;
+  exportedFrom?: string;
 };
 
 export type SlideBuilderState = {

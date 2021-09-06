@@ -8,6 +8,7 @@ import {
   SLIDE_HTML_ENTRY_FILE,
   SLIDE_HTML_HIDDEN_ENTRY_FILE,
   ALLOWED_IMPORT_EXTENSIONS,
+  SLIDE_MANIFEST_FILE,
 } from "~/common/static-data";
 import QuizDeckModel from "~/mobx/models/quiz-deck";
 import { FileNameWithPathType, SlideStockBackgroundMetaType } from "~/typings/types";
@@ -18,7 +19,6 @@ function fsNotAvailable() {
 
 const CACHE_DIR_NAME = "kage-cache";
 const BACKUP_FILE_NAME = "backup.zip";
-const SLIDE_MANIFEST_FILE = "manifest.json";
 
 function getStockBackgroundsMeta(): SlideStockBackgroundMetaType {
   const cachePath = getCacheDirectory("vendor");
@@ -115,6 +115,39 @@ function checkFileExists(path: string): boolean {
   const remote = require("@electron/remote");
   const fs = remote.require("fs-extra");
   return fs.existsSync(path);
+}
+
+function readZipEntries(inputPath: string) {
+  try {
+    const zip = new AdmZip(inputPath);
+    const entries = zip.getEntries();
+    return entries.map((n) => n.entryName);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function readZipEntryManifest(zipPath: string) {
+  if (fsNotAvailable()) return;
+
+  try {
+    const zip = new AdmZip(zipPath);
+    const data = JSON.parse(zip.readAsText(SLIDE_MANIFEST_FILE));
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function writeEntryIntoZip(zipPath: string, entryName: string, data: Buffer) {
+  if (fsNotAvailable()) return;
+  try {
+    const zip = new AdmZip(zipPath);
+    zip.updateFile(entryName, data);
+    zip.writeZip();
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export const fileUtils = {
@@ -306,9 +339,18 @@ export const fileUtils = {
 
     const allowedFiles: FileNameWithPathType[] = files
       .filter((n) => endsWithAny(ALLOWED_IMPORT_EXTENSIONS, n))
+      .filter((n) => {
+        const entries = new AdmZip(path.join(folderPath, n)).getEntries().map((n) => n.entryName);
+        if (entries.includes(SLIDE_MANIFEST_FILE) && entries.includes(SLIDE_HTML_ENTRY_FILE)) {
+          return true;
+        }
+        return false;
+      })
       .map((n) => ({
         filename: n,
         path: path.join(folderPath, n),
+        exportedFrom: JSON.parse(new AdmZip(path.join(folderPath, n)).readAsText("manifest.json"))
+          .exportedFrom,
       }));
 
     return allowedFiles;
@@ -424,15 +466,11 @@ export const fileUtils = {
     }
     fs.writeFileSync(path, content);
   },
-  readZipEntries: (inputPath: string) => {
-    try {
-      const zip = new AdmZip(inputPath);
-      const entries = zip.getEntries();
-      return entries.map((n) => n.entryName);
-    } catch (error) {
-      console.log(error);
-    }
-  },
+  readZipEntries,
+  // Đọc file manifest.json trong file zip.
+  readZipEntryManifest,
+  // Ghi đè dữ liệu từ buffer vào entry trong file zip.
+  writeEntryIntoZip,
   // Xả file zip slide và đọc file manifest.
   extractZipToCache: (zipPath: string) => {
     const cacheDir = getCacheDirectory();
