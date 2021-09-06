@@ -3,7 +3,6 @@ import { notification, message, Modal } from "antd";
 import { Delta } from "quill";
 import ReactQuill, { Quill } from "react-quill";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import { BlockSizeType, PositionType } from "~/typings/types";
 import { AVAILABLE_FONT_SIZES } from "~/common/static-data";
 
 // Alternative: react-quill/dist/quill.bubble.css
@@ -106,37 +105,37 @@ export const uiUtils = {
     });
   },
 
-  getAnchorLegData: (
-    blockPos: PositionType,
-    blockSize: BlockSizeType,
-    anchorHead: PositionType
+  showModal: (
+    title: string,
+    content: React.ReactNode,
+    onOk: () => Promise<any> | void | undefined,
+    onCancel?: () => void | undefined,
+    okText?: string,
+    cancelText?: string
   ) => {
-    const blockTopLeft = blockPos;
-    const blockTopRight: PositionType = {
-      x: blockPos.x + blockSize.w,
-      y: blockPos.y,
-    };
-    const blockBottomLeft: PositionType = {
-      x: blockPos.x,
-      y: blockPos.y,
-    };
-    const blockBottomRight: PositionType = {
-      x: blockPos.x + blockSize.w,
-      y: blockPos.y + blockSize.h,
-    };
-
-    const THRESHOLD_PIXEL = 10;
-    const FLOOR_THRESHOLD = 0.35;
-    const CEIL_THRESHOLD = 0.75;
-
-    let leg1: PositionType, leg2: PositionType;
-
-    // Nằm trên:
-    if (anchorHead.y < blockTopLeft.y) {
-      if (anchorHead.x < blockTopLeft.y - 10) {
-        leg1 = { x: blockTopLeft.x, y: blockTopLeft.y };
-      }
-    }
+    // if (modalTempRef) return;
+    Modal.confirm({
+      title,
+      content,
+      okCancel: Boolean(onCancel),
+      onOk,
+      onCancel,
+      className: "custom-modal custom-modal-long",
+      width: 840,
+      okType: "ghost",
+      closable: false,
+      keyboard: false,
+      okButtonProps: {
+        type: "primary",
+      },
+      cancelButtonProps: {
+        style: {
+          display: "none",
+        },
+      },
+      okText,
+      cancelText,
+    });
   },
 };
 

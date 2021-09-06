@@ -7,6 +7,7 @@ import {
   FontSizeOutlined,
   FundViewOutlined,
   MessageOutlined,
+  CompressOutlined,
   PlusOutlined,
   UploadOutlined,
   FolderOpenOutlined,
@@ -33,6 +34,7 @@ import { platformUtils } from "~/utils/utils-platform";
 import { uiUtils } from "~/utils/utils-ui";
 import { validationUtils } from "~/utils/utils-validation";
 import { commonHelper } from "~/common/helper";
+import { massFixer } from "~/services/mass-fixer";
 import { SlideBlockType } from "~/typings/types";
 import { StoreContext } from "~/mobx/store-context";
 import CssColors from "~/assets/styles/_colors.module.scss";
@@ -216,6 +218,10 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
     }
   };
 
+  const onMassFix = () => {
+    massFixer.openQueueModal();
+  };
+
   const onOpenCache = () => {
     fileUtils.openFolderBrowser(fileUtils.getCacheDirectory());
   };
@@ -327,6 +333,9 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
               type="primary"
               ghost
             />
+          </Tooltip>
+          <Tooltip placement="bottom" title="Cập nhật hàng loạt">
+            <Button onClick={() => onMassFix()} icon={<CompressOutlined />} type="primary" ghost />
           </Tooltip>
 
           <Divider type="vertical" />

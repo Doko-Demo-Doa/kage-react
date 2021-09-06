@@ -164,7 +164,7 @@ export const fileUtils = {
     const remote = require("@electron/remote");
     const data = remote.dialog.showOpenDialog({
       properties: ["dontAddToRecent", "dontAddToRecent"],
-      message: "Chọn thư mục xuất",
+      message: "Chọn thư mục",
     });
     const dest = data.filePaths;
     if (!dest) return;
