@@ -139,7 +139,6 @@ function showPreviewWindow() {
     focusable: true,
     minimizable: false,
     acceptFirstMouse: true,
-    kiosk: true,
     webPreferences: {
       // @ts-ignore
       enableRemoteModule: true,
