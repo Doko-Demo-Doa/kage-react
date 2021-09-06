@@ -1,13 +1,14 @@
 import React from "react";
 import { Result, Button, List, Typography, Space, Progress } from "antd";
-import { CompressOutlined, FileZipFilled, CheckCircleFilled } from "@ant-design/icons";
+import { CompressOutlined, FileZipFilled } from "@ant-design/icons";
 import { FileNameWithPathType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
 import { commonHelper } from "~/common/helper";
-import { SLIDE_MANIFEST_FILE } from "~/common/static-data";
+import { SLIDE_HTML_ENTRY_FILE, SLIDE_MANIFEST_FILE } from "~/common/static-data";
 import CssColors from "~/assets/styles/_colors.module.scss";
 
 import "~/components/mass-fixer/mass-fixer.scss";
+import { dataUtils } from "~/utils/utils-data";
 
 export const MassFixerComponent: React.FC = () => {
   const [queue, setQueue] = React.useState<FileNameWithPathType[]>([]);
@@ -22,14 +23,20 @@ export const MassFixerComponent: React.FC = () => {
   }
 
   function startFixing() {
-    queue.forEach((n) => {
+    setProgress(0);
+
+    queue.forEach((n, idx) => {
       const slideData = fileUtils.readZipEntryManifest(n.path);
       const newData = commonHelper.prepareExportData(slideData.layout, slideData.id);
 
       const manifestBuffer = Buffer.from(newData, "utf-8");
       fileUtils.writeEntryIntoZip(n.path, SLIDE_MANIFEST_FILE, manifestBuffer);
 
-      setProgress(100 / queue.length);
+      const newHtmlData = dataUtils.convertToHtmlSlideData(slideData.layout, false);
+      const htmlBufer = Buffer.from(newHtmlData, "utf-8");
+      fileUtils.writeEntryIntoZip(n.path, SLIDE_HTML_ENTRY_FILE, htmlBufer);
+
+      setProgress((idx + 1) * (100 / queue.length));
     });
   }
 
@@ -55,9 +62,7 @@ export const MassFixerComponent: React.FC = () => {
             itemLayout="horizontal"
             dataSource={queue}
             renderItem={(item) => (
-              <List.Item
-                extra={<CheckCircleFilled style={{ fontSize: 20, color: CssColors.colorGreen }} />}
-              >
+              <List.Item>
                 <List.Item.Meta
                   avatar={<FileZipFilled style={{ color: CssColors.colorOrange }} />}
                   title={<div>{item.filename}</div>}

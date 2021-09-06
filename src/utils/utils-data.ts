@@ -11,7 +11,7 @@ import { quillUtils } from "~/utils/utils-quill";
 
 const ADDITIONAL_WIDTH_PX = 2;
 
-function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean) {
+function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean, slideIdx?: number) {
   const subfolderPath = "assets"; // "data";
 
   const bgStr = slide.background
@@ -120,7 +120,7 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean) {
           if (block.type === MediaType.AUDIO && anim?.mediaAutoplay) {
             return `
             <audio
-              data-audio-index="0"
+              data-audio-index="${slideIdx || 0}"
               src="${subfolderPath}/${block.assetName}">
             </audio>`;
           }
@@ -229,8 +229,8 @@ export const dataUtils = {
         <div class="reveal">
           <div class="slides">
             ${slides
-              .map((slide) => {
-                return singleSlideConstructor(slide, shouldMarkHidden && !!slide.isHidden);
+              .map((slide, idx) => {
+                return singleSlideConstructor(slide, shouldMarkHidden && !!slide.isHidden, idx);
               })
               .join("\n")}
           </div>
@@ -281,7 +281,8 @@ export const dataUtils = {
 
           // Tìm fragment đầu tiên 
           function autoplayFragmentZero() {
-            const targetElem = document.querySelector('[data-audio-index="0"]');
+            const state = Reveal.getState();
+            const targetElem = document.querySelector('[data-audio-index="' + state.indexh + '"]');
             if (targetElem.play) {
               targetElem.play();
             }

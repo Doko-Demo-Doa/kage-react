@@ -10,3 +10,14 @@ $interactive-editor-height: 555px;
 // Quiz Player
 $qp-head-height: 46px;
 $qp-footer-height: 54px;
+
+// TODO: Maybe not the best place to put this.
+.custom-modal {
+  .ant-modal-body {
+    .ant-modal-confirm-body {
+      .ant-modal-confirm-content {
+        margin-left: unset;
+      }
+    }
+  }
+}
