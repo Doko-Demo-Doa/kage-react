@@ -54,6 +54,8 @@ function createWindow() {
     },
   });
 
+  require("@electron/remote/main").enable(win.webContents);
+
   if (isDev) {
     win.loadURL("http://localhost:3000/");
   } else {
@@ -148,6 +150,8 @@ function showPreviewWindow() {
       nodeIntegration: true,
     },
   });
+
+  require("@electron/remote/main").enable(previewWin.webContents);
 
   if (app.isPackaged) {
     previewWin.removeMenu();
