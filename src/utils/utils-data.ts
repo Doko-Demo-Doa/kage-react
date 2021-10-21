@@ -10,7 +10,7 @@ import { formattingUtils } from "~/utils/utils-formatting";
 import { quillUtils } from "~/utils/utils-quill";
 
 const ADDITIONAL_WIDTH_PX = 2;
-const ADDITIONAL_HEIGHT_PX = 2;
+const ADDITIONAL_HEIGHT_PX = 6;
 
 function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean, slideIdx?: number) {
   const subfolderPath = "assets"; // "data";
@@ -67,7 +67,7 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean, sli
           if (block.type === MediaType.IMAGE) {
             const sizeAppend = `${
               block.size
-                ? `width: ${Math.ceil(block.size.w)}px; height: ${Math.ceil(block.size.h)}px; `
+                ? `width: ${Math.ceil(block.size.w)}px; height: ${Math.ceil(block.size.h)}px;`
                 : ""
             }`;
             const positionAppend = `${
@@ -95,9 +95,8 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean, sli
               user-select: auto;
               width: ${block.size?.w ? block.size?.w + ADDITIONAL_WIDTH_PX + "px" : "auto"};
               height: auto;
-              display: inline-block;
               background-color: ${block.bgColor || "unset"};
-              top: ${block.position?.y}px;
+              top: ${(block.position?.y || 0) + ADDITIONAL_HEIGHT_PX}px;
               left: ${block.position?.x}px;
               box-sizing: border-box;
             `)
@@ -172,7 +171,7 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean, sli
               border-radius: 6px;
               background-color: ${block.bgColor};
               width: ${(block.size?.w || 1) + ADDITIONAL_WIDTH_PX}px;
-              height: ${(block.size?.h || 1) + ADDITIONAL_HEIGHT_PX}px;
+              height: ${(block.size?.h || 0)}px;
               top: ${block.position?.y}px;
               left: ${block.position?.x}px;
               box-sizing: border-box;
@@ -181,7 +180,9 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean, sli
             return stripIndent(`
             <div style="${wrapperStyleAppend}" ${animAppend}>
               <article class="interactive-callout" style="${styleAppend}">
-                ${formattingUtils.furiganaTemplateToHTML(html)}
+                <div class="text-block-callout" style="padding-top: 4px;">
+                  ${formattingUtils.furiganaTemplateToHTML(html)}
+                </div>
               </article>
               <svg style="position: absolute; z-index: -1; width: ${
                 MinimumCanvasSize.WIDTH
