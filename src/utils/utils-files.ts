@@ -2,6 +2,7 @@ import fs from "fs-extra";
 import { isEmpty, union } from "rambdax";
 import dayjs from "dayjs";
 import AdmZip from "adm-zip";
+import archiver from "archiver";
 import {
   MediaType,
   RESOURCE_PROTOCOL,
