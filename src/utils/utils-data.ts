@@ -10,6 +10,7 @@ import { formattingUtils } from "~/utils/utils-formatting";
 import { quillUtils } from "~/utils/utils-quill";
 
 const ADDITIONAL_WIDTH_PX = 2;
+const ADDITIONAL_HEIGHT_PX = 2;
 
 function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean, slideIdx?: number) {
   const subfolderPath = "assets"; // "data";
@@ -171,6 +172,7 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean, sli
               border-radius: 6px;
               background-color: ${block.bgColor};
               width: ${(block.size?.w || 1) + ADDITIONAL_WIDTH_PX}px;
+              height: ${(block.size?.h || 1) + ADDITIONAL_HEIGHT_PX}px;
               top: ${block.position?.y}px;
               left: ${block.position?.x}px;
               box-sizing: border-box;
@@ -194,7 +196,7 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean, sli
             </div>
             `);
           }
-          return `<div>${block.content}</div>`;
+          return `<div style="margin-top: 3px;">${block.content}</div>`;
         })
         .join("\n")}
     </section>`);
