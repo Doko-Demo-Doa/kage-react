@@ -517,5 +517,17 @@ export const fileUtils = {
     });
 
     newZip.writeZip(path.join(dest));
+
+    const archive = archiver("zip", {
+      zlib: {level: 9}
+    });
+
+    const output = fs.createWriteStream(__dirname + "archiver.zip");
+
+    output.on("close", function() {
+      console.log(archive.pointer() + " total bytes");
+      console.log("archiver has been finalized and the output file descriptor has closed.");
+    });
+
   },
 };
