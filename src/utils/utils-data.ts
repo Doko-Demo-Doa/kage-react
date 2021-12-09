@@ -99,7 +99,6 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean, sli
               top: ${block.position?.y}px;
               left: ${block.position?.x}px;
               box-sizing: border-box;
-              flex-shrink: 0;
             `)
               .replace(/(\r\n|\n|\r)/gm, "")
               .replace(" ", "");
@@ -168,10 +167,10 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean, sli
             const styleAppend = stripIndent(`
               position: absolute;
               padding: 10px;
+              padding-top: 16px;
               border-radius: 6px;
               background-color: ${block.bgColor};
               width: ${(block.size?.w || 1) + ADDITIONAL_WIDTH_PX}px;
-              height: ${block.size?.h || 1}px;
               top: ${block.position?.y}px;
               left: ${block.position?.x}px;
               box-sizing: border-box;
@@ -187,7 +186,7 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean, sli
               }px; height: ${MinimumCanvasSize.HEIGHT}px; top: 0; left: 0;">
                 <polyline points="${leg1.x},${leg1.y} ${anchor.x},${anchor.y} ${leg2.x},${
               leg2.y
-            }" fill="${block.bgColor}" stroke="${block.bgColor}"
+              }" fill="${block.bgColor}" stroke="${block.bgColor}"
                   style="position: absolute;"
                 />
                 Trình duyệt không hỗ trợ hiển thị
@@ -264,7 +263,7 @@ export const dataUtils = {
           Reveal.on('ready', event => {
             autoplayFragmentZero();
           });
-      
+
           Reveal.on('slidetransitionend', event => {
             const state = Reveal.getState();
             if (state.indexf === -1 || state.indexf === undefined) {
@@ -279,7 +278,7 @@ export const dataUtils = {
             }
           });
 
-          // Tìm fragment đầu tiên 
+          // Tìm fragment đầu tiên
           function autoplayFragmentZero() {
             const state = Reveal.getState();
             const targetElem = document.querySelector('[data-audio-index="' + state.indexh + '"]');

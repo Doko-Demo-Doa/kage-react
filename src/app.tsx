@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { ipcRenderer } from "electron";
 
 import { ElectronEventType } from "~/common/static-data";
-import { BrowserRouter, HashRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
 
 import { platformUtils } from "~/utils/utils-platform";
 
@@ -48,11 +48,11 @@ const App = (): React.ReactElement => {
   return (
     <StoreContext.Provider value={rootStore}>
       <AppRouter>
-        <Switch>
-          <Route exact path="/" component={Builder} />
-          <Route exact path="/preview" component={PreviewRoute} />
-          <Route exact path="/login" component={LoginRoute} />
-        </Switch>
+        <Routes>
+          <Route path="/" element={<Builder />} />
+          <Route path="/preview" element={<PreviewRoute />} />
+          <Route path="/login" element={<LoginRoute />} />
+        </Routes>
       </AppRouter>
     </StoreContext.Provider>
   );

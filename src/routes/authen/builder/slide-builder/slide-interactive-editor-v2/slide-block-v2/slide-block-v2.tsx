@@ -187,6 +187,9 @@ export const SlideBlock: React.FC<SlideBlockComponentType> = ({
               const topLeftX = d.x;
               const topLeftY = d.y;
 
+              console.log("Event", e);
+              console.log("Position", d);
+
               onDrag?.(id, { x: topLeftX, y: topLeftY });
             }}
             position={{

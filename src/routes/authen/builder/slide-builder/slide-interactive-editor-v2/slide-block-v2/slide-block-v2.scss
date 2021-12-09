@@ -4,7 +4,7 @@ $animation-anchor-size: 24px;
 .c-handle {
   transform: scale(0.5);
   background: $color-blue-primary;
-  border: 1px solid $color-gray-medium;
+  outline: 1px solid $color-gray-medium;
 }
 
 .single-block {
@@ -20,7 +20,7 @@ $animation-anchor-size: 24px;
   vertical-align: middle;
   position: absolute;
   background: white;
-  border: 1px dashed $color-aqua-highlighted;
+  outline: 1px dashed $color-aqua-highlighted;
   cursor: pointer;
   z-index: 4;
 }
@@ -33,6 +33,7 @@ $animation-anchor-size: 24px;
 
 .text-block {
   padding: 10px;
+  padding-top: 16px;
   line-height: 1.4;
   letter-spacing: normal;
   margin-bottom: 0;
@@ -69,14 +70,14 @@ $animation-anchor-size: 24px;
 
 .interactive-text-block {
   position: relative;
-  border: 1px dashed $color-cyan-light;
-  overflow-wrap: break-word;
+  outline: 1px dashed transparent;
+  white-space: nowrap;
 
   .drag-handle {
     width: 24px;
     height: 24px;
     padding: 10px;
-    border: 1px dashed wheat;
+    outline: 1px dashed wheat;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -88,7 +89,7 @@ $animation-anchor-size: 24px;
 }
 
 .interactive-text-block-selected {
-  border: 1px dashed $color-aqua-highlighted;
+  outline: 1px dashed $color-aqua-highlighted;
 }
 
 .interactive-callout {
