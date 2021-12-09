@@ -122,6 +122,7 @@ export function Builder() {
             </span>
           }
           key="2"
+          disabled
         >
           <SettingsRoute />
         </TabPane>
