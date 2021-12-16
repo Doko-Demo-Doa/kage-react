@@ -17,7 +17,7 @@ setup:
 
 test:
   tags:
-    - windows-server
+    - dora-mac-mini
   stage: test
   script:
     - yarn lint:fix
