@@ -20,6 +20,7 @@ test:
     - dora-mac-mini
   stage: test
   script:
+    - source ~/.bashrc
     - yarn lint:fix
     - yarn test
 
