@@ -2,7 +2,8 @@ import fs from "fs-extra";
 import { isEmpty, union } from "rambdax";
 import dayjs from "dayjs";
 import AdmZip from "adm-zip";
-import archiver from "archiver";
+import ZipLib from "zip-lib";
+import path from "path";
 import {
   MediaType,
   RESOURCE_PROTOCOL,
@@ -37,7 +38,7 @@ function getStockBackgroundsMeta(): SlideStockBackgroundMetaType {
  * @param type Tên loại thư mục cần lấy ra từ cache:
  * @returns String path đã chuẩn hoá trên các hệ điều hành
  */
-function getCacheDirectory(type?: "assets" | "quiz" | "vendor" | ""): string {
+function getCacheDirectory(type?: "assets" | "quiz" | "vendor" | "backgrounds" | ""): string {
   if (fsNotAvailable()) return "";
 
   const subdir = type !== undefined ? type : "";
@@ -69,6 +70,10 @@ function createCacheDir() {
   const vendorDir = getCacheDirectory("vendor");
   if (!fs.existsSync(vendorDir)) {
     fs.mkdirSync(vendorDir);
+  }
+  const backgroundsDir = getCacheDirectory("backgrounds");
+  if (!fs.existsSync(backgroundsDir)) {
+    fs.mkdirSync(backgroundsDir);
   }
   const quizDir = getCacheDirectory("quiz");
   if (!fs.existsSync(quizDir)) {
@@ -487,9 +492,6 @@ export const fileUtils = {
   },
   zipFilesTo: (dest: string, assets: string[], backgrounds: string[]) => {
     if (fsNotAvailable()) return;
-    const remote = require("@electron/remote");
-    const path = remote.require("path");
-
     const cacheDir = getCacheDirectory();
 
     const newZip = new AdmZip();
@@ -516,18 +518,19 @@ export const fileUtils = {
       );
     });
 
+    // New zip lib, no corrupt
+
     newZip.writeZip(path.join(dest));
 
-    const archive = archiver("zip", {
-      zlib: {level: 9}
+    const zl = new ZipLib.Zip();
+    zl.addFile(manifestPath);
+    zl.addFile(htmlEntryPath);
+    zl.addFolder(vendorDir);
+    assets.forEach((n) => {
+      zl.addFile(path.join(getCacheDirectory("assets"), n), "assets");
     });
-
-    const output = fs.createWriteStream(__dirname + "archiver.zip");
-
-    output.on("close", function() {
-      console.log(archive.pointer() + " total bytes");
-      console.log("archiver has been finalized and the output file descriptor has closed.");
+    backgrounds.forEach((n) => {
+      zl.addFile(path.join(getCacheDirectory("vendor"), "backgrounds", n), "vendor/backgrounds");
     });
-
   },
 };
