@@ -15,7 +15,7 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean, sli
   const subfolderPath = "assets"; // "data";
 
   const bgStr = slide.background
-    ? `data-background-image="./vendor/backgrounds/${slide.background}"}`
+    ? `data-background-image="./backgrounds/${slide.background}"}`
     : "";
 
   const titleStyleAppend = slide.titleFontSize ? `style="font-size: ${slide.titleFontSize}px"` : "";
@@ -186,7 +186,7 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean, sli
               }px; height: ${MinimumCanvasSize.HEIGHT}px; top: 0; left: 0;">
                 <polyline points="${leg1.x},${leg1.y} ${anchor.x},${anchor.y} ${leg2.x},${
               leg2.y
-              }" fill="${block.bgColor}" stroke="${block.bgColor}"
+            }" fill="${block.bgColor}" stroke="${block.bgColor}"
                   style="position: absolute;"
                 />
                 Trình duyệt không hỗ trợ hiển thị

@@ -3,12 +3,12 @@ import { Result, Button, List, Typography, Space, Progress } from "antd";
 import { CompressOutlined, FileZipFilled } from "@ant-design/icons";
 import { FileNameWithPathType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
+import { dataUtils } from "~/utils/utils-data";
 import { commonHelper } from "~/common/helper";
 import { SLIDE_HTML_ENTRY_FILE, SLIDE_MANIFEST_FILE } from "~/common/static-data";
-import CssColors from "~/assets/styles/_colors.module.scss";
 
+import CssColors from "~/assets/styles/_colors.module.scss";
 import "~/components/mass-fixer/mass-fixer.scss";
-import { dataUtils } from "~/utils/utils-data";
 
 export const MassFixerComponent: React.FC = () => {
   const [queue, setQueue] = React.useState<FileNameWithPathType[]>([]);

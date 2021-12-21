@@ -1,8 +1,8 @@
 import fs from "fs-extra";
 import { isEmpty, union } from "rambdax";
 import dayjs from "dayjs";
+// adm-zip for reading, zip-lib for creating
 import AdmZip from "adm-zip";
-import ZipLib from "zip-lib";
 import path from "path";
 import {
   MediaType,
@@ -23,9 +23,9 @@ const CACHE_DIR_NAME = "kage-cache";
 const BACKUP_FILE_NAME = "backup.zip";
 
 function getStockBackgroundsMeta(): SlideStockBackgroundMetaType {
-  const cachePath = getCacheDirectory("vendor");
+  const cachePath = getCacheDirectory("backgrounds");
 
-  const meta: SlideStockBackgroundMetaType = fs.readJsonSync(`${cachePath}/backgrounds/stock.json`);
+  const meta: SlideStockBackgroundMetaType = fs.readJsonSync(`${cachePath}/stock.json`);
 
   return meta;
 }
@@ -55,7 +55,6 @@ function getCacheDirectory(type?: "assets" | "quiz" | "vendor" | "backgrounds" |
 function createCacheDir() {
   if (fsNotAvailable()) return;
   const remote = require("@electron/remote");
-  const path = require("path");
   const fs = remote.require("fs-extra");
 
   // Tạo cache dir
@@ -80,22 +79,33 @@ function createCacheDir() {
     fs.mkdirSync(quizDir);
     fs.mkdirSync(`${quizDir}/assets`);
   }
+}
 
-  let resourcePath = "";
+function prepareCacheContent() {
+  const remote = require("@electron/remote");
+  const vendorDir = getCacheDirectory("vendor");
+  const backgroundsDir = getCacheDirectory("backgrounds");
+  let vendorResourcePath = "";
+  let backgroundsResourcePath = "";
+
+  console.log("aaaa", process.env.NODE_ENV);
 
   // Copy đống file từ extra vào cache
   if (process.env.NODE_ENV !== "production") {
     // Copy từ folder trong project ra. Nằm ở extra/vendor nếu là dev
-    resourcePath = path.join(path.resolve("./"), "extra", "vendor");
+    vendorResourcePath = path.join(path.resolve("./"), "extra", "vendor");
+    backgroundsResourcePath = path.join(path.resolve("./"), "extra", "backgrounds");
   } else {
     // Nếu là release thì nó nằm ở dora-extra. Tham khảo file electron-builder.yml
-    fs.readdirSync(path.join(process.resourcesPath, "dora-extra", "vendor"));
-    resourcePath = path.join(process.resourcesPath, "dora-extra", "vendor");
+    vendorResourcePath = path.join(process.resourcesPath, "dora-extra", "vendor");
+    backgroundsResourcePath = path.join(process.resourcesPath, "dora-extra", "backgrounds");
   }
 
   const destVendor = path.join(vendorDir);
+  const destBackgrounds = path.join(backgroundsDir);
 
-  fs.copySync(resourcePath, destVendor);
+  fs.copySync(vendorResourcePath, destVendor);
+  fs.copySync(backgroundsResourcePath, destBackgrounds);
   return remote.app.getPath("cache");
 }
 
@@ -253,6 +263,7 @@ export const fileUtils = {
     if (onlyAssets) {
       // Copy từng thằng vào một:
       const cacheVendorDir = getCacheDirectory("vendor");
+      const cacheBackgroundDir = getCacheDirectory("backgrounds");
 
       fs.copySync(cacheVendorDir, path.join(destF, "vendor"), {
         filter: function (name: string) {
@@ -265,14 +276,12 @@ export const fileUtils = {
 
       // Chỉ copy background đang dùng:
       if (backgroundFilenames) {
-        const cachedBackgroundDir = path.join(cacheVendorDir, "backgrounds");
-        fs.readdir(cachedBackgroundDir, (err, files) => {
+        fs.readdir(cacheBackgroundDir, (err, files) => {
           files.forEach((filename) => {
             if (backgroundFilenames.includes(filename)) {
-              console.log("ff", filename);
               fs.copySync(
-                path.join(cachedBackgroundDir, filename),
-                path.join(destF, "vendor", "backgrounds", filename)
+                path.join(cacheBackgroundDir, filename),
+                path.join(destF, "backgrounds", filename)
               );
             }
           });
@@ -378,6 +387,7 @@ export const fileUtils = {
     }
   },
   createCacheDir,
+  prepareCacheContent,
   checkFileExists,
   getCacheDirectory,
   /**
@@ -412,9 +422,9 @@ export const fileUtils = {
    */
   getSlideBackgroundUrl: (assetName: string) => {
     if (fsNotAvailable()) return;
-    const cachePath = getCacheDirectory("vendor");
+    const cachePath = getCacheDirectory("backgrounds");
 
-    return `${RESOURCE_PROTOCOL}${cachePath}/backgrounds/${assetName}`;
+    return `${RESOURCE_PROTOCOL}${cachePath}/${assetName}`;
   },
   getUsableAssetUrl: (assetName: string | undefined) => {
     return `${RESOURCE_PROTOCOL}${getCacheDirectory("assets")}/${assetName}`;
@@ -484,7 +494,7 @@ export const fileUtils = {
       const zip = new AdmZip(zipPath);
       zip.extractAllTo(cacheDir, true);
       // Copy lại đống vendor vào cache để update:
-      fileUtils.createCacheDir();
+      createCacheDir();
       return zip.readAsText(SLIDE_MANIFEST_FILE);
     } catch (e) {
       console.log(e);
@@ -492,35 +502,14 @@ export const fileUtils = {
   },
   zipFilesTo: (dest: string, assets: string[], backgrounds: string[]) => {
     if (fsNotAvailable()) return;
+    const remote = require("@electron/remote");
+    const ZipLib = remote.require("zip-lib");
     const cacheDir = getCacheDirectory();
-
-    const newZip = new AdmZip();
 
     // Add từng file:
     const vendorDir = getCacheDirectory("vendor");
     const manifestPath = path.join(cacheDir, SLIDE_MANIFEST_FILE);
     const htmlEntryPath = path.join(cacheDir, SLIDE_HTML_ENTRY_FILE);
-    newZip.addLocalFolder(vendorDir, "vendor");
-    // Loại thư mục background không ra tạm:
-    newZip.deleteFile("vendor/backgrounds/");
-
-    newZip.addLocalFile(manifestPath);
-    newZip.addLocalFile(htmlEntryPath);
-
-    assets.forEach((n) => {
-      newZip.addLocalFile(path.join(getCacheDirectory("assets"), n), "assets");
-    });
-
-    backgrounds.forEach((n) => {
-      newZip.addLocalFile(
-        path.join(getCacheDirectory("vendor"), "backgrounds", n),
-        "vendor/backgrounds"
-      );
-    });
-
-    // New zip lib, no corrupt
-
-    newZip.writeZip(path.join(dest));
 
     const zl = new ZipLib.Zip();
     zl.addFile(manifestPath);
@@ -530,7 +519,7 @@ export const fileUtils = {
       zl.addFile(path.join(getCacheDirectory("assets"), n), "assets");
     });
     backgrounds.forEach((n) => {
-      zl.addFile(path.join(getCacheDirectory("vendor"), "backgrounds", n), "vendor/backgrounds");
+      zl.addFile(path.join(getCacheDirectory("backgrounds"), "backgrounds", n), "backgrounds");
     });
   },
 };
