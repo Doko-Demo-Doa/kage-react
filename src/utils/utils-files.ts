@@ -13,7 +13,11 @@ import {
   SLIDE_MANIFEST_FILE,
 } from "~/common/static-data";
 import QuizDeckModel from "~/mobx/models/quiz-deck";
-import { FileNameWithPathType, SlideStockBackgroundMetaType } from "~/typings/types";
+import {
+  FileNameWithPathType,
+  SlideStockBackgroundMetaType,
+  ZipConstructType,
+} from "~/typings/types";
 
 function fsNotAvailable() {
   return isEmpty(require("fs"));
@@ -501,6 +505,32 @@ export const fileUtils = {
     }
   },
   zipFilesTo: (dest: string, assets: string[], backgrounds: string[]) => {
+    if (fsNotAvailable()) return;
+    const remote = require("@electron/remote");
+    const ZipLib = remote.require("zip-lib");
+    const cacheDir = getCacheDirectory();
+
+    // Add từng file:
+    const vendorDir = getCacheDirectory("vendor");
+    const manifestPath = path.join(cacheDir, SLIDE_MANIFEST_FILE);
+    const htmlEntryPath = path.join(cacheDir, SLIDE_HTML_ENTRY_FILE);
+
+    const zl = new ZipLib.Zip();
+    zl.addFile(manifestPath);
+    zl.addFile(htmlEntryPath);
+    zl.addFolder(vendorDir, "vendor");
+    assets.forEach((n) => {
+      zl.addFile(path.join(getCacheDirectory("assets"), n), "assets/" + n);
+    });
+    backgrounds.forEach((n) => {
+      // https://github.com/fpsqdb/zip-lib#zip-with-metadata
+      zl.addFile(path.join(getCacheDirectory("backgrounds"), n), "backgrounds/" + n);
+    });
+
+    zl.archive(dest);
+  },
+  // Dùng để làm mới lại file zip theo cấu trúc mới, bao gồm cả folder backgrounđ, file html, manifest.
+  reconstructZipTo: (dest: string, { assets, backgrounds }: ZipConstructType) => {
     if (fsNotAvailable()) return;
     const remote = require("@electron/remote");
     const ZipLib = remote.require("zip-lib");

@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Result, Button, List, Typography, Space, Progress } from "antd";
 import { CompressOutlined, FileZipFilled } from "@ant-design/icons";
 import { FileNameWithPathType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
 import { dataUtils } from "~/utils/utils-data";
 import { commonHelper } from "~/common/helper";
+import { StoreContext } from "~/mobx/store-context";
 import { SLIDE_HTML_ENTRY_FILE, SLIDE_MANIFEST_FILE } from "~/common/static-data";
 
 import CssColors from "~/assets/styles/_colors.module.scss";
 import "~/components/mass-fixer/mass-fixer.scss";
 
 export const MassFixerComponent: React.FC = () => {
+  const store = useContext(StoreContext);
+  const { list, setList, newSlide, importSlideTree } = store.slideListStore;
+
   const [queue, setQueue] = React.useState<FileNameWithPathType[]>([]);
   const [progress, setProgress] = React.useState(0);
 
@@ -20,6 +24,15 @@ export const MassFixerComponent: React.FC = () => {
       const archives = fileUtils.scanForSlideArchivesIn(path);
       setQueue(archives);
     }
+  }
+
+  function getAssetList() {
+    let assetList: string[] = [];
+    list.forEach((item) => {
+      const assetItems = item.slideBlocks.map((n) => n.assetName || "").filter((n) => n !== ".");
+      assetList = [...assetList, ...assetItems];
+    });
+    return assetList;
   }
 
   function startFixing() {
@@ -38,7 +51,16 @@ export const MassFixerComponent: React.FC = () => {
       fileUtils.writeEntryIntoZip(n.path, SLIDE_HTML_ENTRY_FILE, htmlBufer);
 
       // Ver "0.1.22", fix folder backgrounds (cho ra ngoài)
+      const assetList = getAssetList();
+      const backgroundAssetList = list.map((n) => n.background || "").filter(Boolean);
+      fileUtils.reconstructZipTo("", {
+        assets: assetList,
+        backgrounds: backgroundAssetList,
+        manifestData: newData,
+        htmlData: newHtmlData,
+      });
 
+      // TODO: Unfinished
       setProgress((idx + 1) * (100 / queue.length));
     });
   }

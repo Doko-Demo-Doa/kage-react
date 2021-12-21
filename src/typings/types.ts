@@ -2,6 +2,13 @@ import { Delta } from "quill";
 // Không dùng short alias "~" vì sẽ conflict với electron build.
 import { AnimationType, MediaType } from "../common/static-data";
 
+export type ZipConstructType = {
+  assets: string[];
+  backgrounds: string[];
+  htmlData: string;
+  manifestData: string;
+};
+
 export type FileNameWithPathType = {
   filename: string;
   path: string;

@@ -177,7 +177,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
         const manifest = fileUtils.extractZipToCache(path);
         // Sau khi extract thì nạp vào bộ nhớ.
         if (manifest) {
-          // Nạp manifest mới vào.
+          // Nạp manifest mới vào bộ nhớ.
           const data = JSON.parse(manifest);
           const importedVer = data.exportedFrom as string;
 
@@ -252,7 +252,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
     const convertedStrHidden = dataUtils.convertToHtmlSlideData(list, true);
     fileUtils.writeToHtml(convertedStrHidden, true);
 
-    return [...uniq(assetList)];
+    return uniq(assetList);
   };
 
   const insertBlock = (
