@@ -514,12 +514,15 @@ export const fileUtils = {
     const zl = new ZipLib.Zip();
     zl.addFile(manifestPath);
     zl.addFile(htmlEntryPath);
-    zl.addFolder(vendorDir);
+    zl.addFolder(vendorDir, "vendor");
     assets.forEach((n) => {
-      zl.addFile(path.join(getCacheDirectory("assets"), n), "assets");
+      zl.addFile(path.join(getCacheDirectory("assets"), n), "assets/" + n);
     });
     backgrounds.forEach((n) => {
-      zl.addFile(path.join(getCacheDirectory("backgrounds"), "backgrounds", n), "backgrounds");
+      // https://github.com/fpsqdb/zip-lib#zip-with-metadata
+      zl.addFile(path.join(getCacheDirectory("backgrounds"), n), "backgrounds/" + n);
     });
+
+    zl.archive(dest);
   },
 };

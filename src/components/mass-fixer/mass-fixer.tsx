@@ -26,6 +26,7 @@ export const MassFixerComponent: React.FC = () => {
     setProgress(0);
 
     queue.forEach((n, idx) => {
+      // Ver "0.1.14", fix file manifest.json
       const slideData = fileUtils.readZipEntryManifest(n.path);
       const newData = commonHelper.prepareExportData(slideData.layout, slideData.id);
 
@@ -35,6 +36,8 @@ export const MassFixerComponent: React.FC = () => {
       const newHtmlData = dataUtils.convertToHtmlSlideData(slideData.layout, false);
       const htmlBufer = Buffer.from(newHtmlData, "utf-8");
       fileUtils.writeEntryIntoZip(n.path, SLIDE_HTML_ENTRY_FILE, htmlBufer);
+
+      // Ver "0.1.22", fix folder backgrounds (cho ra ngoài)
 
       setProgress((idx + 1) * (100 / queue.length));
     });

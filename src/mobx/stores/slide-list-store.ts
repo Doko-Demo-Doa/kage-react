@@ -224,12 +224,6 @@ export class SlideListStore {
     this.list[idx].slideBlocks = newBlocks;
   }
 
-  fixBlockLists() {
-    this.list.forEach((n, idx) => {
-      this.list[idx].slideBlocks = [...this.list[idx].slideBlocks.reverse()];
-    });
-  }
-
   setAnimationList(newAnims: SlideAnimationType[]) {
     const idx = this.rootStore.slideBuilderStore.selectedIndex;
 

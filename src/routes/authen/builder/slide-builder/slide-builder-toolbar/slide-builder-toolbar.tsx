@@ -47,7 +47,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
   const [isLoading, setLoading] = useState(false);
 
   const store = useContext(StoreContext);
-  const { list, setList, newSlide, importSlideTree, fixBlockLists } = store.slideListStore;
+  const { list, setList, newSlide, importSlideTree } = store.slideListStore;
   const {
     selectedIndex,
     lastSavedTimestamp,
@@ -194,9 +194,9 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
           ) {
             uiUtils.showConfirmation(
               "Chú ý",
-              "Slide bạn vừa mở là phiên bản cũ, có thể import vào sẽ bị lỗi. Bạn có muốn tự động sửa không?",
+              "Slide bạn vừa mở là phiên bản cũ, có thể import vào sẽ bị lỗi. Bạn thử sửa lỗi bằng tính năng Cập nhật hàng loạt nhé",
               () => {
-                fixBlockLists();
+                // fixBlockLists();
               },
               () => {
                 //
