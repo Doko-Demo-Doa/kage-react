@@ -20,8 +20,8 @@ test:
     - dora-mac-mini
   stage: test
   script:
-    - zsh
     - source ~/.zprofile
+    - which yarn
     - npm run lint:fix
     - npm run test
 
