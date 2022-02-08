@@ -22,8 +22,8 @@ test:
   script:
     - zsh
     - source ~/.zprofile
-    - yarn lint:fix
-    - yarn test
+    - npm run lint:fix
+    - npm run test
 
 build-win:
   tags:
