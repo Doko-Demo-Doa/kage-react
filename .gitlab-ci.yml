@@ -20,6 +20,8 @@ test:
     - dora-mac-mini
   stage: test
   script:
+    - zsh
+    - source ~/.zprofile
     - yarn lint:fix
     - yarn test
 
@@ -40,6 +42,7 @@ build-mac:
   stage: build
   resource_group: mac-machines
   script:
+    - source ~/.zprofile
     - yarn install
     - yarn electron:deploy-mac
   only:
