@@ -17,9 +17,10 @@ setup:
 
 test:
   tags:
-    - windows-server
+    - dora-mac-mini
   stage: test
   script:
+    - source ~/.bashrc
     - yarn lint:fix
     - yarn test
 
