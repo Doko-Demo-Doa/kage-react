@@ -129,19 +129,26 @@ export const imageUtils = {
     const imageMetadata = await sharp(filePath).metadata();
     const { width, height, format } = imageMetadata;
 
+    let data;
+
     const newWidth = Math.min(OptimalImageSize.width, width);
     const newHeight = Math.min(OptimalImageSize.height, height);
 
-    const data = sharp(filePath)
-      .resize({
-        width: newWidth,
-        height: newHeight,
-        fit: sharp.fit.inside,
-        withoutEnlargement: true,
-      })
-      .toFormat(format);
+    if (format === "gif") {
+      data = await sharp(filePath, { animated: true }).toBuffer();
+    } else {
+      data = await sharp(filePath)
+        .resize({
+          width: newWidth,
+          height: newHeight,
+          fit: sharp.fit.inside,
+          withoutEnlargement: true,
+        })
+        .toFormat(format)
+        .toBuffer();
+    }
 
-    const dataBuf = await data.toBuffer();
+    const dataBuf = data;
     const crc32 = remote.require("crc").crc32;
     const name = crc32(dataBuf).toString(16);
 
