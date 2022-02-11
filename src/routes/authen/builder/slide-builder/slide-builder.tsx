@@ -14,6 +14,8 @@ import { platformUtils } from "~/utils/utils-platform";
 
 import "~/routes/authen/builder/slide-builder/slide-builder.scss";
 
+let counter = 0;
+
 export const SlideBuilder: React.FC = () => {
   const [updateProgress, setUpdateProgress] = useState(0);
   const [updateDownloaded, setUpdateDownloaded] = useState(false);
@@ -45,6 +47,15 @@ export const SlideBuilder: React.FC = () => {
     };
   }, []);
 
+  function onClickVer() {
+    if (counter >= 10) {
+      ipcRenderer.send(ElectronEventType.OPEN_DEVTOOLS);
+      counter = 0;
+    } else {
+      counter += 1;
+    }
+  }
+
   return (
     <KeyboardEventHandler
       handleKeys={["ctrl + s", "Cmd + s"]}
@@ -61,7 +72,7 @@ export const SlideBuilder: React.FC = () => {
           <SlideEntities />
         </div>
 
-        <div className="slide-builder-bottom">
+        <div className="slide-builder-bottom" onClick={onClickVer}>
           {`Phiên bản: ${platformUtils.getAppVersion()} - ${process.env.NODE_ENV}`}
           {" - "}
           {!updateDownloaded && updateProgress > 0 ? (
