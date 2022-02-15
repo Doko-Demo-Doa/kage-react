@@ -1,7 +1,7 @@
 {
   "name": "dora-kage",
   "description": "Slide and quiz creation tool",
-  "version": "0.1.24",
+  "version": "0.1.26",
   "author": "WabiSabi",
   "license": "Commercial",
   "homepage": "./",
@@ -71,7 +71,7 @@
     "ffmpeg-ffprobe-static": "4.4.0-rc.11",
     "fluent-ffmpeg": "2.1.2",
     "fs-extra": "10.0.0",
-    "sharp": "0.30.0",
+    "sharp": "0.29.3",
     "zip-lib": "0.7.2"
   },
   "devDependencies": {
