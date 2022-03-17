@@ -135,7 +135,7 @@ export const imageUtils = {
     const newHeight = Math.min(OptimalImageSize.height, height);
 
     if (format === "gif") {
-      data = await sharp(filePath, { animated: true }).toBuffer();
+      data = fs.readFileSync(filePath);
     } else {
       data = await sharp(filePath)
         .resize({
