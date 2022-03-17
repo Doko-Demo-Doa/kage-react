@@ -32,7 +32,6 @@ export function Builder() {
         "Chú ý",
         i18n.t("slide_tab.unexpected_close_description"),
         () => {
-          // Code ok
           const zipContent = fileUtils.readZipEntries(backupPath);
           if (zipContent?.includes(SLIDE_HTML_ENTRY_FILE) && zipContent.includes("manifest.json")) {
             const manifest = fileUtils.extractZipToCache(backupPath);
@@ -55,6 +54,7 @@ export function Builder() {
     }
     fileUtils.clearCacheDir();
     fileUtils.createCacheDir();
+    fileUtils.prepareCacheContent();
     EventBus.on("SWITCH_TAB", (nk: string) => {
       setTabKey(nk);
     });
@@ -122,6 +122,7 @@ export function Builder() {
             </span>
           }
           key="2"
+          disabled
         >
           <SettingsRoute />
         </TabPane>

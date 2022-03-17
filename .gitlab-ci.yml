@@ -17,11 +17,13 @@ setup:
 
 test:
   tags:
-    - windows-server
+    - dora-mac-mini
   stage: test
   script:
-    - yarn lint:fix
-    - yarn test
+    - source ~/.zprofile
+    - which yarn
+    - npm run lint:fix
+    - npm run test
 
 build-win:
   tags:
@@ -40,7 +42,7 @@ build-mac:
   stage: build
   resource_group: mac-machines
   script:
-    - source ~/.bashrc
+    - source ~/.zprofile
     - yarn install
     - yarn electron:deploy-mac
   only:

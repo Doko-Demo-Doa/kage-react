@@ -119,6 +119,10 @@ function createWindow() {
     ipcMain.on(StaticData.ElectronEventType.ON_CANCEL_CLOSE_PROMPT, () => {
       isPrompting = false;
     });
+
+    ipcMain.on(StaticData.ElectronEventType.OPEN_DEVTOOLS, () => {
+      win.webContents.openDevTools({ mode: "detach" });
+    });
   });
 
   win.webContents.on("did-frame-finish-load", () => {
