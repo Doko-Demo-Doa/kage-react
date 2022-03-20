@@ -529,7 +529,7 @@ export const fileUtils = {
 
     zl.archive(dest);
   },
-  // Dùng để làm mới lại file zip theo cấu trúc mới, bao gồm cả folder backgrounđ, file html, manifest.
+  // Dùng để làm mới lại file zip theo cấu trúc mới, bao gồm cả folder background, file html, manifest.
   reconstructZipTo: (dest: string, { assets, backgrounds }: ZipConstructType) => {
     if (fsNotAvailable()) return;
     const remote = require("@electron/remote");
