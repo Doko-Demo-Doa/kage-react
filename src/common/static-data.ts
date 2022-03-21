@@ -3,7 +3,16 @@ export const SLIDE_HTML_ENTRY_FILE = "index.html";
 export const SLIDE_HTML_HIDDEN_ENTRY_FILE = "index-hidden.html";
 export const SLIDE_MANIFEST_FILE = "manifest.json";
 
-export const BREAKING_CHANGE_VERSIONS = ["0.1.14", "0.1.22"];
+export const BREAKING_CHANGE_VERSIONS = [
+  {
+    ver: "0.1.22",
+    note: "Sửa lỗi hỏng file zip",
+  },
+  {
+    ver: "0.1.14",
+    note: "Sửa lỗi bị lệch chữ",
+  },
+];
 
 export const ALLOWED_IMPORT_EXTENSIONS = ["zip", "dsa", "dst"];
 

@@ -42,7 +42,9 @@ function getStockBackgroundsMeta(): SlideStockBackgroundMetaType {
  * @param type Tên loại thư mục cần lấy ra từ cache:
  * @returns String path đã chuẩn hoá trên các hệ điều hành
  */
-function getCacheDirectory(type?: "assets" | "quiz" | "vendor" | "backgrounds" | ""): string {
+function getCacheDirectory(
+  type?: "temp" | "assets" | "quiz" | "vendor" | "backgrounds" | ""
+): string {
   if (fsNotAvailable()) return "";
 
   const subdir = type !== undefined ? type : "";
@@ -91,8 +93,6 @@ function prepareCacheContent() {
   const backgroundsDir = getCacheDirectory("backgrounds");
   let vendorResourcePath = "";
   let backgroundsResourcePath = "";
-
-  console.log("aaaa", process.env.NODE_ENV);
 
   // Copy đống file từ extra vào cache
   if (process.env.NODE_ENV !== "production") {
@@ -154,17 +154,6 @@ function readZipEntryManifest(zipPath: string) {
     const zip = new AdmZip(zipPath);
     const data = JSON.parse(zip.readAsText(SLIDE_MANIFEST_FILE));
     return data;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-function writeEntryIntoZip(zipPath: string, entryName: string, data: Buffer) {
-  if (fsNotAvailable()) return;
-  try {
-    const zip = new AdmZip(zipPath);
-    zip.updateFile(entryName, data);
-    zip.writeZip();
   } catch (error) {
     console.log(error);
   }
@@ -489,8 +478,6 @@ export const fileUtils = {
   readZipEntries,
   // Đọc file manifest.json trong file zip.
   readZipEntryManifest,
-  // Ghi đè dữ liệu từ buffer vào entry trong file zip.
-  writeEntryIntoZip,
   // Xả file zip slide và đọc file manifest.
   extractZipToCache: (zipPath: string) => {
     const cacheDir = getCacheDirectory();
@@ -530,29 +517,50 @@ export const fileUtils = {
     zl.archive(dest);
   },
   // Dùng để làm mới lại file zip theo cấu trúc mới, bao gồm cả folder background, file html, manifest.
-  reconstructZipTo: (dest: string, { assets, backgrounds }: ZipConstructType) => {
-    if (fsNotAvailable()) return;
+  reconstructZipTo: async (
+    origin: string,
+    dest: string,
+    { backgrounds, manifestData, htmlData }: ZipConstructType
+  ): Promise<void> => {
+    if (fsNotAvailable()) return Promise.reject();
     const remote = require("@electron/remote");
     const ZipLib = remote.require("zip-lib");
-    const cacheDir = getCacheDirectory();
+    const tempPath = getCacheDirectory("temp");
 
-    // Add từng file:
+    const unzipper = new ZipLib.Unzip();
+    // Tạo 2 file manifest và html tạm.
+    const tempManifestPath = path.join(tempPath, "manifest.json");
+    const tempHtmlPath = path.join(tempPath, "index.html");
+
+    // Xả nén vào thư mục tạm:
+    await unzipper.extract(origin, tempPath);
+
+    fs.createFileSync(tempManifestPath);
+    fs.createFileSync(tempHtmlPath);
+    fs.writeFileSync(tempManifestPath, manifestData);
+    fs.writeFileSync(tempHtmlPath, htmlData);
+
+    // Xử lý vendor
     const vendorDir = getCacheDirectory("vendor");
-    const manifestPath = path.join(cacheDir, SLIDE_MANIFEST_FILE);
-    const htmlEntryPath = path.join(cacheDir, SLIDE_HTML_ENTRY_FILE);
 
     const zl = new ZipLib.Zip();
-    zl.addFile(manifestPath);
-    zl.addFile(htmlEntryPath);
+    zl.addFile(tempManifestPath);
+    zl.addFile(tempHtmlPath);
     zl.addFolder(vendorDir, "vendor");
-    assets.forEach((n) => {
-      zl.addFile(path.join(getCacheDirectory("assets"), n), "assets/" + n);
-    });
+
+    zl.addFolder(path.join(getCacheDirectory("temp"), "assets"), "assets");
+
     backgrounds.forEach((n) => {
       // https://github.com/fpsqdb/zip-lib#zip-with-metadata
       zl.addFile(path.join(getCacheDirectory("backgrounds"), n), "backgrounds/" + n);
     });
 
-    zl.archive(dest);
+    // Đóng gói file
+    await zl.archive(dest);
+
+    // Xóa thư mục temp
+    fs.rmSync(tempPath, { recursive: true, force: true });
+
+    return Promise.resolve();
   },
 };
