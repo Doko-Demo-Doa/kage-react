@@ -48,6 +48,14 @@ export type SlideType = {
   background?: string;
 };
 
+export type ManifestLayout = {
+  id: string;
+  exportedFrom: string;
+  lastModification: number;
+  alias: string;
+  layout: SlideType[];
+};
+
 export interface SlideBlockType {
   id: string;
   type: MediaType;

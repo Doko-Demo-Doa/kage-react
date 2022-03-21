@@ -189,7 +189,7 @@ export const SlideBuilderToolbar: React.FC = observer(() => {
           setIndex(0);
 
           if (
-            BREAKING_CHANGE_VERSIONS.includes(appVersion) &&
+            BREAKING_CHANGE_VERSIONS.map((n) => n.ver).includes(appVersion) &&
             !validationUtils.compareVersion(importedVer, appVersion)
           ) {
             uiUtils.showConfirmation(

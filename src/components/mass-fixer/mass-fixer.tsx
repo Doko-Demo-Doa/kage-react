@@ -1,20 +1,19 @@
-import React, { useContext } from "react";
-import { Result, Button, List, Typography, Space, Progress } from "antd";
+import React from "react";
+import { Result, Button, List, Typography, Space, Progress, Badge } from "antd";
 import { CompressOutlined, FileZipFilled } from "@ant-design/icons";
-import { FileNameWithPathType } from "~/typings/types";
+import { uniq } from "rambdax";
+import { FileNameWithPathType, ManifestLayout, SlideType } from "~/typings/types";
 import { fileUtils } from "~/utils/utils-files";
 import { dataUtils } from "~/utils/utils-data";
 import { commonHelper } from "~/common/helper";
-import { StoreContext } from "~/mobx/store-context";
-import { SLIDE_HTML_ENTRY_FILE, SLIDE_MANIFEST_FILE } from "~/common/static-data";
+import { validationUtils } from "~/utils/utils-validation";
+import { BREAKING_CHANGE_VERSIONS } from "~/common/static-data";
 
 import CssColors from "~/assets/styles/_colors.module.scss";
 import "~/components/mass-fixer/mass-fixer.scss";
+import { Colors } from "~/common/colors";
 
 export const MassFixerComponent: React.FC = () => {
-  const store = useContext(StoreContext);
-  const { list, setList, newSlide, importSlideTree } = store.slideListStore;
-
   const [queue, setQueue] = React.useState<FileNameWithPathType[]>([]);
   const [progress, setProgress] = React.useState(0);
 
@@ -26,9 +25,9 @@ export const MassFixerComponent: React.FC = () => {
     }
   }
 
-  function getAssetList() {
+  function getAssetList(slides: SlideType[]) {
     let assetList: string[] = [];
-    list.forEach((item) => {
+    slides.forEach((item) => {
       const assetItems = item.slideBlocks.map((n) => n.assetName || "").filter((n) => n !== ".");
       assetList = [...assetList, ...assetItems];
     });
@@ -38,31 +37,40 @@ export const MassFixerComponent: React.FC = () => {
   function startFixing() {
     setProgress(0);
 
-    queue.forEach((n, idx) => {
-      // Ver "0.1.14", fix file manifest.json
-      const slideData = fileUtils.readZipEntryManifest(n.path);
+    asyncForEach(queue, async (n, idx) => {
+      const slideData: ManifestLayout = fileUtils.readZipEntryManifest(n.path);
+      const ver = n.exportedFrom || "";
+
       const newData = commonHelper.prepareExportData(slideData.layout, slideData.id);
-
-      const manifestBuffer = Buffer.from(newData, "utf-8");
-      fileUtils.writeEntryIntoZip(n.path, SLIDE_MANIFEST_FILE, manifestBuffer);
-
       const newHtmlData = dataUtils.convertToHtmlSlideData(slideData.layout, false);
-      const htmlBufer = Buffer.from(newHtmlData, "utf-8");
-      fileUtils.writeEntryIntoZip(n.path, SLIDE_HTML_ENTRY_FILE, htmlBufer);
 
-      // Ver "0.1.22", fix folder backgrounds (cho ra ngoài)
-      const assetList = getAssetList();
-      const backgroundAssetList = list.map((n) => n.background || "").filter(Boolean);
-      fileUtils.reconstructZipTo("", {
-        assets: assetList,
-        backgrounds: backgroundAssetList,
-        manifestData: newData,
-        htmlData: newHtmlData,
-      });
+      if (validationUtils.compareVersion("0.1.22", ver)) {
+        /// Ver "0.1.22", fix folder backgrounds (cho ra ngoài)
+        const assetList = getAssetList(slideData.layout);
 
-      // TODO: Unfinished
-      setProgress((idx + 1) * (100 / queue.length));
+        // Lọc background
+        const backgroundAssetList = slideData.layout.map((n) => n.background || "").filter(Boolean);
+
+        await fileUtils.reconstructZipTo(n.path, n.path, {
+          assets: assetList,
+          backgrounds: uniq(backgroundAssetList),
+          manifestData: newData,
+          htmlData: newHtmlData,
+        });
+      }
+
+      setProgress(parseFloat(((idx + 1) * (100 / queue.length)).toFixed(1)));
     });
+  }
+
+  function shouldFix(ver?: string): string {
+    const found = BREAKING_CHANGE_VERSIONS.find((n) => {
+      return validationUtils.compareVersion(n.ver, ver || "");
+    });
+    if (found) {
+      return found.note;
+    }
+    return "";
   }
 
   return (
@@ -91,10 +99,15 @@ export const MassFixerComponent: React.FC = () => {
                 <List.Item.Meta
                   avatar={<FileZipFilled style={{ color: CssColors.colorOrange }} />}
                   title={<div>{item.filename}</div>}
-                  description={
-                    <>
-                      <div>{item.path}</div>
-                    </>
+                  description={<div>{item.path}</div>}
+                />
+
+                <Badge
+                  color={!shouldFix(item.exportedFrom) ? Colors.EMERALD : Colors.PALE_RED}
+                  text={
+                    <Typography.Text italic type="secondary">
+                      {shouldFix(item.exportedFrom) || "Phiên bản này không cần sửa"}
+                    </Typography.Text>
                   }
                 />
               </List.Item>
@@ -123,3 +136,12 @@ export const MassFixerComponent: React.FC = () => {
     </div>
   );
 };
+
+export async function asyncForEach<T>(
+  array: Array<T>,
+  callback: (item: T, index: number, arr: Array<T>) => void
+) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
+}
