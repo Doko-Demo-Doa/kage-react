@@ -171,6 +171,7 @@ function singleSlideConstructor(slide: SlideType, markHiddenSlides: boolean, sli
               border-radius: 6px;
               background-color: ${block.bgColor};
               width: ${(block.size?.w || 1) + ADDITIONAL_WIDTH_PX}px;
+              height: ${block.size?.h || 1}px;
               top: ${block.position?.y}px;
               left: ${block.position?.x}px;
               box-sizing: border-box;
