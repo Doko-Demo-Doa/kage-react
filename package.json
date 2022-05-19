@@ -1,7 +1,7 @@
 {
   "name": "dora-kage",
   "description": "Slide and quiz creation tool",
-  "version": "0.1.28",
+  "version": "1.0.1",
   "author": "WabiSabi",
   "license": "Commercial",
   "homepage": "./",
@@ -11,22 +11,15 @@
     "url": "git@github.com:Doko-Demo-Doa/kage-react.git"
   },
   "scripts": {
-    "start": "craco start",
-    "start:player": "cross-env REACT_APP_ISPLAYER=1 craco start",
-    "build": "cross-env CI=false craco build",
-    "build:player": "cross-env CI=false cross-env REACT_APP_ISPLAYER=1 craco build",
-    "test": "cross-env CI=false craco test --watchAll=false",
-    "test:coverage": "cross-env CI=false craco test --watchAll=false --coverage",
-    "clean": "rimraf build release build",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
-    "postinstall": "electron-builder install-app-deps",
-    "electron:dev": "concurrently -k \"cross-env BROWSER=none WEBPACK_TARGET=electron yarn run start\" \"wait-on http://localhost:3000 && tsc -p electron && electron .\"",
-    "electron:build-win": "cross-env WEBPACK_TARGET=electron yarn run build && tsc -p electron && electron-builder -w",
-    "electron:build-mac": "cross-env WEBPACK_TARGET=electron yarn run build && tsc -p electron && electron-builder -m",
-    "electron:build-linux": "cross-env WEBPACK_TARGET=electron yarn run build && tsc -p electron && electron-builder -l",
-    "electron:deploy-win": "cross-env WEBPACK_TARGET=electron yarn run build && tsc -p electron && electron-builder build --win --publish always",
-    "electron:deploy-mac": "cross-env WEBPACK_TARGET=electron yarn run build && tsc -p electron && electron-builder build --mac --publish always"
+    "dev": "vite",
+    "build:vite": "tsc && vite build",
+    "preview": "vite preview",
+    "clean": "rimraf build release dist",
+    "e2e": "ts-node --project=tsconfig.e2e.json ./e2e/app.spec.ts",
+    "lint": "eslint src/** --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint src/** --ext .js,.jsx,.ts,.tsx --fix",
+    "postinstall": "electron-builder install-app-deps && node patches/fix.mjs",
+    "electron:package": "cross-env NODE_ENV=production tsc -p electron && electron-builder"
   },
   "eslintConfig": {
     "extends": [
@@ -37,10 +30,7 @@
       {
         "files": [
           "**/*.stories.*"
-        ],
-        "rules": {
-          "import/no-anonymous-default-export": "off"
-        }
+        ]
       }
     ]
   },
@@ -59,6 +49,12 @@
       "last 1 safari version"
     ]
   },
+  "keywords": [
+    "electron",
+    "react",
+    "vite",
+    "antd"
+  ],
   "main": "build/electron/main.js",
   "dependencies": {
     "@electron/remote": "2.0.8",
@@ -72,13 +68,10 @@
     "fluent-ffmpeg": "2.1.2",
     "fs-extra": "10.1.0",
     "sharp": "0.30.4",
-    "slate": "^0.78.0",
-    "slate-react": "^0.79.0",
     "zip-lib": "0.7.3"
   },
   "devDependencies": {
     "@ant-design/icons": "4.7.0",
-    "@craco/craco": "6.4.3",
     "@testing-library/jest-dom": "5.16.4",
     "@testing-library/react": "13.2.0",
     "@testing-library/user-event": "14.2.0",
@@ -169,6 +162,8 @@
     "rimraf": "3.0.2",
     "semver-compare": "1.0.0",
     "short-uuid": "4.2.0",
+    "slate": "0.78.0",
+    "slate-react": "0.79.0",
     "spectron": "19.0.0",
     "ts-jest": "28.0.2",
     "typescript": "4.6.4",

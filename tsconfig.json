@@ -17,10 +17,13 @@
     "jsx": "react-jsx",
     "isolatedModules": true
   },
-  "types": ["node", "jest"],
+  "types": ["node", "@types/jest", "@types/node", "**/*.d.ts"],
   "include": [
+    "electron-main",
+    "electron-preload",
     "vite.config.ts",
     "vite-electron.config.ts",
+    "e2e",
     "src",
     "electron",
     "src/**/*.ts",
@@ -33,5 +36,17 @@
     "src/__tests__/**/*.ts",
     "src/__tests__/**/*.tsx",
     "reveal.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "build",
+    "config",
+    "doc",
+    "env",
+    "public",
+    "scripts",
+    "*.scss",
+    "*.less",
+    "patches/"
   ]
 }

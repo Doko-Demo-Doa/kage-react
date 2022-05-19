@@ -21,7 +21,6 @@ test:
   stage: test
   script:
     - source ~/.zprofile
-    - which yarn
     - npm run lint:fix
     - npm run test
 
@@ -31,8 +30,8 @@ build-win:
   stage: build
   resource_group: windows-machines
   script:
-    - yarn install
-    - yarn electron:deploy-win
+    - npm ci -f
+    - npm run electron:deploy-win
   only:
     - release
 
@@ -43,7 +42,7 @@ build-mac:
   resource_group: mac-machines
   script:
     - source ~/.zprofile
-    - yarn install
-    - yarn electron:deploy-mac
+    - npm ci -f
+    - npm run electron:deploy-mac
   only:
     - release
