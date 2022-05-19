@@ -11,3 +11,4 @@ resources/vendor
 coverage/
 declaration.d.ts
 global.d.ts
+patches/
