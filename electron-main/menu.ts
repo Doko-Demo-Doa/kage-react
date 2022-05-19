@@ -1,6 +1,6 @@
 import { Menu } from "electron";
 
-const template = [];
+const template: Electron.MenuItemConstructorOptions[] = [];
 
 const menu = Menu.buildFromTemplate(template);
 Menu.setApplicationMenu(menu);
