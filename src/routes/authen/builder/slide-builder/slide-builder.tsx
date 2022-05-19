@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ipcRenderer } from "electron";
 import dayjs from "dayjs";
-import KeyboardEventHandler from "react-keyboard-event-handler";
 import { ElectronEventType } from "~/common/static-data";
 import { StoreContext } from "~/mobx/store-context";
 
@@ -57,38 +56,30 @@ export const SlideBuilder: React.FC = () => {
   }
 
   return (
-    <KeyboardEventHandler
-      handleKeys={["ctrl + s", "Cmd + s"]}
-      isExclusive
-      onKeyEvent={() => {
-        setLastSavedTime(dayjs().unix());
-      }}
-    >
-      <div className="builder slide-builder">
-        <SlideBuilderToolbar />
-        <div className="main-slide-builder">
-          <SlideList />
-          <SlideInteractiveEditor />
-          <SlideEntities />
-        </div>
-
-        <div className="slide-builder-bottom" onClick={onClickVer}>
-          {`Phiên bản: ${platformUtils.getAppVersion()} - ${process.env.NODE_ENV}`}
-          {" - "}
-          {!updateDownloaded && updateProgress > 0 ? (
-            <span>{`Đang tải bản cập nhật: ${updateProgress}%`}</span>
-          ) : updateDownloaded ? (
-            <span
-              className="update-completed"
-              onClick={() => {
-                ipcRenderer.send(ElectronEventType.QUIT_TO_INSTALL);
-              }}
-            >
-              Cập nhật hoàn tất, click vào đây để khởi động lại app
-            </span>
-          ) : null}
-        </div>
+    <div className="builder slide-builder">
+      <SlideBuilderToolbar />
+      <div className="main-slide-builder">
+        <SlideList />
+        <SlideInteractiveEditor />
+        <SlideEntities />
       </div>
-    </KeyboardEventHandler>
+
+      <div className="slide-builder-bottom" onClick={onClickVer}>
+        {`Phiên bản: ${platformUtils.getAppVersion()} - ${process.env.NODE_ENV}`}
+        {" - "}
+        {!updateDownloaded && updateProgress > 0 ? (
+          <span>{`Đang tải bản cập nhật: ${updateProgress}%`}</span>
+        ) : updateDownloaded ? (
+          <span
+            className="update-completed"
+            onClick={() => {
+              ipcRenderer.send(ElectronEventType.QUIT_TO_INSTALL);
+            }}
+          >
+            Cập nhật hoàn tất, click vào đây để khởi động lại app
+          </span>
+        ) : null}
+      </div>
+    </div>
   );
 };
