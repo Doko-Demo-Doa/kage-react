@@ -1,7 +1,6 @@
 import { defineConfig } from "vite";
 // @ts-ignore
 // * No declaration file for less-vars-to-js
-import lessToJS from "less-vars-to-js";
 import vitePluginImp from "vite-plugin-imp";
 import { ViteAliases } from "vite-aliases";
 import Inspect from "vite-plugin-inspect";
@@ -22,11 +21,8 @@ import electronConfig from "./vite-electron.config";
 // https://github.com/asurraa-lab/react-vite2-ts-antd/blob/master/vite.config.ts
 // https://github.com/electron-vite/vite-plugin-electron-quick-start
 
-import path, { resolve } from "path";
-import fs from "fs";
+import path from "path";
 
-const pathResolver = (path: string) => resolve(__dirname, path);
-const themeVariables = lessToJS(fs.readFileSync(pathResolver("./src/app.less"), "utf8"));
 
 // https://vitejs.dev/config/
 export default defineConfig(({}) => {
@@ -86,7 +82,6 @@ export default defineConfig(({}) => {
         },
         less: {
           javascriptEnabled: true,
-          modifyVars: themeVariables,
         },
       },
     },
