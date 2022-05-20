@@ -26,6 +26,7 @@ import path from "path";
 export default defineConfig(({}) => {
   return {
     base: "./",
+    assetsInclude: ["**/*.gltf", "**/*.png"],
     envPrefix: ["REACT_APP_", "GH_TOKEN"],
     plugins: [
       EnvironmentPlugin("all", { prefix: "REACT_APP_" }),

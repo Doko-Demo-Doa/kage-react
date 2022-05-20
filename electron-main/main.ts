@@ -51,6 +51,8 @@ function createWindow() {
     },
   });
 
+  win.webContents.openDevTools();
+
   remote.enable(win.webContents);
 
   if (isDev) {
@@ -153,7 +155,9 @@ function showPreviewWindow() {
   }
 
   if (isDev) {
-    previewWin.loadURL("http://localhost:3000/#/preview");
+    previewWin.loadURL(
+      `http://${process.env["VITE_DEV_SERVER_HOST"]}:${process.env["VITE_DEV_SERVER_PORT"]}/#/preview`
+    );
   } else {
     // 'build/index.html'
     previewWin.loadURL(`file://${__dirname}/../index.html#/preview`);
