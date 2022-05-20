@@ -1,7 +1,6 @@
 {
   "extends": "./tsconfig.custom.json",
   "compilerOptions": {
-    "target": "es6",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -14,8 +13,14 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "noEmit": true,
+    "target": "es6",
+    "useDefineForClassFields": true,
     "jsx": "react-jsx",
-    "isolatedModules": true
+    "isolatedModules": true,
+    "baseUrl": "./",
+    "paths": {
+      "~/*": ["./src/*"]
+    }
   },
   "types": ["node", "@types/jest", "@types/node", "**/*.d.ts"],
   "include": [

@@ -6,7 +6,6 @@ import { ViteAliases } from "vite-aliases";
 import Inspect from "vite-plugin-inspect";
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
-import { VitePWA } from "vite-plugin-pwa";
 import EnvironmentPlugin from "vite-plugin-environment";
 import tsconfigPaths from "vite-tsconfig-paths";
 import electron from "vite-plugin-electron";
@@ -23,7 +22,6 @@ import electronConfig from "./vite-electron.config";
 
 import path from "path";
 
-
 // https://vitejs.dev/config/
 export default defineConfig(({}) => {
   return {
@@ -38,7 +36,6 @@ export default defineConfig(({}) => {
       ViteAliases({}),
       react(),
       svgr(),
-      VitePWA(),
       tsconfigPaths(),
       electron(electronConfig),
       electronRenderer(),
@@ -78,6 +75,7 @@ export default defineConfig(({}) => {
           additionalData: `
             @import "./src/assets/styles/_colors.scss";
             @import "./src/assets/styles/_common.scss";
+            @import "./src/assets/styles/_mixins.scss";
           `,
         },
         less: {
