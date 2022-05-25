@@ -19,7 +19,6 @@ import "antd/dist/antd.css";
 
 import "~/app.scss";
 
-// @ts-ignore
 window.removeLoading();
 
 const AppRouter = ({ children }: { children: React.ReactElement }): React.ReactElement =>

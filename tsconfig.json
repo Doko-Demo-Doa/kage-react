@@ -1,5 +1,4 @@
 {
-  "extends": "./tsconfig.custom.json",
   "compilerOptions": {
     "downlevelIteration": true,
     "lib": ["dom", "dom.iterable", "esnext"],

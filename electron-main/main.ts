@@ -55,12 +55,12 @@ function createWindow() {
 
   remote.enable(win.webContents);
 
-  if (isDev) {
+  if (app.isPackaged) {
+    win.loadFile(path.join(__dirname, "../index.html"));
+  } else {
     win.loadURL(
       `http://${process.env["VITE_DEV_SERVER_HOST"]}:${process.env["VITE_DEV_SERVER_PORT"]}`
     );
-  } else {
-    win.loadFile(path.join(__dirname, "../index.html"));
   }
 
   win.once("show", () => {
@@ -148,19 +148,19 @@ function showPreviewWindow() {
     },
   });
 
-  require("@electron/remote/main").enable(previewWin.webContents);
+  remote.enable(previewWin.webContents);
 
   if (app.isPackaged) {
     previewWin.removeMenu();
   }
 
-  if (isDev) {
+  if (!app.isPackaged) {
     previewWin.loadURL(
       `http://${process.env["VITE_DEV_SERVER_HOST"]}:${process.env["VITE_DEV_SERVER_PORT"]}/#/preview`
     );
   } else {
     // 'build/index.html'
-    previewWin.loadURL(`file://${__dirname}/../index.html#/preview`);
+    previewWin.loadURL(`file://${__dirname}/../index.html`);
   }
 
   previewWin.show();
@@ -172,10 +172,10 @@ function showPreviewWindow() {
 
 // https://www.electronjs.org/docs/api/app#appispackaged
 if (app.isPackaged) {
-  require("./menu");
+  // require("./menu");
 }
 
-app.on("ready", createWindow);
+app.whenReady().then(createWindow);
 
 app.on("window-all-closed", () => {
   ipcMain.removeAllListeners(StaticData.ElectronEventType.CLOSE_APP);

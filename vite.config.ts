@@ -10,7 +10,6 @@ import EnvironmentPlugin from "vite-plugin-environment";
 import tsconfigPaths from "vite-tsconfig-paths";
 import electron from "vite-plugin-electron";
 import electronRenderer from "vite-plugin-electron/renderer";
-// @ts-ignore
 import polyfillExports from "vite-plugin-electron/polyfill-exports";
 // https://github.com/vbenjs/vite-plugin-style-import
 import { createStyleImportPlugin, AntdResolve } from "vite-plugin-style-import";
@@ -30,9 +29,9 @@ export default defineConfig(({}) => {
     envPrefix: ["REACT_APP_", "GH_TOKEN"],
     plugins: [
       EnvironmentPlugin("all", { prefix: "REACT_APP_" }),
-      createStyleImportPlugin({
-        resolves: [AntdResolve()],
-      }),
+      // createStyleImportPlugin({
+      //   resolves: [AntdResolve()],
+      // }),
       Inspect(),
       ViteAliases({}),
       react(),
@@ -42,15 +41,12 @@ export default defineConfig(({}) => {
       electronRenderer(),
       polyfillExports(),
       vitePluginImp({
+        optimize: true,
         libList: [
           {
             libName: "antd",
-            style: (name) => {
-              if (name === "col" || name === "row") {
-                return "antd/lib/style/index.less";
-              }
-              return `antd/es/${name}/style/index.less`;
-            },
+            libDirectory: "es",
+            style: (name) => `antd/es/${name}/style`,
           },
         ],
       }),
@@ -58,7 +54,6 @@ export default defineConfig(({}) => {
     resolve: {
       alias: {
         "~": path.resolve(__dirname, "src"),
-        "./lib-cov/fluent-ffmpeg": "./lib/fluent-ffmpeg", // This line
       },
     },
     build: {

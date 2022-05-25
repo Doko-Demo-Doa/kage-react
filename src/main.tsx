@@ -11,8 +11,6 @@ function importBuildTarget() {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-// @ts-ignore
 importBuildTarget().then(({ default: Environment }) => {
   ReactDOM.render(
     <React.StrictMode>
