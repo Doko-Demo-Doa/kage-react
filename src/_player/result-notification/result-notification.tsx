@@ -6,6 +6,8 @@ import batsu from "~/_player/assets/img/animal_quiz_neko_batsu.png";
 import tsunami from "~/_player/assets/img/business_syakai_aranami.png";
 import mole from "~/_player/assets/img/animal_chara_mogura_hakase.png";
 
+console.log("ggg", mole);
+
 import "~/_player/result-notification/result-notification.scss";
 
 interface Props {

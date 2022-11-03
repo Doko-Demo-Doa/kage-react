@@ -2,7 +2,8 @@
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig.json",
-    "tsconfigRootDir": "./"
+    "tsconfigRootDir": "./",
+    "extraFileExtensions": [".vue", ".md", ".mjs"]
   },
   "globals": {
     "test": true,
@@ -23,7 +24,7 @@
   "env": {
     "node": true
   },
-  "plugins": ["import", "@typescript-eslint"],
+  "plugins": ["import", "prettier", "@typescript-eslint"],
   "overrides": [
     {
       "files": ["**/*.test.ts"],

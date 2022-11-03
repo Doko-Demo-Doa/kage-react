@@ -5,7 +5,7 @@ copyright: "Copyright @ 2021"
 extends: null
 
 files:
-  - "build/"
+  - "dist/"
   - "package.json"
 
 extraResources:

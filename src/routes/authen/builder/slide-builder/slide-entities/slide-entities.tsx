@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { Input, Divider, Empty, Checkbox, InputNumber } from "antd";
 import { Container, Draggable } from "react-smooth-dnd";
 import ScrollBar from "react-perfect-scrollbar";
-import KeyboardEventHandler from "react-keyboard-event-handler";
 import { observer } from "mobx-react";
 
 import { dataUtils } from "~/utils/utils-data";
@@ -110,36 +109,34 @@ export const SlideEntities: React.FC = observer(() => {
 
           <h2>Hiệu ứng</h2>
           <div className="column2">
-            <KeyboardEventHandler>
-              {animations.map((item, idx) => {
-                const targetAnim = list[selectedIndex].animations.find(
-                  (n) => n.blockId === item.blockId
-                );
+            {animations.map((item, idx) => {
+              const targetAnim = list[selectedIndex].animations.find(
+                (n) => n.blockId === item.blockId
+              );
 
-                return (
-                  <AnimationEntity
-                    key={`${item.id}`}
-                    id={item.id}
-                    idx={idx}
-                    animIdx={targetAnim?.animationIndex || 0}
-                    onClick={(id, blockId) => {
-                      selectAnim(id);
-                      selectBlock(blockId);
-                    }}
-                    onDeleteAnimation={(blockId) => toggleAnimation(blockId)}
-                    onChangeAnimationIndex={(animId, blockId, animIdx) =>
-                      setAnimationIndex(animId, blockId, animIdx)
-                    }
-                    onChangeAutoplayMedia={(blockId) => toggleMediaAutoplay(blockId)}
-                    mediaAutoplay={item.mediaAutoplay}
-                    selected={selectedAnim === item.id}
-                    animationType={item.animationType}
-                    blockId={item.blockId}
-                    blocks={blocks}
-                  />
-                );
-              })}
-            </KeyboardEventHandler>
+              return (
+                <AnimationEntity
+                  key={`${item.id}`}
+                  id={item.id}
+                  idx={idx}
+                  animIdx={targetAnim?.animationIndex || 0}
+                  onClick={(id, blockId) => {
+                    selectAnim(id);
+                    selectBlock(blockId);
+                  }}
+                  onDeleteAnimation={(blockId) => toggleAnimation(blockId)}
+                  onChangeAnimationIndex={(animId, blockId, animIdx) =>
+                    setAnimationIndex(animId, blockId, animIdx)
+                  }
+                  onChangeAutoplayMedia={(blockId) => toggleMediaAutoplay(blockId)}
+                  mediaAutoplay={item.mediaAutoplay}
+                  selected={selectedAnim === item.id}
+                  animationType={item.animationType}
+                  blockId={item.blockId}
+                  blocks={blocks}
+                />
+              );
+            })}
           </div>
         </>
       )}

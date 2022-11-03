@@ -2,9 +2,9 @@ import { app, protocol, ipcMain, BrowserWindow } from "electron";
 import { autoUpdater } from "electron-updater";
 import path from "path";
 import isDev from "electron-is-dev";
-import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
+import remote from "@electron/remote/main";
 
-require("@electron/remote/main").initialize();
+remote.initialize();
 
 import * as StaticData from "../src/common/static-data";
 import * as Typings from "../src/typings/types";
@@ -12,15 +12,15 @@ import * as Typings from "../src/typings/types";
 let win: BrowserWindow | null = null;
 let previewWin: BrowserWindow | null = null;
 
-// Alternative: https://www.electronjs.org/docs/tutorial/updates
-autoUpdater.autoInstallOnAppQuit = true;
-
 const preDefinedWidth = 1240;
 const predefinedHeight = 730;
 
 const singleInstanceLock = app.requestSingleInstanceLock();
 
 let isPrompting = false;
+
+app.disableHardwareAcceleration();
+app.commandLine.appendSwitch("disable-site-isolation-trials");
 
 // Only run single instance
 if (!singleInstanceLock) {
@@ -39,53 +39,49 @@ if (!singleInstanceLock) {
 
 function createWindow() {
   win = new BrowserWindow({
+    show: false,
     width: preDefinedWidth,
     height: predefinedHeight,
     minWidth: preDefinedWidth,
     minHeight: predefinedHeight,
     webPreferences: {
-      webviewTag: true,
-      nativeWindowOpen: true,
-      nodeIntegration: true,
       contextIsolation: false,
-      preload: path.join("preload.js"),
+      nodeIntegration: true,
+      preload: path.join(__dirname, "../electron-preload/index.js"),
     },
   });
 
-  require("@electron/remote/main").enable(win.webContents);
+  win.webContents.openDevTools();
 
-  if (isDev) {
-    win.loadURL("http://localhost:3000/");
+  remote.enable(win.webContents);
+
+  if (app.isPackaged) {
+    win.loadFile(path.join(__dirname, "../index.html"));
   } else {
-    // 'build/index.html'
-    win.loadURL(`file://${__dirname}/../index.html`);
+    win.loadURL(
+      `http://${process.env["VITE_DEV_SERVER_HOST"]}:${process.env["VITE_DEV_SERVER_PORT"]}`
+    );
   }
 
   win.once("show", () => {
     isPrompting = false;
-    win.show();
+    win?.show();
   });
 
+  // resetDevice before quit app
   win.on("close", function (e) {
     if (!isPrompting) {
       e.preventDefault();
-      win.webContents.send(StaticData.ElectronEventType.OPEN_APP_CLOSE_PROMPT);
+      win?.webContents.send(StaticData.ElectronEventType.OPEN_APP_CLOSE_PROMPT);
       isPrompting = true;
     }
   });
 
   win.on("closed", () => {
     win = null;
-    previewWin?.close();
-    previewWin = null;
   });
 
   app.whenReady().then(() => {
-    // clearCache();
-    installExtension(REACT_DEVELOPER_TOOLS)
-      .then((name) => console.log(`Added Extension:  ${name}`))
-      .catch((err) => console.log("An error occurred: ", err));
-
     // Register protocols:
     protocol.registerFileProtocol("local-resource", (request, callback) => {
       const url = request.url.replace(/^local-resource:\/\//, "");
@@ -104,7 +100,9 @@ function createWindow() {
     });
 
     ipcMain.on(StaticData.ElectronEventType.QUIT_TO_INSTALL, () => {
-      autoUpdater.quitAndInstall();
+      if (app.isPackaged) {
+        autoUpdater.quitAndInstall();
+      }
     });
 
     ipcMain.on(StaticData.ElectronEventType.OPEN_PREVIEW, () => {
@@ -112,7 +110,7 @@ function createWindow() {
     });
 
     ipcMain.on(StaticData.ElectronEventType.CLOSE_APP, () => {
-      win.close();
+      win?.close();
       app.quit();
     });
 
@@ -121,17 +119,16 @@ function createWindow() {
     });
 
     ipcMain.on(StaticData.ElectronEventType.OPEN_DEVTOOLS, () => {
-      win.webContents.openDevTools({ mode: "detach" });
+      win?.webContents.openDevTools({ mode: "detach" });
     });
   });
 
-  win.webContents.on("did-frame-finish-load", () => {
+  win.webContents.on("did-finish-load", () => {
+    win?.show();
     if (isDev) {
-      win.webContents.openDevTools({ mode: "detach" });
+      win?.webContents.openDevTools();
     }
   });
-
-  process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
 }
 
 function showPreviewWindow() {
@@ -151,17 +148,19 @@ function showPreviewWindow() {
     },
   });
 
-  require("@electron/remote/main").enable(previewWin.webContents);
+  remote.enable(previewWin.webContents);
 
   if (app.isPackaged) {
     previewWin.removeMenu();
   }
 
-  if (isDev) {
-    previewWin.loadURL("http://localhost:3000/#/preview");
+  if (!app.isPackaged) {
+    previewWin.loadURL(
+      `http://${process.env["VITE_DEV_SERVER_HOST"]}:${process.env["VITE_DEV_SERVER_PORT"]}/#/preview`
+    );
   } else {
     // 'build/index.html'
-    previewWin.loadURL(`file://${__dirname}/../index.html#/preview`);
+    previewWin.loadURL(`file://${__dirname}/../index.html`);
   }
 
   previewWin.show();
@@ -171,10 +170,19 @@ function showPreviewWindow() {
   });
 }
 
+// https://www.electronjs.org/docs/api/app#appispackaged
 if (app.isPackaged) {
-  require("./menu");
+  // require("./menu");
 }
-app.on("ready", createWindow);
+
+app.whenReady().then(createWindow);
+
+app.on("window-all-closed", () => {
+  ipcMain.removeAllListeners(StaticData.ElectronEventType.CLOSE_APP);
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
+});
 
 app.on("activate", () => {
   // On macOS it's common to re-create a window in the app when the
@@ -201,9 +209,7 @@ function checkUpdate(args: Typings.CustomPublishOptionType) {
   // https://nklayman.github.io/vue-cli-plugin-electron-builder/guide/recipes.html#auto-update
   // https://github.com/electron-userland/electron-builder/issues/4599#issuecomment-575885067
   // Override when needed
-  // if (isDev) return;
   autoUpdater.setFeedURL(args);
-
   autoUpdater
     .checkForUpdates()
     .then((r) => {
@@ -215,15 +221,18 @@ function checkUpdate(args: Typings.CustomPublishOptionType) {
 }
 
 autoUpdater.on("update-not-available", () => {
-  win.webContents.send(StaticData.ElectronEventType.UPDATE_NOT_AVAILABLE);
+  win?.webContents.send(StaticData.ElectronEventType.UPDATE_NOT_AVAILABLE);
 });
 autoUpdater.on("update-available", () => {
-  win.webContents.send(StaticData.ElectronEventType.UPDATE_AVAILABLE);
+  win?.webContents.send(StaticData.ElectronEventType.UPDATE_AVAILABLE);
 });
 autoUpdater.on("download-progress", (data) => {
   // https://www.electron.build/auto-update#event-download-progress
-  win.webContents.send(StaticData.ElectronEventType.DOWNLOAD_PROGRESS, Math.ceil(data.percent));
+  win?.webContents.send(StaticData.ElectronEventType.DOWNLOAD_PROGRESS, Math.ceil(data.percent));
 });
 autoUpdater.on("update-downloaded", (data) => {
-  win.webContents.send(StaticData.ElectronEventType.UPDATE_DOWNLOADED, String(data.downloadedFile));
+  win?.webContents.send(
+    StaticData.ElectronEventType.UPDATE_DOWNLOADED,
+    String(data.downloadedFile)
+  );
 });

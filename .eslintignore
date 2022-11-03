@@ -1,7 +1,6 @@
 node_modules
 build
 dist
-craco.config.js
 jest.config.js
 vendor
 storybook-static
@@ -11,3 +10,4 @@ resources/vendor
 coverage/
 declaration.d.ts
 global.d.ts
+patches/

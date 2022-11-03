@@ -19,6 +19,8 @@ import "antd/dist/antd.css";
 
 import "~/app.scss";
 
+window.removeLoading();
+
 const AppRouter = ({ children }: { children: React.ReactElement }): React.ReactElement =>
   platformUtils.isElectron() ? (
     <HashRouter>{children}</HashRouter>

@@ -1,12 +1,7 @@
 {
-  "extends": "./tsconfig.custom.json",
   "compilerOptions": {
-    "target": "es6",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "downlevelIteration": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -18,14 +13,22 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "noEmit": true,
+    "target": "esnext",
+    "useDefineForClassFields": true,
     "jsx": "react-jsx",
-    "isolatedModules": true
+    "isolatedModules": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./src/*"]
+    }
   },
-  "types": [
-    "node",
-    "jest"
-  ],
+  "types": ["node", "@types/node", "**/*.d.ts"],
   "include": [
+    "electron-main",
+    "electron-preload",
+    "vite.config.ts",
+    "vite-electron.config.ts",
+    "e2e",
     "src",
     "electron",
     "src/**/*.ts",
@@ -38,5 +41,17 @@
     "src/__tests__/**/*.ts",
     "src/__tests__/**/*.tsx",
     "reveal.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "build",
+    "config",
+    "doc",
+    "env",
+    "public",
+    "scripts",
+    "*.scss",
+    "*.less",
+    "patches/"
   ]
 }

@@ -3,9 +3,11 @@ import Backend from "i18next-http-backend";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
 
+import vi from "./translations/vi.json";
+
 const resources = {
   vi: {
-    translation: require("./translations/vi.json"),
+    translation: vi,
   },
 };
 
@@ -16,6 +18,7 @@ i18n
   .init({
     resources,
     debug: process.env.NODE_ENV !== "production",
+    lng: "en",
     fallbackLng: "vi",
     interpolation: {
       escapeValue: true,
