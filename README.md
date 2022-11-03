@@ -1,7 +1,24 @@
 # Kage
 
-[![pipeline status](https://gitlab.com/dora-dev/kage-react/badges/main/pipeline.svg)](https://gitlab.com/dora-dev/kage-react/-/commits/main)
+Dora Kage là chương trình viết bằng TypeScript/Electron, build thành app desktop để chạy trên Windows (7 trở lên) và Mac OS. Bao gồm các tính năng:
 
-Ứng dụng chạy trên Desktop (Windows / MacOS) dùng để tạo slide và quiz nội bộ. Hiện đang là bản beta thử nghiệm.
+## Sơ lược
 
-Chi tiết và hướng dẫn sử dụng / build / cài đặt, xem tại: [Dora Dev Docs](https://docs.dora.edu.vn/docs/)
+- Tạo slide.
+- Điều chỉnh và xuất ra slide dạng HTML, có file `.json` để biết được khuôn dạng dữ liệu, bố cục,...
+- Tạo quiz.
+- Xuất ra file quiz.
+
+Các tính năng dự kiến:
+
+- Theming cho slide.
+- Tích hợp với hệ thống LMS của Dora.
+
+## Công nghệ sử dụng
+
+- [React](https://reactjs.org/)
+- [Electron](https://www.electronjs.org/)
+- [electron-builder](https://www.electron.build/)
+- [MobX](https://mobx.js.org/README.html)
+- [ffmpeg-static](https://github.com/eugeneware/ffmpeg-static)
+- [sharp](https://github.com/lovell/sharp)
