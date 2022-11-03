@@ -12,7 +12,6 @@ import electron from "vite-plugin-electron";
 import electronRenderer from "vite-plugin-electron/renderer";
 import polyfillExports from "vite-plugin-electron/polyfill-exports";
 // https://github.com/vbenjs/vite-plugin-style-import
-import { createStyleImportPlugin, AntdResolve } from "vite-plugin-style-import";
 
 import electronConfig from "./vite-electron.config";
 
@@ -29,9 +28,6 @@ export default defineConfig(({}) => {
     envPrefix: ["REACT_APP_", "GH_TOKEN"],
     plugins: [
       EnvironmentPlugin("all", { prefix: "REACT_APP_" }),
-      // createStyleImportPlugin({
-      //   resolves: [AntdResolve()],
-      // }),
       Inspect(),
       ViteAliases({}),
       react(),

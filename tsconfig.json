@@ -22,7 +22,7 @@
       "~/*": ["./src/*"]
     }
   },
-  "types": ["node", "@types/jest", "@types/node", "**/*.d.ts"],
+  "types": ["node", "@types/node", "**/*.d.ts"],
   "include": [
     "electron-main",
     "electron-preload",
